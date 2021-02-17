@@ -33,7 +33,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, layoutResourceId)
-        setFullView()
+//        setFullView()
         progressDialog = ProgressDialog(this)
     }
 

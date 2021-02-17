@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="saying"
+            type="com.cashproject.mongsil.model.data.Saying" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/item_saying_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F8AF98"
+            android:scaleType="centerCrop"
+            bindImage="@{saying.image}"/>
+    </LinearLayout>
+</layout>

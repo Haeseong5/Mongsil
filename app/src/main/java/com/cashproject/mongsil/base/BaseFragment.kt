@@ -27,11 +27,13 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(){
 
     lateinit var progressDialog: AppCompatDialog
 
+    abstract fun initStartView()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         d(TAG, "onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         progressDialog = AppCompatDialog(requireContext())
-
+        initStartView()
         return binding.root
     }
 

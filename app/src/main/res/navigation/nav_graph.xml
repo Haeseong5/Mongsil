@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search"
+    app:startDestination="@id/node_locker">
+
+    <fragment
+            android:id="@+id/node_locker"
+            android:name="com.cashproject.mongsil.ui.locker.LockerFragment"
+            android:label="@string/locker"
+            tools:layout="@layout/fragment_locker">
+        <action
+            android:id="@+id/action_locker_to_saying"
+            app:destination="@id/node_saying"/>
+        <argument
+            android:name="saying"
+            app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/node_saying"
+        android:name="com.cashproject.mongsil.ui.saying.SayingFragment"
+        android:label="saying"
+        tools:layout="@layout/fragment_saying">
+        <action
+            android:id="@+id/action_saying_to_locker"
+            app:destination="@id/node_locker"/>
+    </fragment>
+</navigation>
