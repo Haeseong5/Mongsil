@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "691991672110",
+    "project_id": "mongsil-8dc44",
+    "storage_bucket": "mongsil-8dc44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691991672110:android:f7ea30e2148770946436bf",
+        "android_client_info": {
+          "package_name": "com.cashproject.mongsil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691991672110-qkvm237nr3ckgoq8l3sl3ondqq91piit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cashproject.mongsil",
+            "certificate_hash": "b39a1fd3071d0236414baf77933a6ca8fc061039"
+          }
+        },
+        {
+          "client_id": "691991672110-ajva9tpsaqka2jmfh0q2i314m4ruorp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs5hhFY6KDyox9FLdPSvWaT0zZz2WXpN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691991672110-ajva9tpsaqka2jmfh0q2i314m4ruorp3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

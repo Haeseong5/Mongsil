@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
-import com.cashproject.mongsil.ui.calender.CalendarFragment
+import com.cashproject.mongsil.ui.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.home.HomeFragment
 import com.cashproject.mongsil.ui.locker.LockerFragment
 

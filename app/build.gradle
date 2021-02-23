@@ -3,7 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
+//apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -118,4 +120,12 @@ dependencies {
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
     // optional - Guava ListenableFuture support
     implementation "androidx.paging:paging-guava:$paging_version"
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+
 }
