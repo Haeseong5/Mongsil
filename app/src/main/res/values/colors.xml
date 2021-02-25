@@ -16,5 +16,6 @@
     <color name="saturday_light">#85b2e3</color>
     <color name="grey_light">#cccccc</color>
     <color name="day_select">#f5f5f5</color>
+    <color name="colorYellow">#fdca42</color>
 
 </resources>

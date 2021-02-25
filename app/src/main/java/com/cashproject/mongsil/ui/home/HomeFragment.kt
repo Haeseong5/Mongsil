@@ -6,8 +6,9 @@ import android.view.View
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentHomeBinding
+import com.cashproject.mongsil.ui.viewmodel.FirebaseViewModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, FirebaseViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_home
@@ -19,6 +20,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun initStartView() {
 
     }
+
+    override val viewModel: FirebaseViewModel
+        get() = FirebaseViewModel()
 
 
 }

@@ -46,7 +46,7 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
         //1. 아이템의 고유 id 값이 같은지
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == currentList[newItemPosition].id //title 대신 id 사용가능
+            return oldList[oldItemPosition].docId == currentList[newItemPosition].docId //title 대신 id 사용가능
         }
 
         //2. id 가 같다면, 내용물도 같은지 확인 equals()

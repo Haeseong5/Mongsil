@@ -2,8 +2,9 @@ package com.cashproject.mongsil.ui.imagebind
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.cashproject.mongsil.R
+import com.google.firebase.storage.StorageReference
 
 
 object BindingAdapter {
@@ -15,11 +16,23 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("bindImage")
     fun bindImage(view: ImageView, imageUrl: String?) {
-        Glide.with(view.context)
+        GlideApp.with(view.context)
             .load(imageUrl)
             .fitCenter()
 //            .placeholder(R.drawable.loading)
             .error(R.drawable.ic_launcher_background)
             .into(view)
     }
+
+    @JvmStatic
+    @BindingAdapter("bindImageRef")
+    fun bindImageRef(view: ImageView, imageUrl: StorageReference?) {
+        GlideApp.with(view.context)
+            .load(imageUrl)
+//            .placeholder(R.drawable.loading)
+            .error(R.drawable.ic_launcher_background)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    }
+
 }

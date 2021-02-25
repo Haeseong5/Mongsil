@@ -17,15 +17,20 @@ import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.receiver.AlarmReceiver
+import com.cashproject.mongsil.ui.viewmodel.FirebaseViewModel
 import com.cashproject.mongsil.util.PreferencesManager
+import com.google.firebase.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class LockerFragment : BaseFragment<FragmentLockerBinding>() {
+class LockerFragment : BaseFragment<FragmentLockerBinding, FirebaseViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_locker
+
+    override val viewModel: FirebaseViewModel
+        get() = FirebaseViewModel()
 
     private val lockerAdapter: LockerAdapter by lazy {
         LockerAdapter()
@@ -51,18 +56,18 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
 
         val fakeList = ArrayList<Saying>()
         fakeList.apply {
-            add(Saying(1,"https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg"))
-            add(Saying(2,"https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg"))
-            add(Saying(3,"https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg"))
-            add(Saying(4,"https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg"))
-            add(Saying(5,"https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg"))
+//            add(Saying("1","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg", Timestamp.now()))
+//            add(Saying("2","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
+//            add(Saying("3","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
+//            add(Saying("4","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
+//            add(Saying("5","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
 
         }
 
         lockerAdapter.setItems(fakeList)
 
         lockerAdapter.setOnItemClickListener {
-            activity?.showToast(it.id.toString())
+            activity?.showToast(it.docId.toString())
             findNavController().navigate(R.id.action_locker_to_saying,  bundleOf("saying" to it.image))
         }
     }

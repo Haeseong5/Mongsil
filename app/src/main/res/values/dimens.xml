@@ -6,5 +6,7 @@
     <dimen name="margin30">30dp</dimen>
 
     <dimen name="dimen26">26sp</dimen>
+    <dimen name="margin20">20dp</dimen>
+    <dimen name="dimen30">30sp</dimen>
 
 </resources>

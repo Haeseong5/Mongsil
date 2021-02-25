@@ -16,10 +16,12 @@ import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.R
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseFragment<T : ViewDataBinding> : Fragment(){
+abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment(){
     val TAG: String = this.javaClass.simpleName
 
     lateinit var binding: T
+
+    abstract val viewModel: R
 
     abstract val layoutResourceId: Int
 
