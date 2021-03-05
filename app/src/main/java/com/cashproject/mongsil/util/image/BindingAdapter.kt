@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.imagebind
+package com.cashproject.mongsil.util.image
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -18,20 +18,9 @@ object BindingAdapter {
     fun bindImage(view: ImageView, imageUrl: String?) {
         GlideApp.with(view.context)
             .load(imageUrl)
-            .fitCenter()
+            .centerCrop()
 //            .placeholder(R.drawable.loading)
-            .error(R.drawable.ic_launcher_background)
-            .into(view)
-    }
-
-    @JvmStatic
-    @BindingAdapter("bindImageRef")
-    fun bindImageRef(view: ImageView, imageUrl: StorageReference?) {
-        GlideApp.with(view.context)
-            .load(imageUrl)
-//            .placeholder(R.drawable.loading)
-            .error(R.drawable.ic_launcher_background)
-            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.ic_baseline_terrain_24)
             .into(view)
     }
 

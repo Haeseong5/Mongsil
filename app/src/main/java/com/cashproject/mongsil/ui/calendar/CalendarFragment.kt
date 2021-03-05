@@ -4,9 +4,13 @@ package com.cashproject.mongsil.ui.calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
@@ -30,7 +34,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
     }
 
     override fun initStartView() {
-        binding.lifecycleOwner = this
+//        binding.lifecycleOwner = this
 
         initDayRecyclerView()
 
@@ -39,6 +43,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observerData()
     }
 
@@ -52,11 +57,12 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
             setHasFixedSize(true)
         }
         binding.calendarRvDayList.adapter = dayAdapter
+        dayAdapter.setOnItemClickListener {
+            findNavController().navigate(R.id.action_pager_to_home,  bundleOf("image" to it.image, "docId" to it.docId))
+        }
     }
 
     private fun observerData(){
-//        Log.d("observe dATA", "it.toString()")
-
         viewModel.sayingData.observe(viewLifecycleOwner, Observer {
             dayAdapter.setItems(it as ArrayList<Saying>)
             Log.d("observe dATA", it.toString())

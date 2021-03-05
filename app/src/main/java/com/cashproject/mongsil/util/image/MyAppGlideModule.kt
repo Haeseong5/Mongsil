@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.imagebind
+package com.cashproject.mongsil.util.image
 
 import android.content.Context
 import com.bumptech.glide.Glide

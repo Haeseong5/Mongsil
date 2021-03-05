@@ -7,6 +7,7 @@ import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatDialog
 import androidx.databinding.DataBindingUtil
@@ -46,6 +47,13 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     fun isProgress(flag: Boolean) {
         if (flag) progressDialog.show() else progressDialog.dismiss()
+    }
+    fun setFullView(){
+        activity?.window?.apply {
+            setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
     }
 
     override fun onDestroy() {

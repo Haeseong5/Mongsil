@@ -5,13 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ItemDayBinding
-import com.cashproject.mongsil.databinding.ItemSayingBinding
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.imagebind.GlideApp
 import com.cashproject.mongsil.ui.locker.LockerAdapter
 
 class SayingAdapter(val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
@@ -64,7 +59,7 @@ class SayingAdapter(val sayingCase: SayingCase) : RecyclerView.Adapter<SuperView
         when (holder) {
             is ListViewHolder -> {
                 holder.bindView(items[position])
-                Log.d("bind", items[position].imageRef.toString())
+                Log.d("bind", items[position].image.toString())
             }
 
             is CalendarViewHolder -> {
@@ -79,12 +74,6 @@ class SayingAdapter(val sayingCase: SayingCase) : RecyclerView.Adapter<SuperView
         fun bindView(item: Saying) {
             binding.saying = item
 
-//            GlideApp.with(itemView.context)
-//                .load(item.imageRef)
-////            .placeholder(R.drawable.loading)
-//                .error(R.drawable.ic_launcher_background)
-//                .transition(DrawableTransitionOptions.withCrossFade())
-//                .into(binding.itemSayingImage)
             binding.root.setOnClickListener {
                 listener?.invoke(item) //익명함수 호출
             }

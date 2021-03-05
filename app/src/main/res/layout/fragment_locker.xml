@@ -9,8 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/purple_200"
-        app:navGraph="@navigation/nav_graph">
+        android:background="@color/purple_200">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/locker_toolbar"
             android:layout_width="match_parent"
