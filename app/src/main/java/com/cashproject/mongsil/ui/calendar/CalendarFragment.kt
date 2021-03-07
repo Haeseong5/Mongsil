@@ -1,15 +1,11 @@
 package com.cashproject.mongsil.ui.calendar
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
@@ -18,9 +14,7 @@ import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.calendar.day.SayingAdapter
 import com.cashproject.mongsil.ui.calendar.day.SayingCase
-import com.cashproject.mongsil.ui.viewmodel.FirebaseViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import com.cashproject.mongsil.viewmodel.FirebaseViewModel
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel>() {
 
@@ -33,8 +27,25 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
         SayingAdapter(SayingCase.LIST)
     }
 
+    var flag :Boolean = true
+
     override fun initStartView() {
 //        binding.lifecycleOwner = this
+
+        binding.floatingActionButton.setOnClickListener {
+            when(flag){
+                false -> {
+                    binding.calendarRvDayList.visibility = View.GONE
+                    binding.cvCalendar.visibility = View.VISIBLE
+                    flag = true
+                }
+                true -> {
+                    binding.calendarRvDayList.visibility = View.VISIBLE
+                    binding.cvCalendar.visibility = View.GONE
+                    flag = false
+                }
+            }
+        }
 
         initDayRecyclerView()
 
@@ -47,7 +58,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
         observerData()
     }
 
-    private fun initDayRecyclerView(){
+    private fun initDayRecyclerView() {
         binding.calendarRvDayList.apply {
             layoutManager = LinearLayoutManager(
                 context,
@@ -58,14 +69,18 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
         }
         binding.calendarRvDayList.adapter = dayAdapter
         dayAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_pager_to_home,  bundleOf("image" to it.image, "docId" to it.docId))
+            findNavController().navigate(
+                R.id.action_pager_to_home,
+                bundleOf("image" to it.image, "docId" to it.docId)
+            )
         }
     }
 
-    private fun observerData(){
+    private fun observerData() {
         viewModel.sayingData.observe(viewLifecycleOwner, Observer {
             dayAdapter.setItems(it as ArrayList<Saying>)
             Log.d("observe dATA", it.toString())
         })
     }
+
 }

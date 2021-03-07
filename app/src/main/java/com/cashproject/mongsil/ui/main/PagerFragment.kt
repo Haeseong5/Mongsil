@@ -8,7 +8,7 @@ import com.cashproject.mongsil.databinding.FragmentPagerBinding
 import com.cashproject.mongsil.ui.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.home.HomeFragment
 import com.cashproject.mongsil.ui.locker.LockerFragment
-import com.cashproject.mongsil.ui.viewmodel.FirebaseViewModel
+import com.cashproject.mongsil.viewmodel.FirebaseViewModel
 
 class PagerFragment : BaseFragment<FragmentPagerBinding, FirebaseViewModel>() {
 
@@ -22,6 +22,7 @@ class PagerFragment : BaseFragment<FragmentPagerBinding, FirebaseViewModel>() {
             CalendarFragment(),
             HomeFragment(),
             LockerFragment()
+
         )
 
         /**

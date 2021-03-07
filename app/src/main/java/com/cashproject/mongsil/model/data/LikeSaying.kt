@@ -8,7 +8,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
 import java.util.*
 
-data class Saying(
-    var docId: String? = null,
-    var image: String? = null,
-    var date: Date? = null)
+@Entity
+data class LikeSaying(
+    @PrimaryKey var docId: String,
+    @ColumnInfo var image: String)

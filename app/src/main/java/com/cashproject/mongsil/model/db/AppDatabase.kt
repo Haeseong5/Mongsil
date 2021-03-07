@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
 import com.google.firebase.firestore.auth.User
 
-@Database(entities = [Saying::class], version = 1)
+@Database(entities = arrayOf(LikeSaying::class), version = 4)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun lockerDao(): LockerDao
 

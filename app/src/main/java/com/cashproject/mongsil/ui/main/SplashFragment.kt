@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
-import com.cashproject.mongsil.ui.viewmodel.FirebaseViewModel
+import com.cashproject.mongsil.viewmodel.FirebaseViewModel
 
 class SplashFragment : BaseFragment<FragmentSplashBinding, FirebaseViewModel>() {
 

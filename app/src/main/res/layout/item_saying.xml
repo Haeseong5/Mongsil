@@ -5,12 +5,12 @@
     <data>
         <variable
             name="saying"
-            type="com.cashproject.mongsil.model.data.Saying" />
+            type="com.cashproject.mongsil.model.data.LikeSaying" />
     </data>
 
     <com.cashproject.mongsil.util.SquareLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/item_saying_image"
             android:layout_width="match_parent"

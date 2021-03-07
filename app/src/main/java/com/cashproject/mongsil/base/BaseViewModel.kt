@@ -4,7 +4,7 @@ import android.util.Log.d
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.subjects.BehaviorSubject
 
 open class BaseViewModel : ViewModel(){
 

@@ -2,43 +2,63 @@ package com.cashproject.mongsil.ui.locker
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.receiver.AlarmReceiver
-import com.cashproject.mongsil.ui.viewmodel.FirebaseViewModel
+import com.cashproject.mongsil.viewmodel.LockerViewModel
+import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.cashproject.mongsil.util.PreferencesManager
-import com.google.firebase.Timestamp
 import java.util.*
+import androidx.lifecycle.Observer
+
 import kotlin.collections.ArrayList
 
 
-class LockerFragment : BaseFragment<FragmentLockerBinding, FirebaseViewModel>() {
+class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_locker
 
-    override val viewModel: FirebaseViewModel
-        get() = FirebaseViewModel()
+    override val viewModel: LockerViewModel by viewModels{ viewModelFactory }
+
+    private lateinit var viewModelFactory: ViewModelFactory
 
     private val lockerAdapter: LockerAdapter by lazy {
         LockerAdapter()
     }
 
     override fun initStartView() {
+        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
+
         initToolbar()
         initRecyclerView()
+        viewModel.getAllLike()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.likeData.observe(viewLifecycleOwner, Observer {
+            lockerAdapter.update(it as ArrayList<LikeSaying>)
+        })
+
     }
 
     private fun initToolbar(){
@@ -54,21 +74,10 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, FirebaseViewModel>() 
             adapter = lockerAdapter
         }
 
-        val fakeList = ArrayList<Saying>()
-        fakeList.apply {
-//            add(Saying("1","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg", Timestamp.now()))
-//            add(Saying("2","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
-//            add(Saying("3","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
-//            add(Saying("4","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
-//            add(Saying("5","https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2D4p/image/e_TfCxHtkhP7owdumLgMnRyDiFM.jpeg",Timestamp.now()))
-
-        }
-
-        lockerAdapter.setItems(fakeList)
-
         lockerAdapter.setOnItemClickListener {
             activity?.showToast(it.docId.toString())
-            findNavController().navigate(R.id.action_locker_to_saying,  bundleOf("saying" to it.image))
+            findNavController().navigate(R.id.action_pager_to_home, bundleOf("image" to it.image, "docId" to it.docId))
+
         }
     }
 

@@ -16,6 +16,7 @@ import androidx.databinding.adapters.ProgressBarBindingAdapter
 import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.R
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment(){
     val TAG: String = this.javaClass.simpleName
@@ -61,4 +62,9 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         compositeDisposable.dispose()
         super.onDestroy()
     }
+
+    fun addDisposable(disposable: Disposable){
+        compositeDisposable.add(disposable)
+    }
+
 }

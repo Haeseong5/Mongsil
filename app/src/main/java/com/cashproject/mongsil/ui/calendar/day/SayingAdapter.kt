@@ -27,7 +27,7 @@ class SayingAdapter(val sayingCase: SayingCase) : RecyclerView.Adapter<SuperView
 
     fun update(newItemList: ArrayList<Saying>) {
         val diffResult =
-            DiffUtil.calculateDiff(LockerAdapter.ContentDiffUtil(items, newItemList), false)
+            DiffUtil.calculateDiff(SayingAdapter.ContentDiffUtil(items, newItemList), false)
         diffResult.dispatchUpdatesTo(this)
         items.clear()
         items.addAll(newItemList)

@@ -1,28 +1,28 @@
-package com.cashproject.mongsil.firebase
+package com.cashproject.mongsil.viewmodel
 
 import android.util.Log
+import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.model.data.Saying
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 
-object FirebaseManager {
-    private val TAG = this.javaClass.simpleName
+class FirebaseViewModel: BaseViewModel(){
 
-    private val COLLECTION = "Mongsil"
-    private val DATE = "date"
+    companion object{
+        private val COLLECTION = "Mongsil"
+        private val DATE = "date"
+    }
 
     private val _sayingData = MutableLiveData<List<Saying>>()
     val sayingData: LiveData<List<Saying>>
         get() = _sayingData
 
-    val storage by lazy {
-        FirebaseStorage.getInstance()
-    }
+
     val db by lazy {
         Firebase.firestore
     }
@@ -35,15 +35,20 @@ object FirebaseManager {
             .addOnSuccessListener { documents ->
                 val result = ArrayList<Saying>()
                 for (document in documents) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                    result.add( document.toObject<Saying>() )
+                    d(TAG, "${document.id} => ${document.data}")
+                    val saying = document.toObject<Saying>().apply {
+                        docId = document.id
+                    }
+                    d(TAG, saying.toString())
+                    result.add(saying)
                 }
                 _sayingData.postValue(result)
-
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
+
+
 
 }

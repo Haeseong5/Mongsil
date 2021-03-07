@@ -18,4 +18,11 @@
     <color name="day_select">#f5f5f5</color>
     <color name="colorYellow">#fdca42</color>
 
+    <!--Emoticon-->
+    <color name="emoticon_happy_text">#dcc75a</color>
+    <color name="emoticon_happy_background">#fff9da</color>
+
+    <color name="emoticon_enjoy_text">#db8fbd</color>
+    <color name="emoticon_enjoy_background">#ffecf7</color>
+
 </resources>

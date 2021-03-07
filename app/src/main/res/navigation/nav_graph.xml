@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_pager_to_home"
             app:destination="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_locker_to_home"
+            app:destination="@id/homeFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -56,10 +59,18 @@
         android:id="@+id/lockerFragment"
         android:name="com.cashproject.mongsil.ui.locker.LockerFragment"
         android:label="@string/locker"
+        app:popUpToInclusive="true"
+        app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_locker">
         <action
-            android:id="@+id/action_locker_to_saying"
+            android:id="@+id/action_locker_to_home"
             app:destination="@id/homeFragment"/>
+        <argument
+            android:name="docId"
+            app:argType="string"/>
+        <argument
+            android:name="image"
+            app:argType="string"/>
     </fragment>
 
 
