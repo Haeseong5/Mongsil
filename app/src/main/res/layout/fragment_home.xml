@@ -10,8 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/teal_200">
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/home_iv_background"
             android:layout_width="match_parent"
@@ -40,14 +39,21 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/home_et_comment"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingHorizontal="@dimen/margin8"
+                android:background="@drawable/comment_button_shape"
+                android:textColorHint="@color/grey_light"
+                android:textColor="@color/white"
+                android:textSize="14sp"
                 android:hint="오늘의 기분을 입력해주세요."
+                android:layout_marginHorizontal="8dp"
                 android:maxLines="1"/>
             <TextView
                 android:id="@+id/home_tv_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="확인"/>
         </LinearLayout>
 

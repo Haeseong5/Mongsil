@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.home
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
@@ -13,10 +14,12 @@ import com.cashproject.mongsil.databinding.FragmentHomeBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.emoticon.EmoticonBottomSheetFragment
 import com.cashproject.mongsil.viewmodel.LockerViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 
@@ -37,11 +40,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
             showBottomListDialog()
         }
 
+        binding.homeIvEmoticon.setOnClickListener {
+            showEmoticonBottomSheet()
+        }
+
         arguments?.let {
 //            binding.saying = Saying("1", it, Timestamp.now())
             mSaying = Saying(
                 docId = it.getString("docId"),
-                image = it.getString("image"))
+                image = it.getString("image")
+            )
             binding.saying = mSaying
         }
 
@@ -58,18 +66,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
         })
     }
 
+    private fun showEmoticonBottomSheet() {
+        val bottomSheetFragment = EmoticonBottomSheetFragment()
+        bottomSheetFragment.show(childFragmentManager, "approval")
+        bottomSheetFragment.setEmoticonBtnClickListener {
+
+        }
+    }
+
     private fun showBottomListDialog() {
         val bottomSheetFragment = HomeBottomSheetFragment()
         bottomSheetFragment.show(childFragmentManager, "approval")
         bottomSheetFragment.setLikeBtnOnClickListener {
             val saying = LikeSaying(docId = mSaying.docId!!, image = mSaying.image!!)
-            addDisposable(viewModel.insert(saying)                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+            addDisposable(
+                viewModel.insert(saying).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
 //                    update_user_button.isEnabled = true
-                    Log.d(TAG, "success insertion")
-                },
-                    { error -> Log.e(TAG, "Unable to update username", error) }))
+                        Log.d(TAG, "success insertion")
+                    },
+                        { error -> Log.e(TAG, "Unable to update username", error) })
+            )
         }
     }
 

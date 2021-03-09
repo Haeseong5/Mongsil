@@ -40,7 +40,6 @@ class LockerViewModel(private val localDataSource: LockerDao): BaseViewModel(){
             localDataSource.getAll()
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    d(TAG, it[0].toString())
                         _likeData.postValue(it)
                     },{
 

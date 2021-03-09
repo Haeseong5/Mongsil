@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.cashproject.mongsil"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -26,7 +26,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
         }
     }
     buildFeatures {
@@ -75,7 +74,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    //matrial calendarview
+//    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"

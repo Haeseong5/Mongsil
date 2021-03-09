@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.emoticon
 
 import android.util.Log
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -26,18 +27,23 @@ class EmoticonAdapter(private var items: ArrayList<Emoticon>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: EmoticonAdapter.ViewHolder, position: Int) {
         holder.bindView(items[position])
+        d("emoticon", items[position].toString())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemEmoticonBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
-    inner class ViewHolder(private val binding: ItemEmoticonBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemEmoticonBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(item: Emoticon) {
 
             binding.emoticon = item
+
+            binding.itemEmoticonIcon.setImageResource(item.icon)
+            binding.itemEmoticonBackground.setBackgroundColor(itemView.context.resources.getColor(item.background))
+            binding.itemEmoticonEmotion.setTextColor(itemView.context.resources.getColor(item.textColor))
+
 //
 //            binding.itemSayingImage.setOnClickListener {
 //                listener?.invoke(item) //익명함수 호출

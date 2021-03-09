@@ -1,9 +1,11 @@
 package com.cashproject.mongsil.ui.locker
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetTimePickerBinding
@@ -35,6 +37,7 @@ class DiaryListBottomSheetFragment: BottomSheetDialogFragment(){
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initTimePicker(){
         //db 에 저장된 알람 시간이 있으면, 해당 시간으로 time picker 표시
         binding.timePicker.apply {
@@ -46,6 +49,7 @@ class DiaryListBottomSheetFragment: BottomSheetDialogFragment(){
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setOnClickListener(){
         binding.bottomSheetTvCheck.setOnClickListener {
             listener?.invoke(binding.timePicker.hour, binding.timePicker.minute)

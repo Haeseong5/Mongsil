@@ -21,4 +21,7 @@
     <style name="TextViewStyle1">
         <item name="android:textSize">@dimen/dimen26</item>
     </style>
+    <style name="DatePickerStyle">
+        <item name="colorControlNormal">@color/colorYellow</item>
+    </style>
 </resources>

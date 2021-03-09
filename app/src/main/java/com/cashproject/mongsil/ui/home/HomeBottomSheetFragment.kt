@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.databinding.FragmentBottomSheetTimePickerBinding
-import com.cashproject.mongsil.databinding.FragmentHomeBottomSheetBinding
-import com.cashproject.mongsil.util.PreferencesManager
+import com.cashproject.mongsil.databinding.FragmentBottomSheetHomeBinding
+import com.cashproject.mongsil.databinding.FragmentHomeBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class HomeBottomSheetFragment: BottomSheetDialogFragment(){
-    lateinit var binding: FragmentHomeBottomSheetBinding
+    lateinit var binding: FragmentBottomSheetHomeBinding
 
     private var likeBtnListener: (() -> Unit)? = null
 
@@ -24,9 +23,9 @@ class HomeBottomSheetFragment: BottomSheetDialogFragment(){
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentHomeBottomSheetBinding>(
+        binding = DataBindingUtil.inflate<FragmentBottomSheetHomeBinding>(
                 inflater,
-                R.layout.fragment_home_bottom_sheet,
+                R.layout.fragment_bottom_sheet_home,
                 container,
                 false)
 

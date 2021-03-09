@@ -5,12 +5,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="200dp"
+        android:minHeight="200dp">
 
         <ImageView
             android:id="@+id/home_bottom_iv_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_calendar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/home_bottom_iv_lock"
@@ -19,8 +20,8 @@
 
         <ImageView
             android:id="@+id/home_bottom_iv_lock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_calendar"
             app:layout_constraintStart_toEndOf="@id/home_bottom_iv_share"
             app:layout_constraintEnd_toStartOf="@id/home_bottom_iv_save"
@@ -30,8 +31,8 @@
 
         <ImageView
             android:id="@+id/home_bottom_iv_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_calendar"
             app:layout_constraintStart_toEndOf="@id/home_bottom_iv_lock"
             app:layout_constraintTop_toTopOf="parent"

@@ -9,10 +9,10 @@
 
     <application
         android:name=".base.ApplicationClass"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:icon="@drawable/emoticon_01_happy"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/emoticon_01_happy"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mongsil">
         <activity android:name=".ui.MainActivity">
