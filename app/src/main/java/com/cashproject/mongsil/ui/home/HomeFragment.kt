@@ -1,20 +1,25 @@
 package com.cashproject.mongsil.ui.home
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentHomeBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.emoticon.EmoticonBottomSheetFragment
+import com.cashproject.mongsil.ui.locker.LockerAdapter
+import com.cashproject.mongsil.ui.main.CommentAdapter
 import com.cashproject.mongsil.viewmodel.LockerViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,8 +37,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 
     lateinit var mSaying: Saying
 
+    private val commentAdapter: CommentAdapter by lazy {
+        CommentAdapter()
+    }
+
     override fun initStartView() {
         setFullView()
+        initRecyclerView()
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
         binding.homeIvBackground.setOnClickListener {
@@ -42,6 +52,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 
         binding.homeIvEmoticon.setOnClickListener {
             showEmoticonBottomSheet()
+        }
+
+        binding.homeTvCheck.setOnClickListener {
+
         }
 
         arguments?.let {
@@ -55,6 +69,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 
         viewModel.getTodayData()
 
+    }
+
+    private fun initRecyclerView() {
+        binding.homeRvComment.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = commentAdapter
+        }
+
+        commentAdapter.setOnItemClickListener {
+//            activity?.showToast(it.docId.toString())
+//            findNavController().navigate(R.id.action_pager_to_home, bundleOf("image" to it.image, "docId" to it.docId))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

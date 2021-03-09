@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="comment"
+            type="com.cashproject.mongsil.model.data.Comment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin8"
+        android:background="@color/teal_200">
+        <ImageView
+            android:id="@+id/comment_iv_emoticon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin8"
+            tools:src="@drawable/emoticon_01_happy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/comment_tv_time"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+            android:id="@+id/comment_tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="오전 4시 20분"
+            android:layout_marginStart="@dimen/margin8"
+            android:textColor="@color/colorYellow"
+            app:layout_constraintTop_toTopOf="@id/comment_iv_emoticon"
+            app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"/>
+        <TextView
+            android:id="@+id/comment_tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            tools:text="오늘의 기분은 아주 좋다. 왜냐하면 ㅎㅎㅎ\n이기 때문이다dddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comment_tv_time"
+            app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
