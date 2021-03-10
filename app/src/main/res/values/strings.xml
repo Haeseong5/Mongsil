@@ -6,4 +6,6 @@
     <string name="locker">locker</string>
     <string name="calendar">calendar</string>
     <string name="saying">saying</string>
+
+    <string name="emoticon_title">오늘 기분은 어때요?</string>
 </resources>

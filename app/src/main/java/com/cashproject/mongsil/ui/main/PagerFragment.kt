@@ -6,7 +6,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentPagerBinding
 import com.cashproject.mongsil.ui.calendar.CalendarFragment
-import com.cashproject.mongsil.ui.home.HomeFragment
+import com.cashproject.mongsil.ui.saying.SayingFragment
 import com.cashproject.mongsil.ui.locker.LockerFragment
 import com.cashproject.mongsil.viewmodel.FirebaseViewModel
 
@@ -20,7 +20,7 @@ class PagerFragment : BaseFragment<FragmentPagerBinding, FirebaseViewModel>() {
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(
             CalendarFragment(),
-            HomeFragment(),
+            SayingFragment(),
             LockerFragment()
 
         )

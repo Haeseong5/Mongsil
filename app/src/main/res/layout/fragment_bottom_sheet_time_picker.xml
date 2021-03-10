@@ -8,7 +8,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/bottom_sheet_tv_check"
+            android:id="@+id/tv_time_picker_check"
             android:layout_width="0dp"
             app:layout_constraintHorizontal_weight="1"
             android:gravity="center"
@@ -18,16 +18,16 @@
             android:textStyle="bold"
             android:layout_marginEnd="@dimen/margin16"
             android:elevation="@dimen/margin8"
-            android:background="@drawable/datepicker_button_shape"
+            android:background="@drawable/round_button_shape"
             android:backgroundTint="@color/colorYellow"
             android:padding="@dimen/margin16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/time_picker"
-            app:layout_constraintStart_toEndOf="@+id/bottom_sheet_tv_cancel"
+            app:layout_constraintStart_toEndOf="@+id/tv_time_picker_cancel"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/bottom_sheet_tv_cancel"
+            android:id="@+id/tv_time_picker_cancel"
             android:layout_width="0dp"
             app:layout_constraintHorizontal_weight="1"
             android:layout_height="wrap_content"
@@ -36,11 +36,11 @@
             android:elevation="@dimen/margin8"
             android:textColor="#888888"
             android:gravity="center"
-            android:background="@drawable/datepicker_button_shape"
+            android:background="@drawable/round_button_shape"
             android:backgroundTint="@color/day_select"
             android:padding="@dimen/margin16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/bottom_sheet_tv_check"
+            app:layout_constraintEnd_toStartOf="@id/tv_time_picker_check"
             app:layout_constraintTop_toBottomOf="@+id/time_picker"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin8">
         <ImageView
-            android:id="@+id/item_day_image"
+            android:id="@+id/iv_day_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -28,7 +28,7 @@
             android:layout_marginBottom="@dimen/margin16"
             android:layout_marginStart="@dimen/margin20">
             <TextView
-                android:id="@+id/tv_day"
+                android:id="@+id/tv_day_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/dimen30"
@@ -38,24 +38,24 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="30"/>
             <TextView
-                android:id="@+id/tv_year"
+                android:id="@+id/tv_day_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/tv_day"
-                app:layout_constraintTop_toTopOf="@id/tv_day"
-                app:layout_constraintBottom_toTopOf="@id/tv_month"
+                app:layout_constraintStart_toEndOf="@id/tv_day_date"
+                app:layout_constraintTop_toTopOf="@id/tv_day_date"
+                app:layout_constraintBottom_toTopOf="@id/tv_day_month"
                 app:layout_constraintVertical_chainStyle="packed"
                 android:text="2021"/>
             <TextView
-                android:id="@+id/tv_month"
+                android:id="@+id/tv_day_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/tv_day"
-                app:layout_constraintStart_toEndOf="@id/tv_day"
-                app:layout_constraintTop_toBottomOf="@id/tv_year"
-                app:layout_constraintBottom_toBottomOf="@id/tv_day"
+                android:layout_toEndOf="@+id/tv_day_date"
+                app:layout_constraintStart_toEndOf="@id/tv_day_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_day_year"
+                app:layout_constraintBottom_toBottomOf="@id/tv_day_date"
                 android:text="October"
-                android:layout_below="@id/tv_year"/>
+                android:layout_below="@id/tv_day_year"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.cashproject.mongsil.util.SquareLayout>
