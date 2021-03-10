@@ -18,16 +18,17 @@ package com.cashproject.mongsil.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.cashproject.mongsil.model.db.CommentDao
 import com.cashproject.mongsil.model.db.LockerDao
 
 /**
  * Factory for ViewModels
  */
-class ViewModelFactory(private val dataSource: LockerDao) : ViewModelProvider.Factory {
+class ViewModelFactory(private val dataSource: LockerDao, private val commentDataSource: CommentDao) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LockerViewModel::class.java)) {
-            return LockerViewModel(dataSource) as T
+            return LockerViewModel(dataSource, commentDataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

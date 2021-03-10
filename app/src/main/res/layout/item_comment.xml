@@ -12,37 +12,44 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin8"
-        android:background="@color/teal_200">
+        android:layout_margin="@dimen/margin8"
+        >
         <ImageView
             android:id="@+id/comment_iv_emoticon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin8"
-            tools:src="@drawable/emoticon_01_happy"
+            android:src="@drawable/emoticon_01_happy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintVertical_bias="0"
             app:layout_constraintEnd_toStartOf="@+id/comment_tv_time"
             app:layout_constraintBottom_toBottomOf="parent"/>
         <TextView
             android:id="@+id/comment_tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="오전 4시 20분"
+            android:text="오전 4시 20분"
             android:layout_marginStart="@dimen/margin8"
             android:textColor="@color/colorYellow"
             app:layout_constraintTop_toTopOf="@id/comment_iv_emoticon"
-            app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"/>
+            app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"
+            app:layout_constraintBottom_toTopOf="@id/comment_tv_content"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TextView
             android:id="@+id/comment_tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            tools:text="오늘의 기분은 아주 좋다. 왜냐하면 ㅎㅎㅎ\n이기 때문이다dddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@{comment.content}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/comment_tv_time"
             app:layout_constraintTop_toBottomOf="@id/comment_tv_time"
-            app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"/>
+            tools:text="오늘의 기분은 아주 좋다. 왜냐하면 ㅎㅎㅎ\n이기 때문이다가나다라마다때문이다가나다라마다때문이다가나다라마다때문이다가나다라마다" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

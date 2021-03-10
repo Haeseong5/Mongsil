@@ -5,13 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ItemCommentBinding
-import com.cashproject.mongsil.databinding.ItemSayingBinding
 import com.cashproject.mongsil.model.data.Comment
-import com.cashproject.mongsil.model.data.LikeSaying
-import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.util.image.GlideApp
 
 class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
@@ -21,6 +16,11 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     fun setOnItemClickListener(listener: (item: Comment) -> Unit) {
         this.listener = listener
+    }
+
+    fun setItems(items: ArrayList<Comment>){
+        this.items = items
+        notifyDataSetChanged()
     }
 
     fun update(newItemList: List<Comment>) {

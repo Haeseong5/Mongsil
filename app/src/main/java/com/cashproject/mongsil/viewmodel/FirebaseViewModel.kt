@@ -5,11 +5,15 @@ import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
+import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.model.db.CommentDao
+import com.cashproject.mongsil.model.db.LockerDao
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import io.reactivex.schedulers.Schedulers
 
 class FirebaseViewModel: BaseViewModel(){
 
@@ -48,6 +52,7 @@ class FirebaseViewModel: BaseViewModel(){
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
+
 
 
 

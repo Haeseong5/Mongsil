@@ -45,6 +45,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
         val emoticons = ArrayList<Emoticon>()
 
         emoticons.add(Emoticon(
+            0,
             "행복",
             R.drawable.emoticon_01_happy,
             R.color.emoticon_happy_text,
@@ -52,6 +53,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
         ))
 
         emoticons.add(Emoticon(
+            1,
             "기쁨",
             R.drawable.emoticon_02_enjoy,
             R.color.emoticon_enjoy_text,
@@ -59,6 +61,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
         ))
 
         emoticons.add(Emoticon(
+            2,
             "기쁨",
             R.drawable.emoticon_02_enjoy,
             R.color.emoticon_enjoy_text,
@@ -66,6 +69,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
         ))
 
         emoticons.add(Emoticon(
+            3,
             "기쁨",
             R.drawable.emoticon_02_enjoy,
             R.color.emoticon_enjoy_text,
@@ -73,6 +77,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
         ))
 
         emoticons.add(Emoticon(
+            4,
             "기쁨",
             R.drawable.emoticon_02_enjoy,
             R.color.emoticon_enjoy_text,
@@ -81,18 +86,13 @@ class EmoticonBottomSheetFragment : DialogFragment() {
 
 
         emoticons.add(Emoticon(
+            5,
             "기쁨",
             R.drawable.emoticon_02_enjoy,
             R.color.emoticon_enjoy_text,
             R.color.emoticon_enjoy_background
         ))
 
-        emoticons.add(Emoticon(
-            "기쁨",
-            R.drawable.emoticon_02_enjoy,
-            R.color.emoticon_enjoy_text,
-            R.color.emoticon_enjoy_background
-        ))
 
         emoticonAdapter = EmoticonAdapter(
             emoticons

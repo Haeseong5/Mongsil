@@ -18,6 +18,7 @@ package com.cashproject.mongsil.di
 
 import android.content.Context
 import com.cashproject.mongsil.model.db.AppDatabase
+import com.cashproject.mongsil.model.db.CommentDao
 import com.cashproject.mongsil.model.db.LockerDao
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
@@ -27,13 +28,20 @@ import com.cashproject.mongsil.viewmodel.ViewModelFactory
  */
 object Injection {
 
-    fun provideLocalDataSource(context: Context): LockerDao {
+    private fun provideLocalDataSource(context: Context): LockerDao {
         val database = AppDatabase.getInstance(context)
         return database.lockerDao()
     }
 
+    private fun provideCommentDataSource(context: Context): CommentDao {
+        val database = AppDatabase.getInstance(context)
+        return database.commentDao()
+    }
+
     fun provideViewModelFactory(context: Context): ViewModelFactory {
         val dataSource = provideLocalDataSource(context)
-        return ViewModelFactory(dataSource)
+        val dataSource2 = provideCommentDataSource(context)
+
+        return ViewModelFactory(dataSource, dataSource2)
     }
 }

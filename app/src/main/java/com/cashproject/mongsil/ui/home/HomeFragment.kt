@@ -5,20 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentHomeBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.emoticon.EmoticonBottomSheetFragment
-import com.cashproject.mongsil.ui.locker.LockerAdapter
 import com.cashproject.mongsil.ui.main.CommentAdapter
 import com.cashproject.mongsil.viewmodel.LockerViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
@@ -42,10 +40,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
     }
 
     override fun initStartView() {
-        setFullView()
-        initRecyclerView()
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
+        initRecyclerView()
+        initSaying()
+
+
+        //button click listener
         binding.homeIvBackground.setOnClickListener {
             showBottomListDialog()
         }
@@ -54,21 +55,58 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
             showEmoticonBottomSheet()
         }
 
-        binding.homeTvCheck.setOnClickListener {
+        binding.homeTvCommentBtn.setOnClickListener {
+            if (binding.homeEtComment.text.isNullOrBlank()){
+                activity?.showToast("일기를 입력해주세요.")
+            }else{
+                viewModel.insertComment(
+                    Comment(
+                        docId = mSaying.docId!!,
+                        content = binding.homeEtComment.text.toString(),
+                        emotion = 1
+                    )
 
+                )
+                binding.homeEtComment.text?.clear()
+            }
         }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.commentData.observe(viewLifecycleOwner, Observer {
+//            commentAdapter.update(it)
+            commentAdapter.setItems(it as ArrayList<Comment>)
+            d("Comment", it.size.toString())
+        })
+
+        //댓글 삽입/삭제 결과 관찰
+        viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
+            if (it){
+                viewModel.getComments(mSaying.docId!!)
+            }
+        })
+    }
+
+    private fun initSaying(){
+        //보관함 or 리스트에서 넘어왔을 경우
         arguments?.let {
-//            binding.saying = Saying("1", it, Timestamp.now())
             mSaying = Saying(
                 docId = it.getString("docId"),
                 image = it.getString("image")
             )
             binding.saying = mSaying
+            viewModel.getComments(mSaying.docId!!)
         }
 
         viewModel.getTodayData()
+        viewModel.todayData.observe(viewLifecycleOwner, Observer {
+            binding.saying = it
+            mSaying = it
+            viewModel.getComments(mSaying.docId!!)
 
+        })
     }
 
     private fun initRecyclerView() {
@@ -82,15 +120,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 //            activity?.showToast(it.docId.toString())
 //            findNavController().navigate(R.id.action_pager_to_home, bundleOf("image" to it.image, "docId" to it.docId))
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.todayData.observe(viewLifecycleOwner, Observer {
-            binding.saying = it
-            mSaying = it
-            d("today", it.toString())
-        })
     }
 
     private fun showEmoticonBottomSheet() {
