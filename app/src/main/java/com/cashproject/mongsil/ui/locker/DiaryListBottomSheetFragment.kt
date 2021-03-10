@@ -51,10 +51,10 @@ class DiaryListBottomSheetFragment: BottomSheetDialogFragment(){
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setOnClickListener(){
-        binding.bottomSheetTvCheck.setOnClickListener {
+        binding.tvTimePickerCheck.setOnClickListener {
             listener?.invoke(binding.timePicker.hour, binding.timePicker.minute)
         }
-        binding.bottomSheetTvCancel.setOnClickListener {
+        binding.tvTimePickerCancel.setOnClickListener {
             dismiss()
         }
     }

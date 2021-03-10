@@ -1,7 +1,5 @@
 package com.cashproject.mongsil.ui.calendar
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,16 +35,16 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
     override fun initStartView() {
 //        binding.lifecycleOwner = this
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.fabCalendarFloatingActionButton.setOnClickListener {
             when(flag){
                 false -> {
-                    binding.calendarRvDayList.visibility = View.GONE
-                    binding.calendarView.visibility = View.VISIBLE
+                    binding.rvCalendarDayList.visibility = View.GONE
+                    binding.cvCalendarView.visibility = View.VISIBLE
                     flag = true
                 }
                 true -> {
-                    binding.calendarRvDayList.visibility = View.VISIBLE
-                    binding.calendarView.visibility = View.GONE
+                    binding.rvCalendarDayList.visibility = View.VISIBLE
+                    binding.cvCalendarView.visibility = View.GONE
                     flag = false
                 }
             }
@@ -55,25 +53,25 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
         initDayRecyclerView()
 
         setIconToCalendar()
-        viewModel.getData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getData()
 
         observerData()
     }
 
     private fun initDayRecyclerView() {
-        binding.calendarRvDayList.apply {
+        binding.rvCalendarDayList.apply {
             layoutManager = LinearLayoutManager(
                 context,
                 LinearLayoutManager.VERTICAL,
                 false
             )
             setHasFixedSize(true)
+            adapter = dayAdapter
         }
-        binding.calendarRvDayList.adapter = dayAdapter
         dayAdapter.setOnItemClickListener {
             findNavController().navigate(
                 R.id.action_pager_to_home,
@@ -100,7 +98,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel
         //or if you want to specify event label color
 //        events.add(EventDay(calendar, R.drawable.sample_icon, Color.parseColor("#228B22")))
 
-        binding.calendarView.setEvents(events)
+        binding.cvCalendarView.setEvents(events)
     }
 
 

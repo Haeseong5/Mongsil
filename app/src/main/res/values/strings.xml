@@ -4,6 +4,8 @@
     <string name="check">확인</string>
     <string name="cancel">취소</string>
     <string name="locker">locker</string>
+    <string name="locker_title">보관함</string>
+
     <string name="calendar">calendar</string>
     <string name="saying">saying</string>
 

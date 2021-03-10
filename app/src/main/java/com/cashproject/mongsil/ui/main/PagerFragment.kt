@@ -22,7 +22,6 @@ class PagerFragment : BaseFragment<FragmentPagerBinding, FirebaseViewModel>() {
             CalendarFragment(),
             SayingFragment(),
             LockerFragment()
-
         )
 
         /**
@@ -33,8 +32,9 @@ class PagerFragment : BaseFragment<FragmentPagerBinding, FirebaseViewModel>() {
             requireActivity().supportFragmentManager,
             lifecycle
         )
-
+        binding.viewPager.offscreenPageLimit = fragments.size
         binding.viewPager.adapter = screenSlidePagerAdapter
+
     }
 
 }

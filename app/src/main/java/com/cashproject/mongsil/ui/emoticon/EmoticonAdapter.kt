@@ -1,19 +1,11 @@
 package com.cashproject.mongsil.ui.emoticon
 
-import android.util.Log
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ItemEmoticonBinding
-import com.cashproject.mongsil.databinding.ItemSayingBinding
 import com.cashproject.mongsil.model.data.Emoticon
-import com.cashproject.mongsil.model.data.LikeSaying
-import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.locker.LockerAdapter
-import com.cashproject.mongsil.util.image.GlideApp
 
 class EmoticonAdapter(private var items: ArrayList<Emoticon>) : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
 
@@ -40,9 +32,9 @@ class EmoticonAdapter(private var items: ArrayList<Emoticon>) : RecyclerView.Ada
 
             binding.emoticon = item
 
-            binding.itemEmoticonIcon.setImageResource(item.icon)
-            binding.itemEmoticonBackground.setBackgroundColor(itemView.context.resources.getColor(item.background))
-            binding.itemEmoticonEmotion.setTextColor(itemView.context.resources.getColor(item.textColor))
+            binding.ivEmoticonIcon.setImageResource(item.icon)
+            binding.ivEmoticonBackground.setBackgroundColor(itemView.context.resources.getColor(item.background))
+            binding.tvEmoticonEmotion.setTextColor(itemView.context.resources.getColor(item.textColor))
 
 //
 //            binding.itemSayingImage.setOnClickListener {

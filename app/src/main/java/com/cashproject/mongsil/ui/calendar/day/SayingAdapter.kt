@@ -9,7 +9,7 @@ import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.locker.LockerAdapter
 
-class SayingAdapter(val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
+class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
 
     private var items: ArrayList<Saying> = ArrayList<Saying>()
 

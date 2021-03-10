@@ -45,6 +45,12 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         LockerAdapter()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //setHasOptionsMenu(true)는 프래그먼트가 메뉴 관련 콜백을 수신하려 한다고 시스템에 알립니다.
+        setHasOptionsMenu(true)
+    }
+
     override fun initStartView() {
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
@@ -62,13 +68,14 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     }
 
     private fun initToolbar(){
-        (activity as AppCompatActivity).setSupportActionBar(binding.lockerToolbar)
-        //setHasOptionsMenu(true)는 프래그먼트가 메뉴 관련 콜백을 수신하려 한다고 시스템에 알립니다.
-        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
+
+        (activity as AppCompatActivity).actionBar?.title = "보관함"
+
     }
 
     private fun initRecyclerView(){
-        binding.lockerRecyclerView.apply {
+        binding.rvLockerList.apply {
             layoutManager = GridLayoutManager(context, 3)
             setHasFixedSize(true)
             adapter = lockerAdapter

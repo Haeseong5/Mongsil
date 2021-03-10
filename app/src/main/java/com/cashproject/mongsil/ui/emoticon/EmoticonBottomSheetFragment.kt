@@ -8,11 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.databinding.FragmentBottomSheetEmoticonBinding
+import com.cashproject.mongsil.databinding.DialogEmoticonBinding
 import com.cashproject.mongsil.model.data.Emoticon
 
 class EmoticonBottomSheetFragment : DialogFragment() {
-    lateinit var binding: FragmentBottomSheetEmoticonBinding
+    lateinit var binding: DialogEmoticonBinding
 
     private var btnListener: (() -> Unit)? = null
 
@@ -32,7 +32,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentBottomSheetEmoticonBinding>(
+        binding = DataBindingUtil.inflate<DialogEmoticonBinding>(
             inflater,
             R.layout.dialog_emoticon,
             container,
@@ -95,7 +95,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
             emoticons
         )
 
-        binding.emoticonRecyclerView.apply {
+        binding.rvEmoticonList.apply {
             layoutManager = GridLayoutManager(context, 3)
             setHasFixedSize(true)
             adapter = emoticonAdapter

@@ -5,11 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.cashproject.mongsil.R
-import com.cashproject.mongsil.databinding.ItemSayingBinding
+import com.cashproject.mongsil.databinding.ItemLockerBinding
 import com.cashproject.mongsil.model.data.LikeSaying
-import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.util.image.GlideApp
 
 class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
@@ -36,20 +33,14 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
-     = ViewHolder(ItemSayingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+     = ViewHolder(ItemLockerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
-    inner class ViewHolder(private val binding: ItemSayingBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(private val binding: ItemLockerBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bindView(item: LikeSaying){
             binding.saying = item
-            GlideApp.with(itemView.context)
-                .load(item.image)
-                .centerCrop()
-//            .placeholder(R.drawable.loading)
-                .error(R.drawable.ic_baseline_terrain_24)
-                .into(binding.itemSayingImage)
-            binding.itemSayingImage.setOnClickListener{
+            binding.ivLockerImage.setOnClickListener{
                 listener?.invoke(item) //익명함수 호출
             }
         }

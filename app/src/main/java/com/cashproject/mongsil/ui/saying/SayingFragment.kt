@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
-import com.cashproject.mongsil.databinding.FragmentHomeBinding
+import com.cashproject.mongsil.databinding.FragmentSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
@@ -24,7 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-class SayingFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
+class SayingFragment : BaseFragment<FragmentSayingBinding, LockerViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_saying
@@ -39,6 +39,11 @@ class SayingFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
         CommentAdapter()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFullView()
+    }
+
     override fun initStartView() {
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
@@ -47,27 +52,27 @@ class SayingFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 
 
         //button click listener
-        binding.homeIvBackground.setOnClickListener {
+        binding.ivSayingBackground.setOnClickListener {
             showBottomListDialog()
         }
 
-        binding.homeIvEmoticon.setOnClickListener {
+        binding.ivSayingEmoticon.setOnClickListener {
             showEmoticonBottomSheet()
         }
 
-        binding.homeTvCommentBtn.setOnClickListener {
-            if (binding.homeEtComment.text.isNullOrBlank()){
+        binding.tvSayingCommentBtn.setOnClickListener {
+            if (binding.etSayingCommentInput.text.isNullOrBlank()){
                 activity?.showToast("일기를 입력해주세요.")
             }else{
                 viewModel.insertComment(
                     Comment(
                         docId = mSaying.docId!!,
-                        content = binding.homeEtComment.text.toString(),
+                        content = binding.etSayingCommentInput.text.toString(),
                         emotion = 1
                     )
 
                 )
-                binding.homeEtComment.text?.clear()
+                binding.etSayingCommentInput.text?.clear()
             }
         }
     }
@@ -110,7 +115,7 @@ class SayingFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
     }
 
     private fun initRecyclerView() {
-        binding.homeRvComment.apply {
+        binding.rvSayingCommentList.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = commentAdapter

@@ -11,7 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
  * Fragment를 사용해서 ViewPager2를 구현할 때는 FragementStateAdapter 사용
  */
 class ScreenSlidePagerAdapter(
-    val fragments: Array<Fragment>,
+    private val fragments: Array<Fragment>,
     fa: FragmentManager,
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fa, lifecycle) {

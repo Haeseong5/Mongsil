@@ -2,6 +2,7 @@ package com.cashproject.mongsil.base
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log.d
 import android.view.LayoutInflater
@@ -50,11 +51,19 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         if (flag) progressDialog.show() else progressDialog.dismiss()
     }
     fun setFullView(){
-        activity?.window?.apply {
-            setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+//        requireActivity().window.apply {
+//            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//
+//            setFlags(
+//
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+//        }
+        requireActivity().window.apply {
+            this.statusBarColor = Color.TRANSPARENT
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
+
     }
 
     override fun onDestroy() {

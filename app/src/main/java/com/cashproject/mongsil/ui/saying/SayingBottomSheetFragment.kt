@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.databinding.FragmentBottomSheetHomeBinding
+import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SayingBottomSheetFragment: BottomSheetDialogFragment(){
-    lateinit var binding: FragmentBottomSheetHomeBinding
+    lateinit var binding: FragmentBottomSheetSayingBinding
 
     private var likeBtnListener: (() -> Unit)? = null
 
@@ -22,7 +22,7 @@ class SayingBottomSheetFragment: BottomSheetDialogFragment(){
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentBottomSheetHomeBinding>(
+        binding = DataBindingUtil.inflate<FragmentBottomSheetSayingBinding>(
                 inflater,
                 R.layout.fragment_bottom_sheet_saying,
                 container,
@@ -40,7 +40,7 @@ class SayingBottomSheetFragment: BottomSheetDialogFragment(){
     }
 
     private fun setOnClickListener(){
-        binding.homeBottomIvLock.setOnClickListener {
+        binding.ivSayingLock.setOnClickListener {
             likeBtnListener?.invoke()
         }
     }
