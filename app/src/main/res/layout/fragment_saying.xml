@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,15 +8,73 @@
             type="com.cashproject.mongsil.model.data.Saying" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
-            android:id="@+id/item_saying_image"
+            android:id="@+id/iv_saying_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F8AF98"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
-            bindImage="@{saying.image}"/>
-    </LinearLayout>
+            bindImage="@{saying.image}"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/ll_saying_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/gradient_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_saying_comment_list"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scrollbars="none" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/iv_saying_emoticon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/emoticon_01_happy"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_saying_comment_input"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="@dimen/margin8"
+                    android:background="@drawable/comment_button_shape"
+                    android:textColorHint="@color/grey_light"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:hint="오늘의 기분을 입력해주세요."
+                    android:layout_marginStart="8dp"
+                    android:maxLines="1"/>
+                <TextView
+                    android:id="@+id/tv_saying_comment_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/margin8"
+                    android:textColor="@color/white"
+                    android:text="확인"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

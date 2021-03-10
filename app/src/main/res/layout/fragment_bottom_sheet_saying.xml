@@ -9,32 +9,32 @@
         android:minHeight="200dp">
 
         <ImageView
-            android:id="@+id/home_bottom_iv_share"
+            android:id="@+id/iv_saying_share"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_calendar"
+            android:src="@drawable/ic_launcher_background"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/home_bottom_iv_lock"
+            app:layout_constraintEnd_toStartOf="@id/iv_saying_lock"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
-            android:id="@+id/home_bottom_iv_lock"
+            android:id="@+id/iv_saying_lock"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_calendar"
-            app:layout_constraintStart_toEndOf="@id/home_bottom_iv_share"
-            app:layout_constraintEnd_toStartOf="@id/home_bottom_iv_save"
+            app:layout_constraintStart_toEndOf="@id/iv_saying_share"
+            app:layout_constraintEnd_toStartOf="@id/iv_saying_save"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
-            android:id="@+id/home_bottom_iv_save"
+            android:id="@+id/iv_saying_save"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_calendar"
-            app:layout_constraintStart_toEndOf="@id/home_bottom_iv_lock"
+            android:src="@drawable/ic_baseline_terrain_24"
+            app:layout_constraintStart_toEndOf="@id/iv_saying_lock"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

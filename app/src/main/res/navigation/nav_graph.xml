@@ -14,10 +14,10 @@
         tools:layout="@layout/fragment_pager">
         <action
             android:id="@+id/action_pager_to_home"
-            app:destination="@id/homeFragment"/>
+            app:destination="@id/sayingFragment"/>
         <action
-            android:id="@+id/action_locker_to_home"
-            app:destination="@id/homeFragment"/>
+            android:id="@+id/action_locker_to_saying"
+            app:destination="@id/sayingFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -33,7 +33,7 @@
             tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendar_to_home"
-            app:destination="@id/homeFragment"/>
+            app:destination="@id/sayingFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -43,10 +43,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.cashproject.mongsil.ui.home.HomeFragment"
+        android:id="@+id/sayingFragment"
+        android:name="com.cashproject.mongsil.ui.saying.SayingFragment"
         android:label="@string/saying"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_saying">
         <action
             android:id="@+id/action_home_to_calendar"
             app:destination="@id/calendarFragment"/>
@@ -60,11 +60,11 @@
         android:name="com.cashproject.mongsil.ui.locker.LockerFragment"
         android:label="@string/locker"
         app:popUpToInclusive="true"
-        app:popUpTo="@id/homeFragment"
+        app:popUpTo="@id/sayingFragment"
         tools:layout="@layout/fragment_locker">
         <action
-            android:id="@+id/action_locker_to_home"
-            app:destination="@id/homeFragment"/>
+            android:id="@+id/action_locker_to_saying"
+            app:destination="@id/sayingFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>

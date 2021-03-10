@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.home
+package com.cashproject.mongsil.ui.saying
 
 import android.content.Context
 import android.os.Bundle
@@ -24,10 +24,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
+class SayingFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_home
+        get() = R.layout.fragment_saying
 
     override val viewModel: LockerViewModel by viewModels{ viewModelFactory }
 
@@ -131,7 +131,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, LockerViewModel>() {
     }
 
     private fun showBottomListDialog() {
-        val bottomSheetFragment = HomeBottomSheetFragment()
+        val bottomSheetFragment = SayingBottomSheetFragment()
         bottomSheetFragment.show(childFragmentManager, "approval")
         bottomSheetFragment.setLikeBtnOnClickListener {
             val saying = LikeSaying(docId = mSaying.docId!!, image = mSaying.image!!)

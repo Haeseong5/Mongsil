@@ -1,18 +1,15 @@
 package com.cashproject.mongsil.ui.emoticon
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetEmoticonBinding
 import com.cashproject.mongsil.model.data.Emoticon
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class EmoticonBottomSheetFragment : DialogFragment() {
     lateinit var binding: FragmentBottomSheetEmoticonBinding
@@ -37,7 +34,7 @@ class EmoticonBottomSheetFragment : DialogFragment() {
     ): View? {
         binding = DataBindingUtil.inflate<FragmentBottomSheetEmoticonBinding>(
             inflater,
-            R.layout.fragment_bottom_sheet_emoticon,
+            R.layout.dialog_emoticon,
             container,
             false
         )

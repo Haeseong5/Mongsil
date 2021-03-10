@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.home
+package com.cashproject.mongsil.ui.saying
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetHomeBinding
-import com.cashproject.mongsil.databinding.FragmentHomeBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class HomeBottomSheetFragment: BottomSheetDialogFragment(){
+class SayingBottomSheetFragment: BottomSheetDialogFragment(){
     lateinit var binding: FragmentBottomSheetHomeBinding
 
     private var likeBtnListener: (() -> Unit)? = null
@@ -25,7 +24,7 @@ class HomeBottomSheetFragment: BottomSheetDialogFragment(){
     ): View? {
         binding = DataBindingUtil.inflate<FragmentBottomSheetHomeBinding>(
                 inflater,
-                R.layout.fragment_bottom_sheet_home,
+                R.layout.fragment_bottom_sheet_saying,
                 container,
                 false)
 
