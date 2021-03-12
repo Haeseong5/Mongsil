@@ -5,17 +5,17 @@ import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentPagerBinding
-import com.cashproject.mongsil.ui.calendar.CalendarFragment
-import com.cashproject.mongsil.ui.saying.SayingFragment
-import com.cashproject.mongsil.ui.locker.LockerFragment
-import com.cashproject.mongsil.viewmodel.FirebaseViewModel
+import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
+import com.cashproject.mongsil.ui.pages.saying.SayingFragment
+import com.cashproject.mongsil.ui.pages.locker.LockerFragment
+import com.cashproject.mongsil.viewmodel.CalendarViewModel
 
-class PagerFragment : BaseFragment<FragmentPagerBinding, FirebaseViewModel>() {
+class PagerFragment : BaseFragment<FragmentPagerBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_pager
 
-    override val viewModel: FirebaseViewModel by viewModels()
+    override val viewModel: CalendarViewModel by viewModels()
 
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(

@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.locker
+package com.cashproject.mongsil.ui.pages.locker
 
 import android.os.Build
 import android.os.Bundle

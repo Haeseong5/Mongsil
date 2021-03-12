@@ -28,7 +28,7 @@
 
     <fragment
             android:id="@+id/calendarFragment"
-            android:name="com.cashproject.mongsil.ui.calendar.CalendarFragment"
+            android:name="com.cashproject.mongsil.ui.pages.calendar.CalendarFragment"
             android:label="@string/calendar"
             tools:layout="@layout/fragment_calendar">
         <action
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/sayingFragment"
-        android:name="com.cashproject.mongsil.ui.saying.SayingFragment"
+        android:name="com.cashproject.mongsil.ui.pages.saying.SayingFragment"
         android:label="@string/saying"
         tools:layout="@layout/fragment_saying">
         <action
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/lockerFragment"
-        android:name="com.cashproject.mongsil.ui.locker.LockerFragment"
+        android:name="com.cashproject.mongsil.ui.pages.locker.LockerFragment"
         android:label="@string/locker"
         app:popUpToInclusive="true"
         app:popUpTo="@id/sayingFragment"

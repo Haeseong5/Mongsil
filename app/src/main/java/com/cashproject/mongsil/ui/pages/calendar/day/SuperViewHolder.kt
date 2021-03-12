@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.calendar.day
+package com.cashproject.mongsil.ui.pages.calendar.day
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

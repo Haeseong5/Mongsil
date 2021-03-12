@@ -4,23 +4,16 @@ import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
+import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
-import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.model.db.CommentDao
-import com.cashproject.mongsil.model.db.LockerDao
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import io.reactivex.schedulers.Schedulers
 
-class FirebaseViewModel: BaseViewModel(){
-
-    companion object{
-        private val COLLECTION = "Mongsil"
-        private val DATE = "date"
-    }
+class CalendarViewModel: BaseViewModel(){
 
     private val _sayingData = MutableLiveData<List<Saying>>()
     val sayingData: LiveData<List<Saying>>
@@ -52,8 +45,4 @@ class FirebaseViewModel: BaseViewModel(){
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
-
-
-
-
 }

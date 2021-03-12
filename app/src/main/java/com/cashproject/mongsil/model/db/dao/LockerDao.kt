@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model.db
+package com.cashproject.mongsil.model.db.dao
 
 import androidx.room.*
 import com.cashproject.mongsil.model.data.LikeSaying

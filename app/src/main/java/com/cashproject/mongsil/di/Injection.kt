@@ -18,8 +18,9 @@ package com.cashproject.mongsil.di
 
 import android.content.Context
 import com.cashproject.mongsil.model.db.AppDatabase
-import com.cashproject.mongsil.model.db.CommentDao
-import com.cashproject.mongsil.model.db.LockerDao
+import com.cashproject.mongsil.model.db.dao.CommentDao
+import com.cashproject.mongsil.model.db.dao.LockerDao
+import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 
@@ -39,9 +40,10 @@ object Injection {
     }
 
     fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val dataSource = provideLocalDataSource(context)
-        val dataSource2 = provideCommentDataSource(context)
+        val lockerDataSource = provideLocalDataSource(context)
+        val commentDataSource = provideCommentDataSource(context)
 
-        return ViewModelFactory(dataSource, dataSource2)
+        val localDataSource = LocalDataSource(commentDataSource, lockerDataSource)
+        return ViewModelFactory(localDataSource)
     }
 }

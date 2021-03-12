@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.LikeSaying
-import com.cashproject.mongsil.model.data.Saying
-import com.google.firebase.firestore.auth.User
+import com.cashproject.mongsil.model.db.dao.CommentDao
+import com.cashproject.mongsil.model.db.dao.LockerDao
 
 @Database(entities = arrayOf(LikeSaying::class, Comment::class), version = 6)
 abstract class AppDatabase : RoomDatabase() {
