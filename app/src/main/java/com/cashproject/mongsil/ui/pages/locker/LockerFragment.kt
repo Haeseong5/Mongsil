@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.locker
+package com.cashproject.mongsil.ui.pages.locker
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.saying
+package com.cashproject.mongsil.ui.pages.saying
 
 import android.content.Context
 import android.os.Bundle
@@ -17,19 +17,18 @@ import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.emoticon.EmoticonBottomSheetFragment
-import com.cashproject.mongsil.ui.main.CommentAdapter
-import com.cashproject.mongsil.viewmodel.LockerViewModel
+import com.cashproject.mongsil.viewmodel.SayingViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-class SayingFragment : BaseFragment<FragmentSayingBinding, LockerViewModel>() {
+class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_saying
 
-    override val viewModel: LockerViewModel by viewModels{ viewModelFactory }
+    override val viewModel: SayingViewModel by viewModels{ viewModelFactory }
 
     private lateinit var viewModelFactory: ViewModelFactory
 
@@ -141,7 +140,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, LockerViewModel>() {
         bottomSheetFragment.setLikeBtnOnClickListener {
             val saying = LikeSaying(docId = mSaying.docId!!, image = mSaying.image!!)
             addDisposable(
-                viewModel.insert(saying).subscribeOn(Schedulers.io())
+                viewModel.like(saying).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
 //                    update_user_button.isEnabled = true

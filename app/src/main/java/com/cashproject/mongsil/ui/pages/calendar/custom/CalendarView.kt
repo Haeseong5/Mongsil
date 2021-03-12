@@ -1,13 +1,11 @@
-package com.cashproject.mongsil.ui.calendar.custom
+package com.cashproject.mongsil.ui.pages.calendar.custom
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ViewCalendarTopLayoutBinding
 import com.cashproject.mongsil.util.CalendarUtil.convertCalendarToString

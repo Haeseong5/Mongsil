@@ -6,14 +6,14 @@ import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
-import com.cashproject.mongsil.viewmodel.FirebaseViewModel
+import com.cashproject.mongsil.viewmodel.CalendarViewModel
 
-class SplashFragment : BaseFragment<FragmentSplashBinding, FirebaseViewModel>() {
+class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_splash
 
-    override val viewModel: FirebaseViewModel by viewModels()
+    override val viewModel: CalendarViewModel by viewModels()
     override fun initStartView() {
 
     }

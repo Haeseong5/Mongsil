@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.saying
+package com.cashproject.mongsil.ui.pages.saying
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.calendar.day
+package com.cashproject.mongsil.ui.pages.calendar.day
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.locker.LockerAdapter
 
 class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
 

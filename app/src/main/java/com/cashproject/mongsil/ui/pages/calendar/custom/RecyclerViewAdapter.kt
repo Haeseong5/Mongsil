@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.calendar.custom
+package com.cashproject.mongsil.ui.pages.calendar.custom
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

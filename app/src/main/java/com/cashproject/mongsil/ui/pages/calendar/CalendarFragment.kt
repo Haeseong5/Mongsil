@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.calendar
+package com.cashproject.mongsil.ui.pages.calendar
 
 import android.os.Bundle
 import android.util.Log
@@ -13,18 +13,18 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.calendar.day.SayingAdapter
-import com.cashproject.mongsil.ui.calendar.day.SayingCase
-import com.cashproject.mongsil.viewmodel.FirebaseViewModel
+import com.cashproject.mongsil.ui.pages.calendar.day.SayingAdapter
+import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
+import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalendarFragment : BaseFragment<FragmentCalendarBinding, FirebaseViewModel>() {
+class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_calendar
 
-    override val viewModel: FirebaseViewModel by viewModels()
+    override val viewModel: CalendarViewModel by viewModels()
 
     private val dayAdapter by lazy {
         SayingAdapter(SayingCase.LIST)

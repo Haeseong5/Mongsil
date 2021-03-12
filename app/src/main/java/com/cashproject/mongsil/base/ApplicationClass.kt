@@ -8,6 +8,8 @@ class ApplicationClass : Application(){
 
     companion object{
         lateinit var prefs: SharedPreferences
+        const val COLLECTION = "Mongsil"
+        const val DATE = "date"
     }
 
     override fun onCreate() {
