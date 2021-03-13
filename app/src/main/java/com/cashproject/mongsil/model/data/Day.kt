@@ -4,5 +4,5 @@ import java.util.*
 
 data class Day (
     var calendar: Calendar,
-    var reviews : List<Comment>
+    var comments : List<Comment>
 )

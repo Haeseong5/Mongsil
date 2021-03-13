@@ -48,6 +48,7 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
                     binding.rvCalendarDayList.visibility = View.GONE
                     binding.customCalendarView.visibility = View.VISIBLE
                     binding.fabCalendarFloatingActionButton.setImageResource(R.drawable.ic_list)
+                    viewModel.getAllComments()
                     flag = true
                 }
                 true -> {
@@ -98,13 +99,14 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         })
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             binding.customCalendarView.notifyDataChanged(it)
-            progressDialog.dismiss()
+            Log.d(TAG, it.toString())
         })
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.getAllComments()
+        Log.d(TAG, "onResume")
 
     }
 }

@@ -71,15 +71,10 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         dayTv.alpha = alphaValue
         posterIv.alpha = alphaValue
 
-        if (day.reviews.isNotEmpty()) {
+        if (day.comments.isNotEmpty()) {
             posterIv.visibility = View.VISIBLE
-//            posterIv.setImageResource(emoticons[day.reviews[0].emotion].icon)
-            Log.d("DateIcon", emoticons[day.reviews[0].emotion].icon.toString())
-            Log.d("DateIcon", day.reviews[0].date.toString())
-
-            Glide.with(mView.context)
-                .load(emoticons[day.reviews[0].emotion].icon)
-                .into(posterIv)
+            val lastIndex = day.comments.lastIndex
+            posterIv.setImageResource(emoticons[day.comments[lastIndex].emotion].icon)
         } else {
             posterIv.visibility = View.GONE
         }
