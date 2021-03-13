@@ -1,7 +1,9 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.util.Log.d
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -11,20 +13,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.applandeo.materialcalendarview.EventDay
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
-import com.cashproject.mongsil.databinding.FragmentCalendarBinding
+import com.cashproject.mongsil.databinding.FragmentListBinding
+import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
+import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
+class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_calendar
+        get() = R.layout.fragment_list
 
-    override val viewModel: CalendarViewModel by viewModels()
+    private lateinit var viewModelFactory: ViewModelFactory
+
+    override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
 
     private val dayAdapter by lazy {
         SayingAdapter(SayingCase.LIST)
@@ -34,31 +40,36 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 
     override fun initStartView() {
 //        binding.lifecycleOwner = this
+        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
         binding.fabCalendarFloatingActionButton.setOnClickListener {
             when(flag){
                 false -> {
                     binding.rvCalendarDayList.visibility = View.GONE
-                    binding.cvCalendarView.visibility = View.VISIBLE
+                    binding.customCalendarView.visibility = View.VISIBLE
+                    binding.fabCalendarFloatingActionButton.setImageResource(R.drawable.ic_list)
                     flag = true
                 }
                 true -> {
                     binding.rvCalendarDayList.visibility = View.VISIBLE
-                    binding.cvCalendarView.visibility = View.GONE
+                    binding.customCalendarView.visibility = View.GONE
+                    binding.fabCalendarFloatingActionButton.setImageResource(R.drawable.ic_calendar)
                     flag = false
                 }
             }
         }
 
-        initDayRecyclerView()
+        binding.customCalendarView.setonDayClickListener {
+            d("day click", it.toString())
+        }
 
-        setIconToCalendar()
+        initDayRecyclerView()
+        viewModel.getData()
+        viewModel.getAllComments()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getData()
-
         observerData()
     }
 
@@ -85,21 +96,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             dayAdapter.setItems(it as ArrayList<Saying>)
             Log.d("observe dATA", it.toString())
         })
+        viewModel.commentData.observe(viewLifecycleOwner, Observer {
+            binding.customCalendarView.notifyDataChanged(it)
+            progressDialog.dismiss()
+        })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllComments()
 
-    private fun setIconToCalendar(){
-        val events: MutableList<EventDay> = ArrayList()
-
-        val calendar: Calendar = Calendar.getInstance()
-        events.add(EventDay(calendar, R.drawable.emoticon_01_happy))
-        //or
-//        events.add(EventDay(calendar, Drawable()))
-        //or if you want to specify event label color
-//        events.add(EventDay(calendar, R.drawable.sample_icon, Color.parseColor("#228B22")))
-
-        binding.cvCalendarView.setEvents(events)
     }
-
-
 }

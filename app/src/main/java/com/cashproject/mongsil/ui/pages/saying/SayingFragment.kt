@@ -14,13 +14,14 @@ import com.cashproject.mongsil.databinding.FragmentSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
-import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.emoticon.EmoticonBottomSheetFragment
 import com.cashproject.mongsil.viewmodel.SayingViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
@@ -32,7 +33,10 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     private lateinit var viewModelFactory: ViewModelFactory
 
-    lateinit var mSaying: Saying
+    private lateinit var mSaying: Saying
+
+    private var mEmoticonId: Int = 0
+
 
     private val commentAdapter: CommentAdapter by lazy {
         CommentAdapter()
@@ -65,11 +69,12 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             }else{
                 viewModel.insertComment(
                     Comment(
-                        docId = mSaying.docId!!,
+                        docId = mSaying.docId,
                         content = binding.etSayingCommentInput.text.toString(),
-                        emotion = 1
+                        time = Date(),
+                        date = mSaying.date,
+                        emotion = mEmoticonId
                     )
-
                 )
                 binding.etSayingCommentInput.text?.clear()
             }
@@ -81,35 +86,33 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
 //            commentAdapter.update(it)
-            commentAdapter.setItems(it as ArrayList<Comment>)
+            commentAdapter.update(it as ArrayList<Comment>)
             d("Comment", it.size.toString())
         })
 
         //댓글 삽입/삭제 결과 관찰
         viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
             if (it){
-                viewModel.getComments(mSaying.docId!!)
+                viewModel.getComments(mSaying.docId)
             }
         })
     }
 
     private fun initSaying(){
         //보관함 or 리스트에서 넘어왔을 경우
-        arguments?.let {
-            mSaying = Saying(
-                docId = it.getString("docId"),
-                image = it.getString("image")
-            )
-            binding.saying = mSaying
-            viewModel.getComments(mSaying.docId!!)
+        if (arguments != null){
+            arguments?.getString("docId")?.let {
+                viewModel.getSayingData(it)
+                viewModel.getComments(it)
+            }
+        }else{
+            viewModel.getTodayData()
         }
 
-        viewModel.getTodayData()
         viewModel.todayData.observe(viewLifecycleOwner, Observer {
             binding.saying = it
             mSaying = it
-            viewModel.getComments(mSaying.docId!!)
-
+            viewModel.getComments(mSaying.docId)
         })
     }
 
@@ -130,19 +133,24 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         val bottomSheetFragment = EmoticonBottomSheetFragment()
         bottomSheetFragment.show(childFragmentManager, "approval")
         bottomSheetFragment.setEmoticonBtnClickListener {
-
+            mEmoticonId = it.id
+            binding.ivSayingEmoticon.setImageResource(it.icon)
         }
+
     }
 
     private fun showBottomListDialog() {
-        val bottomSheetFragment = SayingBottomSheetFragment()
+        val bottomSheetFragment = SayingBottomSheetFragment(mSaying.date)
         bottomSheetFragment.show(childFragmentManager, "approval")
+//        bottomSheetFragment.setDate(mSaying.date)
+
         bottomSheetFragment.setLikeBtnOnClickListener {
-            val saying = LikeSaying(docId = mSaying.docId!!, image = mSaying.image!!)
             addDisposable(
-                viewModel.like(saying).subscribeOn(Schedulers.io())
+                viewModel.like(mSaying).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
+                        bottomSheetFragment.dismiss()
+
 //                    update_user_button.isEnabled = true
                         Log.d(TAG, "success insertion")
                     },

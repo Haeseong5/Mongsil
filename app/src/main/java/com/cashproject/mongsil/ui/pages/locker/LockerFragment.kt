@@ -20,13 +20,13 @@ import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.receiver.AlarmReceiver
-import com.cashproject.mongsil.viewmodel.LockerViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.cashproject.mongsil.util.PreferencesManager
 import java.util.*
 import androidx.lifecycle.Observer
+import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.viewmodel.LockerViewModel
 
 import kotlin.collections.ArrayList
 
@@ -36,7 +36,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_locker
 
-    override val viewModel: LockerViewModel by viewModels{ viewModelFactory }
+    override val viewModel: LockerViewModel by viewModels { viewModelFactory }
 
     private lateinit var viewModelFactory: ViewModelFactory
 
@@ -52,16 +52,20 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     override fun initStartView() {
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
-
+        viewModel.getAllLike()
         initToolbar()
         initRecyclerView()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getAllLike()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.likeData.observe(viewLifecycleOwner, Observer {
-            lockerAdapter.update(it as ArrayList<LikeSaying>)
+            lockerAdapter.update(it as ArrayList<Saying>)
         })
 
     }
@@ -81,7 +85,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            activity?.showToast(it.docId.toString())
             findNavController().navigate(R.id.action_pager_to_home, bundleOf("image" to it.image, "docId" to it.docId))
 
         }

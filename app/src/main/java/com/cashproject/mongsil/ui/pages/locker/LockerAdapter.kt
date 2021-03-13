@@ -6,19 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemLockerBinding
-import com.cashproject.mongsil.model.data.LikeSaying
+import com.cashproject.mongsil.model.data.Saying
 
 class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
-    private var items: ArrayList<LikeSaying> = ArrayList()
+    private var items: ArrayList<Saying> = ArrayList()
 
-    private var listener: ((item: LikeSaying) -> Unit)? = null
+    private var listener: ((item: Saying) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (item: LikeSaying) -> Unit) {
+    fun setOnItemClickListener(listener: (item: Saying) -> Unit) {
         this.listener = listener
     }
 
-    fun update(newItemList: List<LikeSaying>) {
+    fun update(newItemList: List<Saying>) {
         val diffResult = DiffUtil.calculateDiff(ContentDiffUtil(items, newItemList), false)
         diffResult.dispatchUpdatesTo(this)
         items.clear()
@@ -38,7 +38,7 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemLockerBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bindView(item: LikeSaying){
+        fun bindView(item: Saying){
             binding.saying = item
             binding.ivLockerImage.setOnClickListener{
                 listener?.invoke(item) //익명함수 호출
@@ -46,7 +46,7 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
         }
     }
 
-    class ContentDiffUtil(private val oldList: List<LikeSaying>, private val currentList: List<LikeSaying>) : DiffUtil.Callback() {
+    class ContentDiffUtil(private val oldList: List<Saying>, private val currentList: List<Saying>) : DiffUtil.Callback() {
 
         //1. 아이템의 고유 id 값이 같은지
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

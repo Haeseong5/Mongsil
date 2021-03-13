@@ -30,6 +30,8 @@ class ViewModelFactory(private val localDataSource: LocalDataSource) : ViewModel
             return LockerViewModel(localDataSource) as T
         }else if (modelClass.isAssignableFrom(SayingViewModel::class.java)) {
             return SayingViewModel(localDataSource) as T
+        }else if (modelClass.isAssignableFrom(CalendarViewModel::class.java)) {
+            return CalendarViewModel(localDataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

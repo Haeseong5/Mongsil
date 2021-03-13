@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin16"
         app:cardCornerRadius="20dp"
-        app:cardUseCompatPadding="true"
-        android:elevation="@dimen/margin8"
+        app:cardElevation="0dp"
         android:background="@color/white">
         <com.cashproject.mongsil.util.SquareLayout
             android:id="@+id/iv_emoticon_background"

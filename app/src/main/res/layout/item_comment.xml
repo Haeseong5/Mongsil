@@ -7,12 +7,16 @@
         <variable
             name="comment"
             type="com.cashproject.mongsil.model.data.Comment" />
+        <variable
+            name="dateutil"
+            type="com.cashproject.mongsil.util.DateUtil" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin8"
+        tools:background="@color/teal_200"
         >
         <ImageView
             android:id="@+id/comment_iv_emoticon"
@@ -31,7 +35,7 @@
             android:id="@+id/comment_tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오전 4시 20분"
+            tools:text="오전 4시 20분"
             android:layout_marginStart="@dimen/margin8"
             android:textColor="@color/colorYellow"
             app:layout_constraintTop_toTopOf="@id/comment_iv_emoticon"
@@ -44,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{comment.content}"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

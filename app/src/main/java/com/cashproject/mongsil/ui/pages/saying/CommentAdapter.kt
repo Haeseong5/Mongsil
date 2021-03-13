@@ -1,12 +1,15 @@
 package com.cashproject.mongsil.ui.pages.saying
 
 import android.util.Log
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemCommentBinding
 import com.cashproject.mongsil.model.data.Comment
+import com.cashproject.mongsil.ui.emoticon.Emoticons.emoticons
+import com.cashproject.mongsil.util.DateUtil
 
 class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
@@ -18,10 +21,10 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
         this.listener = listener
     }
 
-    fun setItems(items: ArrayList<Comment>){
-        this.items = items
-        notifyDataSetChanged()
-    }
+//    fun setItems(items: ArrayList<Comment>){
+//        this.items = items
+//        notifyDataSetChanged()
+//    }
 
     fun update(newItemList: List<Comment>) {
         val diffResult = DiffUtil.calculateDiff(
@@ -49,6 +52,9 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
         fun bindView(item: Comment){
             binding.comment = item
+            binding.commentIvEmoticon.setImageResource(emoticons[item.emotion].icon)
+            binding.commentTvTime.text = DateUtil.commentDateToString(date = item.time)
+            d("comment", DateUtil.commentDateToString(date = item.time))
         }
     }
 

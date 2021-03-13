@@ -1,12 +1,16 @@
 package com.cashproject.mongsil.ui.pages.calendar.day
 
 import android.util.Log
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.util.DateUtil
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
 
@@ -72,6 +76,13 @@ class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<S
 
         fun bindView(item: Saying) {
             binding.saying = item
+
+            val dateArray = item.date?.let { DateUtil.dateToStringArray(it) }
+            if (dateArray != null){
+                binding.tvDayYear.text = dateArray[0]
+                binding.tvDayMonth.text = dateArray[1]
+                binding.tvDayDate.text = dateArray[2]
+            }
 
             binding.root.setOnClickListener {
                 listener?.invoke(item) //익명함수 호출

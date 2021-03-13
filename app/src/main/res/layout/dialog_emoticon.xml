@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,15 +9,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin30"
         android:background="@color/white"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/btn_emoticon_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="end"
-            android:layout_marginBottom="@dimen/margin30"
+            android:layout_marginTop="@dimen/margin30"
+            android:layout_marginEnd="@dimen/margin30"
             android:src="@drawable/ic_baseline_close_24"/>
         <TextView
             android:layout_width="wrap_content"
@@ -24,12 +25,13 @@
             android:textStyle="normal"
             android:textSize="26sp"
             android:textColor="#333333"
-            android:layout_marginBottom="@dimen/margin30"
+            android:layout_margin="@dimen/margin30"
             android:text="@string/emoticon_title" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_emoticon_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            tools:listitem="@layout/item_emoticon"
             android:layout_weight="1"/>
         <TextView
             android:id="@+id/btn_emoticon_select_button"

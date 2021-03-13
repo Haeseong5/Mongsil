@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.DialogEmoticonBinding
 import com.cashproject.mongsil.model.data.Emoticon
+import com.cashproject.mongsil.ui.emoticon.Emoticons.emoticons
 
 class EmoticonBottomSheetFragment : DialogFragment() {
     lateinit var binding: DialogEmoticonBinding
 
-    private var btnListener: (() -> Unit)? = null
+    private var btnListener: ((Emoticon) -> Unit)? = null
 
-    fun setEmoticonBtnClickListener(listener: () -> Unit) {
+    fun setEmoticonBtnClickListener(listener: (Emoticon) -> Unit) {
         this.btnListener = listener
     }
 
@@ -39,78 +40,25 @@ class EmoticonBottomSheetFragment : DialogFragment() {
             false
         )
 
-        val emoticons = ArrayList<Emoticon>()
 
-        emoticons.add(Emoticon(
-            0,
-            "행복",
-            R.drawable.emoticon_01_happy,
-            R.color.emoticon_happy_text,
-            R.color.emoticon_happy_background
-        ))
-
-        emoticons.add(Emoticon(
-            1,
-            "기쁨",
-            R.drawable.emoticon_02_enjoy,
-            R.color.emoticon_enjoy_text,
-            R.color.emoticon_enjoy_background
-        ))
-
-        emoticons.add(Emoticon(
-            2,
-            "기쁨",
-            R.drawable.emoticon_02_enjoy,
-            R.color.emoticon_enjoy_text,
-            R.color.emoticon_enjoy_background
-        ))
-
-        emoticons.add(Emoticon(
-            3,
-            "기쁨",
-            R.drawable.emoticon_02_enjoy,
-            R.color.emoticon_enjoy_text,
-            R.color.emoticon_enjoy_background
-        ))
-
-        emoticons.add(Emoticon(
-            4,
-            "기쁨",
-            R.drawable.emoticon_02_enjoy,
-            R.color.emoticon_enjoy_text,
-            R.color.emoticon_enjoy_background
-        ))
-
-
-        emoticons.add(Emoticon(
-            5,
-            "기쁨",
-            R.drawable.emoticon_02_enjoy,
-            R.color.emoticon_enjoy_text,
-            R.color.emoticon_enjoy_background
-        ))
-
-
-        emoticonAdapter = EmoticonAdapter(
-            emoticons
-        )
+        emoticonAdapter = EmoticonAdapter()
 
         binding.rvEmoticonList.apply {
             layoutManager = GridLayoutManager(context, 3)
             setHasFixedSize(true)
             adapter = emoticonAdapter
         }
-
-        setOnClickListener()
+        emoticonAdapter.setOnItemClickListener {
+            btnListener?.invoke(it) //익명함수 호출
+        }
+        binding.btnEmoticonCloseButton.setOnClickListener {
+            dismiss()
+        }
+        binding.btnEmoticonSelectButton.setOnClickListener {
+            dismiss()
+        }
 
         return binding.root
-    }
-
-
-    private fun setOnClickListener() {
-//        binding.homeBottomIvLock.setOnClickListener {
-//            likeBtnListener?.invoke()
-//        }
     }
 
 }

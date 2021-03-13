@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
+import com.cashproject.mongsil.util.DateUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.*
 
-class SayingBottomSheetFragment: BottomSheetDialogFragment(){
+class SayingBottomSheetFragment(private val date: Date): BottomSheetDialogFragment(){
     lateinit var binding: FragmentBottomSheetSayingBinding
 
     private var likeBtnListener: (() -> Unit)? = null
@@ -17,6 +19,7 @@ class SayingBottomSheetFragment: BottomSheetDialogFragment(){
     fun setLikeBtnOnClickListener(listener: () -> Unit) {
         this.likeBtnListener = listener
     }
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -28,15 +31,16 @@ class SayingBottomSheetFragment: BottomSheetDialogFragment(){
                 container,
                 false)
 
-        initTimePicker()
+        initDate()
         setOnClickListener()
 
         return binding.root
     }
 
-    private fun initTimePicker(){
-        //db 에 저장된 알람 시간이 있으면, 해당 시간으로 time picker 표시
 
+    private fun initDate() {
+        binding.tvSayingDate.text = DateUtil.dateToString(date)
+        binding.tvSayingYear.text = DateUtil.yearToString(date)
     }
 
     private fun setOnClickListener(){

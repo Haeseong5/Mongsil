@@ -9,11 +9,14 @@ import java.util.*
 data class Comment(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    //date
     @ColumnInfo
     val content: String,
     @ColumnInfo
     val emotion: Int,
+    @ColumnInfo
+    val time: Date,
+    @ColumnInfo
+    val date: Date,
     @ColumnInfo
     val docId: String
 )

@@ -1,15 +1,14 @@
 package com.cashproject.mongsil.model.db
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.cashproject.mongsil.model.data.Comment
-import com.cashproject.mongsil.model.data.LikeSaying
+import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.dao.CommentDao
 import com.cashproject.mongsil.model.db.dao.LockerDao
 
-@Database(entities = arrayOf(LikeSaying::class, Comment::class), version = 6)
+@Database(entities = [Saying::class, Comment::class], version = 1)
+@TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun lockerDao(): LockerDao
     abstract fun commentDao(): CommentDao

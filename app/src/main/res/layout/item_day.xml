@@ -36,6 +36,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/white"
                 android:text="30"/>
             <TextView
                 android:id="@+id/tv_day_year"
@@ -45,6 +46,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_day_date"
                 app:layout_constraintBottom_toTopOf="@id/tv_day_month"
                 app:layout_constraintVertical_chainStyle="packed"
+                android:textColor="@color/white"
                 android:text="2021"/>
             <TextView
                 android:id="@+id/tv_day_month"
@@ -54,6 +56,7 @@
                 app:layout_constraintStart_toEndOf="@id/tv_day_date"
                 app:layout_constraintTop_toBottomOf="@id/tv_day_year"
                 app:layout_constraintBottom_toBottomOf="@id/tv_day_date"
+                android:textColor="@color/white"
                 android:text="October"
                 android:layout_below="@id/tv_day_year"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

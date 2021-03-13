@@ -1,11 +1,11 @@
-package com.cashproject.mongsil.ui.main
+package com.cashproject.mongsil.ui.container
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentPagerBinding
-import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
+import com.cashproject.mongsil.ui.pages.calendar.ListFragment
 import com.cashproject.mongsil.ui.pages.saying.SayingFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
@@ -19,7 +19,7 @@ class PagerFragment : BaseFragment<FragmentPagerBinding, CalendarViewModel>() {
 
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(
-            CalendarFragment(),
+            ListFragment(),
             SayingFragment(),
             LockerFragment()
         )

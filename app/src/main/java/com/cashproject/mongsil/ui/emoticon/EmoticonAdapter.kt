@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemEmoticonBinding
 import com.cashproject.mongsil.model.data.Emoticon
+import com.cashproject.mongsil.ui.emoticon.Emoticons.emoticons
 
-class EmoticonAdapter(private var items: ArrayList<Emoticon>) : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
+class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
+
+    private var items: ArrayList<Emoticon> = emoticons
 
     private var listener: ((item: Emoticon) -> Unit)? = null
 
@@ -36,10 +39,10 @@ class EmoticonAdapter(private var items: ArrayList<Emoticon>) : RecyclerView.Ada
             binding.ivEmoticonBackground.setBackgroundColor(itemView.context.resources.getColor(item.background))
             binding.tvEmoticonEmotion.setTextColor(itemView.context.resources.getColor(item.textColor))
 
-//
-//            binding.itemSayingImage.setOnClickListener {
-//                listener?.invoke(item) //익명함수 호출
-//            }
+
+            binding.root.setOnClickListener {
+                listener?.invoke(item) //익명함수 호출
+            }
         }
     }
 

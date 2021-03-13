@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.main
+package com.cashproject.mongsil.ui.container
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

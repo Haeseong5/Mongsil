@@ -8,11 +8,30 @@
         android:layout_height="200dp"
         android:minHeight="200dp">
 
+        <TextView
+            android:id="@+id/tv_saying_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/margin16"
+            android:textColor="@color/colorYellow"
+            tools:text = "2020"/>
+
+        <TextView
+            android:id="@+id/tv_saying_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/tv_saying_year"
+            app:layout_constraintTop_toBottomOf="@id/tv_saying_year"
+            android:textColor="@color/black"
+            tools:text = "0328"/>
+
         <ImageView
             android:id="@+id/iv_saying_share"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_launcher_background"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_baseline_share_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_saying_lock"
             app:layout_constraintTop_toTopOf="parent"
@@ -20,9 +39,9 @@
 
         <ImageView
             android:id="@+id/iv_saying_lock"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_calendar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_baseline_bookmark_border_24"
             app:layout_constraintStart_toEndOf="@id/iv_saying_share"
             app:layout_constraintEnd_toStartOf="@id/iv_saying_save"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -31,9 +50,9 @@
 
         <ImageView
             android:id="@+id/iv_saying_save"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_baseline_terrain_24"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_baseline_download_24"
             app:layout_constraintStart_toEndOf="@id/iv_saying_lock"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

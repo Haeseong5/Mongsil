@@ -7,18 +7,25 @@ import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
 import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
+import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
-class CalendarViewModel: BaseViewModel(){
+class CalendarViewModel(private val localDataSource: LocalDataSource): BaseViewModel(){
 
     private val _sayingData = MutableLiveData<List<Saying>>()
     val sayingData: LiveData<List<Saying>>
         get() = _sayingData
 
+    private val _commentData = MutableLiveData<List<Comment>>()
+    val commentData: LiveData<List<Comment>>
+        get() = _commentData
 
     val db by lazy {
         Firebase.firestore
@@ -44,5 +51,19 @@ class CalendarViewModel: BaseViewModel(){
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
+    }
+
+
+    fun getAllComments() {
+        addDisposable(
+            localDataSource.getAllComments()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _commentData.postValue(it)
+                }, {
+
+                })
+        )
     }
 }

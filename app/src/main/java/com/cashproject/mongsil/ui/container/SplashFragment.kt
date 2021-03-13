@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.main
+package com.cashproject.mongsil.ui.container
 
 import android.os.Bundle
 import android.view.View

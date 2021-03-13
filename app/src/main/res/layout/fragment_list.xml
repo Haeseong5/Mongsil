@@ -17,23 +17,11 @@
             android:layout_height="match_parent"
             android:visibility="gone"
             android:orientation="vertical"/>
-        <com.applandeo.materialcalendarview.CalendarView
-            android:id="@+id/cv_calendar_view"
+        <com.cashproject.mongsil.ui.pages.calendar.custom.CalendarView
+            android:id="@+id/custom_calendar_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-<!--        <com.prolificinteractive.materialcalendarview.MaterialCalendarView-->
-<!--            android:id="@+id/cv_calendar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:visibility="visible"-->
-<!--            app:mcv_selectionColor="#f5f5f5"-->
-<!--            app:mcv_selectionMode="single"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintBottom_toTopOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            />-->
+            android:layout_height="match_parent"
+            android:padding="@dimen/margin16"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_calendar_floatingActionButton"
@@ -43,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/colorYellow"
             app:fabSize="normal"
-            android:src="@drawable/ic_calendar"
+            android:src="@drawable/ic_list"
             app:borderWidth="0dp"
             android:layout_margin="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

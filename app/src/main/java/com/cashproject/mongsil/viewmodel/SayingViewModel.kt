@@ -8,10 +8,7 @@ import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
 import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.model.data.Comment
-import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.model.db.dao.CommentDao
-import com.cashproject.mongsil.model.db.dao.LockerDao
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -58,13 +55,33 @@ class SayingViewModel(
             }
     }
 
-    fun like(saying: LikeSaying): Completable {
+    fun getSayingData(docId: String) {
+        db.collection(COLLECTION).document(docId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    d(TAG, "DocumentSnapshot data: ${document.data}")
+                    val saying = document.toObject<Saying>().apply {
+                        this?.docId = document.id
+                    }
+                    _todayData.postValue(saying)
+
+                } else {
+                    d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                d(TAG, "get failed with ", exception)
+            }
+    }
+
+    fun like(saying: Saying): Completable {
         return localDataSource.insertLikeSaying(saying = saying)
     }
 
     fun getComments(docId: String) {
         addDisposable(
-            localDataSource.getComments(docId)
+            localDataSource.getCommentsByDocId(docId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

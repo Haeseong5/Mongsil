@@ -1,24 +1,22 @@
 package com.cashproject.mongsil.model.db.dao
 
 import androidx.room.*
-import com.cashproject.mongsil.model.data.LikeSaying
 import com.cashproject.mongsil.model.data.Saying
-import com.google.firebase.firestore.auth.User
 import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
 interface LockerDao {
-    @Query("SELECT * FROM LikeSaying")
-    fun getAll(): Single<List<LikeSaying>>
+    @Query("SELECT * FROM Saying")
+    fun getAll(): Single<List<Saying>>
 
-    @Query("SELECT * FROM LikeSaying WHERE docId = :docId")
-    fun findByDocId(docId: String): Single<List<LikeSaying>>
+    @Query("SELECT * FROM Saying WHERE docId = :docId")
+    fun findByDocId(docId: String): Single<List<Saying>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(saying: LikeSaying) : Completable
+    fun insert(saying: Saying) : Completable
 
-    @Query("DELETE FROM LikeSaying WHERE docId = :docId")
+    @Query("DELETE FROM Saying WHERE docId = :docId")
     fun delete(docId: String) : Completable
 
 }

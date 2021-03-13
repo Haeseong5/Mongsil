@@ -8,7 +8,11 @@ import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
 import java.util.*
 
+@Entity
 data class Saying(
-    var docId: String? = null,
-    var image: String? = null,
-    var date: Date? = null)
+    @PrimaryKey var docId: String,
+    @ColumnInfo var image: String,
+    @ColumnInfo var date: Date){
+
+    constructor(): this("", "", Date())
+}
