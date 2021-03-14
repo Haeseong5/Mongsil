@@ -43,7 +43,7 @@ class AlarmReceiver : BroadcastReceiver() {
         )
         val builder =
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setSmallIcon(R.drawable.emoticon_01_happy)
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText("메세지가 도착했어요~")
                 .setContentIntent(contentPendingIntent)
