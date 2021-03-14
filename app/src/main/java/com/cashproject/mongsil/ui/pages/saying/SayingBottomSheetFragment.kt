@@ -1,12 +1,18 @@
 package com.cashproject.mongsil.ui.pages.saying
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
+import com.cashproject.mongsil.extension.saveImageToStream
 import com.cashproject.mongsil.util.DateUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
@@ -15,9 +21,13 @@ class SayingBottomSheetFragment(private val date: Date): BottomSheetDialogFragme
     lateinit var binding: FragmentBottomSheetSayingBinding
 
     private var likeBtnListener: (() -> Unit)? = null
+    private var saveBtnListener: (() -> Unit)? = null
 
     fun setLikeBtnOnClickListener(listener: () -> Unit) {
         this.likeBtnListener = listener
+    }
+    fun setSaveBtnOnClickListener(listener: () -> Unit) {
+        this.saveBtnListener = listener
     }
 
 
@@ -33,7 +43,6 @@ class SayingBottomSheetFragment(private val date: Date): BottomSheetDialogFragme
 
         initDate()
         setOnClickListener()
-
         return binding.root
     }
 
@@ -46,6 +55,9 @@ class SayingBottomSheetFragment(private val date: Date): BottomSheetDialogFragme
     private fun setOnClickListener(){
         binding.ivSayingLock.setOnClickListener {
             likeBtnListener?.invoke()
+        }
+        binding.ivSayingSave.setOnClickListener {
+            saveBtnListener?.invoke()
         }
     }
 

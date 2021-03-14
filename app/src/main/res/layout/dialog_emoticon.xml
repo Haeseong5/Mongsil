@@ -32,7 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             tools:listitem="@layout/item_emoticon"
+            android:layout_marginHorizontal="14dp"
             android:layout_weight="1"/>
+
         <TextView
             android:id="@+id/btn_emoticon_select_button"
             android:layout_width="180dp"
@@ -45,5 +47,6 @@
             android:background="@drawable/round_button_shape"
             android:textStyle="bold"
             android:textColor="#6d5107"/>
+
     </LinearLayout>
 </layout>

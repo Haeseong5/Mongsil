@@ -9,9 +9,9 @@
 
     <fragment
         android:id="@+id/pagerFragment"
-        android:name="com.cashproject.mongsil.ui.container.PagerFragment"
+        android:name="com.cashproject.mongsil.ui.container.SplashFragment"
         android:label="@string/calendar"
-        tools:layout="@layout/fragment_pager">
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_pager_to_home"
             app:destination="@id/sayingFragment"/>

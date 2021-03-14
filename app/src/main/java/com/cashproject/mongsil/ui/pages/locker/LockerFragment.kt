@@ -5,12 +5,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.AlarmManagerCompat.setExactAndAllowWhileIdle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -107,22 +109,30 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
         val intent = Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
         val pendingIntent = PendingIntent.getBroadcast(     // 2
-                activity, AlarmReceiver.NOTIFICATION_ID, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+                activity,
+                AlarmReceiver.NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
+            )
 
-        val repeatInterval: Long = 15 * 60 * 1000   // 15 min
         val calendar: Calendar = Calendar.getInstance().apply { // 3. Calendar 객체를 생성하여 알람이 울릴 정확한 시간을 설정합니다.
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
         }
 
-        alarmManager.setInexactRepeating( //Android는 여러 개의 부정확한 반복 알람을 동기화하고 동시에 실행합니다. 이렇게 하면 배터리 소모를 줄일 수 있습니다.
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                AlarmManager.INTERVAL_DAY,
-                pendingIntent
-        )
+//        alarmManager.setInexactRepeating( //Android는 여러 개의 부정확한 반복 알람을 동기화하고 동시에 실행합니다. 이렇게 하면 배터리 소모를 줄일 수 있습니다.
+//                AlarmManager.RTC_WAKEUP,
+//                calendar.timeInMillis,
+//                AlarmManager.INTERVAL_DAY,
+//                pendingIntent
+//        )
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            else -> alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        }
+
 //        alarmManager.cancel(pendingIntent) //알람 취소
     }
 

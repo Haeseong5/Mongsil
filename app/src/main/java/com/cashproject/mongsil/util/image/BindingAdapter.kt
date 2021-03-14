@@ -20,7 +20,7 @@ object BindingAdapter {
             .load(imageUrl)
             .centerCrop()
 //            .placeholder(R.drawable.loading)
-            .error(R.drawable.ic_baseline_terrain_24)
+//            .error(R.drawable.ic_baseline_terrain_24)
             .into(view)
     }
 
