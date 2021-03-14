@@ -80,10 +80,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                 binding.etSayingCommentInput.text?.clear()
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
 //            commentAdapter.update(it)

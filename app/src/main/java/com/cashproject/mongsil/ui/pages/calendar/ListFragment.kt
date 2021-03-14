@@ -67,12 +67,10 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         initDayRecyclerView()
         viewModel.getData()
         viewModel.getAllComments()
+        observerData()
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observerData()
-    }
 
     private fun initDayRecyclerView() {
         binding.rvCalendarDayList.apply {
