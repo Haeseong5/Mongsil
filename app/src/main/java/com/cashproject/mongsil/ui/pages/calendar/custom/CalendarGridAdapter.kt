@@ -73,10 +73,12 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
 
         if (day.comments.isNotEmpty()) {
             posterIv.visibility = View.VISIBLE
+            dayTv.visibility = View.GONE
             val lastIndex = day.comments.lastIndex
             posterIv.setImageResource(emoticons[day.comments[lastIndex].emotion].icon)
         } else {
             posterIv.visibility = View.GONE
+            dayTv.visibility = View.VISIBLE
         }
 
         return mView

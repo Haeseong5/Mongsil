@@ -15,12 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin16"
         app:cardCornerRadius="20dp"
-        app:cardElevation="0dp"
-        android:background="@color/white">
+        app:cardElevation="10dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:focusable="true">
         <com.cashproject.mongsil.util.SquareLayout
             android:id="@+id/iv_emoticon_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
             <ImageView

@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.receiver
 //https://codechacha.com/ko/android-alarmmanager/
+//https://superwony.tistory.com/99
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -43,8 +44,8 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder =
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-                .setContentTitle("Alert")
-                .setContentText("This is repeating alarm")
+                .setContentTitle(context.getString(R.string.app_name))
+                .setContentText("메세지가 도착했어요~")
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
@@ -53,7 +54,7 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 PRIMARY_CHANNEL_ID,
@@ -64,8 +65,10 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
             notificationChannel.description = "AlarmManager Tests"
-            notificationManager.createNotificationChannel(
-                    notificationChannel)
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
+
+
+
 }

@@ -1,6 +1,8 @@
 package com.cashproject.mongsil.ui.pages.saying
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
@@ -12,6 +14,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSayingBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
@@ -21,7 +24,6 @@ import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
@@ -53,9 +55,8 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         initRecyclerView()
         initSaying()
 
-
         //button click listener
-        binding.ivSayingBackground.setOnClickListener {
+        binding.ivSayingBackgroundImage.setOnClickListener {
             showBottomListDialog()
         }
 
@@ -135,6 +136,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         bottomSheetFragment.setEmoticonBtnClickListener {
             mEmoticonId = it.id
             binding.ivSayingEmoticon.setImageResource(it.icon)
+            bottomSheetFragment.dismiss()
         }
 
     }
@@ -142,7 +144,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
     private fun showBottomListDialog() {
         val bottomSheetFragment = SayingBottomSheetFragment(mSaying.date)
         bottomSheetFragment.show(childFragmentManager, "approval")
-//        bottomSheetFragment.setDate(mSaying.date)
 
         bottomSheetFragment.setLikeBtnOnClickListener {
             addDisposable(
@@ -150,12 +151,23 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         bottomSheetFragment.dismiss()
-
-//                    update_user_button.isEnabled = true
                         Log.d(TAG, "success insertion")
                     },
                         { error -> Log.e(TAG, "Unable to update username", error) })
             )
+        }
+
+        bottomSheetFragment.setSaveBtnOnClickListener {
+            //bitmap
+            val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+            val imageUri = bitmap.bitmap.saveImage(requireActivity())
+            if (imageUri != null){
+                d("imageUri", imageUri.toString())
+                activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+            }else{
+                activity?.showToast("저장 실패")
+            }
+            bottomSheetFragment.dismiss()
         }
     }
 
