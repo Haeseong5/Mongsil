@@ -57,6 +57,11 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         viewModel.getAllLike()
         initToolbar()
         initRecyclerView()
+
+        viewModel.likeData.observe(viewLifecycleOwner, Observer {
+            lockerAdapter.update(it as ArrayList<Saying>)
+        })
+
     }
 
     override fun onResume() {
@@ -64,13 +69,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         viewModel.getAllLike()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.likeData.observe(viewLifecycleOwner, Observer {
-            lockerAdapter.update(it as ArrayList<Saying>)
-        })
-
-    }
 
     private fun initToolbar(){
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
