@@ -102,6 +102,9 @@ dependencies {
     //rx android
     implementation "io.reactivex.rxjava2:rxjava:$RxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$RxAndoirdVersion"
+    implementation 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.1.0'
+
 
     //library
     implementation "com.google.android.material:material:$materialVersion"

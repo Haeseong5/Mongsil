@@ -14,6 +14,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSayingBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
@@ -23,7 +24,10 @@ import com.cashproject.mongsil.viewmodel.SayingViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_saying.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
@@ -39,6 +43,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     private var mEmoticonId: Int = 0
 
+    private val publishSubject : PublishSubject<Int> = PublishSubject.create()
 
     private val commentAdapter: CommentAdapter by lazy {
         CommentAdapter()
@@ -57,8 +62,15 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
         //button click listener
         binding.ivSayingBackgroundImage.setOnClickListener {
-            showBottomListDialog()
+            publishSubject.onNext(1)
         }
+
+
+
+        publishSubject.throttleFirst(500, TimeUnit.MILLISECONDS)
+            .subscribe {
+                showBottomListDialog() //다이어로그 중복생성 방지
+            }.addTo(compositeDisposable)
 
         binding.ivSayingEmoticon.setOnClickListener {
             showEmoticonBottomSheet()
