@@ -33,6 +33,8 @@
             android:layout_height="0dp"
             tools:listitem="@layout/item_emoticon"
             android:layout_marginHorizontal="14dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             android:layout_weight="1"/>
 
         <TextView

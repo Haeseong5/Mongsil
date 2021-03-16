@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -144,7 +145,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             binding.ivSayingEmoticon.setImageResource(it.icon)
             bottomSheetFragment.dismiss()
         }
-
     }
 
     private fun showBottomListDialog() {
@@ -176,12 +176,11 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         }
 
         bottomSheetFragment.setHideCommentBtnOnClickListener {
-            if (binding.rvSayingCommentList.visibility == View.GONE){
+            if (binding.rvSayingCommentList.visibility == View.GONE) {
                 binding.rvSayingCommentList.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.rvSayingCommentList.visibility = View.GONE
             }
-
         }
     }
 

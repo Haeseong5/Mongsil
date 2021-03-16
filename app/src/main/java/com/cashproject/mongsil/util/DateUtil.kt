@@ -5,7 +5,7 @@ import java.util.*
 
 object DateUtil {
     private val calendarDateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA) //calendar format
-    private val commentDateFormat = SimpleDateFormat("a HH시 mm분", Locale.KOREA)
+    private val commentDateFormat = SimpleDateFormat("a hh시 mm분", Locale.KOREA)
     private val yearFormat = SimpleDateFormat("yyyy", Locale.KOREA)
     private val monthFormat = SimpleDateFormat("MMMMM", Locale.KOREA)
     private val dayFormat = SimpleDateFormat("dd", Locale.KOREA)
