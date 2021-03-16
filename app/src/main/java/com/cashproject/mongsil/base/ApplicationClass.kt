@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.SharedPreferences
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.model.data.Emoticon
-import com.cashproject.mongsil.ui.emoticon.Emoticons.emoticons
+import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.FILENAME
 
 class ApplicationClass : Application(){

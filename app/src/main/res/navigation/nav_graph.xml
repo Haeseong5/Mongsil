@@ -21,9 +21,6 @@
         <argument
             android:name="docId"
             app:argType="string"/>
-        <argument
-            android:name="image"
-            app:argType="string"/>
     </fragment>
 
     <fragment
@@ -35,11 +32,8 @@
             android:id="@+id/action_calendar_to_home"
             app:destination="@id/sayingFragment"/>
         <argument
-            android:name="docId"
-            app:argType="string"/>
-        <argument
-            android:name="image"
-            app:argType="string"/>
+            android:name="saying"
+            app:argType="com.cashproject.mongsil.model.data.Saying"/>
     </fragment>
 
     <fragment
@@ -67,9 +61,6 @@
             app:destination="@id/sayingFragment"/>
         <argument
             android:name="docId"
-            app:argType="string"/>
-        <argument
-            android:name="image"
             app:argType="string"/>
     </fragment>
 
