@@ -17,29 +17,41 @@ import com.cashproject.mongsil.util.DateUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
 
-class SayingBottomSheetFragment(private val date: Date): BottomSheetDialogFragment(){
+class SayingBottomSheetFragment(private val date: Date) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
 
     private var likeBtnListener: (() -> Unit)? = null
     private var saveBtnListener: (() -> Unit)? = null
+    private var hideCommentBtnListener: (() -> Unit)? = null
+    private var shareBtnListener: (() -> Unit)? = null
 
     fun setLikeBtnOnClickListener(listener: () -> Unit) {
         this.likeBtnListener = listener
     }
+
     fun setSaveBtnOnClickListener(listener: () -> Unit) {
         this.saveBtnListener = listener
     }
 
+    fun setHideCommentBtnOnClickListener(listener: () -> Unit) {
+        this.hideCommentBtnListener = listener
+    }
+
+    fun setShareBtnOnClickListener(listener: () -> Unit) {
+        this.shareBtnListener = listener
+    }
+
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate<FragmentBottomSheetSayingBinding>(
-                inflater,
-                R.layout.fragment_bottom_sheet_saying,
-                container,
-                false)
+            inflater,
+            R.layout.fragment_bottom_sheet_saying,
+            container,
+            false
+        )
 
         initDate()
         setOnClickListener()
@@ -52,12 +64,21 @@ class SayingBottomSheetFragment(private val date: Date): BottomSheetDialogFragme
         binding.tvSayingYear.text = DateUtil.yearToString(date)
     }
 
-    private fun setOnClickListener(){
+    private fun setOnClickListener() {
         binding.ivSayingLock.setOnClickListener {
             likeBtnListener?.invoke()
         }
         binding.ivSayingSave.setOnClickListener {
             saveBtnListener?.invoke()
+            dismiss()
+        }
+        binding.ivSayingHideComment.setOnClickListener {
+            hideCommentBtnListener?.invoke()
+            dismiss()
+
+        }
+        binding.ivSayingShare.setOnClickListener {
+            shareBtnListener?.invoke()
         }
     }
 

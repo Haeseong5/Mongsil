@@ -36,6 +36,11 @@
                 android:id="@+id/rv_saying_comment_list"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:overScrollMode="never"
+                android:fadingEdge="horizontal"
+                android:fadingEdgeLength="@dimen/margin30"
+                android:background="@android:color/transparent"
+                android:requiresFadingEdge="vertical"
                 android:scrollbars="none" />
             <LinearLayout
                 android:layout_width="match_parent"

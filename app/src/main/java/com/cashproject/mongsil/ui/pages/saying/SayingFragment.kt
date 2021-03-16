@@ -175,7 +175,15 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             }else{
                 activity?.showToast("저장 실패")
             }
-            bottomSheetFragment.dismiss()
+        }
+
+        bottomSheetFragment.setHideCommentBtnOnClickListener {
+            if (binding.rvSayingCommentList.visibility == View.GONE){
+                binding.rvSayingCommentList.visibility = View.VISIBLE
+            }else{
+                binding.rvSayingCommentList.visibility = View.GONE
+            }
+
         }
     }
 

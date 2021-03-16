@@ -9,4 +9,6 @@
     <dimen name="margin20">20dp</dimen>
     <dimen name="dimen30">30sp</dimen>
 
+    <dimen name="bottom_icon_size">40dp</dimen>
+
 </resources>
