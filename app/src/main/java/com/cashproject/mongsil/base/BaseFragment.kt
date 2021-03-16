@@ -2,6 +2,7 @@ package com.cashproject.mongsil.base
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log.d
@@ -64,6 +65,45 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
 
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        d(TAG, "onCreate")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        d(TAG, "onAttach")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        d(TAG, "onStart")
+    }
+    override fun onResume() {
+        super.onResume()
+        d(TAG, "onResume")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        d(TAG, "onDestroyView")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        d(TAG, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        d(TAG, "onStop")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        d(TAG, "onDetach()")
     }
 
     override fun onDestroy() {

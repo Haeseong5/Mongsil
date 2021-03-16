@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemCommentBinding
 import com.cashproject.mongsil.model.data.Comment
-import com.cashproject.mongsil.ui.emoticon.Emoticons.emoticons
+import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.DateUtil
 
 class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
@@ -17,7 +17,7 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     private var listener: ((item: Comment) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (item: Comment) -> Unit) {
+    fun setOnItemLongClickListener(listener: (item: Comment) -> Unit) {
         this.listener = listener
     }
 
@@ -55,6 +55,11 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
             binding.commentIvEmoticon.setImageResource(emoticons[item.emotion].icon)
             binding.commentTvTime.text = DateUtil.commentDateToString(date = item.time)
             d("comment", DateUtil.commentDateToString(date = item.time))
+
+            binding.root.setOnLongClickListener {
+                listener?.invoke(item)
+                return@setOnLongClickListener true
+            }
         }
     }
 

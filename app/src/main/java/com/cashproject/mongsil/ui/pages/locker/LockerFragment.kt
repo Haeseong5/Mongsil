@@ -85,8 +85,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_pager_to_home, bundleOf("image" to it.image, "docId" to it.docId))
-
+            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
         }
     }
 

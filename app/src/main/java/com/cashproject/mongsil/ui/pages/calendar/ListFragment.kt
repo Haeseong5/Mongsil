@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.applandeo.materialcalendarview.EventDay
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentListBinding
@@ -20,7 +18,6 @@ import com.cashproject.mongsil.ui.pages.calendar.day.SayingAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
@@ -60,8 +57,13 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
             }
         }
 
-        binding.customCalendarView.setonDayClickListener {
+        binding.customCalendarView.setOnDayClickListener {
             d("day click", it.toString())
+            if (it.comments.isEmpty()){
+
+            } else{
+                findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId))
+            }
         }
 
         initDayRecyclerView()
@@ -83,10 +85,7 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
             adapter = dayAdapter
         }
         dayAdapter.setOnItemClickListener {
-            findNavController().navigate(
-                R.id.action_pager_to_home,
-                bundleOf("image" to it.image, "docId" to it.docId)
-            )
+            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
         }
     }
 
@@ -104,7 +103,6 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
     override fun onResume() {
         super.onResume()
         viewModel.getAllComments()
-        Log.d(TAG, "onResume")
-
     }
+
 }

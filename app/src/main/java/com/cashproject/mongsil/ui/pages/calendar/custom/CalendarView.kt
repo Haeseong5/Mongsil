@@ -3,6 +3,7 @@ package com.cashproject.mongsil.ui.pages.calendar.custom
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class CalendarView(
         addView(createViewPager())
     }
 
-    fun setonDayClickListener(listener: ((Day) -> Unit)) {
+    fun setOnDayClickListener(listener: ((Day) -> Unit)) {
         this.onDayClickListener = listener
     }
 
@@ -110,6 +111,7 @@ class CalendarView(
             LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         calendarPagerAdapter.setonDayClickListener { calendar, day ->
+            d("calendarPagerAdapter", "onClick")
             if (!isMonthSame(day.calendar, calendar)) {
                 when (day.calendar.compareTo(calendar)) {
                     PREVIOUS_MONTH -> setViewPagerPosition(PREVIOUS_MONTH)

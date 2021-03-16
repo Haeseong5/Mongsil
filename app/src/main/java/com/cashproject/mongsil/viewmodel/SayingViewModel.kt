@@ -104,4 +104,17 @@ class SayingViewModel(
                 })
         )
     }
+
+    fun deleteCommentById(id: Int){
+        addDisposable(
+            localDataSource.deleteCommentById(id)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    isCompletable.postValue(true)
+                }, {
+
+                })
+        )
+    }
 }

@@ -1,12 +1,10 @@
 package com.cashproject.mongsil.ui.pages.saying
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,20 +12,18 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSayingBinding
 import com.cashproject.mongsil.di.Injection
-import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.emoticon.EmoticonBottomSheetFragment
+import com.cashproject.mongsil.ui.dialog.CheckDialog
+import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
+import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.viewmodel.SayingViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.fragment_saying.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
@@ -35,7 +31,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_saying
 
-    override val viewModel: SayingViewModel by viewModels{ viewModelFactory }
+    override val viewModel: SayingViewModel by viewModels { viewModelFactory }
 
     private lateinit var viewModelFactory: ViewModelFactory
 
@@ -43,7 +39,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     private var mEmoticonId: Int = 0
 
-    private val publishSubject : PublishSubject<Int> = PublishSubject.create()
+    private val click by lazy { ClickUtil(this.lifecycle) }
 
     private val commentAdapter: CommentAdapter by lazy {
         CommentAdapter()
@@ -62,24 +58,21 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
         //button click listener
         binding.ivSayingBackgroundImage.setOnClickListener {
-            publishSubject.onNext(1)
+            click.run {
+                showBottomListDialog() //다이어로그 중복생성 방지
+            }
         }
 
-
-
-        publishSubject.throttleFirst(500, TimeUnit.MILLISECONDS)
-            .subscribe {
-                showBottomListDialog() //다이어로그 중복생성 방지
-            }.addTo(compositeDisposable)
-
         binding.ivSayingEmoticon.setOnClickListener {
-            showEmoticonBottomSheet()
+            click.run {
+                showEmoticonBottomSheet() //다이어로그 중복생성 방지
+            }
         }
 
         binding.tvSayingCommentBtn.setOnClickListener {
-            if (binding.etSayingCommentInput.text.isNullOrBlank()){
+            if (binding.etSayingCommentInput.text.isNullOrBlank()) {
                 activity?.showToast("일기를 입력해주세요.")
-            }else{
+            } else {
                 viewModel.insertComment(
                     Comment(
                         docId = mSaying.docId,
@@ -101,20 +94,27 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
         //댓글 삽입/삭제 결과 관찰
         viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 viewModel.getComments(mSaying.docId)
             }
         })
     }
 
-    private fun initSaying(){
+    private fun initSaying() {
         //보관함 or 리스트에서 넘어왔을 경우
-        if (arguments != null){
-            arguments?.getString("docId")?.let {
-                viewModel.getSayingData(it)
-                viewModel.getComments(it)
+        if (arguments != null) {
+            val saying = arguments?.getParcelable<Saying>("saying")?.let {
+                mSaying = it
+                binding.saying = it
+                viewModel.getComments(it.docId)
             }
-        }else{
+            //calendar 에서 넘어왔을 경우
+            if (saying == null) {
+                arguments?.getString("docId").let {
+                    viewModel.getSayingData(it!!)
+                }
+            }
+        } else { //처음 실행했을 경우
             viewModel.getTodayData()
         }
 
@@ -131,15 +131,13 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             setHasFixedSize(true)
             adapter = commentAdapter
         }
-
-        commentAdapter.setOnItemClickListener {
-//            activity?.showToast(it.docId.toString())
-//            findNavController().navigate(R.id.action_pager_to_home, bundleOf("image" to it.image, "docId" to it.docId))
+        commentAdapter.setOnItemLongClickListener {
+            showCheckDialog(it.id)
         }
     }
 
     private fun showEmoticonBottomSheet() {
-        val bottomSheetFragment = EmoticonBottomSheetFragment()
+        val bottomSheetFragment = EmoticonDialog()
         bottomSheetFragment.show(childFragmentManager, "approval")
         bottomSheetFragment.setEmoticonBtnClickListener {
             mEmoticonId = it.id
@@ -169,10 +167,10 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             //bitmap
             val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
             val imageUri = bitmap.bitmap.saveImage(requireActivity())
-            if (imageUri != null){
+            if (imageUri != null) {
                 d("imageUri", imageUri.toString())
                 activity?.showToast("갤러리에 이미지가 저장되었습니다.")
-            }else{
+            } else {
                 activity?.showToast("저장 실패")
             }
         }
@@ -185,6 +183,14 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             }
 
         }
+    }
+
+    private fun showCheckDialog(id: Int) {
+        val dialog = CheckDialog(requireContext())
+        dialog.setAcceptBtnOnClickListener {
+            viewModel.deleteCommentById(id)
+        }
+        dialog.start(getString(R.string.message_delete))
     }
 
 }
