@@ -2,10 +2,15 @@ package com.cashproject.mongsil.base
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.model.data.Emoticon
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.FILENAME
+import java.io.ByteArrayOutputStream
+
 
 class ApplicationClass : Application(){
 

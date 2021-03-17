@@ -1,7 +1,9 @@
 package com.cashproject.mongsil.ui.pages.saying
 
-import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
@@ -12,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSayingBinding
-import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
@@ -21,7 +23,6 @@ import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.viewmodel.SayingViewModel
-import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -33,8 +34,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         get() = R.layout.fragment_saying
 
     override val viewModel: SayingViewModel by viewModels { viewModelFactory }
-
-    private lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var mSaying: Saying
 
@@ -52,11 +51,44 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
     }
 
     override fun initStartView() {
-        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
-
         initRecyclerView()
         initSaying()
+        initClickListener()
 
+        observeData()
+    }
+
+    private fun initSaying() {
+        //보관함 or 리스트에서 넘어왔을 경우
+        if (arguments != null) {
+            val saying = arguments?.getParcelable<Saying>("saying")?.let {
+                mSaying = it
+                binding.saying = it
+                viewModel.getComments(it.docId)
+            }
+            //calendar 에서 넘어왔을 경우
+            if (saying == null) {
+                arguments?.getString("docId").let {
+                    viewModel.getSayingData(it!!)
+                }
+            }
+        } else { //처음 실행했을 경우
+            viewModel.getTodayData()
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.rvSayingCommentList.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = commentAdapter
+        }
+        commentAdapter.setOnItemLongClickListener {
+            showCheckDialog(it.id)
+        }
+    }
+
+    private fun initClickListener() {
         //button click listener
         binding.ivSayingBackgroundImage.setOnClickListener {
             click.run {
@@ -86,11 +118,17 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                 binding.etSayingCommentInput.text?.clear()
             }
         }
+    }
+
+    private fun observeData() {
+        viewModel.todayData.observe(viewLifecycleOwner, Observer {
+            binding.saying = it
+            mSaying = it
+            viewModel.getComments(mSaying.docId)
+        })
 
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
-//            commentAdapter.update(it)
             commentAdapter.update(it as ArrayList<Comment>)
-            d("Comment", it.size.toString())
         })
 
         //댓글 삽입/삭제 결과 관찰
@@ -99,42 +137,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                 viewModel.getComments(mSaying.docId)
             }
         })
-    }
-
-    private fun initSaying() {
-        //보관함 or 리스트에서 넘어왔을 경우
-        if (arguments != null) {
-            val saying = arguments?.getParcelable<Saying>("saying")?.let {
-                mSaying = it
-                binding.saying = it
-                viewModel.getComments(it.docId)
-            }
-            //calendar 에서 넘어왔을 경우
-            if (saying == null) {
-                arguments?.getString("docId").let {
-                    viewModel.getSayingData(it!!)
-                }
-            }
-        } else { //처음 실행했을 경우
-            viewModel.getTodayData()
-        }
-
-        viewModel.todayData.observe(viewLifecycleOwner, Observer {
-            binding.saying = it
-            mSaying = it
-            viewModel.getComments(mSaying.docId)
-        })
-    }
-
-    private fun initRecyclerView() {
-        binding.rvSayingCommentList.apply {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = commentAdapter
-        }
-        commentAdapter.setOnItemLongClickListener {
-            showCheckDialog(it.id)
-        }
     }
 
     private fun showEmoticonBottomSheet() {
@@ -167,6 +169,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             //bitmap
             val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
             val imageUri = bitmap.bitmap.saveImage(requireActivity())
+
             if (imageUri != null) {
                 d("imageUri", imageUri.toString())
                 activity?.showToast("갤러리에 이미지가 저장되었습니다.")
@@ -182,6 +185,10 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                 binding.rvSayingCommentList.visibility = View.GONE
             }
         }
+
+        bottomSheetFragment.setShareBtnOnClickListener {
+            shareToSNS()
+        }
     }
 
     private fun showCheckDialog(id: Int) {
@@ -192,4 +199,16 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         dialog.start(getString(R.string.message_delete))
     }
 
+    private fun shareToSNS() {
+        val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+        val imageUri = getImageUri(requireActivity(), bitmap.bitmap)
+//        val imageUri = bitmap.bitmap.saveImage(requireActivity())
+
+        val intent = Intent(android.content.Intent.ACTION_SEND)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+        val chooser = Intent.createChooser(intent, "친구에게 공유하기")
+        startActivity(chooser)
+    }
 }
+

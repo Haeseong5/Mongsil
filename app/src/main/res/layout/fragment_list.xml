@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="com.cashproject.mongsil.ui.pages.calendar.ListFragment" />
+        <variable
+            name="flag"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,12 +22,14 @@
             android:id="@+id/rv_calendar_day_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            tools:visibility="gone"
+            android:visibility="@{flag ? View.VISIBLE : View.GONE}"
             android:orientation="vertical"/>
         <com.cashproject.mongsil.ui.pages.calendar.custom.CalendarView
             android:id="@+id/custom_calendar_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="@{flag ? View.GONE : View.VISIBLE}"
             android:padding="@dimen/margin16"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,9 +39,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/colorYellow"
+            android:src="@{flag ? @drawable/ic_calendar : @drawable/ic_list}"
             app:fabSize="normal"
-            android:src="@drawable/ic_list"
             app:borderWidth="0dp"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:contentDescription="calendarOrList" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -79,6 +79,8 @@ class SayingBottomSheetFragment(private val date: Date) : BottomSheetDialogFragm
         }
         binding.ivSayingShare.setOnClickListener {
             shareBtnListener?.invoke()
+            dismiss()
+
         }
     }
 

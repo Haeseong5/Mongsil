@@ -17,6 +17,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.databinding.adapters.ProgressBarBindingAdapter
 import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -26,6 +28,8 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     lateinit var binding: T
 
     abstract val viewModel: R
+
+    lateinit var viewModelFactory: ViewModelFactory
 
     abstract val layoutResourceId: Int
 
@@ -39,6 +43,8 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         d(TAG, "onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         progressDialog = AppCompatDialog(requireContext())
+        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
+
         initStartView()
         return binding.root
     }

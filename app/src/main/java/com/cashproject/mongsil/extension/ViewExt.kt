@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.File.separator
 import java.io.FileOutputStream
@@ -66,7 +67,6 @@ fun Bitmap.saveImage(context: Context): Uri? {
     return null
 }
 
-
 fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
     if (outputStream != null) {
         try {
@@ -76,4 +76,16 @@ fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
             e.printStackTrace()
         }
     }
+}
+
+fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
+    val bytes = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+    val path: String = MediaStore.Images.Media.insertImage(
+        context.contentResolver,
+        bitmap,
+        "mongsil",
+        null
+    )
+    return Uri.parse(path)
 }

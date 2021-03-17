@@ -23,16 +23,21 @@ import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 /**
  * Factory for ViewModels
  */
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val localDataSource: LocalDataSource) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LockerViewModel::class.java)) {
-            return LockerViewModel(localDataSource) as T
-        }else if (modelClass.isAssignableFrom(SayingViewModel::class.java)) {
-            return SayingViewModel(localDataSource) as T
-        }else if (modelClass.isAssignableFrom(CalendarViewModel::class.java)) {
-            return CalendarViewModel(localDataSource) as T
+        return when {
+            modelClass.isAssignableFrom(LockerViewModel::class.java) -> {
+                LockerViewModel(localDataSource) as T
+            }
+            modelClass.isAssignableFrom(SayingViewModel::class.java) -> {
+                SayingViewModel(localDataSource) as T
+            }
+            modelClass.isAssignableFrom(CalendarViewModel::class.java) -> {
+                CalendarViewModel(localDataSource) as T
+            }
+            else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

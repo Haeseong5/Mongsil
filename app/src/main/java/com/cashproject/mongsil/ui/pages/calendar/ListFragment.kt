@@ -3,7 +3,6 @@ package com.cashproject.mongsil.ui.pages.calendar
 import android.content.Context
 import android.util.Log
 import android.util.Log.d
-import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -25,56 +24,24 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_list
 
-    private lateinit var viewModelFactory: ViewModelFactory
-
     override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
 
     private val dayAdapter by lazy {
         SayingAdapter(SayingCase.LIST)
     }
 
-    var flag :Boolean = true
+    var flag :Boolean = false //false: CalendarView, true: RecyclerView
 
     override fun initStartView() {
-//        binding.lifecycleOwner = this
-        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
-
-        binding.fabCalendarFloatingActionButton.setOnClickListener {
-            when(flag){
-                false -> {
-                    binding.rvCalendarDayList.visibility = View.GONE
-                    binding.customCalendarView.visibility = View.VISIBLE
-                    binding.fabCalendarFloatingActionButton.setImageResource(R.drawable.ic_list)
-                    viewModel.getAllComments()
-                    flag = true
-                }
-                true -> {
-                    binding.rvCalendarDayList.visibility = View.VISIBLE
-                    binding.customCalendarView.visibility = View.GONE
-                    binding.fabCalendarFloatingActionButton.setImageResource(R.drawable.ic_calendar)
-                    flag = false
-                }
-            }
-        }
-
-        binding.customCalendarView.setOnDayClickListener {
-            d("day click", it.toString())
-            if (it.comments.isEmpty()){
-
-            } else{
-                findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId))
-            }
-        }
-
-        initDayRecyclerView()
+        initRecyclerView()
+        initClickListener()
         viewModel.getData()
         viewModel.getAllComments()
-        observerData()
-
+        observeData()
     }
 
 
-    private fun initDayRecyclerView() {
+    private fun initRecyclerView() {
         binding.rvCalendarDayList.apply {
             layoutManager = LinearLayoutManager(
                 context,
@@ -84,19 +51,40 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
             setHasFixedSize(true)
             adapter = dayAdapter
         }
+    }
+
+    private fun initClickListener(){
+        binding.fabCalendarFloatingActionButton.setOnClickListener {
+            flag = when(flag){
+                false -> true
+                true -> { viewModel.getAllComments()
+                    false
+                }
+            }
+            binding.flag = flag
+        }
+
+        binding.customCalendarView.setOnDayClickListener {
+            if (it.comments.isEmpty()){
+
+            } else{
+                findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId))
+            }
+        }
+
         dayAdapter.setOnItemClickListener {
             findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
         }
     }
 
-    private fun observerData() {
+    private fun observeData() {
+
         viewModel.sayingData.observe(viewLifecycleOwner, Observer {
             dayAdapter.setItems(it as ArrayList<Saying>)
-            Log.d("observe dATA", it.toString())
         })
+
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             binding.customCalendarView.notifyDataChanged(it)
-            Log.d(TAG, it.toString())
         })
     }
 

@@ -40,7 +40,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     override val viewModel: LockerViewModel by viewModels { viewModelFactory }
 
-    private lateinit var viewModelFactory: ViewModelFactory
 
     private val lockerAdapter: LockerAdapter by lazy {
         LockerAdapter()
@@ -53,31 +52,21 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     }
 
     override fun initStartView() {
-        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
-        viewModel.getAllLike()
         initToolbar()
         initRecyclerView()
-
-        viewModel.likeData.observe(viewLifecycleOwner, Observer {
-            lockerAdapter.update(it as ArrayList<Saying>)
-        })
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.getAllLike()
+        observeData()
     }
 
 
-    private fun initToolbar(){
+    private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
 
         (activity as AppCompatActivity).actionBar?.title = "보관함"
 
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         binding.rvLockerList.apply {
             layoutManager = GridLayoutManager(context, 3)
             setHasFixedSize(true)
@@ -87,6 +76,12 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         lockerAdapter.setOnItemClickListener {
             findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
         }
+    }
+
+    private fun observeData(){
+        viewModel.likeData.observe(viewLifecycleOwner, Observer {
+            lockerAdapter.update(it as ArrayList<Saying>)
+        })
     }
 
     private fun showBottomListDialog() {
@@ -101,22 +96,24 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
     }
 
-    private fun setAlarm(hour:Int, minute:Int){
+    private fun setAlarm(hour: Int, minute: Int) {
         val alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
 
-        val intent = Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
+        val intent =
+            Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
         val pendingIntent = PendingIntent.getBroadcast(     // 2
-                activity,
-                AlarmReceiver.NOTIFICATION_ID,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
-            )
+            activity,
+            AlarmReceiver.NOTIFICATION_ID,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
+        )
 
-        val calendar: Calendar = Calendar.getInstance().apply { // 3. Calendar 객체를 생성하여 알람이 울릴 정확한 시간을 설정합니다.
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, hour)
-            set(Calendar.MINUTE, minute)
-        }
+        val calendar: Calendar =
+            Calendar.getInstance().apply { // 3. Calendar 객체를 생성하여 알람이 울릴 정확한 시간을 설정합니다.
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, hour)
+                set(Calendar.MINUTE, minute)
+            }
 
 //        alarmManager.setInexactRepeating( //Android는 여러 개의 부정확한 반복 알람을 동기화하고 동시에 실행합니다. 이렇게 하면 배터리 소모를 줄일 수 있습니다.
 //                AlarmManager.RTC_WAKEUP,
@@ -126,7 +123,11 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 //        )
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
             else -> alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
 
@@ -148,4 +149,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllLike()
+    }
 }
