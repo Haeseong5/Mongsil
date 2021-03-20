@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+
 //FragmentActivity는 Activity의 하위 클래스
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
     val TAG: String = this.javaClass.simpleName
@@ -47,9 +49,20 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "onCleared()")
+        Log.d(TAG, "onDestroy()")
 
         compositeDisposable.dispose()
         super.onDestroy()
+    }
+
+    override fun onPause() {
+        Log.d(TAG, "onPause()")
+
+        compositeDisposable.dispose()
+        super.onPause()
+    }
+
+    fun addDisposable(disposable: Disposable){
+        compositeDisposable.add(disposable)
     }
 }

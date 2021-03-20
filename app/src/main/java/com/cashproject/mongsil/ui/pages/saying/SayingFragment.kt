@@ -226,7 +226,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         //게임에서 다음 레벨로 넘어갈 때 또는 작업을 완료한 직후가 광고를 게재하기 좋은 시점
         // Create the InterstitialAd and set it up.
         mInterstitialAd = InterstitialAd(requireActivity())
-        mInterstitialAd.adUnitId = "ca-app-pub-1939032811151400/1834551535"
+        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // my id = ca-app-pub-1939032811151400/1834551535
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = (
@@ -244,6 +244,8 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
                     override fun onAdClosed() {
                         Toast.makeText(requireActivity(), "onAdClosed()", Toast.LENGTH_SHORT).show()
+                        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
                     }
                 }
             )
