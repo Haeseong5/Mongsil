@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
+import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
@@ -53,7 +55,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createAd()
-
     }
 
     override fun initStartView() {
@@ -81,6 +82,9 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         } else { //처음 실행했을 경우
             viewModel.getTodayData()
         }
+
+        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon
+        )
     }
 
     private fun initRecyclerView() {
@@ -109,21 +113,22 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         }
 
         binding.tvSayingCommentBtn.setOnClickListener {
-            if (binding.etSayingCommentInput.text.isNullOrBlank()) {
-                activity?.showToast("일기를 입력해주세요.")
-            } else {
-                viewModel.insertComment(
-                    Comment(
-                        docId = mSaying.docId,
-                        content = binding.etSayingCommentInput.text.toString(),
-                        time = Date(),
-                        date = mSaying.date,
-                        emotion = selectedEmoticonId
+            viewModel.insertComment(
+                Comment(
+                    docId = mSaying.docId,
+                    content = binding.etSayingCommentInput.text.toString(),
+                    time = Date(),
+                    date = mSaying.date,
+                    emotion = selectedEmoticonId
 
-                    )
                 )
-                binding.etSayingCommentInput.text?.clear()
-            }
+            )
+            binding.etSayingCommentInput.text?.clear()
+//            if (binding.etSayingCommentInput.text.isNullOrBlank()) {
+//                activity?.showToast("일기를 입력해주세요.")
+//            } else {
+//
+//            }
         }
     }
 
