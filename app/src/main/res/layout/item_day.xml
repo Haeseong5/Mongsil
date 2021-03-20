@@ -20,46 +20,78 @@
             android:scaleType="centerCrop"
             android:background="@color/grey_light"
             bindImage="@{saying.image}"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/margin20"
             android:layout_marginBottom="@dimen/margin16"
-            android:layout_marginStart="@dimen/margin20">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
             <TextView
                 android:id="@+id/tv_day_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/dimen30"
                 android:padding="6dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:text="30"
                 android:textColor="@color/white"
-                android:text="30"/>
+                android:textSize="@dimen/dimen30"
+                style="@style/LatoTextStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tv_day_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="2021"
+                android:textColor="@color/white"
+                style="@style/LatoTextStyle"
+
+                app:layout_constraintBottom_toTopOf="@id/tv_day_month"
                 app:layout_constraintStart_toEndOf="@id/tv_day_date"
                 app:layout_constraintTop_toTopOf="@id/tv_day_date"
-                app:layout_constraintBottom_toTopOf="@id/tv_day_month"
-                app:layout_constraintVertical_chainStyle="packed"
-                android:textColor="@color/white"
-                android:text="2021"/>
+                app:layout_constraintVertical_chainStyle="packed" />
+
             <TextView
                 android:id="@+id/tv_day_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_day_year"
                 android:layout_toEndOf="@+id/tv_day_date"
-                app:layout_constraintStart_toEndOf="@id/tv_day_date"
-                app:layout_constraintTop_toBottomOf="@id/tv_day_year"
-                app:layout_constraintBottom_toBottomOf="@id/tv_day_date"
-                android:textColor="@color/white"
                 android:text="October"
-                android:layout_below="@id/tv_day_year"/>
+                android:textColor="@color/white"
+                style="@style/LatoTextStyle"
+
+                app:layout_constraintBottom_toBottomOf="@id/tv_day_date"
+                app:layout_constraintStart_toEndOf="@id/tv_day_date"
+                app:layout_constraintTop_toBottomOf="@id/tv_day_year" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/iv_comment_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            tools:src="@drawable/ic_comment"
+            android:layout_marginEnd="@dimen/margin8"
+            app:layout_constraintBottom_toBottomOf="@id/tv_comment_number"
+            app:layout_constraintTop_toTopOf="@id/tv_comment_number"
+            app:layout_constraintEnd_toStartOf="@id/tv_comment_number" />
+
+        <TextView
+            android:id="@+id/tv_comment_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin20"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
+            tools:text="13" />
     </com.cashproject.mongsil.util.SquareLayout>
 </layout>

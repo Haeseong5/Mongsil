@@ -3,7 +3,9 @@ package com.cashproject.mongsil.ui.dialog.emoticon
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ItemEmoticonBinding
 import com.cashproject.mongsil.model.data.Emoticon
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
@@ -36,8 +38,9 @@ class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
             binding.emoticon = item
 
             binding.ivEmoticonIcon.setImageResource(item.icon)
-            binding.ivEmoticonBackground.setBackgroundColor(itemView.context.resources.getColor(item.background))
-            binding.tvEmoticonEmotion.setTextColor(itemView.context.resources.getColor(item.textColor))
+
+            binding.ivEmoticonBackground.setBackgroundColor(ContextCompat.getColor(itemView.context, item.background))
+            binding.tvEmoticonEmotion.setTextColor(ContextCompat.getColor(itemView.context, item.textColor))
 
 
             binding.root.setOnClickListener {

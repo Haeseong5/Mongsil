@@ -15,14 +15,24 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:statusBarColor">@android:color/darker_gray</item>
         <!--마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원-->
-        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
-        <!-- Customize your theme here. -->
+        <!--custom font-family 적용-->
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+
     </style>
     <style name="TextViewStyle1">
         <item name="android:textSize">@dimen/dimen26</item>
     </style>
+
+    <style name="LatoTextStyle">
+        <item name="android:fontFamily">@font/font_lato</item>
+    </style>
+
     <style name="DatePickerStyle">
         <item name="colorControlNormal">@color/colorYellow</item>
     </style>
