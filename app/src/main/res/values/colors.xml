@@ -19,10 +19,36 @@
     <color name="colorYellow">#fdca42</color>
 
     <!--Emoticon-->
-    <color name="emoticon_happy_text">#dcc75a</color>
-    <color name="emoticon_happy_background">#fff9da</color>
+    <color name="emoticon_01_happy_text">#dcc75a</color>
+    <color name="emoticon_01_happy_background">#fff9da</color>
 
-    <color name="emoticon_enjoy_text">#db8fbd</color>
-    <color name="emoticon_enjoy_background">#ffecf7</color>
+    <color name="emoticon_02_enjoy_text">#db8fbd</color>
+    <color name="emoticon_02_enjoy_background">#ffecf7</color>
+    <color name="emoticon_03_satisfied_text">#dc8d6c</color>
+    <color name="emoticon_03_satisfied_background">#ffe4d9</color>
+    <color name="emoticon_04_normal_text">#d78787</color>
+    <color name="emoticon_04_normal_background">#ffe8e8</color>
+    <color name="emoticon_05_tired_background">#e5e8ff</color>
+    <color name="emoticon_05_tired_text">#9197d2</color>
+    <color name="emoticon_08_angry_text">#cd5454</color>
+    <color name="emoticon_08_angry_background">#ffdbdb</color>
+    <color name="emoticon_07_boring_text">#527e57</color>
+    <color name="emoticon_07_boring_background">#cce5ce</color>
+    <color name="emoticon_10_disappoint_background">#d3d5e3</color>
+    <color name="emoticon_10_disappoint_text">#454d7a</color>
+    <color name="emoticon_11_unrest_background">#dddddd</color>
+    <color name="emoticon_11_unrest_text">#555454</color>
+    <color name="emoticon_12_depressed_text">#8f6b5b</color>
+    <color name="emoticon_12_depressed_background">#f0dad1</color>
+    <color name="emoticon_13_sad_background">#ccdbe0</color>
+    <color name="emoticon_13_sad_text">#465761</color>
+    <color name="emoticon_14_surprise_background">#ecf1da</color>
+    <color name="emoticon_14_surprise_text">#889456</color>
+    <color name="emoticon_15_lonely_text">#7b9a9b</color>
+    <color name="emoticon_15_lonely_background">#ddebec</color>
+    <color name="emoticon_09_discomfort_text">#9e9896</color>
+    <color name="emoticon_09_discomfort_background">#efebea</color>
+    <color name="emoticon_06_shame_background">#ffecc9</color>
+    <color name="emoticon_06_shame_text">#d9ad58</color>
 
 </resources>

@@ -145,4 +145,9 @@ dependencies {
     // FirebaseUI Storage only
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
 
+    implementation 'com.google.android.gms:play-services-ads:19.8.0'
+    implementation 'com.google.firebase:firebase-ads:19.8.0'
+    implementation 'com.google.android.gms:play-services-basement:17.6.0'
+
+
 }

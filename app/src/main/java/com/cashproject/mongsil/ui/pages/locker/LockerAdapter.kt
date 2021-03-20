@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.locker
 
 import android.util.Log
+import android.util.Log.v
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +10,7 @@ import com.cashproject.mongsil.databinding.ItemLockerBinding
 import com.cashproject.mongsil.model.data.Saying
 
 class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
-
+    private val TAG = this.javaClass.simpleName
     private var items: ArrayList<Saying> = ArrayList()
 
     private var listener: ((item: Saying) -> Unit)? = null
@@ -20,7 +21,7 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
     fun update(newItemList: List<Saying>) {
         val diffResult = DiffUtil.calculateDiff(ContentDiffUtil(items, newItemList), false)
-        diffResult.dispatchUpdatesTo(this)
+        diffResult.dispatchUpdatesTo(this) //Dispatches the update events to the given adapter. 주어진 어댑터에 변경사항을 전달한다.
         items.clear()
         items.addAll(newItemList)
     }
@@ -29,12 +30,14 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: LockerAdapter.ViewHolder, position: Int) {
         holder.bindView(items[position])
-        Log.d("Locker", items[position].toString())
+        v(TAG, "onBindViewHolder")
+//        Log.d(TAG, items[position].toString())
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
-     = ViewHolder(ItemLockerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
+        v(TAG, "onCreateViewHolder")
+        return ViewHolder(ItemLockerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
 
     inner class ViewHolder(private val binding: ItemLockerBinding) : RecyclerView.ViewHolder(binding.root){
 

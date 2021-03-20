@@ -2,7 +2,6 @@ package com.cashproject.mongsil.ui.pages.locker
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
@@ -10,9 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.AlarmManagerCompat.setExactAndAllowWhileIdle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,14 +17,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
-import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.receiver.AlarmReceiver
-import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.cashproject.mongsil.util.PreferencesManager
 import java.util.*
 import androidx.lifecycle.Observer
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
 import com.cashproject.mongsil.viewmodel.LockerViewModel
 
 import kotlin.collections.ArrayList
@@ -85,7 +81,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     }
 
     private fun showBottomListDialog() {
-        val bottomSheetDiaryListFragment = DiaryListBottomSheetFragment()
+        val bottomSheetDiaryListFragment =
+            DiaryListBottomSheetFragment()
         bottomSheetDiaryListFragment.show(childFragmentManager, "approval")
         bottomSheetDiaryListFragment.setCheckBtnOnClickListener { hour, minute ->
             activity?.showToast("매일 ${hour}시 ${minute}분에 푸시메세지가 전송됩니다!")

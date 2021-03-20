@@ -1,13 +1,12 @@
 package com.cashproject.mongsil.ui.pages.saying
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,11 +19,16 @@ import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.CheckDialog
+import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 import com.cashproject.mongsil.util.ClickUtil
+import com.cashproject.mongsil.util.PreferencesManager
+import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
 import com.cashproject.mongsil.viewmodel.SayingViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.LoadAdError
 import java.util.*
 
 
@@ -37,17 +41,19 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     private lateinit var mSaying: Saying
 
-    private var mEmoticonId: Int = 0
-
     private val click by lazy { ClickUtil(this.lifecycle) }
 
     private val commentAdapter: CommentAdapter by lazy {
         CommentAdapter()
     }
 
+    //adMob
+    private lateinit var mInterstitialAd: InterstitialAd
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFullView()
+        createAd()
+
     }
 
     override fun initStartView() {
@@ -92,7 +98,7 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         //button click listener
         binding.ivSayingBackgroundImage.setOnClickListener {
             click.run {
-                showBottomListDialog() //다이어로그 중복생성 방지
+                showBottomMenuDialog() //다이어로그 중복생성 방지
             }
         }
 
@@ -112,7 +118,8 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                         content = binding.etSayingCommentInput.text.toString(),
                         time = Date(),
                         date = mSaying.date,
-                        emotion = mEmoticonId
+                        emotion = selectedEmoticonId
+
                     )
                 )
                 binding.etSayingCommentInput.text?.clear()
@@ -137,32 +144,16 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                 viewModel.getComments(mSaying.docId)
             }
         })
+
     }
 
-    private fun showEmoticonBottomSheet() {
-        val bottomSheetFragment = EmoticonDialog()
-        bottomSheetFragment.show(childFragmentManager, "approval")
-        bottomSheetFragment.setEmoticonBtnClickListener {
-            mEmoticonId = it.id
-            binding.ivSayingEmoticon.setImageResource(it.icon)
-            bottomSheetFragment.dismiss()
-        }
-    }
-
-    private fun showBottomListDialog() {
-        val bottomSheetFragment = SayingBottomSheetFragment(mSaying.date)
+    private fun showBottomMenuDialog() {
+        val bottomSheetFragment =
+            MenuBottomSheetFragment(mSaying)
         bottomSheetFragment.show(childFragmentManager, "approval")
 
         bottomSheetFragment.setLikeBtnOnClickListener {
-            addDisposable(
-                viewModel.like(mSaying).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        bottomSheetFragment.dismiss()
-                        Log.d(TAG, "success insertion")
-                    },
-                        { error -> Log.e(TAG, "Unable to update username", error) })
-            )
+
         }
 
         bottomSheetFragment.setSaveBtnOnClickListener {
@@ -171,7 +162,6 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             val imageUri = bitmap.bitmap.saveImage(requireActivity())
 
             if (imageUri != null) {
-                d("imageUri", imageUri.toString())
                 activity?.showToast("갤러리에 이미지가 저장되었습니다.")
             } else {
                 activity?.showToast("저장 실패")
@@ -179,15 +169,30 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         }
 
         bottomSheetFragment.setHideCommentBtnOnClickListener {
-            if (binding.rvSayingCommentList.visibility == View.GONE) {
+            if (PreferencesManager.isVisibilityComment)
                 binding.rvSayingCommentList.visibility = View.VISIBLE
-            } else {
+            else
                 binding.rvSayingCommentList.visibility = View.GONE
-            }
+            bottomSheetFragment.setCommentIcon()
         }
 
         bottomSheetFragment.setShareBtnOnClickListener {
             shareToSNS()
+        }
+    }
+
+    private fun showEmoticonBottomSheet() {
+        val bottomSheetFragment = EmoticonDialog()
+        bottomSheetFragment.show(childFragmentManager, "approval")
+        bottomSheetFragment.setEmoticonBtnClickListener {
+            selectedEmoticonId = it.id
+            binding.ivSayingEmoticon.setImageResource(it.icon)
+            bottomSheetFragment.dismiss()
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            } else {
+                Log.d("TAG", "The interstitial wasn't loaded yet.");
+            }
         }
     }
 
@@ -209,6 +214,35 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         intent.putExtra(Intent.EXTRA_STREAM, imageUri)
         val chooser = Intent.createChooser(intent, "친구에게 공유하기")
         startActivity(chooser)
+    }
+
+    private fun createAd(){
+        d("creatAD", "createAd")
+        //게임에서 다음 레벨로 넘어갈 때 또는 작업을 완료한 직후가 광고를 게재하기 좋은 시점
+        // Create the InterstitialAd and set it up.
+        mInterstitialAd = InterstitialAd(requireActivity())
+        mInterstitialAd.adUnitId = "ca-app-pub-1939032811151400/1834551535"
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd.adListener = (
+                object : AdListener() {
+                    override fun onAdLoaded() {
+                        Toast.makeText(requireActivity(), "onAdLoaded()", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                        val error = "domain: ${loadAdError.domain}, code: ${loadAdError.code}, " +
+                                "message: ${loadAdError.message}"
+
+                        d("onAdFailedToLoad", error)
+                    }
+
+                    override fun onAdClosed() {
+                        Toast.makeText(requireActivity(), "onAdClosed()", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            )
+
     }
 }
 

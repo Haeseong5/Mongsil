@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
 import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
+import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
@@ -31,6 +32,10 @@ class SayingViewModel(
         get() = _commentData
 
     val isCompletable = MutableLiveData<Boolean>(false)
+
+    private val _isLike = MutableLiveData<Boolean>()
+    val isLike: LiveData<Boolean>
+        get() = _isLike
 
     val db by lazy {
         Firebase.firestore
@@ -75,8 +80,48 @@ class SayingViewModel(
             }
     }
 
-    fun like(saying: Saying): Completable {
-        return localDataSource.insertLikeSaying(saying = saying)
+    fun like(saying: Saying) {
+        addDisposable(
+            localDataSource.insertLikeSaying(saying = saying)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.i(TAG, "success insertion")
+                    _isLike.postValue(true)
+                },
+                    { error -> Log.e(TAG, "Unable to update username", error) }
+                )
+        )
+    }
+
+    fun unLike(docId: String) {
+        addDisposable(localDataSource.deleteLikeSayingByDocId(docId = docId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.i(TAG, "success unlike")
+//                _isLike.postValue(false)
+            },
+                { error -> Log.e(TAG, "Unable to update username", error) }
+            )
+        )
+    }
+
+
+    fun findByDocId(docId: String) {
+        addDisposable(
+            localDataSource.findByDocId(docId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError {
+                    it.printStackTrace()
+                }
+                .subscribe(
+                    { _isLike.postValue(true) },
+                    { error -> Log.e(TAG, "Unable to update username", error) },
+                    { _isLike.postValue(false) }
+                )
+        )
     }
 
     fun getComments(docId: String) {
@@ -105,7 +150,7 @@ class SayingViewModel(
         )
     }
 
-    fun deleteCommentById(id: Int){
+    fun deleteCommentById(id: Int) {
         addDisposable(
             localDataSource.deleteCommentById(id)
                 .observeOn(Schedulers.io())

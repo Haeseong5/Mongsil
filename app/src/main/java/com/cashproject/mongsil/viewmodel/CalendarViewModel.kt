@@ -66,4 +66,5 @@ class CalendarViewModel(private val localDataSource: LocalDataSource): BaseViewM
                 })
         )
     }
+
 }

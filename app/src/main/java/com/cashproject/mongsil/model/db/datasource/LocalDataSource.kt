@@ -5,6 +5,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.dao.CommentDao
 import com.cashproject.mongsil.model.db.dao.LockerDao
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 class LocalDataSource(private val commentDao: CommentDao, private val lockerDao: LockerDao) {
@@ -32,7 +33,7 @@ class LocalDataSource(private val commentDao: CommentDao, private val lockerDao:
         return lockerDao.getAll()
     }
 
-    fun findByDocId(docId: String): Single<List<Saying>>{
+    fun findByDocId(docId: String): Maybe<Saying>{
         return lockerDao.findByDocId(docId)
     }
 

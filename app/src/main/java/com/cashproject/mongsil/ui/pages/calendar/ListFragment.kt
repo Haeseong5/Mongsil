@@ -30,7 +30,7 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         SayingAdapter(SayingCase.LIST)
     }
 
-    var flag :Boolean = false //false: CalendarView, true: RecyclerView
+    var flag: Boolean = false //false: CalendarView, true: RecyclerView
 
     override fun initStartView() {
         initRecyclerView()
@@ -49,15 +49,17 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
                 false
             )
             setHasFixedSize(true)
+            setItemViewCacheSize(10)
             adapter = dayAdapter
         }
     }
 
-    private fun initClickListener(){
+    private fun initClickListener() {
         binding.fabCalendarFloatingActionButton.setOnClickListener {
-            flag = when(flag){
+            flag = when (flag) {
                 false -> true
-                true -> { viewModel.getAllComments()
+                true -> {
+                    viewModel.getAllComments()
                     false
                 }
             }
@@ -65,10 +67,13 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         }
 
         binding.customCalendarView.setOnDayClickListener {
-            if (it.comments.isEmpty()){
+            if (it.comments.isEmpty()) {
 
-            } else{
-                findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId))
+            } else {
+                findNavController().navigate(
+                    R.id.action_pager_to_home,
+                    bundleOf("docId" to it.comments[0].docId)
+                )
             }
         }
 
