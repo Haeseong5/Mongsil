@@ -8,8 +8,11 @@ import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
+import com.jakewharton.rxbinding3.view.clicks
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.io.ByteArrayOutputStream
@@ -17,6 +20,7 @@ import java.io.File
 import java.io.File.separator
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.util.concurrent.TimeUnit
 
 fun showSnack(view: View, msg : String){
     Snackbar.make(view, msg, Snackbar.LENGTH_LONG).setAction("RETRY",null).show()
@@ -89,3 +93,13 @@ fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
     )
     return Uri.parse(path)
 }
+
+/**
+ * RxBinding의 Throttle 기능 사용하는 Button 함수
+ * @param throttleSecond 해당 시간동안 중복 클릭 방지 (기본으로 1초)
+ * @param subscribe 클릭 리스너 정의
+ */
+fun Button.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = null) = clicks()
+    .throttleFirst(throttleSecond, TimeUnit.SECONDS)
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe { subscribe?.invoke() }
