@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin8"
+
             android:src="@drawable/emoticon_01_happy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,6 +39,8 @@
             android:layout_height="wrap_content"
             tools:text="오전 4시 20분"
             android:layout_marginStart="@dimen/margin8"
+            android:textSize="16sp"
+
             android:textColor="@color/colorYellow"
             app:layout_constraintTop_toTopOf="@id/comment_iv_emoticon"
             app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"
@@ -50,6 +53,7 @@
             android:layout_height="wrap_content"
             android:text="@{comment.content}"
             android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

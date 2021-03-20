@@ -77,12 +77,11 @@ class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<S
         fun bindView(item: Saying) {
             binding.saying = item
 
-            val dateArray = item.date?.let { DateUtil.dateToStringArray(it) }
-            if (dateArray != null){
-                binding.tvDayYear.text = dateArray[0]
-                binding.tvDayMonth.text = dateArray[1]
-                binding.tvDayDate.text = dateArray[2]
-            }
+            val dateArray = item.date.let { DateUtil.dateToStringArray(it) }
+            binding.tvDayYear.text = dateArray[0]
+            binding.tvDayMonth.text = dateArray[1]
+            binding.tvDayDate.text = dateArray[2]
+
 
             binding.root.setOnClickListener {
                 listener?.invoke(item) //익명함수 호출
