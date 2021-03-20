@@ -83,8 +83,8 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             viewModel.getTodayData()
         }
 
-        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon
-        )
+        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+        d(TAG, emoticons[selectedEmoticonId].emotion + "이모티콘")
     }
 
     private fun initRecyclerView() {
