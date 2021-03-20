@@ -7,17 +7,17 @@ import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
 import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
-import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class SayingViewModel(
     private val localDataSource: LocalDataSource
@@ -41,14 +41,14 @@ class SayingViewModel(
         Firebase.firestore
     }
 
-    fun getTodayData() {
+    fun getLatestData() {
         db.collection(COLLECTION)
             .orderBy(DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
             .limit(1)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    d("GetToday", "${document.id} => ${document.data}")
+//                    d("getLatestData", "${document.id} => ${document.data}")
                     val saying = document.toObject<Saying>().apply {
                         docId = document.id
                     }
@@ -60,12 +60,38 @@ class SayingViewModel(
             }
     }
 
+    fun getTodayData() {
+//        Timestamp(Date())
+        val currentDate = Timestamp.now() // Firebase Date as Timestamp
+
+        db.collection(COLLECTION)
+            .whereLessThan(DATE, currentDate) //오늘 날짜 명언 가져오기
+            .limit(1)
+            .orderBy(DATE, Query.Direction.DESCENDING) //
+            .get()
+            .addOnSuccessListener { documents ->
+                d("getTodayData", "Today Data ")
+                if (documents.size() == 0){
+                    getLatestData()
+                }
+                for (document in documents) {
+                    val saying = document.toObject<Saying>().apply {
+                        docId = document.id
+                    }
+                    _todayData.postValue(saying)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting today documents: ", exception)
+            }
+    }
+
     fun getSayingData(docId: String) {
         db.collection(COLLECTION).document(docId)
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    d(TAG, "DocumentSnapshot data: ${document.data}")
+//                    d(TAG, "DocumentSnapshot data: ${document.data}")
                     val saying = document.toObject<Saying>().apply {
                         this?.docId = document.id
                     }
