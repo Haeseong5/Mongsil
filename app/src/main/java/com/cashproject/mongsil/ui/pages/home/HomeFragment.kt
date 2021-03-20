@@ -1,10 +1,11 @@
-package com.cashproject.mongsil.ui.pages.saying
+package com.cashproject.mongsil.ui.pages.home
 
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
+import android.util.Log.i
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -33,7 +34,7 @@ import com.google.android.gms.ads.LoadAdError
 import java.util.*
 
 
-class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
+class HomeFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_saying
@@ -82,8 +83,11 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
             viewModel.getTodayData()
         }
 
+        d(TAG, selectedEmoticonId.toString() )
+        if (selectedEmoticonId > 14){
+            selectedEmoticonId = 0
+        }
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
-        d(TAG, emoticons[selectedEmoticonId].emotion + "이모티콘")
     }
 
     private fun initRecyclerView() {
@@ -157,12 +161,13 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         bottomSheetFragment.show(childFragmentManager, "approval")
 
         bottomSheetFragment.setLikeBtnOnClickListener {
-
+            showAdMob()
         }
 
         bottomSheetFragment.setSaveBtnOnClickListener {
             //bitmap
             val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+            showAdMob()
             val imageUri = bitmap.bitmap.saveImage(requireActivity())
 
             if (imageUri != null) {
@@ -191,12 +196,8 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         bottomSheetFragment.setEmoticonBtnClickListener {
             selectedEmoticonId = it.id
             binding.ivSayingEmoticon.setImageResource(it.icon)
+            showAdMob()
             bottomSheetFragment.dismiss()
-            if (mInterstitialAd.isLoaded()) {
-                mInterstitialAd.show();
-            } else {
-                Log.d("TAG", "The interstitial wasn't loaded yet.");
-            }
         }
     }
 
@@ -220,6 +221,13 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         startActivity(chooser)
     }
 
+    private fun showAdMob(){
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show();
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
+        }
+    }
     private fun createAd(){
         d("creatAD", "createAd")
         //게임에서 다음 레벨로 넘어갈 때 또는 작업을 완료한 직후가 광고를 게재하기 좋은 시점
@@ -231,14 +239,15 @@ class SayingFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         mInterstitialAd.adListener = (
                 object : AdListener() {
                     override fun onAdLoaded() {
-                        Toast.makeText(requireActivity(), "onAdLoaded()", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireActivity(), "onAdLoaded()", Toast.LENGTH_SHORT).show()
+                        i("onAdFailedToLoad", "onAdLoaded()")
                     }
 
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         val error = "domain: ${loadAdError.domain}, code: ${loadAdError.code}, " +
                                 "message: ${loadAdError.message}"
 
-                        d("onAdFailedToLoad", error)
+                        i("onAdFailedToLoad", error)
                     }
 
                     override fun onAdClosed() {

@@ -41,7 +41,7 @@ class SayingViewModel(
         Firebase.firestore
     }
 
-    fun getLatestData() {
+    private fun getLatestData() {
         db.collection(COLLECTION)
             .orderBy(DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
             .limit(1)
@@ -65,9 +65,9 @@ class SayingViewModel(
         val currentDate = Timestamp.now() // Firebase Date as Timestamp
 
         db.collection(COLLECTION)
-            .whereLessThan(DATE, currentDate) //오늘 날짜 명언 가져오기
+            .whereLessThan(DATE, currentDate)            //오늘 날짜 명언 가져오기
             .limit(1)
-            .orderBy(DATE, Query.Direction.DESCENDING) //
+            .orderBy(DATE, Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documents ->
                 d("getTodayData", "Today Data ")

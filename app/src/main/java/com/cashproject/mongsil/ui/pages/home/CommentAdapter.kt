@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.saying
+package com.cashproject.mongsil.ui.pages.home
 
 import android.util.Log
 import android.util.Log.d

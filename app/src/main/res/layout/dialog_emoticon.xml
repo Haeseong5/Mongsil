@@ -37,18 +37,18 @@
             android:scrollbars="none"
             android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/btn_emoticon_select_button"
-            android:layout_width="180dp"
-            android:layout_height="56dp"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:text="감정 선택"
-            android:backgroundTint="@color/colorYellow"
-            android:background="@drawable/round_button_shape"
-            android:textStyle="bold"
-            android:textColor="#6d5107"/>
+<!--        <TextView-->
+<!--            android:id="@+id/btn_emoticon_select_button"-->
+<!--            android:layout_width="180dp"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_margin="20dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="감정 선택"-->
+<!--            android:backgroundTint="@color/colorYellow"-->
+<!--            android:background="@drawable/round_button_shape"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="#6d5107"/>-->
 
     </LinearLayout>
 </layout>

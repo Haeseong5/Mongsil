@@ -89,6 +89,8 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
         binding.ivSayingLike.setOnClickListener {
             if (mLike) viewModel.unLike(saying.docId)
             else viewModel.like(saying)
+
+            likeBtnListener?.invoke()
             dismiss()
         }
 

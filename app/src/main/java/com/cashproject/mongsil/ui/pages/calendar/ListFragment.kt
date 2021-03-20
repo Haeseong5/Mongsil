@@ -83,7 +83,6 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
     }
 
     private fun observeData() {
-
         viewModel.sayingData.observe(viewLifecycleOwner, Observer {
             dayAdapter.setItems(it as ArrayList<Saying>)
         })
@@ -94,8 +93,8 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
     }
 
     override fun onResume() {
-        super.onResume()
         viewModel.getAllComments()
+        super.onResume()
     }
 
 }

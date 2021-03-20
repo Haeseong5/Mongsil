@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/sayingFragment"
-        android:name="com.cashproject.mongsil.ui.pages.saying.SayingFragment"
+        android:name="com.cashproject.mongsil.ui.pages.home.HomeFragment"
         android:label="@string/saying"
         tools:layout="@layout/fragment_saying">
         <action

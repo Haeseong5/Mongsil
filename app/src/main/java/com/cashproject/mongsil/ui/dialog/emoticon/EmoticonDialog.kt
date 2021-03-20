@@ -53,9 +53,9 @@ class EmoticonDialog : DialogFragment() {
         binding.btnEmoticonCloseButton.setOnClickListener {
             dismiss()
         }
-        binding.btnEmoticonSelectButton.setOnClickListener {
-            dismiss()
-        }
+//        binding.btnEmoticonSelectButton.setOnClickListener {
+//            dismiss()
+//        }
 
         return binding.root
     }

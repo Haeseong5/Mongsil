@@ -1,9 +1,7 @@
 package com.cashproject.mongsil.ui.container
 
 import android.content.Context
-import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -11,13 +9,12 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.ui.pages.calendar.ListFragment
-import com.cashproject.mongsil.ui.pages.saying.SayingFragment
+import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
-import java.util.logging.Handler
 
 class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
@@ -34,7 +31,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() 
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(
             ListFragment(),
-            SayingFragment(),
+            HomeFragment(),
             LockerFragment()
         )
 
@@ -58,8 +55,6 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() 
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 Log.v(TAG, "backBtnSubject | onNext")
-                Toast.makeText(requireActivity(), "Please press back once more to exit", Toast.LENGTH_SHORT)
-                    .show()
             }
             .timeInterval(TimeUnit.MILLISECONDS)
             .skip(1)
