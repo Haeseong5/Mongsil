@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
+import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.pages.calendar.ListFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
@@ -74,6 +75,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 backBtnSubject.onNext(true)
+                activity?.showToast("뒤로가기를 한번 더 누르면 앱이 종료됩니다.")
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)

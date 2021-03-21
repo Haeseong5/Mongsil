@@ -17,5 +17,5 @@ data class Saying(
     @ColumnInfo var image: String,
     @ColumnInfo var date: Date) : Parcelable {
 
-    constructor(): this("", "", Date())
+    constructor(): this("", "defaultImageUrl", Date())
 }

@@ -117,22 +117,20 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
         }
 
         binding.tvSayingCommentBtn.setOnClickListener {
-            viewModel.insertComment(
-                Comment(
-                    docId = mSaying.docId,
-                    content = binding.etSayingCommentInput.text.toString(),
-                    time = Date(),
-                    date = mSaying.date,
-                    emotion = selectedEmoticonId
-
+            if (mSaying.docId != ""){
+                viewModel.insertComment(
+                    Comment(
+                        docId = mSaying.docId,
+                        content = binding.etSayingCommentInput.text.toString(),
+                        time = Date(),
+                        date = mSaying.date,
+                        emotion = selectedEmoticonId
+                    )
                 )
-            )
+            }else{
+                activity?.showToast("네트워크 연결상태를 확인해주세요.")
+            }
             binding.etSayingCommentInput.text?.clear()
-//            if (binding.etSayingCommentInput.text.isNullOrBlank()) {
-//                activity?.showToast("일기를 입력해주세요.")
-//            } else {
-//
-//            }
         }
     }
 
@@ -158,9 +156,12 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
     }
 
     private fun showBottomMenuDialog() {
-        val bottomSheetFragment =
-            MenuBottomSheetFragment(mSaying)
-        bottomSheetFragment.show(childFragmentManager, "approval")
+        val bottomSheetFragment = MenuBottomSheetFragment(mSaying)
+        if (mSaying.docId != ""){
+            bottomSheetFragment.show(childFragmentManager, "approval")
+        }else{
+            activity?.showToast("네트워크 연결상태를 확인해주세요.")
+        }
 
         bottomSheetFragment.setLikeBtnOnClickListener {
             showAdMob()
