@@ -9,8 +9,11 @@ import io.reactivex.subjects.BehaviorSubject
 open class BaseViewModel : ViewModel(){
 
     val TAG = this.javaClass.simpleName
+
     val errorSubject: BehaviorSubject<Throwable> = BehaviorSubject.create<Throwable>()
+
     val loadingSubject: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+
     private val compositeDisposable = CompositeDisposable()
 
     fun addDisposable(disposable: Disposable){

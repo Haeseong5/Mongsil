@@ -14,14 +14,14 @@ import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
-import com.cashproject.mongsil.viewmodel.SayingViewModel
+import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
 
-    private val viewModel: SayingViewModel by viewModels { viewModelFactory }
+    private val viewModel: HomeViewModel by viewModels { viewModelFactory }
     lateinit var viewModelFactory: ViewModelFactory
 
     private var likeBtnListener: (() -> Unit)? = null
@@ -60,7 +60,7 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
         )
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
         initDateIcon()
-        setCommentIcon()
+        initCommentIcon()
         setOnClickListener()
         viewModel.findByDocId(saying.docId)
         observeIsLike()
@@ -73,15 +73,13 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
         binding.tvSayingYear.text = DateUtil.yearToString(saying.date)
     }
 
-    fun setCommentIcon(){
+    fun initCommentIcon(){
         if (!isVisibilityComment) { // false 라면, 댓글 보이는 상태이고, 댓글을 숨기길 수 있는 아이콘 보이기
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_off)
             binding.tvSayingIsHideComment.text = "댓글 숨기기"
-            isVisibilityComment = true
         } else {
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_on)
             binding.tvSayingIsHideComment.text = "댓글 보이기"
-            isVisibilityComment = false
         }
     }
 
@@ -96,11 +94,13 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
         binding.ivSayingSave.setOnClickListener {
             saveBtnListener?.invoke()
+
             dismiss()
         }
         binding.ivSayingHideComment.setOnClickListener {
-            setCommentIcon()
+//            setCommentIcon()
             hideCommentBtnListener?.invoke()
+            isVisibilityComment = !isVisibilityComment
             dismiss()
 
         }

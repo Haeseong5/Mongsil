@@ -26,7 +26,7 @@ import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
-import com.cashproject.mongsil.viewmodel.SayingViewModel
+import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -34,12 +34,12 @@ import com.google.android.gms.ads.LoadAdError
 import java.util.*
 
 
-class HomeFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
+class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_saying
 
-    override val viewModel: SayingViewModel by viewModels { viewModelFactory }
+    override val viewModel: HomeViewModel by viewModels { viewModelFactory }
 
     private lateinit var mSaying: Saying
 
@@ -67,6 +67,7 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
 
     private fun initSaying() {
         //보관함 or 리스트에서 넘어왔을 경우
+        isProgress(true)
         if (arguments != null) {
             val saying = arguments?.getParcelable<Saying>("saying")?.let {
                 mSaying = it
@@ -79,11 +80,11 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                     viewModel.getSayingData(it!!)
                 }
             }
+            isProgress(false)
         } else { //처음 실행했을 경우
             viewModel.getTodayData()
         }
 
-        d(TAG, selectedEmoticonId.toString() )
         if (selectedEmoticonId > 14){
             selectedEmoticonId = 0
         }
@@ -139,6 +140,7 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
         viewModel.todayData.observe(viewLifecycleOwner, Observer {
             binding.saying = it
             mSaying = it
+            isProgress(false)
             viewModel.getComments(mSaying.docId)
         })
 
@@ -182,7 +184,6 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, SayingViewModel>() {
                 binding.rvSayingCommentList.visibility = View.VISIBLE
             else
                 binding.rvSayingCommentList.visibility = View.GONE
-            bottomSheetFragment.setCommentIcon()
         }
 
         bottomSheetFragment.setShareBtnOnClickListener {

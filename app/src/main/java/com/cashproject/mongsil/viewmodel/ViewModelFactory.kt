@@ -31,8 +31,8 @@ class ViewModelFactory(private val localDataSource: LocalDataSource) : ViewModel
             modelClass.isAssignableFrom(LockerViewModel::class.java) -> {
                 LockerViewModel(localDataSource) as T
             }
-            modelClass.isAssignableFrom(SayingViewModel::class.java) -> {
-                SayingViewModel(localDataSource) as T
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(localDataSource) as T
             }
             modelClass.isAssignableFrom(CalendarViewModel::class.java) -> {
                 CalendarViewModel(localDataSource) as T

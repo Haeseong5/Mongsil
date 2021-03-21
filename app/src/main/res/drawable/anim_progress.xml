@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+
+    <item android:drawable="@drawable/emoticon_01_happy"
+        android:duration="200"/>
+
+    <item android:drawable="@drawable/emoticon_02_enjoy"
+        android:duration="200"/>
+
+    <item android:drawable="@drawable/emoticon_07"
+        android:duration="200"/>
+
+    <item android:drawable="@drawable/emoticon_05"
+        android:duration="200"/>
+
+</animation-list>

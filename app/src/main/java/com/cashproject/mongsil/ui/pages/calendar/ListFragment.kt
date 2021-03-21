@@ -12,11 +12,17 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentListBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.addTo
+import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
+import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.time.LocalDate
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
@@ -30,6 +36,9 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         SayingAdapter(SayingCase.LIST)
     }
 
+    private val click by lazy { ClickUtil(this.lifecycle) }
+
+
     var flag: Boolean = false //false: CalendarView, true: RecyclerView
 
     override fun initStartView() {
@@ -38,6 +47,7 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         viewModel.getData()
         viewModel.getAllComments()
         observeData()
+        observeSubject()
     }
 
 
@@ -67,13 +77,16 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         }
 
         binding.customCalendarView.setOnDayClickListener {
-            if (it.comments.isEmpty()) {
+            click.run {
+                it.calendar.apply {
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
 
-            } else {
-                findNavController().navigate(
-                    R.id.action_pager_to_home,
-                    bundleOf("docId" to it.comments[0].docId)
-                )
+                if (it.comments.isEmpty()) { viewModel.getDataByDate(Date(it.calendar.timeInMillis)) }
+                else { findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId)) }
             }
         }
 
@@ -90,6 +103,29 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             binding.customCalendarView.notifyDataChanged(it)
         })
+
+        viewModel.sayingDataByDate.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+//            isProgress(false)
+        })
+    }
+
+    private fun observeSubject(){
+        viewModel.errorSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                Log.e("error subject ", it.message.toString())
+                activity?.showToast(getString(R.string.error_message))
+            }
+            .addTo(compositeDisposable)
+
+        viewModel.loadingSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                d("Loading...", it.toString())
+                isProgress(it)
+            }
+            .addTo(compositeDisposable)
     }
 
     override fun onResume() {

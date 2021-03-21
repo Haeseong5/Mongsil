@@ -1,24 +1,20 @@
 package com.cashproject.mongsil.base
 
-import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.databinding.adapters.ProgressBarBindingAdapter
 import androidx.fragment.app.Fragment
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -35,16 +31,21 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     internal val compositeDisposable = CompositeDisposable()
 
-    lateinit var progressDialog: AppCompatDialog
+    val progressDialog: com.cashproject.mongsil.ui.ProgressDialog by lazy {
+        com.cashproject.mongsil.ui.ProgressDialog(requireContext())
+    }
 
     abstract fun initStartView()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         d(TAG, "onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
-        progressDialog = AppCompatDialog(requireContext())
-        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
+        progressDialog.apply {
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+        }
 
+        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
         initStartView()
         return binding.root
     }
@@ -55,7 +56,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     }
 
     fun isProgress(flag: Boolean) {
-        if (flag) progressDialog.show() else progressDialog.dismiss()
+        if (flag && !progressDialog.isShowing) progressDialog.show() else progressDialog.dismiss()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
