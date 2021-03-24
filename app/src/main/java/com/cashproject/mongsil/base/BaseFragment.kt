@@ -11,12 +11,32 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+
+fun NavController.navigateSafely(fragment: Fragment){
+    d("Navigation","Navigation")
+    val currentBackStackFragment= (fragment.findNavController().currentBackStackEntry?.destination as? FragmentNavigator.Destination)?.className
+    val thisClassName = fragment.javaClass.name
+    if (currentBackStackFragment != thisClassName)
+    d("Navigation", currentBackStackFragment.toString()+"sd")
+    d("Navigation", thisClassName)
+}
+
+fun NavController.navigateSafely(view: View){
+    val currentBackStackFragment= (view.findNavController().currentBackStackEntry?.destination as? FragmentNavigator.Destination)?.className
+    val thisClassName = this.javaClass.simpleName
+    d("Navigation", currentBackStackFragment.toString())
+    d("Navigation", thisClassName)
+}
 
 abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment(){
     val TAG: String = this.javaClass.simpleName

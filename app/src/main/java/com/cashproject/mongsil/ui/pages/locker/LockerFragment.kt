@@ -22,6 +22,8 @@ import com.cashproject.mongsil.receiver.AlarmReceiver
 import com.cashproject.mongsil.util.PreferencesManager
 import java.util.*
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.FragmentNavigator
+import com.cashproject.mongsil.base.navigateSafely
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
 import com.cashproject.mongsil.viewmodel.LockerViewModel
@@ -70,7 +72,24 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            this.findNavController().navigateSafely(this)
+            val currentBackStackFragment= (findNavController().currentBackStackEntry?.destination as? FragmentNavigator.Destination)?.className
+            val thisClassName = this.javaClass.name
+            if (currentBackStackFragment != thisClassName){
+                findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            }
+            val thisClassName2 = this.javaClass.name
+
+            val currentBackStackFragment2= (findNavController().currentBackStackEntry?.destination as? FragmentNavigator.Destination)?.className
+
+            if (currentBackStackFragment2 != thisClassName2){
+                findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            }
+
+
+
+            this.findNavController().navigateSafely(this)
+
         }
     }
 
