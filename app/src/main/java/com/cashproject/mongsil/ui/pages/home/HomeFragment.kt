@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
-import com.cashproject.mongsil.databinding.FragmentSayingBinding
+import com.cashproject.mongsil.databinding.FragmentHomeBinding
 import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
@@ -34,10 +34,10 @@ import com.google.android.gms.ads.LoadAdError
 import java.util.*
 
 
-class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_saying
+        get() = R.layout.fragment_home
 
     override val viewModel: HomeViewModel by viewModels { viewModelFactory }
 
@@ -63,6 +63,7 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
         initClickListener()
 
         observeData()
+        observeErrorEvent()
     }
 
     private fun initSaying() {
@@ -92,8 +93,11 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
     }
 
     private fun initRecyclerView() {
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.reverseLayout =true
+        layoutManager.stackFromEnd = true
         binding.rvSayingCommentList.apply {
-            layoutManager = LinearLayoutManager(context)
+            this.layoutManager = layoutManager
             setHasFixedSize(true)
             adapter = commentAdapter
         }
@@ -116,6 +120,9 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
             }
         }
 
+        /**
+         * 댓글 입력 버튼 클릭 시 호출. documentId가 없으면, 댓글 저장 실패
+         */
         binding.tvSayingCommentBtn.setOnClickListener {
             if (mSaying.docId != ""){
                 viewModel.insertComment(
@@ -128,7 +135,7 @@ class HomeFragment : BaseFragment<FragmentSayingBinding, HomeViewModel>() {
                     )
                 )
             }else{
-                activity?.showToast("네트워크 연결상태를 확인해주세요.")
+                activity?.showToast(getString(R.string.network_state_error))
             }
             binding.etSayingCommentInput.text?.clear()
         }

@@ -62,6 +62,7 @@ class HomeViewModel(
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
                 loadingSubject.onNext(false)
+                errorSubject.onNext(exception)
             }
     }
 
@@ -87,10 +88,12 @@ class HomeViewModel(
                     _todayData.postValue(saying)
                 }
                 loadingSubject.onNext(false)
+
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting today documents: ", exception)
                 loadingSubject.onNext(false)
+                errorSubject.onNext(exception)
             }
     }
 
@@ -111,6 +114,8 @@ class HomeViewModel(
             .addOnFailureListener { exception ->
                 d(TAG, "get failed with ", exception)
                 loadingSubject.onNext(false)
+                errorSubject.onNext(exception)
+
             }
     }
 
@@ -123,7 +128,10 @@ class HomeViewModel(
                     Log.i(TAG, "success insertion")
                     _isLike.postValue(true)
                 },
-                    { error -> Log.e(TAG, "Unable to update username", error) }
+                    { error ->
+                        Log.e(TAG, "Unable to update username", error)
+                        errorSubject.onNext(error)
+                    }
                 )
         )
     }
@@ -136,7 +144,10 @@ class HomeViewModel(
                 Log.i(TAG, "success unlike")
 //                _isLike.postValue(false)
             },
-                { error -> Log.e(TAG, "Unable to update username", error) }
+                { error ->
+                    Log.e(TAG, "Unable to update username", error)
+                    errorSubject.onNext(error)
+                }
             )
         )
     }
@@ -152,7 +163,10 @@ class HomeViewModel(
                 }
                 .subscribe(
                     { _isLike.postValue(true) },
-                    { error -> Log.e(TAG, "Unable to update username", error) },
+                    { error ->
+                        Log.e(TAG, "Unable to update username", error)
+                        errorSubject.onNext(error)
+                    },
                     { _isLike.postValue(false) }
                 )
         )
@@ -166,7 +180,7 @@ class HomeViewModel(
                 .subscribe({
                     _commentData.postValue(it)
                 }, {
-
+                    errorSubject.onNext(it)
                 })
         )
     }
@@ -179,7 +193,7 @@ class HomeViewModel(
                 .subscribe({
                     isCompletable.postValue(true)
                 }, {
-
+                    errorSubject.onNext(it)
                 })
         )
     }
@@ -192,7 +206,7 @@ class HomeViewModel(
                 .subscribe({
                     isCompletable.postValue(true)
                 }, {
-
+                    errorSubject.onNext(it)
                 })
         )
     }

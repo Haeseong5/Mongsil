@@ -1,34 +1,29 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
-import android.content.Context
 import android.util.Log
-import android.util.Log.d
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
-import com.cashproject.mongsil.databinding.FragmentListBinding
-import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.extension.addTo
-import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
-import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
-import java.time.LocalDate
+import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
-class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
+class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_list
+        get() = R.layout.fragment_calendar
 
     override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
 
@@ -38,18 +33,16 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
 
     private val click by lazy { ClickUtil(this.lifecycle) }
 
-
     var flag: Boolean = false //false: CalendarView, true: RecyclerView
 
     override fun initStartView() {
         initRecyclerView()
         initClickListener()
-        viewModel.getData()
-        viewModel.getAllComments()
+        viewModel.getData() //read firestore -> display saying in RecyclerView
+        viewModel.getAllComments() //read room db -> display comment in CalendarView
         observeData()
-        observeSubject()
+        observeErrorEvent()
     }
-
 
     private fun initRecyclerView() {
         binding.rvCalendarDayList.apply {
@@ -85,44 +78,43 @@ class ListFragment : BaseFragment<FragmentListBinding, CalendarViewModel>() {
                     set(Calendar.MILLISECOND, 0)
                 }
 
+                /**
+                 * 댓글이 없으면, Firestore SayingData 요청
+                 * 댓글이 있으면, Local DB 데이터 요청
+                 */
                 if (it.comments.isEmpty()) { viewModel.getDataByDate(Date(it.calendar.timeInMillis)) }
                 else { findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId)) }
             }
         }
 
         dayAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            if (it.docId != "")
+                findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            //else 데이터 삭제해버리기?
         }
     }
 
     private fun observeData() {
+        //리사이클러뷰 데이터 세팅
         viewModel.sayingData.observe(viewLifecycleOwner, Observer {
             dayAdapter.setItems(it as ArrayList<Saying>)
         })
 
+        //댓글 데이터를 받아와서 Calendar 에 세팅
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             binding.customCalendarView.notifyDataChanged(it)
         })
 
+        //날짜 클릭 시 로컬디비에 데이터 없을 때, Firestore 에서 받아와서 이동
         viewModel.sayingDataByDate.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
 //            isProgress(false)
         })
-    }
-
-    private fun observeSubject(){
-        viewModel.errorSubject
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
-                Log.e("error subject ", it.message.toString())
-                activity?.showToast(getString(R.string.error_message))
-            }
-            .addTo(compositeDisposable)
 
         viewModel.loadingSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                d("Loading...", it.toString())
+                Log.d("Loading...", it.toString())
                 isProgress(it)
             }
             .addTo(compositeDisposable)

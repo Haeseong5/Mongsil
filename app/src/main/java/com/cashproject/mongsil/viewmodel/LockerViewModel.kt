@@ -23,7 +23,7 @@ class LockerViewModel(
                 .subscribe({
                     _likeData.postValue(it)
                 },{
-
+                    errorSubject.onNext(it)
                 })
         )
     }

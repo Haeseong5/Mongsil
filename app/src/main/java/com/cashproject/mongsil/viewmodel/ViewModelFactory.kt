@@ -18,13 +18,14 @@ package com.cashproject.mongsil.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 
 /**
  * Factory for ViewModels
  */
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val localDataSource: LocalDataSource) : ViewModelProvider.Factory {
+class ViewModelFactory(private val localDataSource: LocalDataSource, private val firestoreDataSource: FirestoreDataSource) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
@@ -35,7 +36,7 @@ class ViewModelFactory(private val localDataSource: LocalDataSource) : ViewModel
                 HomeViewModel(localDataSource) as T
             }
             modelClass.isAssignableFrom(CalendarViewModel::class.java) -> {
-                CalendarViewModel(localDataSource) as T
+                CalendarViewModel(localDataSource, firestoreDataSource) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

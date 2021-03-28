@@ -21,8 +21,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
 
 //    abstract val mainViewModel: R
 
-    lateinit var progressDialog: ProgressDialog
-
     private val compositeDisposable = CompositeDisposable()
 
 //    abstract fun initStartView()
@@ -35,13 +33,11 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, layoutResourceId)
-//        setFullView()
-        progressDialog = ProgressDialog(this)
     }
 
     //뷰가 차지할 수 있는 영역을 상태바 및 소프트키 영역을 제외한 영역까지 확장해주는 역할
     private fun setFullView(){
-        window.apply {  
+        window.apply {
             setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)

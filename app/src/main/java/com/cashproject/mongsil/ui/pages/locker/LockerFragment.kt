@@ -52,6 +52,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         initRecyclerView()
         viewModel.getAllLike()
         observeData()
+        observeErrorEvent()
+
     }
 
 
@@ -96,8 +98,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     private fun setAlarm(hour: Int, minute: Int) {
         val alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
 
-        val intent =
-            Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
+        val intent = Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
         val pendingIntent = PendingIntent.getBroadcast(     // 2
             activity,
             AlarmReceiver.NOTIFICATION_ID,

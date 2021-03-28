@@ -12,4 +12,5 @@
     <string name="emoticon_title">오늘 기분은 어때요?</string>
     <string name="message_delete">정말 삭제 하시겠습니까?</string>
     <string name="error_message">요청에 실패했습니다.</string>
+    <string name="network_state_error">네트워크 연결상태를 확인해주세요.</string>
 </resources>

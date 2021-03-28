@@ -20,6 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
+            android:src="@drawable/emoticon_05"
             bindImage="@{saying.image}"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -20,6 +20,7 @@ import android.content.Context
 import com.cashproject.mongsil.model.db.AppDatabase
 import com.cashproject.mongsil.model.db.dao.CommentDao
 import com.cashproject.mongsil.model.db.dao.LockerDao
+import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
@@ -39,11 +40,16 @@ object Injection {
         return database.commentDao()
     }
 
+    private fun provideFirestoreDataSource(): FirestoreDataSource {
+        return FirestoreDataSource()
+    }
+
+
     fun provideViewModelFactory(context: Context): ViewModelFactory {
         val lockerDataSource = provideLocalDataSource(context)
         val commentDataSource = provideCommentDataSource(context)
 
         val localDataSource = LocalDataSource(commentDataSource, lockerDataSource)
-        return ViewModelFactory(localDataSource)
+        return ViewModelFactory(localDataSource, provideFirestoreDataSource())
     }
 }

@@ -10,42 +10,42 @@
             type="com.cashproject.mongsil.model.data.Emoticon" />
     </data>
 <!--app android 차이-->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:layout_margin="@dimen/margin16"
-        app:elevation="10dp"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        android:focusable="true">
-        <com.cashproject.mongsil.util.SquareLayout
-            android:id="@+id/iv_emoticon_background"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/iv_emoticon_icon"
-                android:layout_width="wrap_content"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="@dimen/margin16"
+            android:elevation="0dp"
+            app:cardElevation="0dp"
+            android:clickable="true"
+            android:focusable="true">
+            <com.cashproject.mongsil.util.SquareLayout
+                android:id="@+id/iv_emoticon_background"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintBottom_toTopOf="@id/tv_emoticon_emotion"
-                tools:src="@drawable/emoticon_01_happy"/>
-            <TextView
-                android:id="@+id/tv_emoticon_emotion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_emoticon_icon"
-                tools:text = "행복"
-                android:text="@{emoticon.emotion}"/>
-        </com.cashproject.mongsil.util.SquareLayout>
-    </androidx.cardview.widget.CardView>
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/iv_emoticon_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintBottom_toTopOf="@id/tv_emoticon_emotion"
+                    tools:src="@drawable/emoticon_01_happy"/>
+                <TextView
+                    android:id="@+id/tv_emoticon_emotion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_emoticon_icon"
+                    tools:text = "행복"
+                    android:text="@{emoticon.emotion}"/>
+            </com.cashproject.mongsil.util.SquareLayout>
+        </androidx.cardview.widget.CardView>
 </layout>

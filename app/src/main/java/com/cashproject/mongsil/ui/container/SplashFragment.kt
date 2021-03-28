@@ -9,7 +9,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.ui.pages.calendar.ListFragment
+import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
@@ -31,7 +31,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() 
 
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(
-            ListFragment(),
+            CalendarFragment(),
             HomeFragment(),
             LockerFragment()
         )
