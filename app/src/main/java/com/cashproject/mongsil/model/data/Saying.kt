@@ -15,7 +15,8 @@ import java.util.*
 data class Saying(
     @PrimaryKey var docId: String,
     @ColumnInfo var image: String,
+    @ColumnInfo var s: String,
     @ColumnInfo var date: Date) : Parcelable {
 
-    constructor(): this("", "defaultImageUrl", Date())
+    constructor(): this("", "","defaultImageUrl", Date())
 }

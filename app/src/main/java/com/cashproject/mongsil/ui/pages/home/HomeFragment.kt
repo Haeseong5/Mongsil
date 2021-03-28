@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createAd()
+        adMobInitial()
     }
 
     override fun initStartView() {
@@ -149,6 +149,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel.getComments(mSaying.docId)
         })
 
+        //댓글 데이터 불러오기
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             commentAdapter.update(it as ArrayList<Comment>)
         })
@@ -167,17 +168,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         if (mSaying.docId != ""){
             bottomSheetFragment.show(childFragmentManager, "approval")
         }else{
-            activity?.showToast("네트워크 연결상태를 확인해주세요.")
+            activity?.showToast("Saying's documentId is empty")
+            Log.e(TAG, "Saying's documentId is empty")
         }
 
         bottomSheetFragment.setLikeBtnOnClickListener {
-            showAdMob()
+//            showAdMob()
         }
 
         bottomSheetFragment.setSaveBtnOnClickListener {
+            showAdMob()
+
             //bitmap
             val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-            showAdMob()
             val imageUri = bitmap.bitmap.saveImage(requireActivity())
 
             if (imageUri != null) {
@@ -205,7 +208,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         bottomSheetFragment.setEmoticonBtnClickListener {
             selectedEmoticonId = it.id
             binding.ivSayingEmoticon.setImageResource(it.icon)
-            showAdMob()
             bottomSheetFragment.dismiss()
         }
     }
@@ -232,23 +234,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun showAdMob(){
         if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show();
+            mInterstitialAd.show()
         } else {
-            Log.d("TAG", "The interstitial wasn't loaded yet.");
+            i("TAG", "The interstitial wasn't loaded yet.");
         }
     }
-    private fun createAd(){
-        d("creatAD", "createAd")
-        //게임에서 다음 레벨로 넘어갈 때 또는 작업을 완료한 직후가 광고를 게재하기 좋은 시점
+    private fun adMobInitial(){
         // Create the InterstitialAd and set it up.
         mInterstitialAd = InterstitialAd(requireActivity())
-        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // my id = ca-app-pub-1939032811151400/1834551535
+        mInterstitialAd.adUnitId = getString(R.string.ad_test_id) // my id = ca-app-pub-1939032811151400/1834551535
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = (
                 object : AdListener() {
                     override fun onAdLoaded() {
-//                        Toast.makeText(requireActivity(), "onAdLoaded()", Toast.LENGTH_SHORT).show()
                         i("onAdFailedToLoad", "onAdLoaded()")
                     }
 
@@ -260,9 +259,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     }
 
                     override fun onAdClosed() {
-                        Toast.makeText(requireActivity(), "onAdClosed()", Toast.LENGTH_SHORT).show()
                         mInterstitialAd.loadAd(AdRequest.Builder().build())
-
                     }
                 }
             )

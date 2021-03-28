@@ -85,7 +85,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{
                 Log.e("error subject ", it.message.toString())
-                activity?.showToast(getString(com.cashproject.mongsil.R.string.network_state_error))
+//                activity?.showToast(getString(com.cashproject.mongsil.R.string.network_state_error))
             }
             .addTo(compositeDisposable)
     }
@@ -101,6 +101,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     override fun onDestroyView() {
         super.onDestroyView()
+        compositeDisposable.clear()
         d(TAG, "onDestroyView")
     }
 
@@ -121,7 +122,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     override fun onDestroy() {
         d(TAG, "onDestroy!!!")
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
         super.onDestroy()
     }
 
