@@ -41,12 +41,12 @@ class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
 
             binding.ivEmoticonBackground.setBackgroundColor(ContextCompat.getColor(itemView.context, item.background))
             binding.tvEmoticonEmotion.setTextColor(ContextCompat.getColor(itemView.context, item.textColor))
+            //이미지뷰 라운딩 처리
+            binding.ivEmoticonRound.apply {
+                background = ContextCompat.getDrawable(itemView.context, R.drawable.image_round_shape) //이미지 라운딩 처리
+                clipToOutline = true
+            }
 
-//            //이미지뷰 라운딩 처리
-//            binding!!.itemUpcomingIvPoster.apply {
-//                background = ContextCompat.getDrawable(itemView.context, R.drawable.image_shape) //이미지 라운딩 처리
-//                clipToOutline = true
-//            }
             binding.root.setOnClickListener {
                 listener?.invoke(item) //익명함수 호출
             }

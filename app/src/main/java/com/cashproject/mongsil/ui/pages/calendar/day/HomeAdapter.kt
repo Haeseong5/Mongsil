@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.ui.pages.calendar.day
 
 import android.util.Log
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.util.DateUtil
-import java.util.*
 import kotlin.collections.ArrayList
 
-class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
+class HomeAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<SuperViewHolder>() {
 
     private var items: ArrayList<Saying> = ArrayList<Saying>()
 
@@ -30,7 +28,7 @@ class SayingAdapter(private val sayingCase: SayingCase) : RecyclerView.Adapter<S
 
     fun update(newItemList: ArrayList<Saying>) {
         val diffResult =
-            DiffUtil.calculateDiff(SayingAdapter.ContentDiffUtil(items, newItemList), false)
+            DiffUtil.calculateDiff(HomeAdapter.ContentDiffUtil(items, newItemList), false)
         diffResult.dispatchUpdatesTo(this)
         items.clear()
         items.addAll(newItemList)

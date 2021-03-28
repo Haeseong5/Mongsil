@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
@@ -12,12 +11,11 @@ import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.pages.calendar.day.SayingAdapter
+import com.cashproject.mongsil.ui.pages.calendar.day.HomeAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.launch
 import java.util.*
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
@@ -28,7 +26,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
 
     private val dayAdapter by lazy {
-        SayingAdapter(SayingCase.LIST)
+        HomeAdapter(SayingCase.LIST)
     }
 
     private val click by lazy { ClickUtil(this.lifecycle) }

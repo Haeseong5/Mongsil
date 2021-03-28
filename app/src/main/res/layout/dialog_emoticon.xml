@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             tools:listitem="@layout/item_emoticon"
-            android:layout_marginHorizontal="14dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="@dimen/margin16"
             android:overScrollMode="never"
             android:scrollbars="none"

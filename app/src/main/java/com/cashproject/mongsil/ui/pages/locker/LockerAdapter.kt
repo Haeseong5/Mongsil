@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemLockerBinding
 import com.cashproject.mongsil.model.data.Saying
 
+/**
+ * diffUtil 다른거 써 보기
+ */
 class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
     private val TAG = this.javaClass.simpleName
     private var items: ArrayList<Saying> = ArrayList()
