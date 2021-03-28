@@ -46,7 +46,7 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
         db.collection(COLLECTION)
             .orderBy(DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
             .startAt(dateToTimestamp(Date(Calendar.getInstance().timeInMillis))) //오늘 날짜 기준으로
-            .limit(2)
+            .limit(10)
             .get()
             .addOnSuccessListener { documents ->
                 val result = ArrayList<Saying>()
