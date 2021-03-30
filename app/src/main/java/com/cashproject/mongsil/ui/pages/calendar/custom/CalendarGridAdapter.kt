@@ -2,10 +2,12 @@ package com.cashproject.mongsil.ui.pages.calendar.custom
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -49,6 +51,8 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         val mView = view ?: layoutInflater.inflate(R.layout.view_calendar_day_layout, null)
 
         val dayTv: TextView = mView.findViewById(R.id.day_tv)
+        val backLayout: FrameLayout = mView.findViewById(R.id.back_layout)
+
         val posterIv: ImageView = mView.findViewById(R.id.poster_iv)
 
         val day: Day = getItem(position) as Day
@@ -68,6 +72,28 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         val alphaValue = if (itemMonth != month) 0.4F else 1.0F
         dayTv.alpha = alphaValue
         posterIv.alpha = alphaValue
+
+        day.calendar.apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+//        d("DayTime", "${itemMonth}, $itemDay")
+//        d("DayTime", day.calendar.timeInMillis.toString())
+//        d("DayTime", today.toString())
+
+        if (day.calendar.timeInMillis == today){
+            d("Today", "TRUE")
+            backLayout.background = ContextCompat.getDrawable(context, R.drawable.day_circle_shape)
+        }
 
         if (day.comments.isNotEmpty()) {
             posterIv.visibility = View.VISIBLE

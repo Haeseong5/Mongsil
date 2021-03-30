@@ -41,12 +41,11 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
         Firebase.firestore
     }
 
-    fun getData() {
+    fun getData(date: Date) {
         loadingSubject.onNext(true)
         db.collection(COLLECTION)
             .orderBy(DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
-            .startAt(dateToTimestamp(Date(Calendar.getInstance().timeInMillis))) //오늘 날짜 기준으로
-            .limit(10)
+            .startAt(dateToTimestamp(date)) //오늘 날짜 기준으로
             .get()
             .addOnSuccessListener { documents ->
                 val result = ArrayList<Saying>()

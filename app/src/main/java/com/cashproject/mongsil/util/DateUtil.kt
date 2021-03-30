@@ -15,6 +15,8 @@ object DateUtil {
 
     private val dateFormat = SimpleDateFormat("MMdd", Locale.KOREA)
 
+    fun getToday(){}
+
     fun yearToString(date : Date) : String
         = yearFormat.format(date)
 

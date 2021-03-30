@@ -1,6 +1,8 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
+import PaginationScrollListener
 import android.util.Log
+import android.util.Log.d
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -11,9 +13,10 @@ import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.pages.calendar.day.HomeAdapter
-import com.cashproject.mongsil.ui.pages.calendar.day.SayingCase
+import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
+import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.util.ClickUtil
+import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
@@ -26,32 +29,57 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
 
     private val dayAdapter by lazy {
-        HomeAdapter(SayingCase.LIST)
+        DayAdapter(ViewTypeCase.NORMAL)
     }
 
     private val click by lazy { ClickUtil(this.lifecycle) }
 
     var flag: Boolean = false //false: CalendarView, true: RecyclerView
 
+    private val PAGE_START = 1
+    private val itemCount = 0
+    private var currentPage: Int = PAGE_START
+    private val totalPage = 10
+
+    private val isLastPage = false
+    private val isLoading = false
+
     override fun initStartView() {
         initRecyclerView()
         initClickListener()
-        viewModel.getData() //read firestore -> display saying in RecyclerView
+        viewModel.getData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
         viewModel.getAllComments() //read room db -> display comment in CalendarView
         observeData()
         observeErrorEvent()
     }
 
     private fun initRecyclerView() {
+        val linearLayoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         binding.rvCalendarDayList.apply {
-            layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
+            layoutManager = linearLayoutManager
             setHasFixedSize(true)
             setItemViewCacheSize(10)
             adapter = dayAdapter
+
+//            addOnScrollListener(object : PaginationScrollListener(linearLayoutManager){
+//                override fun loadMoreItems() {
+////                    isLoading = true;
+////                    //Increment page index to load the next one
+////                    currentPage += 1
+////                    viewModel.getData() //read firestore -> display saying in RecyclerView
+//                }
+//
+//                override val isLastPage: Boolean
+//                    get() = isLastPage
+//
+//                override val isLoading: Boolean
+//                    get() = isLoading
+//
+//            })
         }
     }
 
@@ -76,12 +104,22 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
                     set(Calendar.MILLISECOND, 0)
                 }
 
-                /**
-                 * 댓글이 없으면, Firestore SayingData 요청
-                 * 댓글이 있으면, Local DB 데이터 요청
-                 */
-                if (it.comments.isEmpty()) { viewModel.getDataByDate(Date(it.calendar.timeInMillis)) }
-                else { findNavController().navigate(R.id.action_pager_to_home, bundleOf("docId" to it.comments[0].docId)) }
+                    /**
+                     * 댓글이 없으면, Firestore 에 해당 날짜의 명언 데이터 요청
+                     *  단, 오늘 이후 데이터는 조회 안되도록 하기
+                     * 댓글이 있으면, Local DB 데이터 요청
+                     */
+                    if (it.comments.isEmpty()) {
+                        val selectedTimeInMillis = it.calendar.timeInMillis
+                        val todayTimeInMillis = Calendar.getInstance().timeInMillis
+                        if(selectedTimeInMillis <= todayTimeInMillis)
+                            viewModel.getDataByDate(Date(selectedTimeInMillis))
+                    } else {
+                        findNavController().navigate(
+                            R.id.action_pager_to_home,
+                            bundleOf("docId" to it.comments[0].docId)
+                        )
+                    }
             }
         }
 
@@ -95,7 +133,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     private fun observeData() {
         //리사이클러뷰 데이터 세팅
         viewModel.sayingData.observe(viewLifecycleOwner, Observer {
-            dayAdapter.setItems(it as ArrayList<Saying>)
+            dayAdapter.update(it as ArrayList<Saying>)
         })
 
         //댓글 데이터를 받아와서 Calendar 에 세팅

@@ -46,6 +46,7 @@ class HomeViewModel(
     private fun getLatestData() {
         loadingSubject.onNext(true)
         db.collection(COLLECTION)
+            .whereLessThan(DATE, dateToTimestamp(Date()))  //오늘 이후 것 중 가장 가까운 것
             .orderBy(DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
             .limit(1)
             .get()

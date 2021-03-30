@@ -7,7 +7,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.dao.CommentDao
 import com.cashproject.mongsil.model.db.dao.LockerDao
 
-@Database(entities = [Saying::class, Comment::class], version = 1)
+@Database(entities = [Saying::class, Comment::class], version = 2)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun lockerDao(): LockerDao
@@ -25,6 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
                 AppDatabase::class.java, "Mongsil.db")
+                .fallbackToDestructiveMigration() //기존 데이터 손실을 허용하고 마이그레션
                 .build()
     }
 }

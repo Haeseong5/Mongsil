@@ -15,7 +15,6 @@
             android:id="@+id/iv_locker_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#CDDC39"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
