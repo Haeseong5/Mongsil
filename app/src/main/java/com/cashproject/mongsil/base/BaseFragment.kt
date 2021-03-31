@@ -40,10 +40,24 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         ProgressDialog(requireContext())
     }
 
-    abstract fun initStartView()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        d(TAG, "++onAttach")
+//        callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+////                findNavController().popBackStack()
+//            }
+//        }
+//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        d(TAG, "++onCreate")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        d(TAG, "onCreateView!!!")
+        d(TAG, "++onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         progressDialog.apply {
             setCancelable(false)
@@ -55,29 +69,15 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         return binding.root
     }
 
+    abstract fun initStartView()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        d(TAG, "onViewCreated!!!")
+        d(TAG, "++onViewCreated!!!")
     }
 
     fun isProgress(flag: Boolean) {
         if (flag && !progressDialog.isShowing) progressDialog.show() else progressDialog.dismiss()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        d(TAG, "onCreate")
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        d(TAG, "onAttach")
-//        callback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-////                findNavController().popBackStack()
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     fun observeErrorEvent(){
@@ -92,36 +92,37 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     override fun onStart() {
         super.onStart()
-        d(TAG, "onStart")
+        d(TAG, "++onStart")
     }
+
     override fun onResume() {
         super.onResume()
-        d(TAG, "onResume")
+        d(TAG, "++onResume")
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         compositeDisposable.clear()
-        d(TAG, "onDestroyView")
+        super.onDestroyView()
+        d(TAG, "++onDestroyView")
     }
 
     override fun onPause() {
         super.onPause()
-        d(TAG, "onPause")
+        d(TAG, "++onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        d(TAG, "onStop")
+        d(TAG, "++onStop")
     }
 
     override fun onDetach() {
         super.onDetach()
-        d(TAG, "onDetach()")
+        d(TAG, "++onDetach()")
     }
 
     override fun onDestroy() {
-        d(TAG, "onDestroy!!!")
+        d(TAG, "++onDestroy!!!")
         compositeDisposable.clear()
         super.onDestroy()
     }

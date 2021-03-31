@@ -21,7 +21,7 @@ open class BaseViewModel : ViewModel(){
     }
 
     override fun onCleared() {
-        d(TAG, "onCleared()")
+        d(TAG, "++onCleared()")
         compositeDisposable.clear()
         super.onCleared()
     }

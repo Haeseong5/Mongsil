@@ -1,8 +1,10 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
 import PaginationScrollListener
+import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -49,6 +51,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         initClickListener()
         viewModel.getData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
         viewModel.getAllComments() //read room db -> display comment in CalendarView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         observeData()
         observeErrorEvent()
     }

@@ -92,7 +92,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
 
         if (day.calendar.timeInMillis == today){
             d("Today", "TRUE")
-            backLayout.background = ContextCompat.getDrawable(context, R.drawable.day_circle_shape)
+            backLayout.background = ContextCompat.getDrawable(context, R.drawable.calendar_today_shape)
         }
 
         if (day.comments.isNotEmpty()) {

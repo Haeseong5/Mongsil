@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.container
+package com.cashproject.mongsil.ui.main
 
 import android.content.Context
 import android.util.Log
@@ -17,12 +17,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
+class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_splash
 
-    override val viewModel: CalendarViewModel by viewModels()
+    override val viewModel: CalendarViewModel by viewModels {viewModelFactory}
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -50,6 +50,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() 
     }
 
     override fun onResume() {
+//        viewModel.getAllComments() //여기서 데이터 요청하는데, 캘린더에서 옵저브가 안됨,,
         super.onResume()
         addDisposable(backBtnSubject
             .debounce(100, TimeUnit.MILLISECONDS)

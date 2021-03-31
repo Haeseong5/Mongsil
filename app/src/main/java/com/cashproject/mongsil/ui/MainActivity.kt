@@ -22,5 +22,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         MobileAds.initialize(this, "ca-app-pub-1939032811151400~6706129481")
     }
 
-
 }
