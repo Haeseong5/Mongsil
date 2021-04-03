@@ -3,6 +3,7 @@ package com.cashproject.mongsil.ui.pages.calendar.custom
 import android.content.Context
 import android.graphics.Color
 import android.util.Log.d
+import android.util.Log.v
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,14 @@ import android.widget.BaseAdapter
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Day
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.CalendarUtil
+import kotlinx.android.synthetic.main.view_calendar_day_layout.view.*
 
 import java.util.*
 
@@ -54,6 +57,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         val backLayout: FrameLayout = mView.findViewById(R.id.back_layout)
 
         val posterIv: ImageView = mView.findViewById(R.id.poster_iv)
+        val todayCv: CardView = mView.findViewById(R.id.cv_today)
 
         val day: Day = getItem(position) as Day
 
@@ -65,7 +69,6 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
             when (position % 7) {
                 SUNDAY -> setTextColor(ContextCompat.getColor(context, R.color.sunday))
                 SATURDAY -> setTextColor(ContextCompat.getColor(context, R.color.saturday))
-                else -> setTextColor(Color.BLACK)
             }
         }
 
@@ -91,8 +94,8 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
 //        d("DayTime", today.toString())
 
         if (day.calendar.timeInMillis == today){
-            d("Today", "TRUE")
-            backLayout.background = ContextCompat.getDrawable(context, R.drawable.calendar_today_shape)
+            v("Today", "TRUE")
+            todayCv.visibility = View.VISIBLE
         }
 
         if (day.comments.isNotEmpty()) {

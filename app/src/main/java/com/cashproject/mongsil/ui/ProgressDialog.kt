@@ -19,15 +19,23 @@ class ProgressDialog(context: Context): AppCompatDialog(context) {
 
     private var view: View
     private var linear: LinearLayout
-    private var builder: AlertDialog.Builder
-    lateinit var dialog: Dialog
+    private val builder: AlertDialog.Builder by lazy {
+        AlertDialog.Builder(context)
+    }
+    val dialog: Dialog by lazy {
+        builder.create().apply {
+            window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+            setCancelable(true)
+            setCanceledOnTouchOutside(false)
+            show()
+        }
+    }
     lateinit var drawable: AnimationDrawable
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflater.inflate(R.layout.dialog_progress, null)
         linear = view.findViewById(R.id.linear)
-        builder = AlertDialog.Builder(context)
         drawable = view.iv_loading.background as AnimationDrawable
     }
 
@@ -36,12 +44,7 @@ class ProgressDialog(context: Context): AppCompatDialog(context) {
         if (!isShowing){
             builder.setView(view)
             drawable.start()
-            dialog = builder.create().apply {
-                window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-                setCancelable(true)
-                setCanceledOnTouchOutside(false)
-                show()
-            }
+
         }
     }
 

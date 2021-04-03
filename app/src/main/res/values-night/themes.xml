@@ -4,13 +4,14 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textColorPrimary">@color/black</item>
-
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowBackground">#333333</item>
+        <item name="android:colorBackground">#333333</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
 
         <!-- Status bar color. -->
         <item name="android:windowTranslucentStatus">true</item>
@@ -20,26 +21,28 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!--custom font-family 적용-->
-        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
-        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
-        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
-        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
-        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+        <item name="android:textViewStyle">@style/NightTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/NightButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/NightEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/NightRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/NightCheckboxFontStyle</item>
 
     </style>
     <style name="TextViewStyle1">
         <item name="android:textSize">@dimen/dimen26</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="LatoTextStyle">
         <item name="android:fontFamily">@font/font_lato</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="DatePickerStyle">
+
+    <style name="MyBase.TimePicker" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="colorControlNormal">@color/colorYellow</item>
-        <item name="android:headerBackground">@color/black</item>
-        <item name="android:calendarTextColor">@color/black</item>
-        <item name="android:dayOfWeekBackground">@color/black</item>
-        <item name="android:yearListSelectorColor">@color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorAccent">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 </resources>

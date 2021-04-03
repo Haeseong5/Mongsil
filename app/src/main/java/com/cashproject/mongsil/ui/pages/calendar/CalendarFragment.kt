@@ -148,6 +148,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             binding.customCalendarView.notifyDataChanged(it)
         })
 
+        /**
+         * e달력 빨리 눌럿을 때 에러
+         *     java.lang.IllegalArgumentException: Navigation action/destination com.cashproject.mongsil:id/action_pager_to_home cannot be found from the current destination Destination(com.cashproject.mongsil:id/homeFragment) label=saying class=com.cashproject.mongsil.ui.pages.home.HomeFragment
+
+         */
         //날짜 클릭 시 로컬디비에 데이터 없을 때, Firestore 에서 받아와서 이동
         viewModel.sayingDataByDate.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))

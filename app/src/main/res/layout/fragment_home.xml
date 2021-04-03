@@ -68,6 +68,7 @@
                     android:textColorHint="@color/grey_light"
                     android:textColor="@color/white"
                     android:textSize="14sp"
+                    android:textCursorDrawable="@color/white"
                     android:hint="오늘의 기분을 입력해주세요."
                     android:layout_marginStart="8dp"
                     android:maxLines="1"/>

@@ -16,6 +16,5 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorYellow"
             android:progressBackgroundTint="@color/colorYellow" />
-
     </LinearLayout>
 </layout>

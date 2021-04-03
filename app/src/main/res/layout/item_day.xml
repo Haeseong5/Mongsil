@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
-                android:text="30"
+                tools:text="30"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen30"
                 style="@style/LatoTextStyle"
@@ -50,7 +50,6 @@
                 android:text="2021"
                 android:textColor="@color/white"
                 style="@style/LatoTextStyle"
-
                 app:layout_constraintBottom_toTopOf="@id/tv_day_month"
                 app:layout_constraintStart_toEndOf="@id/tv_day_date"
                 app:layout_constraintTop_toTopOf="@id/tv_day_date"
@@ -65,7 +64,6 @@
                 android:text="October"
                 android:textColor="@color/white"
                 style="@style/LatoTextStyle"
-
                 app:layout_constraintBottom_toBottomOf="@id/tv_day_date"
                 app:layout_constraintStart_toEndOf="@id/tv_day_date"
                 app:layout_constraintTop_toBottomOf="@id/tv_day_year" />

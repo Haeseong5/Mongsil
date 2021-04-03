@@ -2,24 +2,29 @@
 <resources>
 
     <!-- Custom font 적용 -->
-    <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+    <style name="DayTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="android:fontFamily">@font/font_default</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="customButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+    <style name="DayButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
         <item name="android:fontFamily">@font/font_default</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="customEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+    <style name="DayEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
         <item name="android:fontFamily">@font/font_default</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="customRadioButtonFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+    <style name="DayRadioButtonFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
         <item name="android:fontFamily">@font/font_default</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="customCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
+    <style name="DayCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
         <item name="android:fontFamily">@font/font_default</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>

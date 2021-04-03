@@ -25,7 +25,6 @@
             android:layout_height="match_parent"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/black"
             android:textSize="26sp"
             tools:text="2020.10"/>
 

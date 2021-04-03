@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin8"
-        tools:background="@color/teal_200">
+        tools:background="@color/black87">
 
         <ImageView
             android:id="@+id/comment_iv_emoticon"
@@ -40,7 +40,6 @@
             tools:text="오전 4시 20분"
             android:layout_marginStart="@dimen/margin8"
             android:textSize="16sp"
-
             android:textColor="@color/colorYellow"
             app:layout_constraintTop_toTopOf="@id/comment_iv_emoticon"
             app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"

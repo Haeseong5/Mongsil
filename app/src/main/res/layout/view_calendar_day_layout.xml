@@ -15,14 +15,23 @@
             android:orientation="vertical"
             android:layout_margin="1dp">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_today"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="end"
+                android:layout_margin="1dp"
+                app:cardCornerRadius="100dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:cardBackgroundColor="#F15858"/>
             <TextView
                 android:id="@+id/day_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
                 tools:text = "10"
-                android:textSize="22sp"/>
+                android:textSize="18sp"/>
 
             <LinearLayout
                 android:id="@+id/cal_layout"
@@ -38,6 +47,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:src="@android:color/transparent"
+                    android:layout_margin="1dp"
                     android:visibility="gone"/>
 
             </LinearLayout>

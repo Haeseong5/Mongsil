@@ -66,7 +66,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun initSaying() {
         //보관함 or 리스트에서 넘어왔을 경우
-        isProgress(true)
         if (arguments != null) {
             val saying = arguments?.getParcelable<Saying>("saying")?.let {
                 mSaying = it
@@ -79,7 +78,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     viewModel.getSingleSayingData(it!!)
                 }
             }
-            isProgress(false)
         } else { //처음 실행했을 경우
             viewModel.getTodayData()
         }

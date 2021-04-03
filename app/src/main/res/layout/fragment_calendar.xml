@@ -34,17 +34,18 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_calendar_floatingActionButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/colorYellow"
             android:src="@{flag ? @drawable/ic_calendar : @drawable/ic_list}"
-            app:fabSize="normal"
+            tools:src="@drawable/ic_list"
             android:scaleType="fitXY"
+            app:fabSize="normal"
             app:borderWidth="0dp"
+            app:layout_anchorGravity="center"
             android:foregroundGravity="center"
-            android:layout_margin="20dp"
-            android:contentDescription="calendarOrList" />
+            android:layout_margin="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
