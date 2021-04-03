@@ -1,7 +1,13 @@
 package com.cashproject.mongsil.base
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
+import android.util.Log
+import androidx.core.content.ContextCompat
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.model.data.Emoticon
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
@@ -19,7 +25,33 @@ class ApplicationClass : Application(){
     override fun onCreate() {
         super.onCreate()
         prefs = getSharedPreferences(FILENAME, 0)
+//        createNotificationChannel()
         initEmoticons()
+    }
+
+    private fun createNotificationChannel() {
+        /**
+         * 노티피케이션 채널 생성하기 안드로이드 버전 오레오 이상부터 필요
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = getString(R.string.notification_channel_id) // 채널 아이디
+            val channelName = getString(R.string.notification_channel_name) //채널 이름
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, channelName, importance).apply {
+                enableLights(true)
+                lightColor = Color.RED
+                enableVibration(true)
+                description = "AlarmManager Test"
+            }
+
+            ContextCompat.getSystemService(
+                applicationContext,
+                NotificationManager::class.java
+            )?.apply {
+                Log.d("Application Class", "createNotificationChannel()")
+                createNotificationChannel(channel)
+            }
+        }
     }
 
     private fun initEmoticons(){

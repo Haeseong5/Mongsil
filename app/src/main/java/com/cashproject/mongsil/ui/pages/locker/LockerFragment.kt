@@ -1,27 +1,31 @@
 package com.cashproject.mongsil.ui.pages.locker
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
-import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.receiver.AlarmReceiver
 import com.cashproject.mongsil.util.PreferencesManager
 import java.util.*
 import androidx.lifecycle.Observer
+import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
 import com.cashproject.mongsil.viewmodel.LockerViewModel
@@ -83,17 +87,21 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     }
 
     private fun showBottomListDialog() {
-        val bottomSheetDiaryListFragment =
-            DiaryListBottomSheetFragment()
+        val bottomSheetDiaryListFragment = DiaryListBottomSheetFragment()
         bottomSheetDiaryListFragment.show(childFragmentManager, "approval")
         bottomSheetDiaryListFragment.setCheckBtnOnClickListener { hour, minute ->
-            activity?.showToast("매일 ${hour}시 ${minute}분에 푸시메세지가 전송됩니다!")
             PreferencesManager.hour = hour
             PreferencesManager.minute = minute
             setAlarm(hour, minute)
+            activity?.showToast("매일 ${hour}시 ${minute}분에 푸시메세지가 전송됩니다!")
             bottomSheetDiaryListFragment.dismiss()
         }
+        bottomSheetDiaryListFragment.setReleaseBtnClickListener {
+            //알람해제
+        }
     }
+
+
 
     private fun setAlarm(hour: Int, minute: Int) {
         val alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
@@ -108,17 +116,10 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
         val calendar: Calendar =
             Calendar.getInstance().apply { // 3. Calendar 객체를 생성하여 알람이 울릴 정확한 시간을 설정합니다.
-                timeInMillis = System.currentTimeMillis()
+//                timeInMillis = System.currentTimeMillis()
                 set(Calendar.HOUR_OF_DAY, hour)
                 set(Calendar.MINUTE, minute)
             }
-
-//        alarmManager.setInexactRepeating( //Android는 여러 개의 부정확한 반복 알람을 동기화하고 동시에 실행합니다. 이렇게 하면 배터리 소모를 줄일 수 있습니다.
-//                AlarmManager.RTC_WAKEUP,
-//                calendar.timeInMillis,
-//                AlarmManager.INTERVAL_DAY,
-//                pendingIntent
-//        )
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
                 alarmManager.setExactAndAllowWhileIdle(
@@ -128,8 +129,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
                 )
             else -> alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         }
-
-//        alarmManager.cancel(pendingIntent) //알람 취소
     }
 
 

@@ -8,7 +8,7 @@ import com.cashproject.mongsil.base.ApplicationClass.Companion.prefs
 const val FILENAME = "prefs"
 private const val PREF_HOUR = "hour"
 private const val PREF_MINUTE = "minute"
-private const val PREF_EMOTICON = "minute"
+private const val PREF_EMOTICON = "emoticon"
 private const val PREF_COMMENT = "comment"
 
 object PreferencesManager {

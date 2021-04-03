@@ -41,7 +41,9 @@
             android:backgroundTint="@color/colorYellow"
             android:src="@{flag ? @drawable/ic_calendar : @drawable/ic_list}"
             app:fabSize="normal"
+            android:scaleType="fitXY"
             app:borderWidth="0dp"
+            android:foregroundGravity="center"
             android:layout_margin="20dp"
             android:contentDescription="calendarOrList" />
     </androidx.constraintlayout.widget.ConstraintLayout>

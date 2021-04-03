@@ -45,7 +45,7 @@ class AlarmReceiver : BroadcastReceiver() {
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
                 .setSmallIcon(R.drawable.emoticon_01_happy)
                 .setContentTitle(context.getString(R.string.app_name))
-                .setContentText("메세지가 도착했어요~")
+                .setContentText("오늘의 명언이 도착했어요~")
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)

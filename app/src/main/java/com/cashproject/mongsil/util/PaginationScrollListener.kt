@@ -11,19 +11,19 @@ abstract class PaginationScrollListener(private val layoutManager: LinearLayoutM
     RecyclerView.OnScrollListener() {
 
     protected abstract fun loadMoreItems()
-    abstract val isLastPage: Boolean
-    abstract val isLoading: Boolean
+    abstract fun isLastPage(): Boolean
+    abstract fun isLoading(): Boolean
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-        val visibleItemCount = layoutManager.childCount
-        val totalItemCount = layoutManager.itemCount
-        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+        val visibleItemCount = layoutManager.childCount //리사이클러뷰에 붙어있는 아이템 수
+        val totalItemCount = layoutManager.itemCount //어댑터에 바인드된 아이템 수
+        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition() //Returns the adapter position of the first visible view.
         /**
          * 리스트의 끝이 아니라 마지막 아이템이 보이기 시작하면서 부터 이 이벤트는 동작을 하게 된다.
          */
-        if (!isLoading && !isLastPage) {
+        if (!isLoading() && !isLastPage()) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loadMoreItems()

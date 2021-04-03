@@ -3,7 +3,6 @@ package com.cashproject.mongsil.ui.pages.calendar
 import PaginationScrollListener
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.d
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -18,7 +17,6 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.util.ClickUtil
-import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
@@ -43,13 +41,13 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     private var currentPage: Int = PAGE_START
     private val totalPage = 10
 
-    private val isLastPage = false
-    private val isLoading = false
+    private var isLastPage = false
+    private var isLoading = false
 
     override fun initStartView() {
         initRecyclerView()
         initClickListener()
-        viewModel.getData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
+        viewModel.getCalendarListData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
         viewModel.getAllComments() //read room db -> display comment in CalendarView
     }
 
@@ -71,21 +69,24 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             setItemViewCacheSize(10)
             adapter = dayAdapter
 
-//            addOnScrollListener(object : PaginationScrollListener(linearLayoutManager){
-//                override fun loadMoreItems() {
-////                    isLoading = true;
-////                    //Increment page index to load the next one
-////                    currentPage += 1
-////                    viewModel.getData() //read firestore -> display saying in RecyclerView
-//                }
-//
-//                override val isLastPage: Boolean
-//                    get() = isLastPage
-//
-//                override val isLoading: Boolean
-//                    get() = isLoading
-//
-//            })
+            addOnScrollListener(object : PaginationScrollListener(linearLayoutManager){
+                override fun loadMoreItems() {
+                    Log.d(TAG, "RecyclerView Scrolling: 마지막 아이템이 보이기 시작함!")
+                    isLoading = true;
+//                    //Increment page index to load the next one
+                    currentPage += 1
+//                    viewModel.getData() //read firestore -> display saying in RecyclerView
+                }
+
+                override fun isLastPage(): Boolean {
+                    return this@CalendarFragment.isLastPage
+                }
+
+                override fun isLoading(): Boolean {
+                    return this@CalendarFragment.isLoading
+                }
+
+            })
         }
     }
 

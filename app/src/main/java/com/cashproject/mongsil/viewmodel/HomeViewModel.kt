@@ -9,6 +9,7 @@ import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.cashproject.mongsil.util.DateUtil.dateToTimestamp
 import com.google.firebase.Timestamp
@@ -22,7 +23,8 @@ import java.text.DateFormat
 import java.util.*
 
 class HomeViewModel(
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val firestoreDataSource: FirestoreDataSource
 ) : BaseViewModel() {
 
     private val _todayData = MutableLiveData<Saying>()
@@ -45,51 +47,41 @@ class HomeViewModel(
 
     private fun getLatestData() {
         loadingSubject.onNext(true)
-        db.collection(COLLECTION)
-            .whereLessThan(DATE, dateToTimestamp(Date()))  //오늘 이후 것 중 가장 가까운 것
-            .orderBy(DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
-            .limit(1)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-//                    d("getLatestData", "${document.id} => ${document.data}")
-                    val saying = document.toObject<Saying>().apply {
-                        docId = document.id
+            firestoreDataSource.getLatestData()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        d("getLatestData", "${document.id} => ${document.data}")
+                        document.toObject<Saying>().apply {
+                            docId = document.id
+                        }.also {
+                            _todayData.postValue(it)
+                        }
                     }
-                    _todayData.postValue(saying)
+                    loadingSubject.onNext(false)
                 }
-                loadingSubject.onNext(false)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-                loadingSubject.onNext(false)
-                errorSubject.onNext(exception)
-            }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+                    loadingSubject.onNext(false)
+                    errorSubject.onNext(exception)
+                }
     }
 
     fun getTodayData() {
         loadingSubject.onNext(true)
-        db.collection(COLLECTION)
-            .whereEqualTo(DATE, dateToTimestamp(Date()))            //오늘 날짜 명언 가져오기
-            .limit(1)
-            .get()
+        firestoreDataSource.getTodayData()
             .addOnSuccessListener { documents ->
-                d("getTodayData", "Today Data ")
                 if (documents.size() == 0){
                     getLatestData()
                 }
                 for (document in documents) {
                     d(TAG, "DocumentSnapshot data: ${document.data}")
-                    val saying = document.toObject<Saying>().apply {
+                    document.toObject<Saying>().apply {
                         docId = document.id
+                    }.also {
+                        _todayData.postValue(it)
                     }
-                    d("DATA DATE", saying.date.time.toString())
-                    d("DATA DATE", saying.date.toString())
-
-                    _todayData.postValue(saying)
                 }
                 loadingSubject.onNext(false)
-
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting today documents: ", exception)
@@ -98,13 +90,12 @@ class HomeViewModel(
             }
     }
 
-    fun getSayingData(docId: String) {
+    fun getSingleSayingData(docId: String) {
         loadingSubject.onNext(true)
-        db.collection(COLLECTION).document(docId)
-            .get()
+        firestoreDataSource.getSingleSayingData(docId)
             .addOnSuccessListener { document ->
                 if (document != null) {
-//                    d(TAG, "DocumentSnapshot data: ${document.data}")
+                    d(TAG, "DocumentSnapshot data: ${document.data}")
                     val saying = document.toObject<Saying>().apply { this?.docId = document.id }
                     _todayData.postValue(saying)
                 } else {
@@ -116,7 +107,6 @@ class HomeViewModel(
                 d(TAG, "get failed with ", exception)
                 loadingSubject.onNext(false)
                 errorSubject.onNext(exception)
-
             }
     }
 

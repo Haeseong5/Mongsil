@@ -4,10 +4,8 @@ import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.d
 import android.util.Log.i
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -78,7 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             //calendar 에서 넘어왔을 경우
             if (saying == null) {
                 arguments?.getString("docId").let {
-                    viewModel.getSayingData(it!!)
+                    viewModel.getSingleSayingData(it!!)
                 }
             }
             isProgress(false)

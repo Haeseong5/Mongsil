@@ -33,7 +33,7 @@ class ViewModelFactory(private val localDataSource: LocalDataSource, private val
                 LockerViewModel(localDataSource) as T
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(localDataSource) as T
+                HomeViewModel(localDataSource, firestoreDataSource) as T
             }
             modelClass.isAssignableFrom(CalendarViewModel::class.java) -> {
                 CalendarViewModel(localDataSource, firestoreDataSource) as T
