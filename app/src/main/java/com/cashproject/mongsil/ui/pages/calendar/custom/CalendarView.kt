@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log.d
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class CalendarView(
 
     private fun createCalendarView() {
         orientation = VERTICAL
+        gravity = Gravity.CENTER
         addView(createTopMonthView())
         addView(createTopDayView())
         addView(createViewPager())

@@ -70,6 +70,10 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
     }
 
     private fun showAdmobDialog(){
+        nativeTedAdmobDialog.apply {
+            setCanceledOnTouchOutside(true)
+            setCancelable(true)
+        }
         nativeTedAdmobDialog.show()
     }
 
@@ -97,5 +101,9 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
                 .create()
 
         nativeTedAdmobDialog.loadNative()
+        nativeTedAdmobDialog.apply {
+            setCanceledOnTouchOutside(true)
+            setCancelable(true)
+        }
     }
 }

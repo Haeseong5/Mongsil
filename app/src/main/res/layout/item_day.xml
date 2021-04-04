@@ -74,7 +74,6 @@
             android:id="@+id/iv_comment_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            tools:src="@drawable/ic_comment"
             android:layout_marginEnd="@dimen/margin8"
             app:layout_constraintBottom_toBottomOf="@id/tv_comment_number"
             app:layout_constraintTop_toTopOf="@id/tv_comment_number"

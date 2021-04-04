@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.cashproject.mongsil.util.SquareLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,7 +25,10 @@
                 app:cardCornerRadius="100dp"
                 android:visibility="gone"
                 tools:visibility="visible"
-                app:cardBackgroundColor="#F15858"/>
+                app:cardBackgroundColor="#F15858"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <TextView
                 android:id="@+id/day_tv"
                 android:layout_width="wrap_content"
@@ -38,6 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/day_tv">
 
@@ -45,14 +51,13 @@
                     android:id="@+id/poster_iv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
                     android:src="@drawable/emoticon_05"
                     android:layout_margin="1dp"
                     android:visibility="gone"
-                    tools:visibility="gone"/>
+                    tools:visibility="visible"/>
 
             </LinearLayout>
 
         </FrameLayout>
-    </LinearLayout>
+    </com.cashproject.mongsil.util.SquareLayout>
 </layout>
