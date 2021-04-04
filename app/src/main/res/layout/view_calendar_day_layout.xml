@@ -46,9 +46,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:src="@android:color/transparent"
+                    android:src="@drawable/emoticon_05"
                     android:layout_margin="1dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    tools:visibility="gone"/>
 
             </LinearLayout>
 

@@ -2,7 +2,6 @@ package com.cashproject.mongsil.ui.dialog
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
+import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -87,7 +87,6 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
         binding.ivSayingLike.setOnClickListener {
             if (mLike) viewModel.unLike(saying.docId)
             else viewModel.like(saying)
-
             likeBtnListener?.invoke()
             dismiss()
         }
@@ -114,7 +113,6 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
     private fun observeIsLike(){
         viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             mLike = it
-            d("isLike", it.toString())
             if (mLike) binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
             else binding.ivSayingLike.setImageResource(R.drawable.ic_like)
         })

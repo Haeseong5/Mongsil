@@ -3,8 +3,6 @@ package com.cashproject.mongsil.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -80,7 +78,7 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
      */
     private fun initAdmobDialog(){
         nativeTedAdmobDialog =
-            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, "ca-app-pub-3940256099942544/2247696110")
+            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.sample_ad_native_id))
                 .showReviewButton(true)
                 .setOnBackPressListener(object : OnBackPressListener {
                     override fun onReviewClick() {

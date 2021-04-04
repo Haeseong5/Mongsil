@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             tools:text="정말로 삭제하시겠습니까?"
             android:layout_gravity="center"
-            android:textColor="@color/black"
             android:layout_marginBottom="28dp" />
 
         <LinearLayout

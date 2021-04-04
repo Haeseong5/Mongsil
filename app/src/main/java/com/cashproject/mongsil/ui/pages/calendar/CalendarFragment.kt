@@ -17,6 +17,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.util.ClickUtil
+import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
@@ -166,11 +167,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
                 isProgress(it)
             }
             .addTo(compositeDisposable)
-    }
 
-    override fun onResume() {
-        viewModel.getAllComments()
-        super.onResume()
+        RxEventBus.toCommentObservable().subscribe{
+            if (it) viewModel.getAllComments()
+            Log.d(TAG, "RxEventBus Consume $it")
+        }.addTo(compositeDisposable)
     }
 
 }

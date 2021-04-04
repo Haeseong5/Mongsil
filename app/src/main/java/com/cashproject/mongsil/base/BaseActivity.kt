@@ -1,13 +1,11 @@
 package com.cashproject.mongsil.base
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.FragmentActivity
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -22,12 +20,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
 //    abstract val mainViewModel: R
 
     private val compositeDisposable = CompositeDisposable()
-
-//    abstract fun initStartView()
-//
-//    abstract fun initBeforeBinding()
-//
-//    abstract fun initAfterBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

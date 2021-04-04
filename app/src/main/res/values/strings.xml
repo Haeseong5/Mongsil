@@ -13,9 +13,18 @@
     <string name="message_delete">정말 삭제 하시겠습니까?</string>
     <string name="error_message">요청에 실패했습니다.</string>
     <string name="network_state_error">네트워크 연결상태를 확인해주세요.</string>
-    <string name="ad_test_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="ad_id">ca-app-pub-1939032811151400/1834551535</string>
     <string name="notification_channel_id">notification_channel_id</string>
     <string name="notification_channel_name">notification_channel_name</string>
+
+    <string name="sample_ad_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="ad_app_id">ca-app-pub-1939032811151400~6706129481</string>
+
+    <string name="sample_ad_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="sample_ad_interstitial_video_id">ca-app-pub-3940256099942544/8691691433</string>
+
+    <string name="ad_interstitial_id">ca-app-pub-1939032811151400/1834551535</string>
+
+    <string name="sample_ad_native_id">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="ad_native_id">ca-app-pub-1939032811151400/9104485125</string>
 
 </resources>

@@ -12,6 +12,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.cashproject.mongsil.util.DateUtil.dateToTimestamp
+import com.cashproject.mongsil.util.RxEventBus
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -94,7 +95,7 @@ class HomeViewModel(
         loadingSubject.onNext(true)
         firestoreDataSource.getSingleSayingData(docId)
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document.data != null) {
                     d(TAG, "DocumentSnapshot data: ${document.data}")
                     val saying = document.toObject<Saying>().apply { this?.docId = document.id }
                     _todayData.postValue(saying)

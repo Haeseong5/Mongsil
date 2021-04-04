@@ -38,6 +38,7 @@
             android:layout_width="@dimen/bottom_icon_size"
             android:layout_height="@dimen/bottom_icon_size"
             android:src="@drawable/ic_view_off"
+            style="@style/ImageViewStyle"
             app:layout_constraintBottom_toTopOf="@+id/tv_saying_is_hide_comment"
             app:layout_constraintStart_toStartOf="@id/tv_saying_is_hide_comment"
             app:layout_constraintEnd_toEndOf="@id/tv_saying_is_hide_comment"/>
@@ -55,6 +56,7 @@
             android:layout_width="@dimen/bottom_icon_size"
             android:layout_height="@dimen/bottom_icon_size"
             android:src="@drawable/ic_share"
+            style="@style/ImageViewStyle"
             app:layout_constraintEnd_toEndOf="@id/tv_saying_share"
             app:layout_constraintStart_toStartOf="@id/tv_saying_share"
             app:layout_constraintBottom_toTopOf="@id/tv_saying_share" />
@@ -92,6 +94,7 @@
             android:layout_width="@dimen/bottom_icon_size"
             android:layout_height="@dimen/bottom_icon_size"
             android:src="@drawable/ic_download"
+            style="@style/ImageViewStyle"
             app:layout_constraintStart_toStartOf="@id/tv_saying_save"
             app:layout_constraintEnd_toEndOf="@+id/tv_saying_save"
             app:layout_constraintBottom_toTopOf="@id/tv_saying_save"/>

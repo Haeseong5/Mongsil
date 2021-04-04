@@ -1,19 +1,16 @@
 package com.cashproject.mongsil.ui.pages.locker
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,8 +23,10 @@ import com.cashproject.mongsil.util.PreferencesManager
 import java.util.*
 import androidx.lifecycle.Observer
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
+import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
+import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.LockerViewModel
 
 import kotlin.collections.ArrayList
@@ -64,7 +63,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
     private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
 
-        (activity as AppCompatActivity).actionBar?.title = "보관함"
+        (activity as AppCompatActivity).actionBar?.elevation = 10f
 
     }
 
@@ -84,6 +83,11 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         viewModel.likeData.observe(viewLifecycleOwner, Observer {
             lockerAdapter.update(it as ArrayList<Saying>)
         })
+
+        RxEventBus.toLikeObservable().subscribe{
+            if (it) viewModel.getAllLike()
+            Log.d(TAG, "RxEventBus Consume $it")
+        }.addTo(compositeDisposable)
     }
 
     private fun showBottomListDialog() {
@@ -98,6 +102,15 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
         bottomSheetDiaryListFragment.setReleaseBtnClickListener {
             //알람해제
+            val intent = Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
+            PendingIntent.getBroadcast(     // 2 PendingIntent가 이미 존재할 경우 cancel 하고 다시 생성
+                activity,
+                AlarmReceiver.NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
+            ).run {
+                cancel()
+            }
         }
     }
 
@@ -107,11 +120,11 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         val alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
-        val pendingIntent = PendingIntent.getBroadcast(     // 2
+        val pendingIntent = PendingIntent.getBroadcast(     // 2 PendingIntent가 이미 존재할 경우 cancel 하고 다시 생성
             activity,
             AlarmReceiver.NOTIFICATION_ID,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
+            PendingIntent.FLAG_CANCEL_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
         )
 
         val calendar: Calendar =

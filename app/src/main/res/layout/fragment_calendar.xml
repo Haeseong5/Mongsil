@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:visibility="gone"
+            android:clipToPadding="false"
             android:visibility="@{flag ? View.VISIBLE : View.GONE}"
             android:orientation="vertical"/>
         <com.cashproject.mongsil.ui.pages.calendar.custom.CalendarView

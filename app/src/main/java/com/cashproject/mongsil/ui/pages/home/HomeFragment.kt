@@ -8,6 +8,7 @@ import android.util.Log.i
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
@@ -24,6 +25,7 @@ import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
+import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -39,7 +41,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override val viewModel: HomeViewModel by viewModels { viewModelFactory }
 
-    private lateinit var mSaying: Saying
+    private lateinit var mSaying: Saying //real data != comment data -> 초기화x -> 에러 발생
 
     private val click by lazy { ClickUtil(this.lifecycle) }
 
@@ -65,6 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun initSaying() {
+        //이부분 정리하기 ;
         //보관함 or 리스트에서 넘어왔을 경우
         if (arguments != null) {
             val saying = arguments?.getParcelable<Saying>("saying")?.let {
@@ -74,9 +77,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
             //calendar 에서 넘어왔을 경우
             if (saying == null) {
-                arguments?.getString("docId").let {
-                    viewModel.getSingleSayingData(it!!)
+                arguments?.getString("docId").also {
+                    it?.also {
+                        viewModel.getSingleSayingData(it)
+                    }
                 }
+                //doc id null이면 댓글 날리기
+                //                    viewModel.deleteCommentById(mSaying.docId)
+//                findNavController().popBackStack()
             }
         } else { //처음 실행했을 경우
             viewModel.getTodayData()
@@ -89,9 +97,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun initRecyclerView() {
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.reverseLayout =true
-        layoutManager.stackFromEnd = true
+        val layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL, true)
         binding.rvSayingCommentList.apply {
             this.layoutManager = layoutManager
             setHasFixedSize(true)
@@ -120,40 +126,56 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
          * 댓글 입력 버튼 클릭 시 호출. documentId가 없으면, 댓글 저장 실패
          */
         binding.tvSayingCommentBtn.setOnClickListener {
-            if (mSaying.docId != ""){
-                viewModel.insertComment(
-                    Comment(
-                        docId = mSaying.docId,
-                        content = binding.etSayingCommentInput.text.toString(),
-                        time = Date(),
-                        date = mSaying.date,
-                        emotion = selectedEmoticonId
+            try {
+                if (mSaying.docId != ""){
+                    viewModel.insertComment(
+                        Comment(
+                            docId = mSaying.docId,
+                            content = binding.etSayingCommentInput.text.toString(),
+                            time = Date(),
+                            date = mSaying.date,
+                            emotion = selectedEmoticonId
+                        )
                     )
-                )
-            }else{
-                activity?.showToast(getString(R.string.network_state_error))
+                } else{
+//                    viewModel.deleteCommentById(mSaying.docId)
+                    findNavController().popBackStack()
+                }
+
+
+            }catch (e: ExceptionInInitializerError){
+                //잘못들어오면
+//                viewModel.deleteCommentById(mSaying.docId)
             }
             binding.etSayingCommentInput.text?.clear()
+
+
         }
     }
 
     private fun observeData() {
         viewModel.todayData.observe(viewLifecycleOwner, Observer {
             binding.saying = it
-            mSaying = it
+            mSaying = it //null error
             isProgress(false)
             viewModel.getComments(mSaying.docId)
+
+            if(it == null){
+              mSaying = Saying()
+            }
         })
 
         //댓글 데이터 불러오기
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             commentAdapter.update(it as ArrayList<Comment>)
+            binding.rvSayingCommentList.scrollToPosition(it.size-1)
         })
 
         //댓글 삽입/삭제 결과 관찰
         viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
             if (it) {
                 viewModel.getComments(mSaying.docId)
+                RxEventBus.sendToCalendar(true)
             }
         })
 
@@ -170,6 +192,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         bottomSheetFragment.setLikeBtnOnClickListener {
 //            showAdMob()
+            RxEventBus.sendToLocker(true)
         }
 
         bottomSheetFragment.setSaveBtnOnClickListener {
@@ -238,7 +261,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun adMobInitial(){
         // Create the InterstitialAd and set it up.
         mInterstitialAd = InterstitialAd(requireActivity())
-        mInterstitialAd.adUnitId = getString(R.string.ad_test_id) // my id = ca-app-pub-1939032811151400/1834551535
+        mInterstitialAd.adUnitId = getString(R.string.sample_ad_interstitial_id)
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = (

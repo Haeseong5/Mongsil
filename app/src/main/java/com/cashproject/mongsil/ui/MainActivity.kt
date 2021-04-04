@@ -14,7 +14,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(this, "ca-app-pub-1939032811151400~6706129481")
+        MobileAds.initialize(this, getString(R.string.ad_app_id))
     }
 
 }

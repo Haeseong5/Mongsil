@@ -23,7 +23,7 @@
         android:theme="@style/Theme.Mongsil"
         tools:targetApi="n">
         <activity android:name=".ui.MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

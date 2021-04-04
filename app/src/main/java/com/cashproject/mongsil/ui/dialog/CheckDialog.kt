@@ -30,7 +30,7 @@ class CheckDialog(context : Context) {
     fun start(message : String) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_check)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
 
         tvMessage = dialog.findViewById(R.id.dialog_tv_message)
         tvMessage.text = message
