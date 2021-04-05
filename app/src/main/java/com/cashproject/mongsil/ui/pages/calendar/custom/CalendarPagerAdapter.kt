@@ -20,7 +20,7 @@ class CalendarPagerAdapter(private val context: Context) : PagerAdapter() {
     private var viewContainer: ViewGroup? = null
     private var onDayClickListener: ((Calendar, Day) -> Unit)? = null
 
-    fun setonDayClickListener(listener: ((Calendar, Day) -> Unit)) {
+    fun setOnDayClickListener(listener: ((Calendar, Day) -> Unit)) {
         this.onDayClickListener = listener
     }
 
@@ -45,8 +45,8 @@ class CalendarPagerAdapter(private val context: Context) : PagerAdapter() {
             adapter = CalendarGridAdapter(context, getCalendar(position))
             setSelector(R.drawable.calendar_list_selector)
             setOnItemClickListener { adapterView, _, pos, _ ->
-                val item = adapterView.getItemAtPosition(pos) as Day
-                onDayClickListener?.invoke(getCalendar(position), item)
+                val selectedDay = adapterView.getItemAtPosition(pos) as Day
+                onDayClickListener?.invoke(getCalendar(position), selectedDay)
             }
         }
 

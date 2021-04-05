@@ -7,6 +7,7 @@ object RxEventBus {
     private val calendarEventBus = PublishSubject.create<Boolean>()
     private val likeEventBus = PublishSubject.create<Boolean>()
 
+    //Calendar
     fun sendToCalendar(isUpdated: Boolean){
         Log.d("RxEventBus", "sendToCalendar() $isUpdated")
         calendarEventBus.onNext(isUpdated)
@@ -16,6 +17,7 @@ object RxEventBus {
         return calendarEventBus
     }
 
+    //Locker
     fun sendToLocker(isUpdated: Boolean){
         Log.d("RxEventBus", "sendToLocker() $isUpdated")
         likeEventBus.onNext(isUpdated)

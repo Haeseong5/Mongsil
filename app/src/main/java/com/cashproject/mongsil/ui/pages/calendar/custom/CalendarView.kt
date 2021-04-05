@@ -19,7 +19,7 @@ import com.cashproject.mongsil.util.CalendarUtil.convertCalendarToString
 import com.cashproject.mongsil.util.CalendarUtil.isMonthSame
 import java.util.*
 
-class CalendarView(
+internal class CalendarView(
     context: Context
     , attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
@@ -30,14 +30,18 @@ class CalendarView(
 
     private var onDayClickListener: ((Day) -> Unit)? = null
     private lateinit var topMonthViewBinding: ViewCalendarTopLayoutBinding
-
+    private val layoutParams :LayoutParams by lazy {
+        LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0f).apply {
+            gravity = Gravity.CENTER
+        }
+    }
     init {
         createCalendarView()
     }
 
     private fun createCalendarView() {
         orientation = VERTICAL
-        gravity = Gravity.CENTER
+        setLayoutParams(layoutParams)
         addView(createTopMonthView())
         addView(createTopDayView())
         addView(createViewPager())
@@ -51,6 +55,7 @@ class CalendarView(
         calendarPagerAdapter.setList(list)
     }
 
+    //2021년 4월
     private fun createTopMonthView(): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
         topMonthViewBinding =
@@ -63,15 +68,18 @@ class CalendarView(
                 // top month text clicked
             }
         }
+
         topMonthViewBinding.preBtn.setOnClickListener {
             setViewPagerPosition(PREVIOUS_MONTH)
         }
         topMonthViewBinding.nextBtn.setOnClickListener {
             setViewPagerPosition(NEXT_MONTH)
         }
+
         return topMonthViewBinding.root
     }
 
+    //월 화 수 목 금 토 일 레이아웃
     private fun createTopDayView(): LinearLayout {
         val linearLayout = LinearLayout(context)
         val params = LayoutParams(
@@ -86,13 +94,14 @@ class CalendarView(
             weightSum = 7F
             setBackgroundColor(Color.TRANSPARENT)
         }
-        for (i in 0 until dayOfWeek.size) {
-            linearLayout.addView(createTextView(dayOfWeek[i]))
+        for (element in dayOfWeek) { //dayOfWekk: 7
+            linearLayout.addView(createTextView(element))
         }
         linearLayout.requestLayout()
         return linearLayout
     }
 
+    //월 화 수 목 금 토 일 텍스트 삽입
     private fun createTextView(string: String): TextView {
         val params = LayoutParams(
             0,
@@ -109,25 +118,27 @@ class CalendarView(
     }
 
     private fun createViewPager(): CalendarViewPager {
-        val params =
-            LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
 
-        calendarPagerAdapter.setonDayClickListener { calendar, day ->
-            d("calendarPagerAdapter", "onClick")
+        }
+
+        //날짜 클릭 리스너
+        calendarPagerAdapter.setOnDayClickListener { calendar, day -> // 파라미터 이해!
+            //클릭한 날짜가 이번달 날짜가 아니라면
             if (!isMonthSame(day.calendar, calendar)) {
                 when (day.calendar.compareTo(calendar)) {
-                    PREVIOUS_MONTH -> setViewPagerPosition(PREVIOUS_MONTH)
-                    NEXT_MONTH -> setViewPagerPosition(NEXT_MONTH)
+                    PREVIOUS_MONTH -> setViewPagerPosition(PREVIOUS_MONTH) //이전 달 날짜이면, 이전 달력 표시
+                    NEXT_MONTH -> setViewPagerPosition(NEXT_MONTH) //다음 달 날짜이면, 다음 달 달력 표시
                 }
             }
-            onDayClickListener?.invoke(day)
+            onDayClickListener?.invoke(day) //클릭 콜백 호출
         }
 
         calendarViewPager.apply {
-            layoutParams = params
-            adapter = calendarPagerAdapter
-            setOnPageSelectedListener { position ->
-                setTopMonthText(position)
+            this.layoutParams = layoutParams //ViewPager match_parent/wrap_content 로 지정
+            adapter = calendarPagerAdapter //뷰페이저 데이터 없는 어댑터 설정
+            setOnPageSelectedListener { position -> //페이지 변경됐을 때 호출됨.
+                setTopMonthText(position) //년월 변경
             }
         }
 
@@ -151,6 +162,6 @@ class CalendarView(
         private const val PREVIOUS_MONTH = -1
         private const val NEXT_MONTH = 1
         private const val monthDateFormat = "yyyy년 MM월"
-        private val dayOfWeek = mutableListOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        private val dayOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
     }
 }

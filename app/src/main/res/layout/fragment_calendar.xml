@@ -26,12 +26,18 @@
             android:clipToPadding="false"
             android:visibility="@{flag ? View.VISIBLE : View.GONE}"
             android:orientation="vertical"/>
+
         <com.cashproject.mongsil.ui.pages.calendar.custom.CalendarView
             android:id="@+id/custom_calendar_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin16"
             android:visibility="@{flag ? View.GONE : View.VISIBLE}"
-            android:padding="@dimen/margin16"/>
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_calendar_floatingActionButton"

@@ -1,7 +1,9 @@
 package com.cashproject.mongsil.ui.pages.calendar.custom
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
+import android.view.Gravity
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 
@@ -30,7 +32,7 @@ class CalendarViewPager(
         override fun onPageScrollStateChanged(state: Int) {}
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
         override fun onPageSelected(position: Int) {
-            onPageSelectedListener?.invoke(position)
+            onPageSelectedListener?.invoke(position) //페이지 변경됐을 때 콜백 호출
         }
     }
 }
