@@ -19,6 +19,7 @@ import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
+import com.jakewharton.rxbinding3.internal.checkMainThread
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
@@ -146,7 +147,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 
         //댓글 데이터를 받아와서 CalendarView 에 세팅
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
-            binding.customCalendarView.notifyDataChanged(it)
+            
+            binding.customCalendarView.notifyDataChanged(it) // 갱신 안되는건 CalendarView 문제인듯
             Log.d(TAG, "++CommentData: ${it[it.size-1]}")
         })
 

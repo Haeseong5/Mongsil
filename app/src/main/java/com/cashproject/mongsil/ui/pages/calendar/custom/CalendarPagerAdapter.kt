@@ -58,6 +58,9 @@ class CalendarPagerAdapter(private val context: Context) : PagerAdapter() {
 
     override fun getCount(): Int = NUMBER_OF_PAGES
 
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
     override fun isViewFromObject(view: View, `object`: Any): Boolean = (view == `object`)
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

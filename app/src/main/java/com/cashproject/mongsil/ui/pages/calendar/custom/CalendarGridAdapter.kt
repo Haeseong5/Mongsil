@@ -45,7 +45,8 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
             addAll(list)
         }
         setCalendar()
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
+        notifyDataSetInvalidated()
     }
 
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {

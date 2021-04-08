@@ -15,15 +15,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin8"
+        android:padding="@dimen/margin8"
         tools:background="@color/black87">
 
         <ImageView
             android:id="@+id/comment_iv_emoticon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin8"
-
             android:src="@drawable/emoticon_01_happy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -53,12 +51,16 @@
             android:text="@{comment.content}"
             android:textColor="@color/white"
             android:textSize="16sp"
+            android:layout_marginStart="@dimen/margin8"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/comment_tv_time"
+            app:layout_constraintStart_toEndOf="@id/comment_iv_emoticon"
             app:layout_constraintTop_toBottomOf="@id/comment_tv_time"
-            tools:text="오늘의 기분은 아주 좋다. 왜냐하면 ㅎㅎㅎ\n이기 때문이다가나다라마다때문이다가나다라마다때문이다가나다라마다때문이다가나다라마다" />
+            app:layout_constraintHorizontal_bias="0"
+            android:singleLine="false"
+            app:layout_constrainedWidth="true"
+            tools:text="HELLO WORLD HELLO WORLD HELLO WORLD HELLO WORLD HELLO WORLD HELLO WORLDHELLO WORLD HELLO WORLD HELLO WORLDHELLO WORLD HELLO WORLD HELLO WORLD" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
