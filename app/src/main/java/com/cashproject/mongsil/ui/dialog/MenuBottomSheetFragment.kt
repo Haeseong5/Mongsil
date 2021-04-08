@@ -113,7 +113,10 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
     private fun observeIsLike(){
         viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             mLike = it
-            if (mLike) binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
+            if (mLike){
+                binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
+                binding.ivSayingLike.setColorFilter(R.color.ic_like_sel_color)
+            }
             else binding.ivSayingLike.setImageResource(R.drawable.ic_like)
         })
     }

@@ -5,13 +5,14 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
 
-    <color name="background_color">#FFFFFF</color>
-    <color name="text_color">#FF000000</color>
-    <color name="icon_color">#333333</color>
+    <color name="text_color">#FFFFFFFF</color>
+    <color name="background_color">#333333</color>
+    <color name="icon_color">#FFFFFF</color>
     <color name="ic_like_sel_color">#FF8B8B</color>
+
 
     <!--Calendar-->
     <color name="sunday">#ed607a</color>

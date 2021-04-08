@@ -2,6 +2,7 @@ package com.cashproject.mongsil.ui.pages.calendar.custom
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.util.Log.d
 import android.util.Log.v
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         private const val SUNDAY = 0
         private const val SATURDAY = 6
         private val reviewList = mutableListOf<Comment>()
+        private val TAG = this::class.java.simpleName
     }
 
     private val dayList = mutableListOf<Day>()
@@ -39,14 +41,13 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         setCalendar()
     }
 
-    fun setList(list: List<Comment>) {
+    fun updateList(list: List<Comment>) {
         reviewList.apply {
             clear()
             addAll(list)
         }
         setCalendar()
 //        notifyDataSetChanged()
-        notifyDataSetInvalidated()
     }
 
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
@@ -119,6 +120,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
     override fun getCount(): Int = dayList.size
 
     private fun setCalendar() {
+        Log.d(TAG, "setCalendar()")
         dayList.clear()
 
         val cal = calendar.clone() as Calendar
@@ -126,6 +128,10 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
             set(Calendar.DATE, 1)
             val startOfMonth = cal.get(Calendar.DAY_OF_WEEK) - 1
             add(Calendar.DATE, -startOfMonth)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
         while (dayList.size < SIZE_OF_DAY) {
@@ -140,5 +146,6 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
             dayList.add(Day(cal.clone() as Calendar, reviews))
             cal.add(Calendar.DATE, 1)
         }
+        notifyDataSetChanged()
     }
 }

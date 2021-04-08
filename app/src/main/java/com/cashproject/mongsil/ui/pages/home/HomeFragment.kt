@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
+import android.util.Log.d
 import android.util.Log.i
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -174,6 +175,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         //댓글 삽입/삭제 결과 관찰
         viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
             if (it) {
+                d(TAG, "isCompletable $it")
                 viewModel.getComments(mSaying.docId)
                 RxEventBus.sendToCalendar(true)
             }

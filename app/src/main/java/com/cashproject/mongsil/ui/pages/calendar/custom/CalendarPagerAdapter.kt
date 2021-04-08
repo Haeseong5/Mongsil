@@ -27,7 +27,7 @@ class CalendarPagerAdapter(private val context: Context) : PagerAdapter() {
     fun setList(list: List<Comment>) {
         val views = viewContainer ?: return
         (0 until views.childCount).forEach { i ->
-            ((views.getChildAt(i) as GridView).adapter as? CalendarGridAdapter)?.setList(list)
+            ((views.getChildAt(i) as GridView).adapter as? CalendarGridAdapter)?.updateList(list)
         }
     }
 

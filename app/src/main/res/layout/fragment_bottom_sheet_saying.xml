@@ -11,6 +11,7 @@
         android:layout_height="200dp"
         android:paddingHorizontal="@dimen/margin30"
         android:paddingVertical="@dimen/margin16"
+        android:background="@color/background_color"
         android:minHeight="200dp">
 
         <TextView
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/black"
             android:text="댓글 숨기기"/>
 
         <ImageView
@@ -66,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin16"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/tv_saying_like"
             app:layout_constraintEnd_toStartOf="@id/tv_saying_like"
             android:text="공유"/>
@@ -75,6 +78,7 @@
             android:layout_width="@dimen/bottom_icon_size"
             android:layout_height="@dimen/bottom_icon_size"
             tools:src="@drawable/ic_like"
+            style="@style/ImageViewStyle"
             app:layout_constraintStart_toStartOf="@id/tv_saying_like"
             app:layout_constraintEnd_toEndOf="@id/tv_saying_like"
             app:layout_constraintBottom_toTopOf="@id/tv_saying_like"/>
@@ -84,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin16"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/tv_saying_save"
             app:layout_constraintEnd_toStartOf="@id/tv_saying_save"
             android:text="스크랩"/>
@@ -104,6 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="저장"/>
 
