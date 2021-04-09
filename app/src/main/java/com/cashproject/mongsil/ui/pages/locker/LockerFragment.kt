@@ -26,6 +26,8 @@ import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
+import com.cashproject.mongsil.ui.main.MainFragment
+import com.cashproject.mongsil.util.FragmentListener
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.LockerViewModel
 
@@ -56,8 +58,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         viewModel.getAllLike()
         observeData()
         observeErrorEvent()
-
     }
+
 
 
     private fun initToolbar() {
@@ -84,7 +86,15 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
             lockerAdapter.update(it as ArrayList<Saying>)
         })
 
-        RxEventBus.toLikeObservable().subscribe{
+//        RxEventBus.toLikeObservable().subscribe{
+//            if (it) viewModel.getAllLike()
+//            Log.d(TAG, "RxEventBus Consume $it")
+//        }.addTo(compositeDisposable)
+
+        /**
+         * when call MainFragment is Resumed
+         */
+        RxEventBus.toResumedObservable().subscribe{
             if (it) viewModel.getAllLike()
             Log.d(TAG, "RxEventBus Consume $it")
         }.addTo(compositeDisposable)

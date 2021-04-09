@@ -9,6 +9,10 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="background_color">#FFFFFF</color>
+    <color name="arrow_color">#000000</color>
+    <color name="floating_action_btn_color">#6D5107</color>
+
+
     <color name="text_color">#FF000000</color>
     <color name="icon_color">#333333</color>
     <color name="ic_like_sel_color">#FF8B8B</color>

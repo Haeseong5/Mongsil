@@ -155,7 +155,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         /**
          * 달력 빨리 눌럿을 때 에러
          * java.lang.IllegalArgumentException: Navigation action/destination com.cashproject.mongsil:id/action_pager_to_home cannot be found from the current destination Destination(com.cashproject.mongsil:id/homeFragment) label=saying class=com.cashproject.mongsil.ui.pages.home.HomeFragment
-
          */
         //날짜 클릭 시 로컬디비에 데이터 없을 때, Firestore 에서 받아와서 이동
         viewModel.sayingDataByDate.observe(viewLifecycleOwner, Observer {
@@ -171,10 +170,26 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             }
             .addTo(compositeDisposable)
 
-        RxEventBus.toCommentObservable().subscribe{
+//        RxEventBus.toCommentObservable().subscribe{
+//            if (it) viewModel.getAllComments()
+//            Log.d(TAG, "++RxEventBus Consume $it") //댓글이 삭제되는 시점에 데이타 수신
+//        }.addTo(compositeDisposable)
+
+        RxEventBus.toResumedObservable().subscribe{
             if (it) viewModel.getAllComments()
-            Log.d(TAG, "++RxEventBus Consume $it") //댓글이 삭제되는 시점에 데이타 수신
+            Log.d(TAG, "++RxEventBus Consume $it")
         }.addTo(compositeDisposable)
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllComments()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        RxEventBus.sendToHome(true)
+    }
+
 
 }

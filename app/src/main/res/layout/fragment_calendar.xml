@@ -46,6 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/colorYellow"
+            app:tint="@color/floating_action_btn_color"
             android:src="@{flag ? @drawable/ic_calendar : @drawable/ic_list}"
             tools:src="@drawable/ic_list"
             android:scaleType="fitXY"

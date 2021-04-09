@@ -48,6 +48,11 @@
     <style name="ImageViewStyle" >
         <item name="android:tint">@color/icon_color</item>
     </style>
+
+    <style name="ArrowStyle" >
+        <item name="android:tint">@color/arrow_color</item>
+    </style>
+
     <style name="IcLikeSelectedStyle" >
         <item name="android:tint">@color/ic_like_sel_color</item>
     </style>

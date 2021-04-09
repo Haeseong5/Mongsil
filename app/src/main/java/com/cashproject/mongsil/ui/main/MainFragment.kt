@@ -12,9 +12,12 @@ import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
+import com.cashproject.mongsil.util.FragmentListener
+import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
+
 
 class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
@@ -25,6 +28,12 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     private lateinit var callback: OnBackPressedCallback
     private lateinit var nativeTedAdmobDialog: TedAdmobDialog
+
+    private lateinit var fragmentListener: FragmentListener
+
+    companion object{
+        val mainFragment: Companion = this
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +59,24 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     }
 
+    fun setFragmentListener(fragmentListener: FragmentListener){
+        this.fragmentListener = fragmentListener
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
+
     override fun onResume() {
-//        viewModel.getAllComments() //여기서 데이터 요청하는데, 캘린더에서 옵저브가 안됨,,
         super.onResume()
+//        fragmentListener = object : FragmentListener{
+//            override fun onResumeMainFragment(isUpdate: Boolean) {
+//                TODO("Not yet implemented")
+//            }
+//        }
+//        fragmentListener.onResumeMainFragment(true)
+        RxEventBus.sendToFragment(true)
     }
 
     override fun onAttach(context: Context) {

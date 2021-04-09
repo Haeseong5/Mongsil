@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentHomeBinding
+import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
@@ -67,28 +68,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         observeErrorEvent()
     }
 
+    //정리하기
     private fun initSaying() {
-        //이부분 정리하기 ;
-        //보관함 or 리스트에서 넘어왔을 경우
-        if (arguments != null) {
-            val saying = arguments?.getParcelable<Saying>("saying")?.let {
-                mSaying = it
-                binding.saying = it
-                viewModel.getComments(it.docId)
+        when{
+            //1. 제일 처음 실행됐을 경우
+            arguments == null -> {
+                viewModel.getTodayData()
             }
-            //calendar 에서 넘어왔을 경우
-            if (saying == null) {
-                arguments?.getString("docId").also {
-                    it?.also {
-                        viewModel.getSingleSayingData(it)
+            else -> {
+                //2. 보관함 or 리스트에서 넘어왔을 경우
+                val saying = arguments?.getParcelable<Saying>("saying")?.let {
+                    mSaying = it
+                    binding.saying = it
+                    viewModel.getComments(it.docId)
+                }
+                //3.calendar 에서 넘어왔을 경우
+                if (saying == null) {
+                    arguments?.getString("docId").also {
+                        it?.also {
+                            viewModel.getSingleSayingData(it)
+                        }
                     }
                 }
-                //doc id null이면 댓글 날리기
-                //                    viewModel.deleteCommentById(mSaying.docId)
-//                findNavController().popBackStack()
             }
-        } else { //처음 실행했을 경우
-            viewModel.getTodayData()
         }
 
         if (selectedEmoticonId > 14){
@@ -181,6 +183,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         })
 
+        RxEventBus.toHomeObservable().subscribe{
+                if (it) viewModel.getComments(mSaying.docId)
+            Log.d(TAG, "RxEventBus Consume $it")
+        }.addTo(compositeDisposable)
+
     }
 
     private fun showBottomMenuDialog() {
@@ -194,7 +201,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         bottomSheetFragment.setLikeBtnOnClickListener {
 //            showAdMob()
-            RxEventBus.sendToLocker(true)
+//            RxEventBus.sendToLocker(true)
         }
 
         bottomSheetFragment.setSaveBtnOnClickListener {
@@ -284,7 +291,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     }
                 }
             )
-
     }
 }
 

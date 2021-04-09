@@ -1,10 +1,16 @@
 package com.cashproject.mongsil.ui.dialog
 
+import android.R.attr.button
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
@@ -17,6 +23,7 @@ import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
 
 class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
@@ -73,7 +80,7 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
         binding.tvSayingYear.text = DateUtil.yearToString(saying.date)
     }
 
-    fun initCommentIcon(){
+    private fun initCommentIcon(){
         if (!isVisibilityComment) { // false 라면, 댓글 보이는 상태이고, 댓글을 숨기길 수 있는 아이콘 보이기
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_off)
             binding.tvSayingIsHideComment.text = "댓글 숨기기"
@@ -115,9 +122,13 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
             mLike = it
             if (mLike){
                 binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
-                binding.ivSayingLike.setColorFilter(R.color.ic_like_sel_color)
             }
-            else binding.ivSayingLike.setImageResource(R.drawable.ic_like)
+            else {
+                binding.ivSayingLike.apply {
+                    setImageResource(R.drawable.ic_like)
+                    setColorFilter(R.color.icon_color)
+                }
+            }
         })
     }
 
