@@ -10,7 +10,7 @@ import io.reactivex.Single
 interface LockerDao {
 
     @Query("SELECT * FROM Saying")
-    fun getAll(): Single<List<Saying>>
+    suspend fun getAll(): List<Saying>
 
     @Query("SELECT * FROM Saying WHERE docId = :docId")
     fun findByDocId(docId: String): Maybe<Saying>

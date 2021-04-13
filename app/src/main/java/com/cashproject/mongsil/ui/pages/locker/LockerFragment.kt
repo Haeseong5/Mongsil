@@ -22,6 +22,7 @@ import com.cashproject.mongsil.receiver.AlarmReceiver
 import com.cashproject.mongsil.util.PreferencesManager
 import java.util.*
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
@@ -30,6 +31,7 @@ import com.cashproject.mongsil.ui.main.MainFragment
 import com.cashproject.mongsil.util.FragmentListener
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.LockerViewModel
+import kotlinx.coroutines.launch
 
 import kotlin.collections.ArrayList
 
@@ -56,6 +58,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         initToolbar()
         initRecyclerView()
         viewModel.getAllLike()
+
+        lifecycleScope
         observeData()
         observeErrorEvent()
     }
@@ -95,8 +99,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
          * when call MainFragment is Resumed
          */
         RxEventBus.toResumedObservable().subscribe{
-            if (it) viewModel.getAllLike()
             Log.d(TAG, "RxEventBus Consume $it")
+            if(it) viewModel.getAllLike()
         }.addTo(compositeDisposable)
     }
 

@@ -2,13 +2,15 @@ package com.cashproject.mongsil.ui.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Build
+import android.view.View
 import android.view.Window
-import android.widget.Button
 import android.widget.TextView
 import com.cashproject.mongsil.R
 
+
 class CheckDialog(context : Context) {
-    private val dialog = Dialog(context)  //부모 액티비티의 context
+    private val dialog = Dialog(context)
 
     private lateinit var tvMessage : TextView
     private lateinit var btAccept : TextView
@@ -48,5 +50,6 @@ class CheckDialog(context : Context) {
 
         dialog.show()
     }
+
 
 }

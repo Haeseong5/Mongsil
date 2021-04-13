@@ -13,12 +13,15 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/background_color</item>
 
-        <!-- Status bar color. -->
+        <!--statusBar 투명 여부-->
         <item name="android:windowTranslucentStatus">true</item>
+        <!--navigationBar 투명 여부-->
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:statusBarColor">@android:color/darker_gray</item>
+        <!--statusBar color 설정-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <!--마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원-->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <!--상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.-->
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
 
         <!--custom font-family 적용-->
         <item name="android:textViewStyle">@style/DayTextViewFontStyle</item>
@@ -56,4 +59,5 @@
     <style name="IcLikeSelectedStyle" >
         <item name="android:tint">@color/ic_like_sel_color</item>
     </style>
+
 </resources>

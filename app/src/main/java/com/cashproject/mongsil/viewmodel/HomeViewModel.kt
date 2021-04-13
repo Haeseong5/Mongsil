@@ -50,6 +50,7 @@ class HomeViewModel(
         loadingSubject.onNext(true)
             firestoreDataSource.getLatestData()
                 .addOnSuccessListener { documents ->
+                    Log.d("getLatestData", Thread.currentThread().name)
                     for (document in documents) {
                         d("getLatestData", "${document.id} => ${document.data}")
                         document.toObject<Saying>().apply {
@@ -165,12 +166,14 @@ class HomeViewModel(
     }
 
     fun getComments(docId: String) {
+        Log.d("--getComments ", Thread.currentThread().name)
         addDisposable(
             localDataSource.getCommentsByDocId(docId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _commentData.postValue(it)
+                    Log.d("--getComments subscribe", Thread.currentThread().name)
                 }, {
                     errorSubject.onNext(it)
                 })

@@ -6,13 +6,13 @@
 
 <!--
 fileSystemWindows:
-뷰가 차지할 수 있는 영역을 상태바 및 소프트키 영역을 제외한 영역까지 확장해주는 역할
+뷰가 차지할 수 있는 영역을 상태바 및 소프트키 영역을 제외한 영역까지 확장해주는 역할.
+하지만 View는 패딩을 추가해서 childView를 inset 안으로 이동시킴
 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-
         tools:context=".ui.MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
