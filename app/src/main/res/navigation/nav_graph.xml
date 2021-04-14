@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_locker_to_home"
             app:destination="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_locker_to_setting"
+            app:destination="@id/settingFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -28,12 +31,6 @@
             android:name="com.cashproject.mongsil.ui.pages.calendar.CalendarFragment"
             android:label="@string/calendar"
             tools:layout="@layout/fragment_calendar">
-        <action
-            android:id="@+id/action_calendar_to_home"
-            app:destination="@id/homeFragment"/>
-        <argument
-            android:name="saying"
-            app:argType="com.cashproject.mongsil.model.data.Saying"/>
     </fragment>
 
     <fragment
@@ -41,12 +38,7 @@
         android:name="com.cashproject.mongsil.ui.pages.home.HomeFragment"
         android:label="@string/saying"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_home_to_calendar"
-            app:destination="@id/calendarFragment"/>
-        <action
-            android:id="@+id/action_home_to_locker"
-            app:destination="@id/lockerFragment"/>
+
     </fragment>
 
     <fragment
@@ -56,13 +48,12 @@
         app:popUpToInclusive="true"
         app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_locker">
-        <action
-            android:id="@+id/action_locker_to_home"
-            app:destination="@id/homeFragment"/>
-        <argument
-            android:name="docId"
-            app:argType="string"/>
     </fragment>
 
-
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.cashproject.mongsil.ui.pages.setting.SettingFragment"
+        android:label="setting"
+        tools:layout="@layout/fragment_setting">
+    </fragment>
 </navigation>

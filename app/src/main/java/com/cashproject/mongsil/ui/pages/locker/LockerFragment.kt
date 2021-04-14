@@ -27,11 +27,8 @@ import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
-import com.cashproject.mongsil.ui.main.MainFragment
-import com.cashproject.mongsil.util.FragmentListener
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.LockerViewModel
-import kotlinx.coroutines.launch
 
 import kotlin.collections.ArrayList
 
@@ -165,8 +162,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_alarm -> {
-                showBottomListDialog()
+            R.id.menu_item_setting -> {
+                findNavController().navigate(R.id.action_locker_to_setting)
                 true
             }
             else -> super.onOptionsItemSelected(item)

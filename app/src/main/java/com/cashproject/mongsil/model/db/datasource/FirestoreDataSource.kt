@@ -15,9 +15,7 @@ class FirestoreDataSource {
         FirebaseFirestore.getInstance()
     }
 
-    /*
-    Home
-     */
+    /*Home*/
     fun getLatestData(): Task<QuerySnapshot> {
         return db.collection(ApplicationClass.COLLECTION)
             .whereLessThan(
