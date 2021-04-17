@@ -9,6 +9,7 @@ import android.util.Log.d
 import android.util.Log.i
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -117,7 +118,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         //button click listener
         binding.ivSayingBackgroundImage.setOnClickListener {
             click.run {
-                showBottomMenuDialog() //다이어로그 중복생성 방지
+                if (mSaying.docId != "")
+                    showBottomMenuDialog() //다이어로그 중복생성 방지
+                else
+                    requireActivity().showToast("네트워크 연결 상태를 확인해주세요.")
             }
         }
 

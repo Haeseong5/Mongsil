@@ -72,9 +72,9 @@
                     android:paddingHorizontal="@dimen/margin16"
                     android:background="@drawable/comment_button_shape"
                     android:textColorHint="@color/grey_light"
-                    android:textColor="@color/white"
+                    android:textColor="#ffffff"
                     android:textSize="14sp"
-                    android:textCursorDrawable="@color/white"
+                    android:textCursorDrawable="@color/sunday_light"
                     android:hint="오늘의 기분을 입력해주세요."
                     android:layout_marginStart="8dp"
                     android:maxLines="1"/>

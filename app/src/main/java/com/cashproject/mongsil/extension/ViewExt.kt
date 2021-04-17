@@ -1,14 +1,17 @@
 package com.cashproject.mongsil.extension
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -104,3 +107,15 @@ fun Button.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = 
     .throttleFirst(throttleSecond, TimeUnit.SECONDS)
     .observeOn(AndroidSchedulers.mainThread())
     .subscribe { subscribe?.invoke() }
+
+
+fun Activity.makeStatusBarTransparent() {
+    window.apply {
+//        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//        setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.MATCH_PARENT);
+//        statusBarColor = Color.TRANSPARENT
+        this.statusBarColor = Color.TRANSPARENT
+        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+    }
+}

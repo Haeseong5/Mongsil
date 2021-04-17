@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
+import com.cashproject.mongsil.extension.makeStatusBarTransparent
 import com.google.android.gms.ads.MobileAds
 
 
@@ -15,6 +16,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this, getString(R.string.ad_app_id))
+//        makeStatusBarTransparent()
     }
 
 }

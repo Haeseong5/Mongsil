@@ -24,7 +24,6 @@ class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: EmoticonAdapter.ViewHolder, position: Int) {
         holder.bindView(items[position])
-        d("emoticon", items[position].toString())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =

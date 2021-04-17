@@ -34,7 +34,6 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: LockerAdapter.ViewHolder, position: Int) {
         holder.bindView(items[position])
         v(TAG, "onBindViewHolder")
-//        Log.d(TAG, items[position].toString())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{

@@ -21,11 +21,6 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
         this.listener = listener
     }
 
-//    fun setItems(items: ArrayList<Comment>){
-//        this.items = items
-//        notifyDataSetChanged()
-//    }
-
     fun update(newItemList: List<Comment>) {
         val diffResult = DiffUtil.calculateDiff(
             ContentDiffUtil(

@@ -31,7 +31,7 @@ internal class CalendarView(
     private var onDayClickListener: ((Day) -> Unit)? = null
     private lateinit var topMonthViewBinding: ViewCalendarTopLayoutBinding
     private val layoutParams :LayoutParams by lazy {
-        LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0f).apply {
+        LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.CENTER
         }
     }
@@ -42,9 +42,12 @@ internal class CalendarView(
     private fun createCalendarView() {
         orientation = VERTICAL
         setLayoutParams(layoutParams)
+        gravity = Gravity.CENTER
         addView(createTopMonthView())
         addView(createTopDayView())
         addView(createViewPager())
+
+        requestLayout()
     }
 
     fun setOnDayClickListener(listener: ((Day) -> Unit)) {
@@ -119,7 +122,7 @@ internal class CalendarView(
 
     private fun createViewPager(): CalendarViewPager {
         val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-
+            gravity = Gravity.CENTER_VERTICAL
         }
 
         //날짜 클릭 리스너

@@ -1,16 +1,10 @@
 package com.cashproject.mongsil.ui.dialog
 
-import android.R.attr.button
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.widget.ImageViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
@@ -19,7 +13,6 @@ import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
-import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

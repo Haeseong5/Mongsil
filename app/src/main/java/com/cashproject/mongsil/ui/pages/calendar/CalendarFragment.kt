@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
-import PaginationScrollListener
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,7 +18,6 @@ import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
-import com.jakewharton.rxbinding3.internal.checkMainThread
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
@@ -37,14 +35,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     private val click by lazy { ClickUtil(this.lifecycle) }
 
     var flag: Boolean = false //false: CalendarView, true: RecyclerView
-
-    private val PAGE_START = 1
-    private val itemCount = 0
-    private var currentPage: Int = PAGE_START
-    private val totalPage = 10
-
-    private var isLastPage = false
-    private var isLoading = false
 
     override fun initStartView() {
         initRecyclerView()
@@ -70,25 +60,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             setHasFixedSize(true)
             setItemViewCacheSize(10)
             adapter = dayAdapter
-
-            addOnScrollListener(object : PaginationScrollListener(linearLayoutManager){
-                override fun loadMoreItems() {
-                    Log.d(TAG, "RecyclerView Scrolling: 마지막 아이템이 보이기 시작함!")
-                    isLoading = true;
-//                    //Increment page index to load the next one
-                    currentPage += 1
-//                    viewModel.getData() //read firestore -> display saying in RecyclerView
-                }
-
-                override fun isLastPage(): Boolean {
-                    return this@CalendarFragment.isLastPage
-                }
-
-                override fun isLoading(): Boolean {
-                    return this@CalendarFragment.isLoading
-                }
-
-            })
         }
     }
 
@@ -147,7 +118,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 
         //댓글 데이터를 받아와서 CalendarView 에 세팅
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
-            
+            //    java.lang.ArrayIndexOutOfBoundsException: length=0; index=-1
             binding.customCalendarView.notifyDataChanged(it) // 갱신 안되는건 CalendarView 문제인듯
             Log.d(TAG, "++CommentData: ${it[it.size-1]}")
         })
