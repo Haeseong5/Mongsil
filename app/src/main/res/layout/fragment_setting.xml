@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
-                android:textColor="#333333"
                 android:layout_marginEnd="3dp"
                 android:letterSpacing="-0.05"
                 android:text="알림 설정" />
@@ -65,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
-                android:textColor="#333333"
                 android:letterSpacing="-0.05"
                 android:text="백업" />
         </LinearLayout>
@@ -81,13 +79,13 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                style="@style/ImageViewStyle"
                 android:src="@drawable/ic_review"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
-                android:textColor="#333333"
                 android:letterSpacing="-0.05"
                 android:text="리뷰 쓰기" />
         </LinearLayout>
@@ -110,7 +108,6 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
-                android:textColor="#333333"
                 android:letterSpacing="-0.05"
                 android:text="문의하기" />
         </LinearLayout>
@@ -133,7 +130,6 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
-                android:textColor="#333333"
                 android:letterSpacing="-0.05"
                 android:text="개발자의 다른 앱" />
         </LinearLayout>

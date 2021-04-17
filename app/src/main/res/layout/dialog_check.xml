@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
+        android:background="@color/background_color"
         android:paddingTop="@dimen/margin30">
 
         <TextView
@@ -19,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="정말로 삭제하시겠습니까?"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginBottom="28dp" />
 

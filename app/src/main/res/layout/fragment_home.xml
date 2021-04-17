@@ -84,7 +84,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:paddingStart="@dimen/margin8"
-                    android:textColor="@color/white"
+                    android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:text="확인"/>
             </LinearLayout>
