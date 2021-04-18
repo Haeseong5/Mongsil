@@ -14,9 +14,17 @@ object DateUtil {
     private val todayFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
 
     private val dateFormat = SimpleDateFormat("MMdd", Locale.KOREA)
+    private val timeFormat = SimpleDateFormat("HH:mm", Locale.KOREA)
 
     fun getToday(){}
 
+    fun timeToString(hour: Int, minute: Int): String{
+        val date = Date().apply {
+            hours = hour
+            minutes = minute
+        }
+        return timeFormat.format(date)
+    }
     fun yearToString(date : Date) : String
         = yearFormat.format(date)
 

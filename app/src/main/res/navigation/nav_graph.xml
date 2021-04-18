@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_setting_to_locker"
             app:destination="@id/lockerFragment"/>
+        <action
+            android:id="@+id/action_setting_to_alarm"
+            app:destination="@id/alarmFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -58,5 +61,13 @@
         android:name="com.cashproject.mongsil.ui.pages.setting.SettingFragment"
         android:label="setting"
         tools:layout="@layout/fragment_setting">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/alarmFragment"
+        android:name="com.cashproject.mongsil.ui.pages.setting.AlarmFragment"
+        android:label="alarm"
+        tools:layout="@layout/fragment_alarm">
     </fragment>
 </navigation>

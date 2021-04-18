@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             app:layout_constraintHorizontal_weight="1"
             android:layout_height="wrap_content"
-            android:text="해제"
+            android:text="취소"
             android:layout_margin="@dimen/margin16"
             android:elevation="@dimen/margin8"
             android:textColor="#888888"
