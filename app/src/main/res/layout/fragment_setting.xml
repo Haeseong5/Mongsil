@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showBottomListDialog()}"
+            android:onClick="@{() -> fragment.startAlarm()}"
             android:layout_marginBottom="@dimen/margin30">
             <ImageView
                 android:layout_width="30dp"
