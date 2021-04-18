@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.ui.MainActivity
 import com.cashproject.mongsil.ui.ProgressDialog
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,6 +24,8 @@ import io.reactivex.disposables.Disposable
 
 abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment(){
     val TAG: String = this.javaClass.simpleName
+
+    val mainActivity by lazy { activity as MainActivity? }
 
     lateinit var binding: T
 
@@ -36,7 +39,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     private lateinit var callback: OnBackPressedCallback
 
-    val progressDialog: ProgressDialog by lazy {
+    private val progressDialog: ProgressDialog by lazy {
         ProgressDialog(requireContext())
     }
 
@@ -59,10 +62,6 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         d(TAG, "++onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
-        progressDialog.apply {
-            setCancelable(false)
-            setCanceledOnTouchOutside(false)
-        }
 
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
         initStartView()
@@ -74,10 +73,6 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         d(TAG, "++onViewCreated!!!")
-    }
-
-    fun isProgress(flag: Boolean) {
-        if (flag && !progressDialog.isShowing) progressDialog.show() else progressDialog.dismiss()
     }
 
     fun observeErrorEvent(){

@@ -95,4 +95,5 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         super.onResume()
         viewModel.getAllLike()
     }
+
 }

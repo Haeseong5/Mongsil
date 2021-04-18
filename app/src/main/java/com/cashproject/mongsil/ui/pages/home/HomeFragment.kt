@@ -1,15 +1,12 @@
 package com.cashproject.mongsil.ui.pages.home
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.util.Log.i
 import android.view.View
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -24,6 +21,7 @@ import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.ProgressDialog
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
@@ -36,6 +34,7 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.LoadAdError
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
 
@@ -102,6 +101,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
     }
 
+    private fun observeData() {
+        viewModel.todayData.observe(viewLifecycleOwner, Observer {
+            d(TAG, it.toString())
+            binding.saying = it
+            mSaying = it //null error
+            viewModel.getComments(mSaying.docId)
+        })
+
+        //댓글 데이터 불러오기
+        viewModel.commentData.observe(viewLifecycleOwner, Observer {
+            d(TAG, it.toString())
+            commentAdapter.update(it as ArrayList<Comment>)
+            binding.rvSayingCommentList.scrollToPosition(it.size-1)
+        })
+
+        //댓글 삽입/삭제 결과 관찰
+        viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                d(TAG, "isCompletable $it")
+                viewModel.getComments(mSaying.docId)
+                RxEventBus.sendToCalendar(true)
+            }
+        })
+
+        RxEventBus.toHomeObservable().subscribe{
+            if (it) viewModel.getComments(mSaying.docId)
+            Log.d(TAG, "RxEventBus Consume $it")
+        }.addTo(compositeDisposable)
+
+        viewModel.loadingSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.d("Loading...", it.toString())
+                mainActivity?.progressBar?.isProgress(false)
+            }
+            .addTo(compositeDisposable)
+    }
+
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL, true)
         binding.rvSayingCommentList.apply {
@@ -118,8 +155,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         //button click listener
         binding.ivSayingBackgroundImage.setOnClickListener {
             click.run {
-                if (mSaying.docId != "")
-                    showBottomMenuDialog() //다이어로그 중복생성 방지
+                if (mSaying.docId.isNotEmpty())
+                    showBottomMenuDialog()
                 else
                     requireActivity().showToast("네트워크 연결 상태를 확인해주세요.")
             }
@@ -127,7 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         binding.ivSayingEmoticon.setOnClickListener {
             click.run {
-                showEmoticonBottomSheet() //다이어로그 중복생성 방지
+                showEmoticonBottomSheet()
             }
         }
 
@@ -136,7 +173,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
          */
         binding.tvSayingCommentBtn.setOnClickListener {
             try {
-                if (mSaying.docId != ""){
+                if (mSaying.docId.isNotEmpty()){
                     viewModel.insertComment(
                         Comment(
                             docId = mSaying.docId,
@@ -160,40 +197,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
 
         }
-    }
-
-    private fun observeData() {
-        viewModel.todayData.observe(viewLifecycleOwner, Observer {
-            binding.saying = it
-            mSaying = it //null error
-            isProgress(false)
-            viewModel.getComments(mSaying.docId)
-
-            if(it == null){
-              mSaying = Saying()
-            }
-        })
-
-        //댓글 데이터 불러오기
-        viewModel.commentData.observe(viewLifecycleOwner, Observer {
-            commentAdapter.update(it as ArrayList<Comment>)
-            binding.rvSayingCommentList.scrollToPosition(it.size-1)
-        })
-
-        //댓글 삽입/삭제 결과 관찰
-        viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                d(TAG, "isCompletable $it")
-                viewModel.getComments(mSaying.docId)
-                RxEventBus.sendToCalendar(true)
-            }
-        })
-
-        RxEventBus.toHomeObservable().subscribe{
-                if (it) viewModel.getComments(mSaying.docId)
-            Log.d(TAG, "RxEventBus Consume $it")
-        }.addTo(compositeDisposable)
-
     }
 
     private fun showBottomMenuDialog() {

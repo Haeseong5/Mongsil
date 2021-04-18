@@ -137,7 +137,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 Log.d("Loading...", it.toString())
-                isProgress(it)
+                mainActivity?.progressBar?.isProgress(false)
             }
             .addTo(compositeDisposable)
 

@@ -11,6 +11,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.extension.makeStatusBarTransparent
+import com.cashproject.mongsil.ui.ProgressDialog
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
@@ -36,7 +37,6 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAdmobDialog()
-//        requireActivity().makeStatusBarTransparent()
     }
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(
@@ -58,23 +58,9 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     }
 
-    fun setFragmentListener(fragmentListener: FragmentListener){
-        this.fragmentListener = fragmentListener
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
 
     override fun onResume() {
         super.onResume()
-//        fragmentListener = object : FragmentListener{
-//            override fun onResumeMainFragment(isUpdate: Boolean) {
-//                TODO("Not yet implemented")
-//            }
-//        }
-//        fragmentListener.onResumeMainFragment(true)
         RxEventBus.sendToFragment(true)
     }
 
