@@ -7,7 +7,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.receiver.AlarmReceiver
 import com.cashproject.mongsil.util.PreferencesManager
@@ -98,4 +101,7 @@ class SettingFragment : Fragment(){
         activity?.showToast("준비중입니다.")
     }
 
+    fun startLocker(){
+        findNavController().navigate(R.id.action_setting_to_locker)
+    }
 }

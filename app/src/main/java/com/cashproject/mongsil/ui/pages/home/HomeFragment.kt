@@ -133,7 +133,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 Log.d("Loading...", it.toString())
-                mainActivity?.progressBar?.isProgress(false)
+                mainActivity?.progressBar?.isProgress(it)
             }
             .addTo(compositeDisposable)
     }

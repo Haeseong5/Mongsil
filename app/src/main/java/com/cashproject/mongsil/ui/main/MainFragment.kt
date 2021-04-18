@@ -12,6 +12,7 @@ import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
+import com.cashproject.mongsil.ui.pages.setting.SettingFragment
 import com.cashproject.mongsil.util.FragmentListener
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
@@ -39,7 +40,7 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
         val fragments = arrayOf<Fragment>(
             CalendarFragment(),
             HomeFragment(),
-            LockerFragment()
+            SettingFragment()
         )
 
         /**
