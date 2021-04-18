@@ -49,6 +49,8 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun initRecyclerView() {
@@ -59,7 +61,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            findNavController().navigate(R.id.action_locker_to_home, bundleOf("saying" to it))
         }
     }
 
@@ -71,21 +73,16 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         /**
          * When call MainFragment is resumed
          */
-        RxEventBus.toResumedObservable().subscribe {
-            Log.d(TAG, "RxEventBus Consume $it")
-            if (it) viewModel.getAllLike()
-        }.addTo(compositeDisposable)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.locker_menu, menu)
+//        RxEventBus.toResumedObservable().subscribe {
+//            Log.d(TAG, "RxEventBus Consume $it")
+//            if (it) viewModel.getAllLike()
+//        }.addTo(compositeDisposable)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_item_setting -> {
-                findNavController().navigate(R.id.action_locker_to_setting)
-                true
+            android.R.id.home -> {
+                findNavController().popBackStack()
             }
             else -> super.onOptionsItemSelected(item)
         }

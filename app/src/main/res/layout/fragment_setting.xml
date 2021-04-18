@@ -11,9 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="40dp"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="90dp"
+        android:paddingBottom="40dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -22,6 +22,36 @@
             android:layout_marginBottom="30dp"
             android:layout_marginStart="@dimen/margin8"
             android:text="설정"/>
+
+
+        <LinearLayout
+            android:id="@+id/ll_setting_locker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> fragment.startLocker()}"
+            android:layout_marginBottom="@dimen/margin30">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                style="@style/ImageViewStyle"
+                android:layout_marginEnd="3dp"
+                android:src="@drawable/ic_like"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:layout_marginEnd="3dp"
+                android:letterSpacing="-0.05"
+                android:text="관심" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_close_copy" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_setting_notice"
@@ -37,13 +67,19 @@
                 android:layout_marginEnd="3dp"
                 android:src="@drawable/ic_notice"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
+                android:layout_weight="1"
                 android:layout_marginEnd="3dp"
                 android:letterSpacing="-0.05"
                 android:text="알림 설정" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:src="@drawable/ic_close_copy" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,6 +94,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 style="@style/ImageViewStyle"
+                android:layout_marginEnd="3dp"
                 android:src="@drawable/ic_backup"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -80,6 +117,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 style="@style/ImageViewStyle"
+                android:layout_marginEnd="3dp"
                 android:src="@drawable/ic_review"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -102,6 +140,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 style="@style/ImageViewStyle"
+                android:layout_marginEnd="3dp"
                 android:src="@drawable/ic_question"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -124,6 +163,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 style="@style/ImageViewStyle"
+                android:layout_marginEnd="3dp"
                 android:src="@drawable/ic_moreapp"/>
             <TextView
                 android:layout_width="wrap_content"

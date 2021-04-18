@@ -16,11 +16,8 @@
             android:id="@+id/action_pager_to_home"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_locker_to_home"
-            app:destination="@id/homeFragment"/>
-        <action
-            android:id="@+id/action_locker_to_setting"
-            app:destination="@id/settingFragment"/>
+            android:id="@+id/action_setting_to_locker"
+            app:destination="@id/lockerFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -48,6 +45,12 @@
         app:popUpToInclusive="true"
         app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_locker">
+        <action
+            android:id="@+id/action_locker_to_home"
+            app:destination="@id/homeFragment"/>
+        <argument
+            android:name="docId"
+            app:argType="string"/>
     </fragment>
 
     <fragment

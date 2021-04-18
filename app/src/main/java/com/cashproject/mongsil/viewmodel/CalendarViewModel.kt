@@ -53,7 +53,6 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
                     }
                 }
                 _sayingData.postValue(sayingList)
-                loadingSubject.onNext(false)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -63,7 +62,6 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
 
 
     fun getDataByDate(date: Date){
-        loadingSubject.onNext(true)
         firebaseDataSource.getDataByDate(date)
             .addOnSuccessListener { documents ->
                 loadingSubject.onNext(true)
@@ -73,11 +71,9 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
                         _sayingDataByDate.postValue(it)
                     }
                 }
-                loadingSubject.onNext(false)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
-                loadingSubject.onNext(false)
                 errorSubject.onNext(exception)
             }
     }
