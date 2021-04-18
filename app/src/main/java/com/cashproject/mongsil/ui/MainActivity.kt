@@ -1,11 +1,10 @@
 package com.cashproject.mongsil.ui
 
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
-import com.cashproject.mongsil.extension.makeStatusBarTransparent
+import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.google.android.gms.ads.MobileAds
 
 

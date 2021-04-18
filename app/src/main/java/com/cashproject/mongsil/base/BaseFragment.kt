@@ -8,15 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.addTo
-import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.MainActivity
-import com.cashproject.mongsil.ui.ProgressDialog
+import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

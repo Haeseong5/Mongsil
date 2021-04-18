@@ -21,7 +21,6 @@ import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.ProgressDialog
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
@@ -279,7 +278,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun adMobInitial(){
         // Create the InterstitialAd and set it up.
         mInterstitialAd = InterstitialAd(requireActivity())
-        mInterstitialAd.adUnitId = getString(R.string.sample_ad_interstitial_id)
+        mInterstitialAd.adUnitId = getString(R.string.ad_interstitial_video_id)
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = (

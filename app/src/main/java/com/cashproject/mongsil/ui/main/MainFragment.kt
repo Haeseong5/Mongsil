@@ -3,15 +3,12 @@ package com.cashproject.mongsil.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
-import com.cashproject.mongsil.extension.makeStatusBarTransparent
-import com.cashproject.mongsil.ui.ProgressDialog
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
@@ -91,7 +88,7 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
      */
     private fun initAdmobDialog(){
         nativeTedAdmobDialog =
-            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.sample_ad_native_id))
+            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.ad_native_id))
                 .showReviewButton(true)
                 .setOnBackPressListener(object : OnBackPressListener {
                     override fun onReviewClick() {

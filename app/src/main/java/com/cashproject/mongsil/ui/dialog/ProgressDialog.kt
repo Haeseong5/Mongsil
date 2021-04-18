@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui
+package com.cashproject.mongsil.ui.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -25,14 +25,7 @@ class ProgressDialog(context: Context): Dialog(context) {
     private val builder: AlertDialog.Builder by lazy {
         AlertDialog.Builder(context)
     }
-//    val dialog: Dialog by lazy {
-//        builder.create().apply {
-//            window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-//            setCancelable(true)
-//            setCanceledOnTouchOutside(false)
-//            show()
-//        }
-//    }
+
     var drawable: AnimationDrawable
 
     private val handler = Handler(Looper.getMainLooper())
