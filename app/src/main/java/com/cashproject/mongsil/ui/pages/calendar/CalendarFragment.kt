@@ -120,7 +120,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             //    java.lang.ArrayIndexOutOfBoundsException: length=0; index=-1
             binding.customCalendarView.notifyDataChanged(it) // 갱신 안되는건 CalendarView 문제인듯
-            Log.d(TAG, "++CommentData: ${it[it.size-1]}")
         })
 
         /**

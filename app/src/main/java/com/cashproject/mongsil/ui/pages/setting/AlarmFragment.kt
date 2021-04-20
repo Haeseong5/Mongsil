@@ -149,8 +149,24 @@ class AlarmFragment : Fragment() {
         alarm = !alarm
         if(alarm)
             binding.ivAlarmSwitch.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_switch_on))
-        else
-            binding.ivAlarmSwitch.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ic_switch_off))
+        else {
+            binding.ivAlarmSwitch.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.ic_switch_off
+                )
+            )
+            //알람해제
+            val intent = Intent(activity, AlarmReceiver::class.java)  // 1. 알람 조건이 충족되었을 때, 리시버로 전달될 인텐트를 설정합니다.
+            PendingIntent.getBroadcast(     // 2 PendingIntent가 이미 존재할 경우 cancel 하고 다시 생성
+                activity,
+                AlarmReceiver.NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT //PendingIntent 객체가 이미 존재할 경우, 기존의 ExtraData 를 모두 삭제
+            ).run {
+                cancel()
+            }
+        }
     }
 
 
