@@ -7,22 +7,23 @@
         <variable
             name="saying"
             type="com.cashproject.mongsil.model.data.Saying" />
+
+        <variable
+            name="viewmodel"
+            type="com.cashproject.mongsil.viewmodel.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/iv_saying_background_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
             android:src="@drawable/emoticon_05"
-            bindImage="@{saying.image}"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            bindImage="@{saying.image}"/>
 
         <LinearLayout
             android:id="@+id/ll_saying_comment"
@@ -30,9 +31,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/gradient_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_saying_comment_list"
                 android:layout_width="match_parent"
@@ -67,9 +68,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_saying_comment_input"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingHorizontal="@dimen/margin16"
+                    android:paddingVertical="12dp"
                     android:background="@drawable/comment_button_shape"
                     android:textColorHint="@color/grey_light"
                     android:textColor="#ffffff"
@@ -77,7 +79,7 @@
                     android:textCursorDrawable="@color/sunday_light"
                     android:hint="오늘의 기분을 입력해주세요."
                     android:layout_marginStart="8dp"
-                    android:maxLines="1"/>
+                    android:maxLines="4"/>
                 <TextView
                     android:id="@+id/tv_saying_comment_btn"
                     android:layout_width="wrap_content"
@@ -91,6 +93,6 @@
         </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </layout>

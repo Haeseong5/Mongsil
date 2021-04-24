@@ -11,14 +11,11 @@ import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
-import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import com.cashproject.mongsil.ui.pages.setting.SettingFragment
-import com.cashproject.mongsil.util.FragmentListener
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
-
 
 class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
@@ -29,8 +26,6 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     private lateinit var callback: OnBackPressedCallback
     private lateinit var nativeTedAdmobDialog: TedAdmobDialog
-
-    private lateinit var fragmentListener: FragmentListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +66,7 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
+
     override fun onDetach() {
         super.onDetach()
         callback.remove()
@@ -84,9 +80,6 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
         nativeTedAdmobDialog.show()
     }
 
-    /**
-     * https://github.com/ParkSangGwon/TedAdmobDialog
-     */
     private fun initAdmobDialog(){
         nativeTedAdmobDialog =
             TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.ad_native_id))

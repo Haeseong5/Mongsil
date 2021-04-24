@@ -4,33 +4,25 @@ import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
-import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
-import com.cashproject.mongsil.util.DateUtil.dateToTimestamp
-import com.cashproject.mongsil.util.RxEventBus
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.text.DateFormat
-import java.util.*
 
 class HomeViewModel(
     private val localDataSource: LocalDataSource,
     private val firestoreDataSource: FirestoreDataSource
 ) : BaseViewModel() {
 
-    private val _todayData = MutableLiveData<Saying>()
-    val todayData: LiveData<Saying>
-        get() = _todayData
+    private val _sayingLiveData = MutableLiveData<Saying>()
+    val sayingLiveData: LiveData<Saying>
+        get() = _sayingLiveData
 
     private val _commentData = MutableLiveData<List<Comment>>()
     val commentData: LiveData<List<Comment>>
@@ -56,7 +48,7 @@ class HomeViewModel(
                         document.toObject<Saying>().apply {
                             docId = document.id
                         }.also {
-                            _todayData.postValue(it)
+                            _sayingLiveData.postValue(it)
                         }
                     }
                     loadingSubject.onNext(false)
@@ -80,7 +72,7 @@ class HomeViewModel(
                     document.toObject<Saying>().apply {
                         docId = document.id
                     }.also {
-                        _todayData.postValue(it)
+                        _sayingLiveData.postValue(it)
                     }
                 }
                 loadingSubject.onNext(false)
@@ -99,7 +91,7 @@ class HomeViewModel(
                 if (document.data != null) {
                     d(TAG, "DocumentSnapshot data: ${document.data}")
                     val saying = document.toObject<Saying>().apply { this?.docId = document.id }
-                    _todayData.postValue(saying)
+                    _sayingLiveData.postValue(saying)
                 } else {
                     d(TAG, "No such document")
                 }

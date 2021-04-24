@@ -6,8 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 /**
- * A simple pager adapter that represents 3 ScreenSlidePageFragment objects, in
- * sequence.
+ * A simple pager adapter that represents 3 ScreenSlidePageFragment objects, insequence.
  * Fragment를 사용해서 ViewPager2를 구현할 때는 FragementStateAdapter 사용
  */
 class ScreenSlidePagerAdapter(
@@ -16,9 +15,7 @@ class ScreenSlidePagerAdapter(
     lifecycle: Lifecycle
 ) : FragmentStateAdapter(fa, lifecycle) {
 
-
     override fun getItemCount(): Int = fragments.size
-
 
     override fun createFragment(position: Int): Fragment {
         return fragments[position]

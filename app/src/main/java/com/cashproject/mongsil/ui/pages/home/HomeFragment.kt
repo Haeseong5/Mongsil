@@ -7,6 +7,7 @@ import android.util.Log
 import android.util.Log.d
 import android.util.Log.i
 import android.view.View
+import android.view.WindowManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -53,11 +54,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     //adMob
-    private lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adMobInitial()
+        mainActivity?.adMobInitial()
     }
 
     override fun initStartView() {
@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun observeData() {
-        viewModel.todayData.observe(viewLifecycleOwner, Observer {
+        viewModel.sayingLiveData.observe(viewLifecycleOwner, Observer {
             d(TAG, it.toString())
             binding.saying = it
             mSaying = it //null error
@@ -124,10 +124,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         })
 
-        RxEventBus.toHomeObservable().subscribe{
+        RxEventBus.toHomeObservable().subscribe({
             if (it) viewModel.getComments(mSaying.docId)
             Log.d(TAG, "RxEventBus Consume $it")
-        }.addTo(compositeDisposable)
+        }, {
+            Log.i(TAG, it.message.toString())
+        }).addTo(compositeDisposable)
 
         viewModel.loadingSubject
             .observeOn(AndroidSchedulers.mainThread())
@@ -213,7 +215,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
         bottomSheetFragment.setSaveBtnOnClickListener {
-            showAdMob()
+            mainActivity?.showAdMob()
 
             //bitmap
             val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
@@ -266,39 +268,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         intent.putExtra(Intent.EXTRA_STREAM, imageUri)
         val chooser = Intent.createChooser(intent, "친구에게 공유하기")
         startActivity(chooser)
-    }
-
-    private fun showAdMob(){
-        if (mInterstitialAd.isLoaded) {
-            mInterstitialAd.show()
-        } else {
-            i("TAG", "The interstitial wasn't loaded yet.");
-        }
-    }
-    private fun adMobInitial(){
-        // Create the InterstitialAd and set it up.
-        mInterstitialAd = InterstitialAd(requireActivity())
-        mInterstitialAd.adUnitId = getString(R.string.ad_interstitial_video_id)
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
-
-        mInterstitialAd.adListener = (
-                object : AdListener() {
-                    override fun onAdLoaded() {
-                        i("onAdFailedToLoad", "onAdLoaded()")
-                    }
-
-                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                        val error = "domain: ${loadAdError.domain}, code: ${loadAdError.code}, " +
-                                "message: ${loadAdError.message}"
-
-                        i("onAdFailedToLoad", error)
-                    }
-
-                    override fun onAdClosed() {
-                        mInterstitialAd.loadAd(AdRequest.Builder().build())
-                    }
-                }
-            )
     }
 }
 

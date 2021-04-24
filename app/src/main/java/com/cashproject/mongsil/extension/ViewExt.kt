@@ -89,6 +89,11 @@ fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
 fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
     val bytes = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+    //    java.lang.SecurityException: Permission Denial: writing com.android.providers.media.MediaProvider uri content://media/external/images/media from pid=22556, uid=10210 requires android.permission.WRITE_EXTERNAL_STORAGE, or grantUriPermission()
+    //  java.lang.IllegalStateException: MediaStore.Images.Media.…gsil",
+    //            null
+    //        ) must not be null
     val path: String = MediaStore.Images.Media.insertImage(
         context.contentResolver,
         bitmap,
