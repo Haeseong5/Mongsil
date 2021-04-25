@@ -56,7 +56,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:paddingHorizontal="4dp"
-                android:paddingVertical="@dimen/margin8"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -72,6 +71,7 @@
                     android:layout_weight="1"
                     android:paddingHorizontal="@dimen/margin16"
                     android:paddingVertical="12dp"
+                    android:layout_marginVertical="@dimen/margin8"
                     android:background="@drawable/comment_button_shape"
                     android:textColorHint="@color/grey_light"
                     android:textColor="#ffffff"
@@ -80,15 +80,16 @@
                     android:hint="오늘의 기분을 입력해주세요."
                     android:layout_marginStart="8dp"
                     android:maxLines="4"/>
+
                 <TextView
                     android:id="@+id/tv_saying_comment_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:paddingStart="@dimen/margin8"
+                    android:text="확인"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:text="확인"/>
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
 

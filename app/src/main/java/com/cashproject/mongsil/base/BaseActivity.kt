@@ -36,20 +36,27 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "++onStart()")
+    }
+    override fun onResume() {
+        Log.d(TAG, "++onResume()")
+        super.onResume()
+    }
+    override fun onPause() {
+        Log.d(TAG, "++onPause()")
+        super.onPause()
+    }
+    override fun onStop() {
+        Log.d(TAG, "++onStop()")
+        super.onStop()
+    }
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy()")
-
+        Log.d(TAG, "++onDestroy()")
         compositeDisposable.dispose()
         super.onDestroy()
     }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause()")
-
-        compositeDisposable.dispose()
-        super.onPause()
-    }
-
     fun addDisposable(disposable: Disposable){
         compositeDisposable.add(disposable)
     }

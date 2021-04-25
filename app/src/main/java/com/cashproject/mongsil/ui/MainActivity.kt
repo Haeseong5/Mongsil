@@ -1,15 +1,17 @@
 package com.cashproject.mongsil.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.WindowManager
+import androidx.activity.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
+import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
+import com.cashproject.mongsil.viewmodel.MainViewModel
+import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.*
+import java.util.*
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -23,12 +25,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private lateinit var mInterstitialAd: InterstitialAd
 
+    private val viewModelFactory: ViewModelFactory by lazy {
+        Injection.provideViewModelFactory(this@MainActivity)
+    }
+
+    val mainViewModel: MainViewModel by viewModels { viewModelFactory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this, getString(R.string.ad_app_id))
-//        makeStatusBarTransparent()
         progressBar.isProgress(true)
 
+        //Calendar
+        mainViewModel.getCalendarListData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
+        mainViewModel.getAllCommentsForEmoticons() //read room db -> display comment in CalendarView
+
+        //Home
+        mainViewModel.getTodaySaying()
     }
 
     fun showAdMob(){
@@ -42,7 +55,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     fun adMobInitial(){
         // Create the InterstitialAd and set it up.
         mInterstitialAd = InterstitialAd(this@MainActivity)
-        mInterstitialAd.adUnitId = getString(R.string.ad_interstitial_video_id)
+        mInterstitialAd.adUnitId = getString(R.string.ad_interstitial_id)
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = (

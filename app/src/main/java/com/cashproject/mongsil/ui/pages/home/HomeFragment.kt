@@ -1,13 +1,15 @@
 package com.cashproject.mongsil.ui.pages.home
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
-import android.util.Log.i
 import android.view.View
-import android.view.WindowManager
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -15,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentHomeBinding
-import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
@@ -30,11 +31,7 @@ import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.viewmodel.HomeViewModel
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.LoadAdError
-import io.reactivex.android.schedulers.AndroidSchedulers
+import java.lang.Exception
 import java.util.*
 
 
@@ -58,6 +55,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity?.adMobInitial()
+        hasWriteStoragePermission()
+
     }
 
     override fun initStartView() {
@@ -71,25 +70,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     //정리하기
     private fun initSaying() {
-        when{
-            //1. 제일 처음 실행됐을 경우
-            arguments == null -> {
-                viewModel.getTodayData()
+        arguments?.run {
+            //보관함 or 리스트에서 넘어왔을 경우
+            getParcelable<Saying>("saying")?.let {
+                mSaying = it
+                binding.saying = it
+                viewModel.getCommentsForHome(it.docId)
             }
-            else -> {
-                //2. 보관함 or 리스트에서 넘어왔을 경우
-                val saying = arguments?.getParcelable<Saying>("saying")?.let {
-                    mSaying = it
-                    binding.saying = it
-                    viewModel.getComments(it.docId)
-                }
-                //3.calendar 에서 넘어왔을 경우
-                if (saying == null) {
-                    arguments?.getString("docId").also {
-                        it?.also {
-                            viewModel.getSingleSayingData(it)
-                        }
-                    }
+            //캘린더에서 넘어왔을 경우
+            getString("docId").also {
+                it?.also {
+                    mainActivity?.mainViewModel?.getSingleSayingData(it)
                 }
             }
         }
@@ -101,14 +92,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun observeData() {
-        viewModel.sayingLiveData.observe(viewLifecycleOwner, Observer {
+        mainActivity?.mainViewModel?.sayingForHome?.observe(viewLifecycleOwner, Observer {
             d(TAG, it.toString())
             binding.saying = it
             mSaying = it //null error
-            viewModel.getComments(mSaying.docId)
+            viewModel.getCommentsForHome(mSaying.docId)
         })
 
-        //댓글 데이터 불러오기
+        //댓글 불러오기
         viewModel.commentData.observe(viewLifecycleOwner, Observer {
             d(TAG, it.toString())
             commentAdapter.update(it as ArrayList<Comment>)
@@ -116,28 +107,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         })
 
         //댓글 삽입/삭제 결과 관찰
-        viewModel.isCompletable.observe(viewLifecycleOwner, Observer {
+        viewModel.isUpdatedComment.observe(viewLifecycleOwner, Observer {
             if (it) {
                 d(TAG, "isCompletable $it")
-                viewModel.getComments(mSaying.docId)
-                RxEventBus.sendToCalendar(true)
+                viewModel.getCommentsForHome(mSaying.docId)
+//                RxEventBus.sendToCalendar(true)
             }
         })
 
-        RxEventBus.toHomeObservable().subscribe({
-            if (it) viewModel.getComments(mSaying.docId)
-            Log.d(TAG, "RxEventBus Consume $it")
-        }, {
-            Log.i(TAG, it.message.toString())
-        }).addTo(compositeDisposable)
-
-        viewModel.loadingSubject
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                Log.d("Loading...", it.toString())
-                mainActivity?.progressBar?.isProgress(it)
-            }
-            .addTo(compositeDisposable)
+//        RxEventBus.toHomeObservable().subscribe({
+//            if (it) viewModel.getComments(mSaying.docId)
+//            Log.d(TAG, "RxEventBus Consume $it")
+//        }, {
+//            Log.i(TAG, it.message.toString())
+//        }).addTo(compositeDisposable)
+//
+//        viewModel.loadingSubject
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe {
+//                Log.d("Loading...", it.toString())
+//                mainActivity?.progressBar?.isProgress(it)
+//            }
+//            .addTo(compositeDisposable)
     }
 
     private fun initRecyclerView() {
@@ -216,15 +207,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         bottomSheetFragment.setSaveBtnOnClickListener {
             mainActivity?.showAdMob()
-
             //bitmap
             val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-            val imageUri = bitmap.bitmap.saveImage(requireActivity())
-
-            if (imageUri != null) {
-                activity?.showToast("갤러리에 이미지가 저장되었습니다.")
-            } else {
-                activity?.showToast("저장 실패")
+            try {
+                bitmap.bitmap.saveImage(requireActivity()).run {
+                    activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+                }
+            }catch (e: Exception){
+                Log.e(TAG, e.message.toString())
+                activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
             }
         }
 
@@ -236,7 +227,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
         bottomSheetFragment.setShareBtnOnClickListener {
-            shareToSNS()
+            try {
+                shareToSNS()
+            }catch (e: Exception){
+                Log.e(TAG, e.message.toString())
+                activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+            }
         }
     }
 
@@ -268,6 +264,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         intent.putExtra(Intent.EXTRA_STREAM, imageUri)
         val chooser = Intent.createChooser(intent, "친구에게 공유하기")
         startActivity(chooser)
+    }
+
+    private fun hasWriteStoragePermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return true
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    100
+                )
+                return false
+            }
+        }
+        return true
     }
 }
 

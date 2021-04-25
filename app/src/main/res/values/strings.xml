@@ -23,9 +23,9 @@
     <string name="sample_ad_interstitial_video_id">ca-app-pub-3940256099942544/8691691433</string>
 
     <string name="ad_interstitial_id">ca-app-pub-1939032811151400/1834551535</string>
-    <string name="ad_interstitial_video_id">ca-app-pub-1939032811151400/7128002550</string>
 
     <string name="sample_ad_native_id">ca-app-pub-3940256099942544/2247696110</string>
     <string name="ad_native_id">ca-app-pub-1939032811151400/9104485125</string>
+    <string name="admin_email">mongsilapp@gmail.com</string>
 
 </resources>

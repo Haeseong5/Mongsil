@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.viewmodel
 
 import android.util.Log
-import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
@@ -10,7 +9,6 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,15 +18,15 @@ class HomeViewModel(
     private val firestoreDataSource: FirestoreDataSource
 ) : BaseViewModel() {
 
-    private val _sayingLiveData = MutableLiveData<Saying>()
-    val sayingLiveData: LiveData<Saying>
-        get() = _sayingLiveData
+//    private val _sayingLiveData = MutableLiveData<Saying>()
+//    val sayingLiveData: LiveData<Saying>
+//        get() = _sayingLiveData
 
     private val _commentData = MutableLiveData<List<Comment>>()
     val commentData: LiveData<List<Comment>>
         get() = _commentData
 
-    val isCompletable = MutableLiveData<Boolean>(false)
+    val isUpdatedComment = MutableLiveData<Boolean>(false)
 
     private val _isLike = MutableLiveData<Boolean>()
     val isLike: LiveData<Boolean>
@@ -36,72 +34,6 @@ class HomeViewModel(
 
     val db by lazy {
         Firebase.firestore
-    }
-
-    private fun getLatestData() {
-        loadingSubject.onNext(true)
-            firestoreDataSource.getLatestData()
-                .addOnSuccessListener { documents ->
-                    Log.d("getLatestData", Thread.currentThread().name)
-                    for (document in documents) {
-                        d("getLatestData", "${document.id} => ${document.data}")
-                        document.toObject<Saying>().apply {
-                            docId = document.id
-                        }.also {
-                            _sayingLiveData.postValue(it)
-                        }
-                    }
-                    loadingSubject.onNext(false)
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents: ", exception)
-                    loadingSubject.onNext(false)
-                    errorSubject.onNext(exception)
-                }
-    }
-
-    fun getTodayData() {
-        loadingSubject.onNext(true)
-        firestoreDataSource.getTodayData()
-            .addOnSuccessListener { documents ->
-                if (documents.size() == 0){
-                    getLatestData()
-                }
-                for (document in documents) {
-                    d(TAG, "DocumentSnapshot data: ${document.data}")
-                    document.toObject<Saying>().apply {
-                        docId = document.id
-                    }.also {
-                        _sayingLiveData.postValue(it)
-                    }
-                }
-                loadingSubject.onNext(false)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting today documents: ", exception)
-                loadingSubject.onNext(false)
-                errorSubject.onNext(exception)
-            }
-    }
-
-    fun getSingleSayingData(docId: String) {
-        loadingSubject.onNext(true)
-        firestoreDataSource.getSingleSayingData(docId)
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    d(TAG, "DocumentSnapshot data: ${document.data}")
-                    val saying = document.toObject<Saying>().apply { this?.docId = document.id }
-                    _sayingLiveData.postValue(saying)
-                } else {
-                    d(TAG, "No such document")
-                }
-                loadingSubject.onNext(false)
-            }
-            .addOnFailureListener { exception ->
-                d(TAG, "get failed with ", exception)
-                loadingSubject.onNext(false)
-                errorSubject.onNext(exception)
-            }
     }
 
     fun like(saying: Saying) {
@@ -157,7 +89,7 @@ class HomeViewModel(
         )
     }
 
-    fun getComments(docId: String) {
+    fun getCommentsForHome(docId: String) {
         Log.d("--getComments ", Thread.currentThread().name)
         addDisposable(
             localDataSource.getCommentsByDocId(docId)
@@ -178,7 +110,7 @@ class HomeViewModel(
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    isCompletable.postValue(true)
+                    isUpdatedComment.postValue(true)
                 }, {
                     errorSubject.onNext(it)
                 })
@@ -191,7 +123,7 @@ class HomeViewModel(
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    isCompletable.postValue(true)
+                    isUpdatedComment.postValue(true)
                 }, {
                     errorSubject.onNext(it)
                 })

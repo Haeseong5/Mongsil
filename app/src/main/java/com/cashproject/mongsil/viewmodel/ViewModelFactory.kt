@@ -38,6 +38,9 @@ class ViewModelFactory(private val localDataSource: LocalDataSource, private val
             modelClass.isAssignableFrom(CalendarViewModel::class.java) -> {
                 CalendarViewModel(localDataSource, firestoreDataSource) as T
             }
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(localDataSource, firestoreDataSource) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
     }

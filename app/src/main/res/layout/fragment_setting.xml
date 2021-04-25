@@ -29,8 +29,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.startLocker()}"
-            android:layout_marginBottom="@dimen/margin30">
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> fragment.startLocker()}">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -58,7 +60,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:onClick="@{() -> fragment.startAlarm()}"
-            android:layout_marginBottom="@dimen/margin30">
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -87,8 +91,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -109,9 +114,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
+            android:onClick="@{() -> fragment.writeInAppReview()}"
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -132,9 +138,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
+            android:onClick="@{() -> fragment.sendEmail()}"
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -146,8 +153,9 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="20sp"
+                android:onClick="@{() -> fragment.sendEmail()}"
                 android:letterSpacing="-0.05"
-                android:text="문의하기" />
+                android:text="건의하기" />
         </LinearLayout>
 
         <LinearLayout
@@ -156,9 +164,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
-            <ImageView
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground">
+        <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 style="@style/ImageViewStyle"

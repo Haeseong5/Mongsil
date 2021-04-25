@@ -39,8 +39,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     override fun initStartView() {
         initRecyclerView()
         initClickListener()
-        viewModel.getCalendarListData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
-        viewModel.getAllComments() //read room db -> display comment in CalendarView
+//        viewModel.getCalendarListData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
+//        viewModel.getAllComments() //read room db -> display comment in CalendarView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             flag = when (flag) {
                 false -> true
                 true -> {
-                    viewModel.getAllComments()
+//                    viewModel.getAllComments()
                     false
                 }
             }
@@ -111,15 +111,14 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     }
 
     private fun observeData() {
-        //리사이클러뷰 데이터 세팅
-        viewModel.sayingData.observe(viewLifecycleOwner, Observer {
+        //리사이클러뷰에 데이터 세팅
+        mainActivity?.mainViewModel?.sayingList?.observe(viewLifecycleOwner, Observer {
             dayAdapter.update(it as ArrayList<Saying>)
         })
 
-        //댓글 데이터를 받아와서 CalendarView 에 세팅
-        viewModel.commentData.observe(viewLifecycleOwner, Observer {
-            //    java.lang.ArrayIndexOutOfBoundsException: length=0; index=-1
-            binding.customCalendarView.notifyDataChanged(it) // 갱신 안되는건 CalendarView 문제인듯
+        //댓글 데이터를 받아와서 CalendarView 에 이모티콘 세팅
+        mainActivity?.mainViewModel?.commentEmoticon?.observe(viewLifecycleOwner, Observer {
+            binding.customCalendarView.notifyDataChanged(it)
         })
 
         /**
@@ -146,20 +145,18 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 //        }.addTo(compositeDisposable)
 
         RxEventBus.toResumedObservable().subscribe{
-            if (it) viewModel.getAllComments()
+            if (it) mainActivity?.mainViewModel?.getAllCommentsForEmoticons()
             Log.d(TAG, "++RxEventBus Consume $it")
         }.addTo(compositeDisposable)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getAllComments()
+        mainActivity?.mainViewModel?.getAllCommentsForEmoticons()
     }
 
     override fun onPause() {
         super.onPause()
         RxEventBus.sendToHome(true)
     }
-
-
 }

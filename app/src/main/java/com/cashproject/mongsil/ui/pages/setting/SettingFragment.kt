@@ -1,22 +1,19 @@
 package com.cashproject.mongsil.ui.pages.setting
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.receiver.AlarmReceiver
-import com.cashproject.mongsil.util.PreferencesManager
-import java.util.*
 import com.cashproject.mongsil.databinding.FragmentSettingBinding
-import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
+import com.cashproject.mongsil.extension.showToast
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
+import java.util.*
 
 
 class SettingFragment : Fragment(){
@@ -51,5 +48,46 @@ class SettingFragment : Fragment(){
 
     fun startAlarm(){
         findNavController().navigate(R.id.action_setting_to_alarm)
+    }
+
+    fun sendEmail(){
+        val emailIntent = Intent(Intent.ACTION_SEND)
+        emailIntent.apply {
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.admin_email))) //받는 사람
+            putExtra(Intent.EXTRA_SUBJECT, "몽실에게 건의하기") //제목
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "앱 버전 (App Version): ${BuildConfig.VERSION_NAME}\n" +
+                        "Android (SDK): ${Build.VERSION.SDK_INT}\n" +
+                        "Android Version(Release): ${Build.VERSION.RELEASE}\n" +
+                        "내용: "
+            )
+            type = "message/rfc822"
+            startActivity(this)
+        }
+    }
+
+    fun writeInAppReview(){
+        val manager = ReviewManagerFactory.create(requireActivity())
+//        val manager = FakeReviewManager(context)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // We got the ReviewInfo object
+                val reviewInfo = task.result
+                Log.d("In App Review Info", reviewInfo.toString())
+                reviewInfo.let {
+                    val flow = manager.launchReviewFlow(requireActivity(), it)
+                    flow.addOnCompleteListener {
+                        //Irrespective of the result, the app flow should continue
+                    }
+                }
+            } else {
+                // There was some problem, log or handle the error code.
+                val reviewErrorCode = task.exception
+                Log.e("In App Review Error", reviewErrorCode.toString())
+            }
+        }
+
     }
 }

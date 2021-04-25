@@ -43,7 +43,7 @@ class LockerViewModel(
      */
     fun getAllLike() {
         Log.d(TAG, "코루틴 밖: "+ Thread.currentThread().name)
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch(ioDispatcher + job) {
             Log.d("viewModelScope", Thread.currentThread().name)
             val result = localDataSource.getAllLikeData()
             _likeData.postValue(result)

@@ -14,7 +14,7 @@ open class BaseViewModel : ViewModel(){
 
     val loadingSubject: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
 
-    private val compositeDisposable = CompositeDisposable()
+    val compositeDisposable = CompositeDisposable()
 
     fun addDisposable(disposable: Disposable){
         compositeDisposable.add(disposable)

@@ -4,14 +4,11 @@ import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cashproject.mongsil.base.ApplicationClass.Companion.COLLECTION
-import com.cashproject.mongsil.base.ApplicationClass.Companion.DATE
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
-import com.cashproject.mongsil.util.DateUtil.dateToTimestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -22,9 +19,9 @@ import kotlin.collections.ArrayList
 
 class CalendarViewModel(private val localDataSource: LocalDataSource, private val firebaseDataSource: FirestoreDataSource) : BaseViewModel() {
 
-    private val _sayingData = MutableLiveData<List<Saying>>()
-    val sayingData: LiveData<List<Saying>>
-        get() = _sayingData
+    private val _sayingListData = MutableLiveData<List<Saying>>()
+    val sayingListData: LiveData<List<Saying>>
+        get() = _sayingListData
 
     private val _commentData = MutableLiveData<List<Comment>>()
     val commentData: LiveData<List<Comment>>
@@ -52,7 +49,7 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
                         sayingList.add(it)
                     }
                 }
-                _sayingData.postValue(sayingList)
+                _sayingListData.postValue(sayingList)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -60,11 +57,13 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
             }
     }
 
-
+    /**
+     * 달력 날짜 클릭했을 때 리뷰가 없을 경우
+     * Firestore 에서 해당 날짜의 명언을 가져온다.
+     */
     fun getDataByDate(date: Date){
         firebaseDataSource.getDataByDate(date)
             .addOnSuccessListener { documents ->
-                loadingSubject.onNext(true)
                 for (document in documents) {
                     d(TAG, "${document.id} => ${document.data}")
                     document.toObject<Saying>().apply { docId = document.id }.also {
@@ -77,19 +76,4 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
                 errorSubject.onNext(exception)
             }
     }
-
-
-    fun getAllComments() {
-        addDisposable(
-            localDataSource.getAllComments()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _commentData.postValue(it)
-                }, {
-                    errorSubject.onNext(it)
-                })
-        )
-    }
-
 }
