@@ -28,6 +28,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     buildFeatures {
         dataBinding = true
     }
@@ -156,7 +161,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutine_version"
 
-    implementation 'gun0912.ted:tedadmobdialog:1.1.0'
+//    implementation 'gun0912.ted:tedadmobdialog:1.1.0'
 
     implementation 'com.firebase:firebase-jobdispatcher:0.8.6'
 

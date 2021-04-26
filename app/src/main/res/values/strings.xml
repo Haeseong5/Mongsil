@@ -28,4 +28,6 @@
     <string name="ad_native_id">ca-app-pub-1939032811151400/9104485125</string>
     <string name="admin_email">mongsilapp@gmail.com</string>
 
+    <string name="review">리뷰 남기기</string>
+    <string name="finish">종료</string>
 </resources>

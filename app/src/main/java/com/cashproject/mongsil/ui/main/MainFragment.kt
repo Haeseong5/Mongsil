@@ -13,9 +13,9 @@ import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.setting.SettingFragment
 import com.cashproject.mongsil.util.RxEventBus
+import com.cashproject.mongsil.util.admob.OnBackPressListener
+import com.cashproject.mongsil.util.admob.TedAdmobDialog
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
-import gun0912.ted.tedadmobdialog.OnBackPressListener
-import gun0912.ted.tedadmobdialog.TedAdmobDialog
 
 class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
@@ -82,7 +82,7 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
 
     private fun initAdmobDialog(){
         nativeTedAdmobDialog =
-            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.ad_native_id))
+            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.sample_ad_native_id))
                 .showReviewButton(true)
                 .setOnBackPressListener(object : OnBackPressListener {
                     override fun onReviewClick() {
@@ -92,7 +92,6 @@ class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
                         Log.d(TAG, "onFinish")
                         requireActivity().finish()
                     }
-
                     override fun onAdShow() {
                         Log.d(TAG, "onAdShow")
                         nativeTedAdmobDialog.loadNative()
