@@ -15,6 +15,7 @@ import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.ui.MainActivity
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
+import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -36,6 +37,8 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     internal val compositeDisposable = CompositeDisposable()
 
     private lateinit var callback: OnBackPressedCallback
+
+    val click by lazy { ClickUtil(this.lifecycle) }
 
     private val progressDialog: ProgressDialog by lazy {
         ProgressDialog(requireContext())
@@ -60,6 +63,8 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         d(TAG, "++onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
+        binding.lifecycleOwner = this
+
 
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
         initStartView()

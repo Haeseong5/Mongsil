@@ -13,7 +13,7 @@ import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
-import com.cashproject.mongsil.viewmodel.HomeViewModel
+import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -119,7 +119,7 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
             else {
                 binding.ivSayingLike.apply {
                     setImageResource(R.drawable.ic_like)
-                    setColorFilter(R.color.icon_color)
+//                    setColorFilter(R.color.icon_color)
                 }
             }
         })

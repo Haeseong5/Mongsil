@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.viewmodel
+package com.cashproject.mongsil.ui.pages.locker
 
 import android.util.Log
 import androidx.lifecycle.LiveData

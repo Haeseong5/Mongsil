@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.home
+package com.cashproject.mongsil.ui.pages.home.detail
 
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -8,10 +8,12 @@ import android.util.Log.d
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentHomeBinding
+import com.cashproject.mongsil.databinding.FrammentDetailBinding
 import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
@@ -21,24 +23,21 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
-import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
+import com.cashproject.mongsil.ui.pages.home.CommentAdapter
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
 import java.util.*
 
-/**
- * 캘린더 갱신만 되면 됨. 무조건 오늘 명언만
- */
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
+class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_home
+        get() = R.layout.framment_detail
 
     override val viewModel: HomeViewModel by viewModels { viewModelFactory }
 
-    private var todaySaying: Saying? = null
+    private var mSaying: Saying? = null
 
     private val commentAdapter: CommentAdapter by lazy {
         CommentAdapter()
@@ -53,18 +52,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun initStartView() {
         binding.fragment = this
         initRecyclerView()
-
         //set emoticon
+        initSaying()
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
         observeData()
     }
 
+    fun initSaying(){
+        arguments?.run {
+            //보관함 or 리스트에서 넘어왔을 경우. 넘겨준 데이터로 바로 세팅
+            getParcelable<Saying>("saying")?.let {
+                mSaying = it
+                binding.saying = it
+                viewModel.getCommentsForHome(it.docId)
+            }
+            //캘린더에서 넘어왔을 경우. 파이어스토어에 요청
+            getString("docId").also {
+                it?.also {
+                    viewModel.getSingleSayingData(it)
+                }
+            }
+        }
+    }
+
     private fun observeData() {
-        mainActivity?.mainViewModel?.sayingForHome?.observe(viewLifecycleOwner, Observer {
+        viewModel.sayingLiveData.observe(viewLifecycleOwner, Observer {
             d(TAG, "[observeData] docID: ${it.docId} date: ${it.date}")
             binding.saying = it
-            todaySaying = it //null error
-            todaySaying?.docId?.let { docId -> viewModel.getCommentsForHome(docId) }
+            mSaying = it //null error
+            mSaying?.docId?.let { docId -> viewModel.getCommentsForHome(docId) }
         })
 
         //댓글 불러오기
@@ -78,12 +94,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         viewModel.isUpdatedComment.observe(viewLifecycleOwner, Observer {
             if (it) {
                 d(TAG, "isCompletable $it")
-                todaySaying?.docId?.let { docId -> viewModel.getCommentsForHome(docId) }
+                mSaying?.docId?.let { docId -> viewModel.getCommentsForHome(docId) }
 //                RxEventBus.sendToCalendar(true)
             }
         })
-
-        //MainFragment 가 onResume 될 때 댓글 갱신? 혹은 댓글 변경 시
     }
 
     private fun initRecyclerView() {
@@ -101,7 +115,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     fun onClickBackgroundImage(){
         d("onClickBack", "!!")
         click.run {
-            todaySaying?.let {
+            mSaying?.let {
                 showBottomMenuDialog()
             }
         }
@@ -113,9 +127,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
+    fun onClickBackBtn(){
+        findNavController().popBackStack()
+    }
+
     /**댓글 입력 버튼 클릭 시 호출. documentId가 없으면, 댓글 저장 실패*/
     fun onClickSubmitComment() {
-        todaySaying?.let {
+        mSaying?.let {
             if (it.docId.isNotEmpty()){
                 viewModel.insertComment(
                     Comment(
@@ -133,14 +151,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
 
     private fun showBottomMenuDialog() {
-        todaySaying?.let {
+        mSaying?.let {
             val bottomSheetFragment = MenuBottomSheetFragment(it)
             if (it.docId.isNotEmpty()){
                 bottomSheetFragment.show(childFragmentManager, "approval")
             }else{
                 activity?.showToast("Saying's documentId is empty")
             }
-//        bottomSheetFragment.setLikeBtnOnClickListener {}
 
             bottomSheetFragment.setSaveBtnOnClickListener {
                 mainActivity?.showAdMob()
@@ -202,11 +219,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         intent.putExtra(Intent.EXTRA_STREAM, imageUri)
         val chooser = Intent.createChooser(intent, "친구에게 공유하기")
         startActivity(chooser)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        todaySaying?.docId?.let { docId -> viewModel.getCommentsForHome(docId) }
     }
 }
 

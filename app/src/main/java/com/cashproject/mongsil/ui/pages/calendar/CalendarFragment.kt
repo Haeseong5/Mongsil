@@ -15,9 +15,7 @@ import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
-import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.RxEventBus
-import com.cashproject.mongsil.viewmodel.CalendarViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
@@ -31,8 +29,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     private val dayAdapter by lazy {
         DayAdapter(ViewTypeCase.NORMAL)
     }
-
-    private val click by lazy { ClickUtil(this.lifecycle) }
 
     var flag: Boolean = false //false: CalendarView, true: RecyclerView
 
@@ -67,10 +63,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         binding.fabCalendarFloatingActionButton.setOnClickListener {
             flag = when (flag) {
                 false -> true
-                true -> {
-//                    viewModel.getAllComments()
-                    false
-                }
+                true -> false
             }
             binding.flag = flag
         }
@@ -96,7 +89,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
                             viewModel.getDataByDate(Date(selectedTimeInMillis))
                     } else {
                         findNavController().navigate(
-                            R.id.action_pager_to_home,
+                            R.id.action_pager_to_detail,
                             bundleOf("docId" to it.comments[0].docId)
                         )
                     }
@@ -105,7 +98,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 
         dayAdapter.setOnItemClickListener {
             if (it.docId != "")
-                findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+                findNavController().navigate(R.id.action_pager_to_detail, bundleOf("saying" to it))
             //else 데이터 삭제해버리기?
         }
     }
@@ -127,7 +120,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
          */
         //날짜 클릭 시 로컬디비에 데이터 없을 때, Firestore 에서 받아와서 이동
         viewModel.sayingDataByDate.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            findNavController().navigate(R.id.action_pager_to_detail, bundleOf("saying" to it))
 //            isProgress(false)
         })
 

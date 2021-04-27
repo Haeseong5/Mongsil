@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.util.admob;
+package com.cashproject.mongsil.ui.dialog.admob;
 
 public interface OnBackPressListener {
 

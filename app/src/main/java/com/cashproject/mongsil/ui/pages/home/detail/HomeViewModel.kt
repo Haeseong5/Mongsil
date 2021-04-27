@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.viewmodel
+package com.cashproject.mongsil.ui.pages.home.detail
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,6 +9,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,9 +19,9 @@ class HomeViewModel(
     private val firestoreDataSource: FirestoreDataSource
 ) : BaseViewModel() {
 
-//    private val _sayingLiveData = MutableLiveData<Saying>()
-//    val sayingLiveData: LiveData<Saying>
-//        get() = _sayingLiveData
+    private val _sayingLiveData = MutableLiveData<Saying>()
+    val sayingLiveData: LiveData<Saying>
+        get() = _sayingLiveData
 
     private val _commentData = MutableLiveData<List<Comment>>()
     val commentData: LiveData<List<Comment>>
@@ -34,6 +35,29 @@ class HomeViewModel(
 
     val db by lazy {
         Firebase.firestore
+    }
+
+    /**
+     * 캘린더뷰에서 홈으로 넘어왔을 때 Firestore 에서 데이터 요청
+     */
+    fun getSingleSayingData(docId: String) {
+        loadingSubject.onNext(true)
+        firestoreDataSource.getSingleSayingData(docId)
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    val saying = document.toObject<Saying>().apply { this?.docId = document.id }
+                    _sayingLiveData.postValue(saying)
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+                loadingSubject.onNext(false)
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+                loadingSubject.onNext(false)
+                errorSubject.onNext(exception)
+            }
     }
 
     fun like(saying: Saying) {

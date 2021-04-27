@@ -1,9 +1,6 @@
 package com.cashproject.mongsil.ui.pages.locker
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -14,10 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
-import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.util.RxEventBus
-import com.cashproject.mongsil.viewmodel.LockerViewModel
 
 
 class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
@@ -26,7 +20,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         get() = R.layout.fragment_locker
 
     override val viewModel: LockerViewModel by viewModels { viewModelFactory }
-
 
     private val lockerAdapter: LockerAdapter by lazy {
         LockerAdapter()
@@ -61,7 +54,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_locker_to_home, bundleOf("saying" to it))
+            findNavController().navigate(R.id.action_locker_to_detail, bundleOf("saying" to it))
         }
     }
 

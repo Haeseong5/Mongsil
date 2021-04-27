@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.viewmodel
+package com.cashproject.mongsil.ui.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -29,11 +29,10 @@ class MainViewModel(private val localDataSource: LocalDataSource, private val fi
     val commentEmoticon = _commentEmoticon.toSingleEvent()
 
     /**HomeFragment*/
-    //홈에 표시할 명언 데이터
+    //홈에 표시할 명언 데이터. onResume에 liveData 가 활성화되면서 번들데이터가 안보임;
     private val _sayingForHome = MutableLiveData<Saying>()
     val sayingForHome = _sayingForHome.toSingleEvent()
-//    val sayingForHome: LiveData<Saying> =
-//        get() = _sayingForHome
+
 
     /**
      * 리사이클러뷰에 표시할 데이터 요청
@@ -124,29 +123,4 @@ class MainViewModel(private val localDataSource: LocalDataSource, private val fi
                 errorSubject.onNext(exception)
             }
     }
-
-    /**
-     * 캘린더뷰에서 홈으로 넘어왔을 때 Firestore 에서 데이터 요청
-     */
-    fun getSingleSayingData(docId: String) {
-        loadingSubject.onNext(true)
-        firestoreDataSource.getSingleSayingData(docId)
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    val saying = document.toObject<Saying>().apply { this?.docId = document.id }
-                    _sayingForHome.postValue(saying)
-                } else {
-                    Log.d(TAG, "No such document")
-                }
-                loadingSubject.onNext(false)
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-                loadingSubject.onNext(false)
-                errorSubject.onNext(exception)
-            }
-    }
-
-
 }

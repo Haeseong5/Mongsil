@@ -6,7 +6,7 @@
     <data>
         <variable
             name="fragment"
-            type="com.cashproject.mongsil.ui.pages.setting.AlarmFragment"
+            type="com.cashproject.mongsil.ui.pages.setting.alarm.AlarmFragment"
             />
         <variable
             name="preferences"
@@ -108,6 +108,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close_copy"
                 app:layout_constraintEnd_toEndOf="parent"
+                style="@style/ImageViewStyle"
                 android:onClick="@{() -> fragment.showBottomListDialog()}"
                 app:layout_constraintTop_toBottomOf="@id/iv_alarm_switch" />
 

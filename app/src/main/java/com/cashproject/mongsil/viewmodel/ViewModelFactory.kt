@@ -20,6 +20,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.pages.calendar.CalendarViewModel
+import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
+import com.cashproject.mongsil.ui.pages.locker.LockerViewModel
 
 /**
  * Factory for ViewModels

@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.viewmodel
+package com.cashproject.mongsil.ui.pages.calendar
 
 import android.util.Log
 import android.util.Log.d
@@ -12,8 +12,6 @@ import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.ArrayList
 

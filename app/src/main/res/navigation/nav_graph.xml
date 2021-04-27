@@ -13,8 +13,8 @@
         android:label="@string/calendar"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_pager_to_home"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_pager_to_detail"
+            app:destination="@id/detailFragment" />
         <action
             android:id="@+id/action_setting_to_locker"
             app:destination="@id/lockerFragment"/>
@@ -38,7 +38,13 @@
         android:name="com.cashproject.mongsil.ui.pages.home.HomeFragment"
         android:label="@string/saying"
         tools:layout="@layout/fragment_home">
+    </fragment>
 
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment"
+        android:label="detail"
+        tools:layout="@layout/framment_detail">
     </fragment>
 
     <fragment
@@ -49,8 +55,8 @@
         app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_locker">
         <action
-            android:id="@+id/action_locker_to_home"
-            app:destination="@id/homeFragment"/>
+            android:id="@+id/action_locker_to_detail"
+            app:destination="@id/detailFragment"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -61,12 +67,11 @@
         android:name="com.cashproject.mongsil.ui.pages.setting.SettingFragment"
         android:label="setting"
         tools:layout="@layout/fragment_setting">
-
     </fragment>
 
     <fragment
         android:id="@+id/alarmFragment"
-        android:name="com.cashproject.mongsil.ui.pages.setting.AlarmFragment"
+        android:name="com.cashproject.mongsil.ui.pages.setting.alarm.AlarmFragment"
         android:label="alarm"
         tools:layout="@layout/fragment_alarm">
     </fragment>

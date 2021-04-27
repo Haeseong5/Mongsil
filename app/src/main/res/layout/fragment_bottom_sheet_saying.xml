@@ -79,7 +79,6 @@
             android:layout_height="@dimen/bottom_icon_size"
             tools:src="@drawable/ic_like_sel"
             style="@style/ImageViewStyle"
-            app:tint="@color/ic_like_sel_color"
             app:layout_constraintStart_toStartOf="@id/tv_saying_like"
             app:layout_constraintEnd_toEndOf="@id/tv_saying_like"
             app:layout_constraintBottom_toTopOf="@id/tv_saying_like"/>

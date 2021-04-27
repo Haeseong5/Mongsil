@@ -19,8 +19,11 @@ object PreferencesManager {
         get() = prefs.getInt(PREF_MINUTE, -1)
         set(value) = prefs.edit().putInt(PREF_MINUTE, value).apply()
 
-    var selectedEmoticonId: Int
-        get() = prefs.getInt(PREF_EMOTICON, 0)
+    var selectedEmoticonId: Int = 0
+        get() {
+            if (field > 14) selectedEmoticonId = 0
+            return prefs.getInt(PREF_EMOTICON, 0)
+        }
         set(value) = prefs.edit().putInt(PREF_EMOTICON, value).apply()
 
     var isVisibilityComment: Boolean

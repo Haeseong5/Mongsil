@@ -14,7 +14,7 @@
 
         <variable
             name="fragment"
-            type="com.cashproject.mongsil.ui.pages.home.HomeFragment"
+            type="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment"
             />
     </data>
 
@@ -30,6 +30,16 @@
             android:src="@drawable/emoticon_05"
             android:onClick="@{()->fragment.onClickBackgroundImage()}"
             bindImage="@{saying.image}"/>
+
+        <ImageView
+            android:id="@+id/iv_detail_finish"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/margin16"
+            android:src="@drawable/ic_arrow_left"
+            android:onClick="@{()->fragment.onClickBackBtn()}"/>
 
         <LinearLayout
             android:id="@+id/ll_saying_comment"

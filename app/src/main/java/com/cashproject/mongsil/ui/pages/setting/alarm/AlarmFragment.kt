@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.setting
+package com.cashproject.mongsil.ui.pages.setting.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,35 +6,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentAlarmBinding
-import com.cashproject.mongsil.databinding.FragmentLockerBinding
-import com.cashproject.mongsil.databinding.FragmentSettingBinding
-import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.receiver.AlarmReceiver
 import com.cashproject.mongsil.ui.dialog.DiaryListBottomSheetFragment
-import com.cashproject.mongsil.ui.pages.locker.LockerAdapter
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.alarm
 import com.cashproject.mongsil.util.PreferencesManager.hour
 import com.cashproject.mongsil.util.PreferencesManager.minute
-import com.cashproject.mongsil.util.RxEventBus
-import com.cashproject.mongsil.viewmodel.LockerViewModel
 import java.util.*
 
 
@@ -53,7 +40,7 @@ class AlarmFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return FragmentAlarmBinding.inflate(inflater, container, false)
             .also { binding ->
                 binding.fragment = this

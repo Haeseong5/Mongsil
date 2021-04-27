@@ -8,12 +8,12 @@ import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
-import com.cashproject.mongsil.viewmodel.MainViewModel
+import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.*
 import java.util.*
 
-
+//여기다가 프로그레스바 박아도 될 듯
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val layoutResourceId: Int
