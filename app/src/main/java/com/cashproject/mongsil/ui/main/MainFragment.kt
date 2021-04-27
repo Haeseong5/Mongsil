@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
-import com.cashproject.mongsil.databinding.FragmentSplashBinding
+import com.cashproject.mongsil.databinding.FragmentMainBinding
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.setting.SettingFragment
@@ -17,10 +17,10 @@ import com.cashproject.mongsil.util.admob.OnBackPressListener
 import com.cashproject.mongsil.util.admob.TedAdmobDialog
 import com.cashproject.mongsil.viewmodel.CalendarViewModel
 
-class MainFragment : BaseFragment<FragmentSplashBinding, CalendarViewModel>() {
+class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
 
     override val layoutResourceId: Int
-        get() = R.layout.fragment_splash
+        get() = R.layout.fragment_main
 
     override val viewModel: CalendarViewModel by viewModels {viewModelFactory}
 

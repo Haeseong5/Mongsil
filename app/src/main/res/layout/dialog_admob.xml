@@ -14,7 +14,7 @@
 
         <include
             android:id="@+id/view_native"
-            layout="@layout/view_native" />
+            layout="@layout/admob_view_native" />
 
         <ProgressBar
             android:id="@+id/progressView"

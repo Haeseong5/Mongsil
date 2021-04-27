@@ -11,7 +11,7 @@
         android:id="@+id/mainFragment"
         android:name="com.cashproject.mongsil.ui.main.MainFragment"
         android:label="@string/calendar"
-        tools:layout="@layout/fragment_splash">
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_pager_to_home"
             app:destination="@id/homeFragment" />

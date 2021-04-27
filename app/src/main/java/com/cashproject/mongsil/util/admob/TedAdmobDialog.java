@@ -58,7 +58,7 @@ public class TedAdmobDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("ted", "onCreate()");
-        setContentView(R.layout.dialog_tedadmob);
+        setContentView(R.layout.dialog_admob);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         Window window = getWindow();
         layoutParams.copyFrom(window.getAttributes());
