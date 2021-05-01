@@ -38,8 +38,9 @@ class SettingFragment : Fragment(){
         }.root
     }
 
+
     fun showReadyMessage(){
-        activity?.showToast("준비중입니다.")
+        activity?.showToast("준비 중입니다.")
     }
 
     fun startLocker(){
@@ -71,6 +72,7 @@ class SettingFragment : Fragment(){
         val manager = ReviewManagerFactory.create(requireActivity())
 //        val manager = FakeReviewManager(context)
         val request = manager.requestReviewFlow()
+
         request.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // We got the ReviewInfo object
@@ -80,6 +82,7 @@ class SettingFragment : Fragment(){
                     val flow = manager.launchReviewFlow(requireActivity(), it)
                     flow.addOnCompleteListener {
                         //Irrespective of the result, the app flow should continue
+                        if (it.isSuccessful) activity?.showToast("소중한 리뷰 감사합니다!")
                     }
                 }
             } else {

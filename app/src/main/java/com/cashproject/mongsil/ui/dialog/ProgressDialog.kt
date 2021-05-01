@@ -36,11 +36,8 @@ class ProgressDialog(context: Context): Dialog(context) {
         view = inflater.inflate(R.layout.dialog_progress, null)
         linear = view.findViewById(R.id.linear)
         drawable = view.iv_loading.background as AnimationDrawable
-        setCancelable(true)
+        setCancelable(false)
         setCanceledOnTouchOutside(false)
-        //            window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-//            setCancelable(true)
-//            setCanceledOnTouchOutside(false)
     }
 
     override fun show() {

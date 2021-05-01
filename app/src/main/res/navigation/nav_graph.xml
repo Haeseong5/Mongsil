@@ -5,7 +5,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.cashproject.mongsil.ui.main.SplashFragment"
+        android:label="splashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/mainFragment"
@@ -14,13 +26,19 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_pager_to_detail"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"/>
         <action
             android:id="@+id/action_setting_to_locker"
-            app:destination="@id/lockerFragment"/>
+            app:destination="@id/lockerFragment" />
         <action
             android:id="@+id/action_setting_to_alarm"
-            app:destination="@id/alarmFragment"/>
+            app:destination="@id/alarmFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popEnterAnim="@anim/fade_in"/>
         <argument
             android:name="docId"
             app:argType="string"/>
@@ -56,7 +74,11 @@
         tools:layout="@layout/fragment_locker">
         <action
             android:id="@+id/action_locker_to_detail"
-            app:destination="@id/detailFragment"/>
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out"/>
         <argument
             android:name="docId"
             app:argType="string"/>

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:textStyle="normal"
             android:textSize="26sp"
-            android:textColor="#333333"
+            android:textColor="@color/blackOrWhite"
             android:layout_margin="@dimen/margin30"
             android:text="@string/emoticon_title" />
         <androidx.recyclerview.widget.RecyclerView

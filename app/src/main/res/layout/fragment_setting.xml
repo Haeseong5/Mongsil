@@ -86,6 +86,31 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_setting_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> fragment.sendEmail()}"
+            android:padding="@dimen/margin8"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                style="@style/ImageViewStyle"
+                android:layout_marginEnd="3dp"
+                android:src="@drawable/ic_question"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="20sp"
+                android:onClick="@{() -> fragment.sendEmail()}"
+                android:letterSpacing="-0.05"
+                android:text="건의하기" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_setting_backup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,31 +156,6 @@
                 android:textSize="20sp"
                 android:letterSpacing="-0.05"
                 android:text="리뷰 쓰기" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_setting_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.sendEmail()}"
-            android:padding="@dimen/margin8"
-            android:layout_marginBottom="22dp"
-            android:background="?android:attr/selectableItemBackground">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                style="@style/ImageViewStyle"
-                android:layout_marginEnd="3dp"
-                android:src="@drawable/ic_question"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="20sp"
-                android:onClick="@{() -> fragment.sendEmail()}"
-                android:letterSpacing="-0.05"
-                android:text="건의하기" />
         </LinearLayout>
 
         <LinearLayout

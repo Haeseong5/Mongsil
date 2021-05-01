@@ -40,19 +40,13 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     val click by lazy { ClickUtil(this.lifecycle) }
 
-    private val progressDialog: ProgressDialog by lazy {
-        ProgressDialog(requireContext())
+    val progressBar: ProgressDialog by lazy {
+        ProgressDialog(requireActivity())
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         d(TAG, "++onAttach")
-//        callback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-////                findNavController().popBackStack()
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +58,6 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         d(TAG, "++onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         binding.lifecycleOwner = this
-
 
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
         initStartView()
@@ -83,7 +76,6 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{
                 Log.e("error subject ", it.message.toString())
-//                activity?.showToast(getString(com.cashproject.mongsil.R.string.network_state_error))
             }
             .addTo(compositeDisposable)
     }

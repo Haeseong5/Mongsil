@@ -27,7 +27,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true)는 프래그먼트가 메뉴 관련 콜백을 수신하려 한다고 시스템에 알립니다.
         setHasOptionsMenu(true)
     }
 
@@ -62,14 +61,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         viewModel.likeData.observe(viewLifecycleOwner, Observer {
             lockerAdapter.update(it as ArrayList<Saying>)
         })
-
-        /**
-         * When call MainFragment is resumed
-         */
-//        RxEventBus.toResumedObservable().subscribe {
-//            Log.d(TAG, "RxEventBus Consume $it")
-//            if (it) viewModel.getAllLike()
-//        }.addTo(compositeDisposable)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

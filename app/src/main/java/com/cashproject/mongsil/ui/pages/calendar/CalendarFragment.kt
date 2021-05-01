@@ -35,8 +35,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
     override fun initStartView() {
         initRecyclerView()
         initClickListener()
-//        viewModel.getCalendarListData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
-//        viewModel.getAllComments() //read room db -> display comment in CalendarView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

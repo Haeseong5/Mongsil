@@ -48,7 +48,6 @@ class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
         )
         binding.viewPager.offscreenPageLimit = fragments.size
         binding.viewPager.adapter = screenSlidePagerAdapter
-
     }
 
 
@@ -83,7 +82,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
 
     private fun initAdmobDialog(){
         nativeTedAdmobDialog =
-            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.sample_ad_native_id))
+            TedAdmobDialog.Builder(requireActivity(), TedAdmobDialog.AdType.NATIVE, getString(R.string.ad_native_id))
                 .showReviewButton(true)
                 .setOnBackPressListener(object : OnBackPressListener {
                     override fun onReviewClick() {
