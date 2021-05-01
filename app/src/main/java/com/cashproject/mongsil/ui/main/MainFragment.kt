@@ -74,10 +74,11 @@ class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
 
     private fun showAdmobDialog(){
         nativeTedAdmobDialog.apply {
-            setCanceledOnTouchOutside(true)
+            setCanceledOnTouchOutside(false)
             setCancelable(true)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
         }
-        nativeTedAdmobDialog.show()
+            nativeTedAdmobDialog.show()
     }
 
     private fun initAdmobDialog(){

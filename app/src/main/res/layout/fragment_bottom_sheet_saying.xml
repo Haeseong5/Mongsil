@@ -77,8 +77,7 @@
             android:id="@+id/iv_saying_like"
             android:layout_width="@dimen/bottom_icon_size"
             android:layout_height="@dimen/bottom_icon_size"
-            tools:src="@drawable/ic_like_sel"
-            style="@style/ImageViewStyle"
+            tools:src="@drawable/ic_like"
             app:layout_constraintStart_toStartOf="@id/tv_saying_like"
             app:layout_constraintEnd_toEndOf="@id/tv_saying_like"
             app:layout_constraintBottom_toTopOf="@id/tv_saying_like"/>

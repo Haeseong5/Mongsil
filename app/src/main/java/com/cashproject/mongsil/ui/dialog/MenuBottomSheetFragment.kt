@@ -1,6 +1,9 @@
 package com.cashproject.mongsil.ui.dialog
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +14,9 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
-import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -113,16 +116,39 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
     private fun observeIsLike(){
         viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             mLike = it
-            if (mLike){
+            if (mLike) {
                 binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
-            }
-            else {
+            } else {
                 binding.ivSayingLike.apply {
                     setImageResource(R.drawable.ic_like)
-//                    setColorFilter(R.color.icon_color)
+                    val currentNightMode =
+                        requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    when (currentNightMode) {
+                        Configuration.UI_MODE_NIGHT_NO -> {
+                            imageTintList = ColorStateList.valueOf(Color.parseColor("#333333"))
+
+                        }
+                        Configuration.UI_MODE_NIGHT_YES -> {
+                            imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+
+                        }
+                    }
                 }
             }
         })
+    }
+
+    private fun datk(){
+        val currentNightMode =
+            requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when (currentNightMode) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+
+            }
+        }
     }
 
 }
