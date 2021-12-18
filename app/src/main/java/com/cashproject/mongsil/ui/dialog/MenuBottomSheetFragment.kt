@@ -19,9 +19,13 @@ import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.*
 
 
-class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFragment() {
+class MenuBottomSheetFragment(
+    private val saying: Saying,
+    private val selectedDate: Date,
+) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
 
     private val viewModel: HomeViewModel by viewModels { viewModelFactory }
@@ -34,9 +38,9 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
     var mLike: Boolean = false
 
-    fun setLikeBtnOnClickListener(listener: () -> Unit) {
-        this.likeBtnListener = listener
-    }
+//    fun setLikeBtnOnClickListener(listener: () -> Unit) {
+//        this.likeBtnListener = listener
+//    }
 
     fun setSaveBtnOnClickListener(listener: () -> Unit) {
         this.saveBtnListener = listener
@@ -72,11 +76,11 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
 
     private fun initDateIcon() {
-        binding.tvSayingDate.text = DateUtil.dateToString(saying.date)
-        binding.tvSayingYear.text = DateUtil.yearToString(saying.date)
+        binding.tvSayingDate.text = DateUtil.dateToString(selectedDate)
+        binding.tvSayingYear.text = DateUtil.yearToString(selectedDate)
     }
 
-    private fun initCommentIcon(){
+    private fun initCommentIcon() {
         if (!isVisibilityComment) { // false 라면, 댓글 보이는 상태이고, 댓글을 숨기길 수 있는 아이콘 보이기
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_off)
             binding.tvSayingIsHideComment.text = "댓글 숨기기"
@@ -88,6 +92,9 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
     private fun setOnClickListener() {
         binding.ivSayingLike.setOnClickListener {
+            saying.apply {
+                date = selectedDate
+            }
             if (mLike) viewModel.unLike(saying.docId)
             else viewModel.like(saying)
             likeBtnListener?.invoke()
@@ -96,24 +103,21 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
         binding.ivSayingSave.setOnClickListener {
             saveBtnListener?.invoke()
-
             dismiss()
         }
         binding.ivSayingHideComment.setOnClickListener {
-//            setCommentIcon()
             hideCommentBtnListener?.invoke()
             isVisibilityComment = !isVisibilityComment
             dismiss()
-
         }
+
         binding.ivSayingShare.setOnClickListener {
             shareBtnListener?.invoke()
             dismiss()
-
         }
     }
 
-    private fun observeIsLike(){
+    private fun observeIsLike() {
         viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             mLike = it
             if (mLike) {
@@ -136,19 +140,6 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
                 }
             }
         })
-    }
-
-    private fun datk(){
-        val currentNightMode =
-            requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_NO -> {
-
-            }
-            Configuration.UI_MODE_NIGHT_YES -> {
-
-            }
-        }
     }
 
 }

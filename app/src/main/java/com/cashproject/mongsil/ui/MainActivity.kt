@@ -7,6 +7,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
@@ -34,12 +35,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this, getString(R.string.ad_app_id))
 
-        //Calendar
-        mainViewModel.getSayingList() //read firestore -> display saying in RecyclerView
-        mainViewModel.getAllComments() //read room db -> display comment in CalendarView
-
-        //Home
-        mainViewModel.getTodaySaying()
+        mainViewModel.getSayingList()
+        mainViewModel.getAllComments()
+        mainViewModel.getAllLike()
+        mainViewModel.sayingList.observe(this, {
+            showToast("success to load $it")
+        })
     }
 
     fun showAdMob(){

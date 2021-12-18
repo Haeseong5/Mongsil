@@ -7,7 +7,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.dao.CommentDao
 import com.cashproject.mongsil.model.db.dao.LockerDao
 
-@Database(entities = [Saying::class, Comment::class], version = 2)
+@Database(entities = [Saying::class, Comment::class], version = 3)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun lockerDao(): LockerDao

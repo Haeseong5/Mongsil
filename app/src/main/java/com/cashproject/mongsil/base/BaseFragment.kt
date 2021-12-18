@@ -21,7 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment(){
+abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment() {
     val TAG: String = this.javaClass.simpleName
 
     val mainActivity by lazy { activity as? MainActivity }
@@ -44,6 +44,21 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         ProgressDialog(requireActivity())
     }
 
+    abstract fun initStartView()
+
+    fun observeErrorEvent() {
+        viewModel.errorSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.e("error subject ", it.message.toString())
+            }
+            .addTo(compositeDisposable)
+    }
+
+    fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         d(TAG, "++onAttach")
@@ -54,7 +69,11 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         d(TAG, "++onCreate")
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         d(TAG, "++onCreateView!!!")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         binding.lifecycleOwner = this
@@ -64,20 +83,9 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         return binding.root
     }
 
-    abstract fun initStartView()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         d(TAG, "++onViewCreated!!!")
-    }
-
-    fun observeErrorEvent(){
-        viewModel.errorSubject
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{
-                Log.e("error subject ", it.message.toString())
-            }
-            .addTo(compositeDisposable)
     }
 
     override fun onStart() {
@@ -115,10 +123,6 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         d(TAG, "++onDestroy!!!")
         compositeDisposable.clear()
         super.onDestroy()
-    }
-
-    fun addDisposable(disposable: Disposable){
-        compositeDisposable.add(disposable)
     }
 
 }

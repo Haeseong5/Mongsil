@@ -27,7 +27,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, layoutResourceId)
     }
 
-    //뷰가 차지할 수 있는 영역을 상태바 및 소프트키 영역을 제외한 영역까지 확장해주는 역할
     private fun setFullView(){
         window.apply {
             setFlags(

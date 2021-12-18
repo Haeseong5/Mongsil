@@ -1,9 +1,7 @@
 package com.cashproject.mongsil.ui.pages.calendar.custom
 
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
-import android.util.Log.d
 import android.util.Log.v
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +17,6 @@ import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Day
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.CalendarUtil
-import kotlinx.android.synthetic.main.view_calendar_day_layout.view.*
-
 import java.util.*
 
 class CalendarGridAdapter(private val context: Context, private val calendar: Calendar) :

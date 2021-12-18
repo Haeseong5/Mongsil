@@ -6,16 +6,12 @@
     <data>
 
         <variable
-            name="imageUrl"
-            type="String" />
-
-        <variable
-            name="viewmodel"
-            type="com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel" />
-
-        <variable
             name="fragment"
             type="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment" />
+
+        <variable
+            name="mainViewModel"
+            type="com.cashproject.mongsil.ui.main.MainViewModel"/>
     </data>
 
     <RelativeLayout
@@ -24,7 +20,7 @@
 
         <ImageView
             android:id="@+id/iv_saying_background_image"
-            bindImage="@{imageUrl}"
+            app:bindImage="@{fragment.currentImageUrl}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="@{()->fragment.onClickBackgroundImage()}"

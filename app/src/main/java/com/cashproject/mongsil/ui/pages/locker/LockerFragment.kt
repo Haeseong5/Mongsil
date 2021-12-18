@@ -12,6 +12,9 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
@@ -53,7 +56,16 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_locker_to_detail, bundleOf("saying" to it))
+            click.run {
+                DetailFragment.start(
+                    fragment = this,
+                    argument = DetailFragment.Argument(
+                        saying = it,
+                        selectedDate = Date(),
+                        from = "locker",
+                    ),
+                )
+            }
         }
     }
 

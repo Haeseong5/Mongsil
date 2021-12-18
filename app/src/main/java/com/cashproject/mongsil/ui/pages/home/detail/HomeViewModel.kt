@@ -37,32 +37,9 @@ class HomeViewModel(
         Firebase.firestore
     }
 
-    /**
-     * 캘린더뷰에서 홈으로 넘어왔을 때 Firestore 에서 데이터 요청
-     */
-    fun getSingleSayingData(docId: String) {
-        loadingSubject.onNext(true)
-        firestoreDataSource.getSingleSayingData(docId)
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    val saying = document.toObject<Saying>().apply { this?.docId = document.id }
-                    _sayingLiveData.postValue(saying)
-                } else {
-                    Log.d(TAG, "No such document")
-                }
-                loadingSubject.onNext(false)
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-                loadingSubject.onNext(false)
-                errorSubject.onNext(exception)
-            }
-    }
-
     fun like(saying: Saying) {
         addDisposable(
-            localDataSource.insertLikeSaying(saying = saying)
+            localDataSource.insertLikeSaying(saying)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -82,8 +59,8 @@ class HomeViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                _isLike.postValue(false)
                 Log.i(TAG, "success unlike")
-//                _isLike.postValue(false)
             },
                 { error ->
                     Log.e(TAG, "Unable to update username", error)
@@ -103,54 +80,17 @@ class HomeViewModel(
                     it.printStackTrace()
                 }
                 .subscribe(
-                    { _isLike.postValue(true) },
+                    {
+                        _isLike.postValue(true)
+                    },
                     { error ->
                         Log.e(TAG, "Unable to update username", error)
                         errorSubject.onNext(error)
                     },
-                    { _isLike.postValue(false) }
+                    {
+                        _isLike.postValue(false)
+                    }
                 )
-        )
-    }
-
-    fun getCommentsForHome(docId: String) {
-        Log.d("--getComments ", Thread.currentThread().name)
-        addDisposable(
-            localDataSource.getCommentsByDocId(docId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    _commentData.postValue(it)
-                    Log.d("--getComments subscribe", Thread.currentThread().name)
-                }, {
-                    errorSubject.onNext(it)
-                })
-        )
-    }
-
-    fun insertComment(comment: Comment) {
-        addDisposable(
-            localDataSource.insertComment(comment)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    isUpdatedComment.postValue(true)
-                }, {
-                    errorSubject.onNext(it)
-                })
-        )
-    }
-
-    fun deleteCommentById(id: Int) {
-        addDisposable(
-            localDataSource.deleteCommentById(id)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    isUpdatedComment.postValue(true)
-                }, {
-                    errorSubject.onNext(it)
-                })
         )
     }
 }

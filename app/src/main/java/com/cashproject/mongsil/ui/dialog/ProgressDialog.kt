@@ -4,18 +4,15 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.ColorDrawable
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatDialog
 import com.cashproject.mongsil.R
-import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
-import kotlinx.android.synthetic.main.dialog_progress.view.*
 
 
 class ProgressDialog(context: Context): Dialog(context) {
@@ -35,7 +32,7 @@ class ProgressDialog(context: Context): Dialog(context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflater.inflate(R.layout.dialog_progress, null)
         linear = view.findViewById(R.id.linear)
-        drawable = view.iv_loading.background as AnimationDrawable
+        drawable = view.findViewById<ImageView>(R.id.iv_loading).background as AnimationDrawable
         setCancelable(false)
         setCanceledOnTouchOutside(false)
     }

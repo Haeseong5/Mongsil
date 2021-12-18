@@ -3,6 +3,7 @@ package com.cashproject.mongsil.ui.pages.calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
@@ -10,6 +11,7 @@ import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
@@ -23,6 +25,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         get() = R.layout.fragment_calendar
 
     override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val dayAdapter by lazy {
         DayAdapter(ViewTypeCase.NORMAL)
@@ -69,18 +72,21 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
                 DetailFragment.start(
                     fragment = this,
                     argument = DetailFragment.Argument(
-                        saying = Saying("", "", "", Date()),
+                        saying = mainViewModel.getRandomSaying(it.calendar.time),
                         selectedDate = it.calendar.time
                     )
                 )
             }
         }
 
-        dayAdapter.setOnItemClickListener {
-//            DetailFragment.start(
-//                fragment = this,
-//                saying = Saying("", "", "", Date())
-//            )
+        dayAdapter.setOnItemClickListener { item, selectedDate ->
+            DetailFragment.start(
+                fragment = this,
+                argument = DetailFragment.Argument(
+                    saying = item,
+                    selectedDate = selectedDate
+                )
+            )
         }
     }
 

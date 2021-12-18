@@ -5,24 +5,32 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentMainBinding
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
-import com.cashproject.mongsil.ui.pages.home.HomeFragment
 import com.cashproject.mongsil.ui.pages.setting.SettingFragment
 import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.ui.dialog.admob.OnBackPressListener
 import com.cashproject.mongsil.ui.dialog.admob.TedAdmobDialog
 import com.cashproject.mongsil.ui.pages.calendar.CalendarViewModel
+import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
+import java.util.*
 
 class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
 
+    companion object {
+        const val PAGE_CALENDAR = 0
+        const val PAGE_HOME = 1
+        const val PAGE_SETTINGS = 2
+    }
     override val layoutResourceId: Int
         get() = R.layout.fragment_main
 
     override val viewModel: CalendarViewModel by viewModels {viewModelFactory}
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var callback: OnBackPressedCallback
     private lateinit var nativeTedAdmobDialog: TedAdmobDialog
@@ -34,7 +42,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
     override fun initStartView() {
         val fragments = arrayOf<Fragment>(
             CalendarFragment(),
-            HomeFragment(),
+            DetailFragment(),
             SettingFragment()
         )
 
@@ -44,7 +52,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {
         val screenSlidePagerAdapter = ScreenSlidePagerAdapter(
             fragments,
             requireActivity().supportFragmentManager,
-            lifecycle
+            lifecycle,
+            mainViewModel.getRandomSaying(Date())
         )
         binding.viewPager.offscreenPageLimit = fragments.size
         binding.viewPager.adapter = screenSlidePagerAdapter

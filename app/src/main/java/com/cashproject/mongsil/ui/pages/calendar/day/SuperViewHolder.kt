@@ -7,7 +7,7 @@ import com.cashproject.mongsil.model.data.Saying
 //뷰홀더 추상화
 abstract class SuperViewHolder (binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 {
-    open fun bindView(item: Saying){
+    open fun bindView(item: Saying, position: Int){
 
     }
 

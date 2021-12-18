@@ -3,6 +3,8 @@ package com.cashproject.mongsil.ui.pages.home.detail
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
 import android.view.View
@@ -31,14 +33,13 @@ import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
 import com.cashproject.mongsil.util.isSameDay
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
-import kotlin.random.Random
 
 class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
 
     companion object {
-        const val NAV_ID = R.id.action_global_detailFragment
+        private const val NAV_ID = R.id.action_global_detailFragment
 
         fun start(
             fragment: Fragment,
@@ -58,7 +59,8 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
     @Parcelize
     data class Argument(
         val saying: Saying,
-        val selectedDate: Date
+        val selectedDate: Date,
+        val from: String? = null
     ) : Parcelable
 
     private val argument: Argument by lazy {
@@ -74,6 +76,8 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
 
     private val commentAdapter: CommentAdapter by lazy { CommentAdapter() }
 
+    val currentImageUrl get() = argument.saying.image
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity?.adMobInitial()
@@ -82,27 +86,21 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
 
     override fun initStartView() {
         binding.fragment = this
+        binding.mainViewModel = mainViewModel
 
+        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+        if (argument.from == "locker") {
+            binding.llSayingComment.visibility = View.GONE
+        }
         binding.rvSayingCommentList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             setHasFixedSize(true)
             adapter = commentAdapter
         }
+
         commentAdapter.setOnItemLongClickListener {
             showCheckDialog(it.id)
         }
-
-        if (argument.saying?.image.isNullOrEmpty()) {
-            mainViewModel.sayingList.observe(viewLifecycleOwner, {
-                val index = Random.nextInt(it.size)
-                binding.imageUrl = it[index].image
-            })
-        } else {
-            binding.imageUrl = argument.saying?.image
-        }
-        //set emoticon
-        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
-
 
         observeData()
     }
@@ -113,9 +111,15 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
                 isSameDay(comment.date, argument.selectedDate)
             }.let { comments ->
                 commentAdapter.update(comments)
-                binding.rvSayingCommentList.scrollToPosition(it.size - 1)
+                Handler(Looper.getMainLooper()).post {
+                    binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
+                }
             }
         })
+
+//        mainActivity?.mainViewModel?.likeList?.observe(viewLifecycleOwner, {
+//            it.contains(argument.saying)
+//        })
     }
 
     fun onClickBackgroundImage() {
@@ -140,45 +144,46 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
                 time = Date(),
                 date = argument.selectedDate,
                 emotion = selectedEmoticonId,
-                docId = ""
+                docId = argument.saying.docId
             )
         )
+        binding.etSayingCommentInput.text?.clear()
     }
 
-
     private fun showBottomMenuDialog() {
-        val bottomSheetFragment = MenuBottomSheetFragment(argument.saying)
-        bottomSheetFragment.show(childFragmentManager, "approval")
-
-        bottomSheetFragment.setSaveBtnOnClickListener {
-            mainActivity?.showAdMob()
-            //bitmap
-            val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-            try {
-                bitmap.bitmap.saveImage(requireActivity()).run {
-                    activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+        MenuBottomSheetFragment(
+            saying = argument.saying ?: return,
+            selectedDate = argument.selectedDate
+        ).apply {
+            setSaveBtnOnClickListener {
+                mainActivity?.showAdMob()
+                //bitmap
+                val bitmap =
+                    this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+                try {
+                    bitmap.bitmap.saveImage(requireActivity()).run {
+                        activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, e.message.toString())
+                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
-                activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
             }
-        }
-
-        bottomSheetFragment.setHideCommentBtnOnClickListener {
-            if (PreferencesManager.isVisibilityComment)
-                binding.rvSayingCommentList.visibility = View.VISIBLE
-            else
-                binding.rvSayingCommentList.visibility = View.GONE
-        }
-
-        bottomSheetFragment.setShareBtnOnClickListener {
-            try {
-                shareToSNS()
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
-                activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+            setHideCommentBtnOnClickListener {
+                if (PreferencesManager.isVisibilityComment)
+                    this@DetailFragment.binding.rvSayingCommentList.visibility = View.VISIBLE
+                else
+                    this@DetailFragment.binding.rvSayingCommentList.visibility = View.GONE
             }
-        }
+            setShareBtnOnClickListener {
+                try {
+                    shareToSNS()
+                } catch (e: Exception) {
+                    Log.e(TAG, e.message.toString())
+                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+                }
+            }
+        }.show(childFragmentManager, "approval")
     }
 
     private fun showEmoticonBottomSheet() {
@@ -208,7 +213,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
         intent.putExtra(Intent.EXTRA_STREAM, imageUri)
         val chooser = Intent.createChooser(intent, "친구에게 공유하기")
         startActivity(chooser)
-
     }
 }
 
