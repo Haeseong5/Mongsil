@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
@@ -16,7 +15,7 @@
             android:id="@+id/action_splashFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -25,52 +24,52 @@
         android:label="@string/calendar"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_pager_to_detail"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out"/>
-        <action
             android:id="@+id/action_setting_to_locker"
             app:destination="@id/lockerFragment" />
         <action
             android:id="@+id/action_setting_to_alarm"
             app:destination="@id/alarmFragment"
             app:enterAnim="@anim/slide_in"
-            app:popEnterAnim="@anim/fade_in"/>
+            app:popEnterAnim="@anim/fade_in" />
         <argument
             android:name="docId"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 
     <fragment
-            android:id="@+id/calendarFragment"
-            android:name="com.cashproject.mongsil.ui.pages.calendar.CalendarFragment"
-            android:label="@string/calendar"
-            tools:layout="@layout/fragment_calendar">
-    </fragment>
+        android:id="@+id/calendarFragment"
+        android:name="com.cashproject.mongsil.ui.pages.calendar.CalendarFragment"
+        android:label="@string/calendar"
+        tools:layout="@layout/fragment_calendar"/>
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.cashproject.mongsil.ui.pages.home.HomeFragment"
         android:label="@string/saying"
-        tools:layout="@layout/fragment_home">
-    </fragment>
+        tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment"
         android:label="detail"
         tools:layout="@layout/framment_detail">
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            android:defaultValue=""
+            />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_detailFragment"
+        app:destination="@id/detailFragment" />
 
     <fragment
         android:id="@+id/lockerFragment"
         android:name="com.cashproject.mongsil.ui.pages.locker.LockerFragment"
         android:label="@string/locker"
-        app:popUpToInclusive="true"
         app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="true"
         tools:layout="@layout/fragment_locker">
         <action
             android:id="@+id/action_locker_to_detail"
@@ -78,23 +77,21 @@
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out"/>
+            app:popExitAnim="@anim/slide_out" />
         <argument
             android:name="docId"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.cashproject.mongsil.ui.pages.setting.SettingFragment"
         android:label="setting"
-        tools:layout="@layout/fragment_setting">
-    </fragment>
+        tools:layout="@layout/fragment_setting"/>
 
     <fragment
         android:id="@+id/alarmFragment"
         android:name="com.cashproject.mongsil.ui.pages.setting.alarm.AlarmFragment"
         android:label="alarm"
-        tools:layout="@layout/fragment_alarm">
-    </fragment>
+        tools:layout="@layout/fragment_alarm"/>
 </navigation>
