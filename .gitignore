@@ -1,6 +1,5 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/kotlin,java,android,androidstudio
-# Edit at https://www.toptal.com/developers/gitignore?templates=kotlin,java,android,androidstudio
+# Created by https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=android,androidstudio,java,windows
 
 ### Android ###
 # Built application files
@@ -49,7 +48,6 @@ captures/
 .idea/assetWizardSettings.xml
 .idea/dictionaries
 .idea/libraries
-.idea/jarRepositories.xml
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
@@ -90,9 +88,6 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-# Android Profiling
-*.hprof
-
 ### Android Patch ###
 gen-external-apklibs
 output.json
@@ -123,18 +118,31 @@ output.json
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-### Kotlin ###
-# Compiled class file
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 
-# Log file
+# Dump file
+*.stackdump
 
-# BlueJ files
+# Folder config file
+[Dd]esktop.ini
 
-# Mobile Tools for Java (J2ME)
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
 
-# Package Files #
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Windows shortcuts
+*.lnk
 
 ### AndroidStudio ###
 # Covers files to be ignored for android development using Android Studio.
@@ -168,13 +176,6 @@ hs_err_pid*
 *.ipr
 *~
 *.swp
-
-# Keystore files
-*.jks
-*.keystore
-
-# Google Services (e.g. APIs or Firebase)
-# google-services.json
 
 # Android Patch
 
@@ -211,8 +212,6 @@ obj/
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
 
 # Legacy Eclipse project files
 .classpath
@@ -247,4 +246,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/kotlin,java,android,androidstudio
+# End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,windows
