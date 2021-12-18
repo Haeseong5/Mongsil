@@ -7,7 +7,7 @@
 
         <variable
             name="fragment"
-            type="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment" />
+            type="com.cashproject.mongsil.ui.pages.detail.DetailFragment" />
 
         <variable
             name="mainViewModel"
