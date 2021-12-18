@@ -11,13 +11,17 @@ import java.util.*
 
 class FirestoreDataSource {
 
+    companion object {
+        const val COLLECTION = "Mongsil"
+    }
+
     val db by lazy {
         FirebaseFirestore.getInstance()
     }
 
     /*Home*/
     fun getLatestData(): Task<QuerySnapshot> {
-        return db.collection(ApplicationClass.COLLECTION)
+        return db.collection(COLLECTION)
             .whereLessThan(
                 ApplicationClass.DATE,
                 DateUtil.dateToTimestamp(Date())
@@ -28,7 +32,7 @@ class FirestoreDataSource {
     }
 
     fun getTodayData(): Task<QuerySnapshot> {
-        return db.collection(ApplicationClass.COLLECTION)
+        return db.collection(COLLECTION)
             .whereEqualTo(
                 ApplicationClass.DATE,
                 DateUtil.dateToTimestamp(Date())
@@ -38,7 +42,7 @@ class FirestoreDataSource {
     }
 
     fun getSingleSayingData(docId: String): Task<DocumentSnapshot> {
-        return db.collection(ApplicationClass.COLLECTION).document(docId)
+        return db.collection(COLLECTION).document(docId)
             .get()
     }
 
@@ -46,17 +50,16 @@ class FirestoreDataSource {
     /*
         Calendar
      */
-    fun getCalendarListData(date: Date): Task<QuerySnapshot> {
-        return db.collection(ApplicationClass.COLLECTION)
-            .orderBy(ApplicationClass.DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
-            .startAt(DateUtil.dateToTimestamp(date)) //오늘 날짜 기준으로
-            .limit(30)
+    fun getSayingList(): Task<QuerySnapshot> {
+        return db.collection(COLLECTION)
+//            .orderBy(ApplicationClass.DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
+//            .startAt(DateUtil.dateToTimestamp(date)) //오늘 날짜 기준으로
             .get()
     }
 
 
     fun getDataByDate(date: Date): Task<QuerySnapshot> {
-        return db.collection(ApplicationClass.COLLECTION)
+        return db.collection(COLLECTION)
             .whereEqualTo(ApplicationClass.DATE, DateUtil.dateToTimestamp(date))
             .limit(1)
             .get()

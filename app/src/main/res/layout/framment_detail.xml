@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="saying"
-            type="com.cashproject.mongsil.model.data.Saying" />
+            name="imageUrl"
+            type="String" />
 
         <variable
             name="viewmodel"
@@ -14,8 +15,7 @@
 
         <variable
             name="fragment"
-            type="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment"
-            />
+            type="com.cashproject.mongsil.ui.pages.home.detail.DetailFragment" />
     </data>
 
     <RelativeLayout
@@ -24,12 +24,12 @@
 
         <ImageView
             android:id="@+id/iv_saying_background_image"
+            bindImage="@{imageUrl}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/emoticon_05"
             android:onClick="@{()->fragment.onClickBackgroundImage()}"
-            bindImage="@{saying.image}"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/emoticon_05" />
 
         <ImageView
             android:id="@+id/iv_detail_finish"
@@ -38,74 +38,78 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin16"
-            android:src="@drawable/ic_arrow_left"
-            android:onClick="@{()->fragment.onClickBackBtn()}"/>
+            android:onClick="@{()->fragment.onClickBackBtn()}"
+            android:src="@drawable/ic_arrow_left" />
 
         <LinearLayout
             android:id="@+id/ll_saying_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/gradient_background"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/gradient_background"
+            android:orientation="vertical">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_saying_comment_list"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_gravity="bottom"
-                android:foregroundGravity="bottom"
-                tools:listitem="@layout/item_comment"
-                app:stackFromEnd="true"
-                app:reverseLayout="true"
-                android:overScrollMode="never"
+                android:background="@android:color/transparent"
                 android:fadingEdge="horizontal"
                 android:fadingEdgeLength="@dimen/margin30"
-                android:background="@android:color/transparent"
+                android:foregroundGravity="bottom"
+                android:overScrollMode="never"
                 android:requiresFadingEdge="vertical"
-                android:scrollbars="none" />
+                android:scrollbars="none"
+                app:reverseLayout="true"
+                app:stackFromEnd="true"
+                tools:listitem="@layout/item_comment" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingHorizontal="4dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
                 <ImageView
                     android:id="@+id/iv_saying_emoticon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->fragment.onClickEmoticon()}"
-                    android:src="@drawable/emoticon_01_happy"/>
+                    android:src="@drawable/emoticon_01_happy" />
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_saying_comment_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin8"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
+                    android:background="@drawable/comment_button_shape"
+                    android:hint="오늘의 기분을 입력해주세요."
+                    android:maxLines="4"
                     android:paddingHorizontal="@dimen/margin16"
                     android:paddingVertical="12dp"
-                    android:layout_marginVertical="@dimen/margin8"
-                    android:background="@drawable/comment_button_shape"
-                    android:textColorHint="@color/grey_light"
                     android:textColor="#ffffff"
-                    android:textSize="14sp"
+                    android:textColorHint="@color/grey_light"
                     android:textCursorDrawable="@color/sunday_light"
-                    android:hint="오늘의 기분을 입력해주세요."
-                    android:layout_marginStart="8dp"
-                    android:maxLines="4"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_saying_comment_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:onClick="@{()->fragment.onClickSubmitComment()}"
                     android:paddingStart="@dimen/margin8"
                     android:text="확인"
-                    android:onClick="@{()->fragment.onClickSubmitComment()}"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp" />
             </LinearLayout>

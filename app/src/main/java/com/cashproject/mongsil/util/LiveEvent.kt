@@ -41,9 +41,11 @@ open class LiveEvent<T> : MediatorLiveData<T>(), Consumer<T> {
         super.observeForever(wrapper)
     }
 
+    //TODO 수정 필요
     @MainThread
     override fun removeObserver(observer: Observer<in T>) {
-        if (observers.remove(observer)) {
+        val index = observers.indexOfFirst { it.hashCode() == observer.hashCode() }
+        if (observers.removeAt(index) != null) {
             super.removeObserver(observer)
             return
         }

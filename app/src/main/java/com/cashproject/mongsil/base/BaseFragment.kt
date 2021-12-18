@@ -24,7 +24,7 @@ import io.reactivex.disposables.Disposable
 abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment(){
     val TAG: String = this.javaClass.simpleName
 
-    val mainActivity by lazy { activity as MainActivity? }
+    val mainActivity by lazy { activity as? MainActivity }
 
     lateinit var binding: T
 

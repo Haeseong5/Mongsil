@@ -33,28 +33,6 @@ class CalendarViewModel(private val localDataSource: LocalDataSource, private va
         Firebase.firestore
     }
 
-    fun getCalendarListData(date: Date) {
-        loadingSubject.onNext(true)
-
-        firebaseDataSource.getCalendarListData(date)
-            .addOnSuccessListener { documents ->
-                val sayingList = ArrayList<Saying>()
-                for (document in documents) {
-                    d(TAG, "${document.id} => ${document.data}")
-                    document.toObject<Saying>().apply {
-                        docId = document.id
-                    }.also {
-                        sayingList.add(it)
-                    }
-                }
-                _sayingListData.postValue(sayingList)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-                errorSubject.onNext(exception)
-            }
-    }
-
     /**
      * 달력 날짜 클릭했을 때 리뷰가 없을 경우
      * Firestore 에서 해당 날짜의 명언을 가져온다.

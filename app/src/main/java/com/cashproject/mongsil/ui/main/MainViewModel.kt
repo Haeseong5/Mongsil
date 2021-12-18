@@ -11,66 +11,49 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.ktx.toObject
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.random.Random
+import kotlin.random.nextInt
 
-class MainViewModel(private val localDataSource: LocalDataSource, private val firestoreDataSource: FirestoreDataSource) : BaseViewModel() {
+class MainViewModel(
+    private val localDataSource: LocalDataSource,
+    private val firestoreDataSource: FirestoreDataSource
+) : BaseViewModel() {
 
-    /** CalendarFragment */
-    //리사이클러뷰 데이터
     private val _sayingList = MutableLiveData<List<Saying>>()
-    val sayingList: LiveData<List<Saying>>
-        get() = _sayingList
+    val sayingList get() = _sayingList
 
-    //캘린더뷰에 표시할 이모티콘 데이터
-    private val _commentEmoticon = MutableLiveData<List<Comment>>()
-    val commentEmoticon = _commentEmoticon.toSingleEvent()
+    private val _commentList = MutableLiveData<List<Comment>>()
+    val commentList get() = _commentList
 
     /**HomeFragment*/
     //홈에 표시할 명언 데이터. onResume에 liveData 가 활성화되면서 번들데이터가 안보임;
     private val _sayingForHome = MutableLiveData<Saying>()
     val sayingForHome = _sayingForHome.toSingleEvent()
 
-
-    /**
-     * 리사이클러뷰에 표시할 데이터 요청
-     */
-    fun getCalendarListData(date: Date) {
-        firestoreDataSource.getCalendarListData(date)
+    fun getSayingList() {
+        firestoreDataSource.getSayingList()
             .addOnSuccessListener { documents ->
-                val sayingList = ArrayList<Saying>()
-                for (document in documents) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                    document.toObject<Saying>().apply {
-                        docId = document.id
-                    }.also {
-                        sayingList.add(it)
-                    }
+                documents.map {
+                    it.toObject<Saying>()
+                }.let {
+                    _sayingList.postValue(it)
                 }
-                _sayingList.postValue(sayingList)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
     }
 
-    /**
-     * 캘린더뷰에 이모티콘을 표시하기 위한 댓글 데이터를 조회한다.
-     */
-    fun getAllCommentsForEmoticons() {
+    fun getAllComments() {
         localDataSource.getAllComments()
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _commentEmoticon.postValue(it)
+                _commentList.postValue(it)
             }, {
                 errorSubject.onNext(it)
             }).addTo(compositeDisposable)
     }
-
-    //////////////////////////////////////////////////////////////////////////////
 
     /**
      * 만약 오늘 보여줄 명언이 없으면, 가장 최신 명언으로 표시해주기
@@ -104,7 +87,7 @@ class MainViewModel(private val localDataSource: LocalDataSource, private val fi
         loadingSubject.onNext(true)
         firestoreDataSource.getTodayData()
             .addOnSuccessListener { documents ->
-                if (documents.size() == 0){
+                if (documents.size() == 0) {
                     getLatestData()
                 }
                 for (document in documents) {
@@ -122,5 +105,33 @@ class MainViewModel(private val localDataSource: LocalDataSource, private val fi
                 loadingSubject.onNext(false)
                 errorSubject.onNext(exception)
             }
+    }
+
+    fun insertComment(comment: Comment) {
+        addDisposable(
+            localDataSource.insertComment(comment)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    val comments = (commentList.value ?: emptyList()) + comment
+                    _commentList.postValue(comments)
+                }, {
+                    errorSubject.onNext(it)
+                })
+        )
+    }
+
+    fun deleteCommentById(id: Int) {
+        addDisposable(
+            localDataSource.deleteCommentById(id)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    val comments = commentList.value?.filter { it.id != id }
+                    _commentList.postValue(comments)
+                }, {
+                    errorSubject.onNext(it)
+                })
+        )
     }
 }

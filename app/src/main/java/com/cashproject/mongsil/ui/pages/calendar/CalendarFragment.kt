@@ -3,10 +3,7 @@ package com.cashproject.mongsil.ui.pages.calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
@@ -15,6 +12,7 @@ import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
+import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
 import com.cashproject.mongsil.util.RxEventBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
@@ -68,58 +66,38 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 
         binding.customCalendarView.setOnDayClickListener {
             click.run {
-                it.calendar.apply {
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }
-
-                    /**
-                     * 댓글이 없으면, Firestore 에 해당 날짜의 명언 데이터 요청
-                     *  단, 오늘 이후 데이터는 조회 안되도록 하기
-                     * 댓글이 있으면, Local DB 데이터 요청
-                     */
-                    if (it.comments.isEmpty()) {
-                        val selectedTimeInMillis = it.calendar.timeInMillis
-                        val todayTimeInMillis = Calendar.getInstance().timeInMillis
-                        if(selectedTimeInMillis <= todayTimeInMillis)
-                            viewModel.getDataByDate(Date(selectedTimeInMillis))
-                    } else {
-                        findNavController().navigate(
-                            R.id.action_pager_to_detail,
-                            bundleOf("docId" to it.comments[0].docId)
-                        )
-                    }
+                DetailFragment.start(
+                    fragment = this,
+                    argument = DetailFragment.Argument(
+                        saying = Saying("", "", "", Date()),
+                        selectedDate = it.calendar.time
+                    )
+                )
             }
         }
 
         dayAdapter.setOnItemClickListener {
-            if (it.docId != "")
-                findNavController().navigate(R.id.action_pager_to_detail, bundleOf("saying" to it))
-            //else 데이터 삭제해버리기?
+//            DetailFragment.start(
+//                fragment = this,
+//                saying = Saying("", "", "", Date())
+//            )
         }
     }
 
     private fun observeData() {
-        //리사이클러뷰에 데이터 세팅
-        mainActivity?.mainViewModel?.sayingList?.observe(viewLifecycleOwner, Observer {
+        mainActivity?.mainViewModel?.sayingList?.observe(viewLifecycleOwner, {
             dayAdapter.update(it as ArrayList<Saying>)
         })
 
-        //댓글 데이터를 받아와서 CalendarView 에 이모티콘 세팅
-        mainActivity?.mainViewModel?.commentEmoticon?.observe(viewLifecycleOwner, Observer {
+        mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner, {
             binding.customCalendarView.notifyDataChanged(it)
         })
 
-        /**
-         * 달력 빨리 눌럿을 때 에러
-         * java.lang.IllegalArgumentException: Navigation action/destination com.cashproject.mongsil:id/action_pager_to_home cannot be found from the current destination Destination(com.cashproject.mongsil:id/homeFragment) label=saying class=com.cashproject.mongsil.ui.pages.home.HomeFragment
-         */
-        //날짜 클릭 시 로컬디비에 데이터 없을 때, Firestore 에서 받아와서 이동
-        viewModel.sayingDataByDate.observe(viewLifecycleOwner, Observer {
-            findNavController().navigate(R.id.action_pager_to_detail, bundleOf("saying" to it))
-//            isProgress(false)
+        viewModel.sayingDataByDate.observe(viewLifecycleOwner, {
+//            DetailFragment.start(
+//                fragment = this,
+//                saying = it
+//            )
         })
 
         viewModel.loadingSubject
@@ -130,20 +108,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
             }
             .addTo(compositeDisposable)
 
-//        RxEventBus.toCommentObservable().subscribe{
-//            if (it) viewModel.getAllComments()
-//            Log.d(TAG, "++RxEventBus Consume $it") //댓글이 삭제되는 시점에 데이타 수신
-//        }.addTo(compositeDisposable)
-
-        RxEventBus.toResumedObservable().subscribe{
-            if (it) mainActivity?.mainViewModel?.getAllCommentsForEmoticons()
+        RxEventBus.toResumedObservable().subscribe {
+            if (it) mainActivity?.mainViewModel?.getAllComments()
             Log.d(TAG, "++RxEventBus Consume $it")
         }.addTo(compositeDisposable)
     }
 
     override fun onResume() {
         super.onResume()
-        mainActivity?.mainViewModel?.getAllCommentsForEmoticons()
+        mainActivity?.mainViewModel?.getAllComments()
     }
 
     override fun onPause() {

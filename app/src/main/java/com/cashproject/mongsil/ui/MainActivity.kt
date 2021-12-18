@@ -13,7 +13,6 @@ import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.*
 import java.util.*
 
-//여기다가 프로그레스바 박아도 될 듯
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val layoutResourceId: Int
@@ -36,8 +35,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         MobileAds.initialize(this, getString(R.string.ad_app_id))
 
         //Calendar
-        mainViewModel.getCalendarListData(Date(Calendar.getInstance().timeInMillis)) //read firestore -> display saying in RecyclerView
-        mainViewModel.getAllCommentsForEmoticons() //read room db -> display comment in CalendarView
+        mainViewModel.getSayingList() //read firestore -> display saying in RecyclerView
+        mainViewModel.getAllComments() //read room db -> display comment in CalendarView
 
         //Home
         mainViewModel.getTodaySaying()

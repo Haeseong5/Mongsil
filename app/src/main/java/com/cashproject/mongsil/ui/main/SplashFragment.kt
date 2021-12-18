@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
@@ -24,8 +25,9 @@ import com.cashproject.mongsil.ui.dialog.admob.OnBackPressListener
 import com.cashproject.mongsil.ui.dialog.admob.TedAdmobDialog
 import com.cashproject.mongsil.ui.pages.calendar.CalendarViewModel
 import kotlinx.coroutines.*
+import org.koin.androidx.scope.compat.ScopeCompat.lifecycleScope
 
-class SplashFragment : Fragment(){
+class SplashFragment : Fragment() {
 
     private lateinit var binding: FragmentSplashBinding
     private lateinit var callback: OnBackPressedCallback
@@ -51,7 +53,7 @@ class SplashFragment : Fragment(){
     }
 
     private fun showMain() {
-        CoroutineScope(Dispatchers.Default).launch {
+        lifecycleScope.launch(Dispatchers.Main) {
             delay(1000L)
             findNavControllerSafely()?.navigate(R.id.action_splashFragment_to_mainFragment)
         }
