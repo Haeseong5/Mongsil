@@ -1,33 +1,21 @@
-package com.cashproject.mongsil.ui.pages.home.detail
+package com.cashproject.mongsil.ui.pages.detail
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
-import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class HomeViewModel(
+class DetailViewModel(
     private val localDataSource: LocalDataSource,
     private val firestoreDataSource: FirestoreDataSource
 ) : BaseViewModel() {
-
-    private val _sayingLiveData = MutableLiveData<Saying>()
-    val sayingLiveData: LiveData<Saying>
-        get() = _sayingLiveData
-
-    private val _commentData = MutableLiveData<List<Comment>>()
-    val commentData: LiveData<List<Comment>>
-        get() = _commentData
-
-    val isUpdatedComment = MutableLiveData<Boolean>(false)
 
     private val _isLike = MutableLiveData<Boolean>()
     val isLike: LiveData<Boolean>

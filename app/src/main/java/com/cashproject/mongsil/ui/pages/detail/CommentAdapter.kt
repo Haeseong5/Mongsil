@@ -1,6 +1,5 @@
-package com.cashproject.mongsil.ui.pages.home
+package com.cashproject.mongsil.ui.pages.detail
 
-import android.util.Log
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup

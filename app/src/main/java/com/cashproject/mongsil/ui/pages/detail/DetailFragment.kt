@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.home.detail
+package com.cashproject.mongsil.ui.pages.detail
 
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -28,7 +28,6 @@ import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
-import com.cashproject.mongsil.ui.pages.home.CommentAdapter
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
@@ -36,7 +35,7 @@ import com.cashproject.mongsil.util.isSameDay
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
+class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
 
     companion object {
         private const val NAV_ID = R.id.action_global_detailFragment
@@ -71,7 +70,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, HomeViewModel>() {
     override val layoutResourceId: Int
         get() = R.layout.framment_detail
 
-    override val viewModel: HomeViewModel by viewModels { viewModelFactory }
+    override val viewModel: DetailViewModel by viewModels { viewModelFactory }
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val commentAdapter: CommentAdapter by lazy { CommentAdapter() }

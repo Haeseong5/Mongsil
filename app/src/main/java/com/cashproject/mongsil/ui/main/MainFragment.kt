@@ -16,7 +16,7 @@ import com.cashproject.mongsil.util.RxEventBus
 import com.cashproject.mongsil.ui.dialog.admob.OnBackPressListener
 import com.cashproject.mongsil.ui.dialog.admob.TedAdmobDialog
 import com.cashproject.mongsil.ui.pages.calendar.CalendarViewModel
-import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
+import com.cashproject.mongsil.ui.pages.detail.DetailFragment
 import java.util.*
 
 class MainFragment : BaseFragment<FragmentMainBinding, CalendarViewModel>() {

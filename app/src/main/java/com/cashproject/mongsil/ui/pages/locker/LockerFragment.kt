@@ -3,7 +3,6 @@ package com.cashproject.mongsil.ui.pages.locker
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -12,7 +11,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
+import com.cashproject.mongsil.ui.pages.detail.DetailFragment
 import java.util.*
 import kotlin.collections.ArrayList
 

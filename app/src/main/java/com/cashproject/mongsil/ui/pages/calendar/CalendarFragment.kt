@@ -14,7 +14,7 @@ import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
-import com.cashproject.mongsil.ui.pages.home.detail.DetailFragment
+import com.cashproject.mongsil.ui.pages.detail.DetailFragment
 import com.cashproject.mongsil.util.RxEventBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*

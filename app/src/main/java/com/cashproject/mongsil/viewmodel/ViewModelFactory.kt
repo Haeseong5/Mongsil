@@ -22,7 +22,7 @@ import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.CalendarViewModel
-import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
+import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
 import com.cashproject.mongsil.ui.pages.locker.LockerViewModel
 
 /**
@@ -36,8 +36,8 @@ class ViewModelFactory(private val localDataSource: LocalDataSource, private val
             modelClass.isAssignableFrom(LockerViewModel::class.java) -> {
                 LockerViewModel(localDataSource) as T
             }
-            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(localDataSource, firestoreDataSource) as T
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(localDataSource, firestoreDataSource) as T
             }
             modelClass.isAssignableFrom(CalendarViewModel::class.java) -> {
                 CalendarViewModel(localDataSource, firestoreDataSource) as T

@@ -14,7 +14,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.ui.pages.home.detail.HomeViewModel
+import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
@@ -28,7 +28,7 @@ class MenuBottomSheetFragment(
 ) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
 
-    private val viewModel: HomeViewModel by viewModels { viewModelFactory }
+    private val viewModel: DetailViewModel by viewModels { viewModelFactory }
     lateinit var viewModelFactory: ViewModelFactory
 
     private var likeBtnListener: (() -> Unit)? = null
