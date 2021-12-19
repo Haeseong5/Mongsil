@@ -14,6 +14,15 @@ import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.*
 import java.util.*
 
+/**
+ * MainActivity - MainViewModel
+ *  MainFragment
+ *    ViewPager
+ *       - CalendarFragment
+ *       - DetailFragment
+ *       - LockerFragment
+ */
+
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val layoutResourceId: Int
