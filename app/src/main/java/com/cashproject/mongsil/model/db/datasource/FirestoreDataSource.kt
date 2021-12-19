@@ -52,8 +52,6 @@ class FirestoreDataSource {
      */
     fun getSayingList(): Task<QuerySnapshot> {
         return db.collection(COLLECTION)
-//            .orderBy(ApplicationClass.DATE, Query.Direction.DESCENDING) //최신 날짜 순으로 조회
-//            .startAt(DateUtil.dateToTimestamp(date)) //오늘 날짜 기준으로
             .get()
     }
 

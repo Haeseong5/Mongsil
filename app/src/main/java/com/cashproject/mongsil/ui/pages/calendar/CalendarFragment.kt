@@ -19,12 +19,11 @@ import com.cashproject.mongsil.util.RxEventBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
-class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel>() {
+class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_calendar
 
-    override val viewModel: CalendarViewModel by viewModels { viewModelFactory }
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val dayAdapter by lazy {
@@ -33,15 +32,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
 
     var flag: Boolean = false //false: CalendarView, true: RecyclerView
 
-    override fun initStartView() {
-        initRecyclerView()
-        initClickListener()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+        initClickListener()
         observeData()
-        observeErrorEvent()
     }
 
     private fun initRecyclerView() {
@@ -98,35 +93,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding, CalendarViewModel
         mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner, {
             binding.customCalendarView.notifyDataChanged(it)
         })
-
-        viewModel.sayingDataByDate.observe(viewLifecycleOwner, {
-//            DetailFragment.start(
-//                fragment = this,
-//                saying = it
-//            )
-        })
-
-        viewModel.loadingSubject
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                Log.d("Loading...", it.toString())
-                mainActivity?.progressBar?.isProgress(false)
-            }
-            .addTo(compositeDisposable)
-
-        RxEventBus.toResumedObservable().subscribe {
-            if (it) mainActivity?.mainViewModel?.getAllComments()
-            Log.d(TAG, "++RxEventBus Consume $it")
-        }.addTo(compositeDisposable)
     }
 
     override fun onResume() {
         super.onResume()
         mainActivity?.mainViewModel?.getAllComments()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        RxEventBus.sendToHome(true)
     }
 }

@@ -46,7 +46,7 @@
         android:id="@+id/detailFragment"
         android:name="com.cashproject.mongsil.ui.pages.detail.DetailFragment"
         android:label="detail"
-        tools:layout="@layout/framment_detail"/>
+        tools:layout="@layout/framment_detail" />
 
     <action
         android:id="@+id/action_global_detailFragment"
@@ -76,6 +76,14 @@
         android:name="com.cashproject.mongsil.ui.pages.setting.SettingFragment"
         android:label="setting"
         tools:layout="@layout/fragment_setting" />
+
+    <action android:id="@+id/action_to_setting"
+        app:destination="@id/settingFragment"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_out"
+        />
 
     <fragment
         android:id="@+id/alarmFragment"

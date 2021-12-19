@@ -2,8 +2,9 @@ package com.cashproject.mongsil.ui.pages.locker
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,17 +12,17 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.detail.DetailFragment
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
+class LockerFragment : BaseFragment<FragmentLockerBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_locker
 
-    override val viewModel: LockerViewModel by viewModels { viewModelFactory }
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val lockerAdapter: LockerAdapter by lazy {
         LockerAdapter()
@@ -32,19 +33,26 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         setHasOptionsMenu(true)
     }
 
-    override fun initStartView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainViewModel.getAllLike()
+
         initToolbar()
         initRecyclerView()
-        viewModel.getAllLike()
 
-        observeData()
-        observeErrorEvent()
+        mainActivity?.mainViewModel?.likeList?.observe(viewLifecycleOwner, Observer {
+            lockerAdapter.update(it as ArrayList<Saying>)
+        })
     }
 
     private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.settingIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_to_setting)
+        }
     }
 
     private fun initRecyclerView() {
@@ -68,12 +76,6 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
     }
 
-    private fun observeData() {
-        viewModel.likeData.observe(viewLifecycleOwner, Observer {
-            lockerAdapter.update(it as ArrayList<Saying>)
-        })
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -82,10 +84,4 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAllLike()
-    }
-
 }

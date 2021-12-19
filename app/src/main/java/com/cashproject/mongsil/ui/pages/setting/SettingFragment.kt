@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.setting
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +11,14 @@ import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentSettingBinding
+import com.cashproject.mongsil.extension.intentAction
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.ui.main.IntroActivity
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.testing.FakeReviewManager
 import java.util.*
 
 
-class SettingFragment : Fragment(){
+class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
 
@@ -34,24 +36,32 @@ class SettingFragment : Fragment(){
             .also { binding ->
                 binding.fragment = this
                 binding.lifecycleOwner = this
-            this.binding = binding
-        }.root
+                this.binding = binding
+            }.root
     }
 
 
-    fun showReadyMessage(){
+    fun showReadyMessage() {
         activity?.showToast("준비 중입니다.")
     }
 
-    fun startLocker(){
+    fun showMoreApps() {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://play.google.com/store/apps/developer?id=Project+J+Lab")
+        )
+        startActivity(intent)
+    }
+
+    fun startLocker() {
         findNavController().navigate(R.id.action_setting_to_locker)
     }
 
-    fun startAlarm(){
+    fun startAlarm() {
         findNavController().navigate(R.id.action_setting_to_alarm)
     }
 
-    fun sendEmail(){
+    fun sendEmail() {
         val emailIntent = Intent(Intent.ACTION_SEND)
         emailIntent.apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.admin_email))) //받는 사람
@@ -68,7 +78,7 @@ class SettingFragment : Fragment(){
         }
     }
 
-    fun writeInAppReview(){
+    fun writeInAppReview() {
         val manager = ReviewManagerFactory.create(requireActivity())
 //        val manager = FakeReviewManager(context)
         val request = manager.requestReviewFlow()
@@ -91,6 +101,9 @@ class SettingFragment : Fragment(){
                 Log.e("In App Review Error", reviewErrorCode.toString())
             }
         }
+    }
 
+    fun introApp() {
+        intentAction(IntroActivity::class)
     }
 }

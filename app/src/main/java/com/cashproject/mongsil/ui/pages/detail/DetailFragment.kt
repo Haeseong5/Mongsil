@@ -7,7 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -35,7 +37,7 @@ import com.cashproject.mongsil.util.isSameDay
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
+class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     companion object {
         private const val NAV_ID = R.id.action_global_detailFragment
@@ -70,7 +72,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
     override val layoutResourceId: Int
         get() = R.layout.framment_detail
 
-    override val viewModel: DetailViewModel by viewModels { viewModelFactory }
+    val viewModel: DetailViewModel by viewModels { viewModelFactory }
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val commentAdapter: CommentAdapter by lazy { CommentAdapter() }
@@ -83,14 +85,26 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
         hasWriteStoragePermission(requireActivity())
     }
 
-    override fun initStartView() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val rootView = super.onCreateView(inflater, container, savedInstanceState)
         binding.fragment = this
         binding.mainViewModel = mainViewModel
+        return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+
         if (argument.from == "locker") {
             binding.llSayingComment.visibility = View.GONE
         }
+
         binding.rvSayingCommentList.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             setHasFixedSize(true)
@@ -101,10 +115,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
             showCheckDialog(it.id)
         }
 
-        observeData()
-    }
-
-    private fun observeData() {
         mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner, {
             it.filter { comment ->
                 isSameDay(comment.date, argument.selectedDate)
@@ -116,9 +126,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
             }
         })
 
-//        mainActivity?.mainViewModel?.likeList?.observe(viewLifecycleOwner, {
-//            it.contains(argument.saying)
-//        })
     }
 
     fun onClickBackgroundImage() {
@@ -135,7 +142,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
         findNavController().popBackStack()
     }
 
-    /**댓글 입력 버튼 클릭 시 호출. documentId가 없으면, 댓글 저장 실패*/
     fun onClickSubmitComment() {
         mainViewModel.insertComment(
             Comment(
@@ -156,7 +162,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
         ).apply {
             setSaveBtnOnClickListener {
                 mainActivity?.showAdMob()
-                //bitmap
                 val bitmap =
                     this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
                 try {
@@ -170,9 +175,9 @@ class DetailFragment : BaseFragment<FrammentDetailBinding, DetailViewModel>() {
             }
             setHideCommentBtnOnClickListener {
                 if (PreferencesManager.isVisibilityComment)
-                    this@DetailFragment.binding.rvSayingCommentList.visibility = View.VISIBLE
+                    this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
                 else
-                    this@DetailFragment.binding.rvSayingCommentList.visibility = View.GONE
+                    this@DetailFragment.binding.llSayingComment.visibility = View.GONE
             }
             setShareBtnOnClickListener {
                 try {
