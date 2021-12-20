@@ -102,6 +102,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
         if (argument.from == "locker") {
             binding.llSayingComment.visibility = View.GONE
+            binding.ivDetailFinish.visibility = View.GONE
         }
 
         binding.rvSayingCommentList.apply {
@@ -119,9 +120,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
                 isSameDay(comment.date, argument.selectedDate)
             }.let { comments ->
                 commentAdapter.update(comments)
-                Handler(Looper.getMainLooper()).post {
-                    binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
-                }
+                binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
             }
         }
 
