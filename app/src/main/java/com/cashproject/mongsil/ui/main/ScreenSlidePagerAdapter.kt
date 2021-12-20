@@ -25,7 +25,8 @@ class ScreenSlidePagerAdapter(
                 arguments = bundleOf(
                     "argument" to DetailFragment.Argument(
                         saying = todaySaying,
-                        selectedDate = Date()
+                        selectedDate = Date(),
+                        from = "home"
                     )
                 )
             }

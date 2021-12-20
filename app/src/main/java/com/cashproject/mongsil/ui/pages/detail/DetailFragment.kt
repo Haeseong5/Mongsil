@@ -100,9 +100,13 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
 
-        if (argument.from == "locker") {
-            binding.llSayingComment.visibility = View.GONE
-            binding.ivDetailFinish.visibility = View.GONE
+        when (argument.from) {
+            "locker" -> {
+                binding.llSayingComment.visibility = View.GONE
+            }
+            "home" -> {
+                binding.ivDetailFinish.visibility = View.GONE
+            }
         }
 
         binding.rvSayingCommentList.apply {
