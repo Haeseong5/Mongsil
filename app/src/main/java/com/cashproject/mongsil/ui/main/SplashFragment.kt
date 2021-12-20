@@ -40,7 +40,7 @@ class SplashFragment : Fragment() {
 
     private fun showMain() {
         lifecycleScope.launch(Dispatchers.Main) {
-            delay(1000L)
+            delay(2000L)
             findNavControllerSafely()?.navigate(R.id.action_splashFragment_to_mainFragment)
         }
     }
