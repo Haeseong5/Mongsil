@@ -220,5 +220,11 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
         val chooser = Intent.createChooser(intent, "친구에게 공유하기")
         startActivity(chooser)
     }
+
+    override fun onResume() {
+        super.onResume()
+        //임시로 이모티콘 갱신
+        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+    }
 }
 
