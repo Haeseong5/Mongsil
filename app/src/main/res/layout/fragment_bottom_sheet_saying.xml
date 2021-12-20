@@ -51,7 +51,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/blackOrWhite"
-            android:text="댓글 숨기기"/>
+            android:text="일기 숨기기"/>
 
         <ImageView
             android:id="@+id/iv_saying_share"

@@ -83,10 +83,10 @@ class MenuBottomSheetFragment(
     private fun initCommentIcon() {
         if (!isVisibilityComment) { // false 라면, 댓글 보이는 상태이고, 댓글을 숨기길 수 있는 아이콘 보이기
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_off)
-            binding.tvSayingIsHideComment.text = "댓글 숨기기"
+            binding.tvSayingIsHideComment.text = "일기 숨기기"
         } else {
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_on)
-            binding.tvSayingIsHideComment.text = "댓글 보이기"
+            binding.tvSayingIsHideComment.text = "일기 보이기"
         }
     }
 
