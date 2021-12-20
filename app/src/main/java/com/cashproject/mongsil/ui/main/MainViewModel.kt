@@ -85,6 +85,9 @@ class MainViewModel(
                 _commentList.postValue(it)
             }, {
                 errorSubject.onNext(it)
+                Log.e(TAG, it.localizedMessage.toString())
+                Log.e(TAG, it.message.toString())
+                Log.e(TAG, it.stackTraceToString())
             }).addTo(compositeDisposable)
     }
 
@@ -98,6 +101,9 @@ class MainViewModel(
                     _commentList.postValue(comments)
                 }, {
                     errorSubject.onNext(it)
+                    Log.e(TAG, it.localizedMessage.toString())
+                    Log.e(TAG, it.message.toString())
+                    Log.e(TAG, it.stackTraceToString())
                 })
         )
     }

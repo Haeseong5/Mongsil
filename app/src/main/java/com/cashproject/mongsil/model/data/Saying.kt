@@ -13,7 +13,7 @@ import java.util.*
 @Entity
 data class Saying(
     @PrimaryKey var docId: String,
-    @ColumnInfo var image: String? = null,
+    @ColumnInfo var image: String,
     @ColumnInfo var s: String, //square image
     @ColumnInfo var date: Date //deprecated
 ): Parcelable {

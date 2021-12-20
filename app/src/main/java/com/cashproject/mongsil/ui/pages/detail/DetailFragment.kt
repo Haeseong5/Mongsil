@@ -72,7 +72,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
     override val layoutResourceId: Int
         get() = R.layout.framment_detail
 
-    val viewModel: DetailViewModel by viewModels { viewModelFactory }
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val commentAdapter: CommentAdapter by lazy { CommentAdapter() }
@@ -115,7 +114,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
             showCheckDialog(it.id)
         }
 
-        mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner, {
+        mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner) {
             it.filter { comment ->
                 isSameDay(comment.date, argument.selectedDate)
             }.let { comments ->
@@ -124,7 +123,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
                     binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
                 }
             }
-        })
+        }
 
     }
 

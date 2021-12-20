@@ -35,6 +35,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         }
     }
 
+    fun printLog(message: String) {
+        Log.d(TAG, message)
+    }
+
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "++onStart()")

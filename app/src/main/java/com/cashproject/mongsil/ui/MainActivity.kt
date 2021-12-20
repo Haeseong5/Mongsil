@@ -47,9 +47,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         mainViewModel.getSayingList()
         mainViewModel.getAllComments()
         mainViewModel.getAllLike()
-        mainViewModel.sayingList.observe(this, {
-            showToast("success to load $it")
-        })
+        mainViewModel.sayingList.observe(this) {
+            printLog("success to load $it")
+        }
     }
 
     fun showAdMob(){
