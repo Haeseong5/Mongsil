@@ -11,7 +11,7 @@
 
         <variable
             name="mainViewModel"
-            type="com.cashproject.mongsil.ui.main.MainViewModel"/>
+            type="com.cashproject.mongsil.ui.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,50 +22,53 @@
             android:id="@+id/iv_saying_background_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:onClick="@{()->fragment.onClickBackgroundImage()}"
             android:scaleType="centerCrop"
             android:src="@drawable/emoticon_05"
-            app:bindImage="@{fragment.currentImageUrl}" />
+            app:bindImage="@{fragment.currentImageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_detail_finish"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="@dimen/margin16"
             android:onClick="@{()->fragment.onClickBackBtn()}"
-            android:src="@drawable/ic_arrow_left" />
+            android:src="@drawable/ic_arrow_left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_saying_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/gradient_background"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_saying_comment_list"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="230dp"
                 android:layout_gravity="bottom"
                 android:background="@android:color/transparent"
                 android:fadingEdge="horizontal"
-                android:fadingEdgeLength="@dimen/margin30"
+                android:fadingEdgeLength="10dp"
                 android:foregroundGravity="bottom"
                 android:overScrollMode="never"
                 android:requiresFadingEdge="vertical"
                 android:scrollbars="none"
+                app:layout_constraintBottom_toTopOf="@+id/commentLayout"
+                app:layout_constraintTop_toTopOf="parent"
                 app:reverseLayout="true"
                 app:stackFromEnd="true"
                 tools:listitem="@layout/item_comment" />
 
             <LinearLayout
+                android:id="@+id/commentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -110,8 +113,10 @@
                     android:text="확인"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp" />
+
             </LinearLayout>
-        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
