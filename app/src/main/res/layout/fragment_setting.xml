@@ -1,137 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="fragment"
-            type="com.cashproject.mongsil.ui.pages.setting.SettingFragment"
-            />
+            type="com.cashproject.mongsil.ui.pages.setting.SettingFragment" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="40dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="90dp"
+        android:paddingBottom="40dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_marginBottom="30dp"
             android:layout_marginStart="@dimen/margin8"
-            android:text="설정"/>
+            android:layout_marginBottom="30dp"
+            android:text="설정"
+            android:textSize="30sp" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_setting_locker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> fragment.startLocker()}"
+            android:padding="@dimen/margin8"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_like_sel" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="1"
+                android:letterSpacing="-0.05"
+                android:text="관심"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_close_copy" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_setting_notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showBottomListDialog()}"
-            android:layout_marginBottom="@dimen/margin30">
+            android:onClick="@{() -> fragment.startAlarm()}"
+            android:padding="@dimen/margin8"
+            android:visibility="gone">
+
             <ImageView
+                style="@style/ImageViewStyle"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                style="@style/ImageViewStyle"
-                android:layout_marginEnd="3dp"
-                android:src="@drawable/ic_notice"/>
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_notice" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_weight="1"
+                android:letterSpacing="-0.05"
+                android:text="알림 설정"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="20sp"
-                android:layout_marginEnd="3dp"
-                android:letterSpacing="-0.05"
-                android:text="알림 설정" />
+                android:gravity="end"
+                android:src="@drawable/ic_close_copy" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_setting_backup"
+            android:id="@+id/introLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                style="@style/ImageViewStyle"
-                android:src="@drawable/ic_backup"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="20sp"
-                android:letterSpacing="-0.05"
-                android:text="백업" />
-        </LinearLayout>
+            android:onClick="@{() -> fragment.introApp()}"
+            android:padding="@dimen/margin8">
 
-        <LinearLayout
-            android:id="@+id/ll_setting_review"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                style="@style/ImageViewStyle"
-                android:src="@drawable/ic_review"/>
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/emoticon_03" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="normal"
+                android:text="앱 소개"
                 android:textSize="20sp"
-                android:letterSpacing="-0.05"
-                android:text="리뷰 쓰기" />
+                android:textStyle="normal" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_setting_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
+            android:onClick="@{() -> fragment.sendEmail()}"
+            android:padding="@dimen/margin8">
+
             <ImageView
+                style="@style/ImageViewStyle"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                style="@style/ImageViewStyle"
-                android:src="@drawable/ic_question"/>
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_question" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="20sp"
                 android:letterSpacing="-0.05"
-                android:text="문의하기" />
+                android:onClick="@{() -> fragment.sendEmail()}"
+                android:text="건의하기"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_backup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> fragment.showReadyMessage()}"
+            android:padding="@dimen/margin8"
+            android:visibility="gone">
+
+            <ImageView
+                style="@style/ImageViewStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_backup" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="백업"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> fragment.writeInAppReview()}"
+            android:padding="@dimen/margin8"
+            android:visibility="gone">
+
+            <ImageView
+                style="@style/ImageViewStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_review" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="-0.05"
+                android:text="리뷰 쓰기"
+                android:textSize="20sp"
+                android:textStyle="normal" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_setting_moreapp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="@dimen/margin30">
+            android:onClick="@{() -> fragment.showMoreApps()}"
+            android:padding="@dimen/margin8">
+
             <ImageView
+                style="@style/ImageViewStyle"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                style="@style/ImageViewStyle"
-                android:src="@drawable/ic_moreapp"/>
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_moreapp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="normal"
-                android:textSize="20sp"
                 android:letterSpacing="-0.05"
-                android:text="개발자의 다른 앱" />
+                android:text="개발자의 다른 앱"
+                android:textSize="20sp"
+                android:textStyle="normal" />
         </LinearLayout>
 
     </LinearLayout>

@@ -22,7 +22,7 @@
         <!--마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원-->
         <!--상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/blackOrWhite</item>
 
         <!--custom font-family 적용-->
         <item name="android:textViewStyle">@style/DayTextViewFontStyle</item>
@@ -61,4 +61,44 @@
         <item name="android:tint">@color/ic_like_sel_color</item>
     </style>
 
+    <style name="AdmobDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@color/background_color</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="TedAdmobDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+    <style name="TedText" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    <style name="TedText.Body" parent="@style/TedText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/blackOrWhite</item>
+    </style>
+    <style name="TedText.Caption" parent="@style/TedText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    <style name="TedText.Display" parent="@style/TedText">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    <style name="TedText.Headline" parent="@style/TedText">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    <style name="TedText.Subhead" parent="@style/TedText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    <style name="TedText.Title" parent="@style/TedText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
 </resources>

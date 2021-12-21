@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.cashproject.mongsil.ui.pages.detail.DetailFragment" />
+
+        <variable
+            name="mainViewModel"
+            type="com.cashproject.mongsil.ui.main.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_saying_background_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{()->fragment.onClickBackgroundImage()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/emoticon_05"
+            app:bindImage="@{fragment.currentImageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_detail_finish"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="@dimen/margin16"
+            android:onClick="@{()->fragment.onClickBackBtn()}"
+            android:src="@drawable/ic_arrow_left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_saying_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_background"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_saying_comment_list"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:fadingEdge="horizontal"
+                android:fadingEdgeLength="10dp"
+                android:foregroundGravity="bottom"
+                android:overScrollMode="never"
+                android:requiresFadingEdge="vertical"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toTopOf="@+id/commentLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:reverseLayout="true"
+                app:stackFromEnd="true"
+                tools:listitem="@layout/item_comment" />
+
+            <LinearLayout
+                android:id="@+id/commentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_saying_emoticon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->fragment.onClickEmoticon()}"
+                    android:src="@drawable/emoticon_01_happy" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_saying_comment_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin8"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/comment_button_shape"
+                    android:hint="오늘의 기분을 입력해주세요."
+                    android:maxLines="4"
+                    android:paddingHorizontal="@dimen/margin16"
+                    android:paddingVertical="12dp"
+                    android:textColor="#ffffff"
+                    android:textColorHint="@color/grey_light"
+                    android:textCursorDrawable="@color/sunday_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_saying_comment_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:onClick="@{()->fragment.onClickSubmitComment()}"
+                    android:paddingStart="@dimen/margin8"
+                    android:text="확인"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

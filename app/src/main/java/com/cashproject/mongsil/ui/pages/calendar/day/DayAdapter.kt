@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.ui.pages.calendar.day
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +8,7 @@ import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.databinding.ItemLoadingBinding
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.util.DateUtil
+import java.util.*
 import kotlin.collections.ArrayList
 
 class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<SuperViewHolder>() {
@@ -17,16 +17,10 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
 
     private var items: ArrayList<Saying> = ArrayList()
 
-    private var listener: ((item: Saying) -> Unit)? = null
+    private var listener: ((item: Saying, selectedDate: Date) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (item: Saying) -> Unit) {
+    fun setOnItemClickListener(listener: (item: Saying, selectedDate: Date) -> Unit) {
         this.listener = listener
-    }
-
-    fun setItems(items: ArrayList<Saying>) {
-        this.items = items
-        notifyDataSetChanged()
-        Log.d("Size", items.size.toString())
     }
 
     fun update(newItemList: ArrayList<Saying>) {
@@ -69,7 +63,7 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: SuperViewHolder, position: Int) {
-        holder.bindView(items[position])
+        holder.bindView(items[position], position)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -83,17 +77,21 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
 
     inner class ListViewHolder(val binding: ItemDayBinding) : SuperViewHolder(binding) {
 
-        override fun bindView(item: Saying) {
+        override fun bindView(item: Saying, position: Int) {
             binding.saying = item
 
-            val dateArray = item.date.let { DateUtil.dateToStringArray(it) }
+            val cal = Calendar.getInstance()
+            cal.time = Date()
+            cal.add(Calendar.DATE, -position)
+
+            val dateArray = DateUtil.dateToStringArray(cal.time)
             binding.tvDayYear.text = dateArray[0]
             binding.tvDayMonth.text = dateArray[1]
             binding.tvDayDate.text = dateArray[2]
 
 
             binding.root.setOnClickListener {
-                listener?.invoke(item) //익명함수 호출
+                listener?.invoke(item, cal.time)
             }
         }
 
@@ -103,10 +101,10 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
     }
 
     inner class FooterHolder(val binding: ItemLoadingBinding) : SuperViewHolder(binding) {
-        override fun bindView(item: Saying) {
+        override fun bindView(item: Saying, position: Int) {
 
             binding.root.setOnClickListener {
-                listener?.invoke(item) //익명함수 호출
+//                listener?.invoke(item, ) //익명함수 호출
             }
         }
 

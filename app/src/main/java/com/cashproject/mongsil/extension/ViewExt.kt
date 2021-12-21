@@ -14,6 +14,8 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import com.cashproject.mongsil.util.LiveEvent
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -89,6 +91,11 @@ fun saveImageToStream(bitmap: Bitmap, outputStream: OutputStream?) {
 fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
     val bytes = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+    //    java.lang.SecurityException: Permission Denial: writing com.android.providers.media.MediaProvider uri content://media/external/images/media from pid=22556, uid=10210 requires android.permission.WRITE_EXTERNAL_STORAGE, or grantUriPermission()
+    //  java.lang.IllegalStateException: MediaStore.Images.Media.…gsil",
+    //            null
+    //        ) must not be null
     val path: String = MediaStore.Images.Media.insertImage(
         context.contentResolver,
         bitmap,
@@ -118,4 +125,12 @@ fun Activity.makeStatusBarTransparent() {
         decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
     }
+}
+
+fun <T> LiveData<T>.toSingleEvent(): LiveData<T> {
+    val result = LiveEvent<T>()
+    result.addSource(this) {
+        result.value = it
+    }
+    return result
 }

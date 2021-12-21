@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.ui.MainActivity
+import com.cashproject.mongsil.util.PreferencesManager.alarm
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -50,8 +51,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
+        if (alarm)
+            notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     private fun createNotificationChannel() {

@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.ui.pages.locker
 
-import android.util.Log
 import android.util.Log.v
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -51,7 +50,7 @@ class LockerAdapter : RecyclerView.Adapter<LockerAdapter.ViewHolder>() {
         }
     }
 
-    class ContentDiffUtil(private val oldList: List<Saying>, private val currentList: List<Saying>) : DiffUtil.Callback() {
+    inner class ContentDiffUtil(private val oldList: List<Saying>, private val currentList: List<Saying>) : DiffUtil.Callback() {
 
         //1. 아이템의 고유 id 값이 같은지
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

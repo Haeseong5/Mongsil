@@ -1,32 +1,28 @@
 package com.cashproject.mongsil.ui.pages.locker
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
-import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.util.RxEventBus
-import com.cashproject.mongsil.viewmodel.LockerViewModel
+import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.pages.detail.DetailFragment
+import java.util.*
 
 
-class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
+class LockerFragment : BaseFragment<FragmentLockerBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_locker
 
-    override val viewModel: LockerViewModel by viewModels { viewModelFactory }
-
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val lockerAdapter: LockerAdapter by lazy {
         LockerAdapter()
@@ -34,21 +30,29 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true)는 프래그먼트가 메뉴 관련 콜백을 수신하려 한다고 시스템에 알립니다.
         setHasOptionsMenu(true)
     }
 
-    override fun initStartView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainViewModel.getAllLike()
+
         initToolbar()
         initRecyclerView()
-        viewModel.getAllLike()
 
-        observeData()
-        observeErrorEvent()
+        mainActivity?.mainViewModel?.likeList?.observe(viewLifecycleOwner, Observer {
+            lockerAdapter.update(it as ArrayList<Saying>)
+        })
     }
 
     private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.settingIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_to_setting)
+        }
     }
 
     private fun initRecyclerView() {
@@ -59,41 +63,25 @@ class LockerFragment : BaseFragment<FragmentLockerBinding, LockerViewModel>() {
         }
 
         lockerAdapter.setOnItemClickListener {
-            findNavController().navigate(R.id.action_pager_to_home, bundleOf("saying" to it))
+            click.run {
+                DetailFragment.start(
+                    fragment = this,
+                    argument = DetailFragment.Argument(
+                        saying = it,
+                        selectedDate = Date(),
+                        from = "locker",
+                    ),
+                )
+            }
         }
-    }
-
-    private fun observeData() {
-        viewModel.likeData.observe(viewLifecycleOwner, Observer {
-            lockerAdapter.update(it as ArrayList<Saying>)
-        })
-
-        /**
-         * When call MainFragment is resumed
-         */
-        RxEventBus.toResumedObservable().subscribe {
-            Log.d(TAG, "RxEventBus Consume $it")
-            if (it) viewModel.getAllLike()
-        }.addTo(compositeDisposable)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.locker_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_item_setting -> {
-                findNavController().navigate(R.id.action_locker_to_setting)
-                true
+            android.R.id.home -> {
+                findNavController().popBackStack()
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAllLike()
-    }
-
 }

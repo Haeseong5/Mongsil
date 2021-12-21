@@ -27,7 +27,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, layoutResourceId)
     }
 
-    //뷰가 차지할 수 있는 영역을 상태바 및 소프트키 영역을 제외한 영역까지 확장해주는 역할
     private fun setFullView(){
         window.apply {
             setFlags(
@@ -36,20 +35,31 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         }
     }
 
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy()")
+    fun printLog(message: String) {
+        Log.d(TAG, message)
+    }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "++onStart()")
+    }
+    override fun onResume() {
+        Log.d(TAG, "++onResume()")
+        super.onResume()
+    }
+    override fun onPause() {
+        Log.d(TAG, "++onPause()")
+        super.onPause()
+    }
+    override fun onStop() {
+        Log.d(TAG, "++onStop()")
+        super.onStop()
+    }
+    override fun onDestroy() {
+        Log.d(TAG, "++onDestroy()")
         compositeDisposable.dispose()
         super.onDestroy()
     }
-
-    override fun onPause() {
-        Log.d(TAG, "onPause()")
-
-        compositeDisposable.dispose()
-        super.onPause()
-    }
-
     fun addDisposable(disposable: Disposable){
         compositeDisposable.add(disposable)
     }

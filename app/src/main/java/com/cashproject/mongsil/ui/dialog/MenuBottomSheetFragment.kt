@@ -1,6 +1,9 @@
 package com.cashproject.mongsil.ui.dialog
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +14,21 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
-import com.cashproject.mongsil.viewmodel.HomeViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.*
 
 
-class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFragment() {
+class MenuBottomSheetFragment(
+    private val saying: Saying,
+    private val selectedDate: Date,
+) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
 
-    private val viewModel: HomeViewModel by viewModels { viewModelFactory }
+    private val viewModel: DetailViewModel by viewModels { viewModelFactory }
     lateinit var viewModelFactory: ViewModelFactory
 
     private var likeBtnListener: (() -> Unit)? = null
@@ -31,9 +38,9 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
     var mLike: Boolean = false
 
-    fun setLikeBtnOnClickListener(listener: () -> Unit) {
-        this.likeBtnListener = listener
-    }
+//    fun setLikeBtnOnClickListener(listener: () -> Unit) {
+//        this.likeBtnListener = listener
+//    }
 
     fun setSaveBtnOnClickListener(listener: () -> Unit) {
         this.saveBtnListener = listener
@@ -69,22 +76,25 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
 
     private fun initDateIcon() {
-        binding.tvSayingDate.text = DateUtil.dateToString(saying.date)
-        binding.tvSayingYear.text = DateUtil.yearToString(saying.date)
+        binding.tvSayingDate.text = DateUtil.dateToString(selectedDate)
+        binding.tvSayingYear.text = DateUtil.yearToString(selectedDate)
     }
 
-    private fun initCommentIcon(){
+    private fun initCommentIcon() {
         if (!isVisibilityComment) { // false 라면, 댓글 보이는 상태이고, 댓글을 숨기길 수 있는 아이콘 보이기
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_off)
-            binding.tvSayingIsHideComment.text = "댓글 숨기기"
+            binding.tvSayingIsHideComment.text = "일기 숨기기"
         } else {
             binding.ivSayingHideComment.setImageResource(R.drawable.ic_view_on)
-            binding.tvSayingIsHideComment.text = "댓글 보이기"
+            binding.tvSayingIsHideComment.text = "일기 보이기"
         }
     }
 
     private fun setOnClickListener() {
         binding.ivSayingLike.setOnClickListener {
+            saying.apply {
+                date = selectedDate
+            }
             if (mLike) viewModel.unLike(saying.docId)
             else viewModel.like(saying)
             likeBtnListener?.invoke()
@@ -93,33 +103,40 @@ class MenuBottomSheetFragment(private val saying: Saying) : BottomSheetDialogFra
 
         binding.ivSayingSave.setOnClickListener {
             saveBtnListener?.invoke()
-
             dismiss()
         }
         binding.ivSayingHideComment.setOnClickListener {
-//            setCommentIcon()
             hideCommentBtnListener?.invoke()
             isVisibilityComment = !isVisibilityComment
             dismiss()
-
         }
+
         binding.ivSayingShare.setOnClickListener {
             shareBtnListener?.invoke()
             dismiss()
-
         }
     }
 
-    private fun observeIsLike(){
+    private fun observeIsLike() {
         viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             mLike = it
-            if (mLike){
+            if (mLike) {
                 binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
-            }
-            else {
+            } else {
                 binding.ivSayingLike.apply {
                     setImageResource(R.drawable.ic_like)
-                    setColorFilter(R.color.icon_color)
+                    val currentNightMode =
+                        requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    when (currentNightMode) {
+                        Configuration.UI_MODE_NIGHT_NO -> {
+                            imageTintList = ColorStateList.valueOf(Color.parseColor("#333333"))
+
+                        }
+                        Configuration.UI_MODE_NIGHT_YES -> {
+                            imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+
+                        }
+                    }
                 }
             }
         })

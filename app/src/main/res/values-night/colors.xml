@@ -5,8 +5,8 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FFFFFFFF</color>
-    <color name="white">#FF000000</color>
+    <color name="blackOrWhite">#FFFFFFFF</color>
+    <color name="whiteOrBlack">#FF000000</color>
     <color name="arrow_color">#FFFFFF</color>
 
     <color name="text_color">#FFFFFFFF</color>
@@ -58,4 +58,13 @@
     <color name="emoticon_06_shame_background">#ffecc9</color>
     <color name="emoticon_06_shame_text">#d9ad58</color>
 
+    <!--admob dialog-->
+    <color name="tedBtnPrimary">#3F51B5</color>
+    <color name="tedBtnHighlight">#1F3195</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="black87">#de000000</color>
+    <color name="black54">#8a000000</color>
+    <color name="black20">#14000000</color>
+    <color name="black30">#1d000000</color>
 </resources>
