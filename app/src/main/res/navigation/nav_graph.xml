@@ -15,7 +15,12 @@
             android:id="@+id/action_splashFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_fade_in"
+            app:exitAnim="@anim/slide_fade_out"
+            app:popEnterAnim="@anim/slide_fade_in"
+            app:popExitAnim="@anim/slide_fade_out"
+            />
     </fragment>
 
     <fragment
@@ -50,7 +55,14 @@
 
     <action
         android:id="@+id/action_global_detailFragment"
-        app:destination="@id/detailFragment" />
+        app:destination="@id/detailFragment"
+        app:popUpTo="@id/splashFragment"
+        app:popUpToInclusive="true"
+        app:enterAnim="@anim/slide_fade_in"
+        app:exitAnim="@anim/slide_fade_out"
+        app:popEnterAnim="@anim/slide_fade_in"
+        app:popExitAnim="@anim/slide_fade_out"
+        />
 
     <fragment
         android:id="@+id/lockerFragment"
@@ -79,10 +91,10 @@
 
     <action android:id="@+id/action_to_setting"
         app:destination="@id/settingFragment"
-        app:enterAnim="@anim/slide_in"
-        app:exitAnim="@anim/fade_out"
-        app:popEnterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_out"
+        app:enterAnim="@anim/slide_right_enter"
+        app:exitAnim="@anim/slide_right_exit"
+        app:popEnterAnim="@anim/slide_left_enter"
+        app:popExitAnim="@anim/slide_left_exit"
         />
 
     <fragment
