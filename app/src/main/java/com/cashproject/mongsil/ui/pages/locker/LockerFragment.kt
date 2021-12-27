@@ -47,7 +47,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
 
     private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.settingIcon.setOnClickListener {
