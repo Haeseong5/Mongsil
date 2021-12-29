@@ -34,9 +34,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainViewModel.getAllComments()
+
         initRecyclerView()
         initClickListener()
-        observeData()
+        mainViewModel.sayingList.observe(viewLifecycleOwner, {
+            dayAdapter.update(it as ArrayList<Saying>)
+        })
+
+        mainViewModel.commentList.observe(viewLifecycleOwner, {
+            binding.customCalendarView.notifyDataChanged(it)
+        })
     }
 
     private fun initRecyclerView() {
@@ -83,20 +91,5 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 )
             )
         }
-    }
-
-    private fun observeData() {
-        mainActivity?.mainViewModel?.sayingList?.observe(viewLifecycleOwner, {
-            dayAdapter.update(it as ArrayList<Saying>)
-        })
-
-        mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner, {
-            binding.customCalendarView.notifyDataChanged(it)
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mainActivity?.mainViewModel?.getAllComments()
     }
 }

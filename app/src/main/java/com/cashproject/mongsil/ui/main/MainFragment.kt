@@ -3,21 +3,22 @@ package com.cashproject.mongsil.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentMainBinding
 import com.cashproject.mongsil.ui.dialog.admob.OnBackPressListener
 import com.cashproject.mongsil.ui.dialog.admob.TedAdmobDialog
-import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
-import com.cashproject.mongsil.ui.pages.detail.DetailFragment
-import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import java.util.*
 
-class MainFragment : BaseFragment<FragmentMainBinding>() {
+class MainFragment : Fragment() {
+
+    private val TAG = "MainFragment"
 
     companion object {
         const val PAGE_CALENDAR = 0
@@ -25,14 +26,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         const val PAGE_LOCKER = 2
     }
 
-    override val layoutResourceId: Int
-        get() = R.layout.fragment_main
+//    override val layoutResourceId: Int
+//        get() = R.layout.fragment_main
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var callback: OnBackPressedCallback
     private lateinit var nativeTedAdmobDialog: TedAdmobDialog
 
+    private var _binding: FragmentMainBinding? = null
+    val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,22 +52,22 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         initAdmobDialog()
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fragments = arrayOf<Fragment>(
-            CalendarFragment(),
-            DetailFragment(),
-            LockerFragment()
+        binding.viewPager.offscreenPageLimit = 3
+        binding.viewPager.adapter = MainPagerAdapter(
+            parentFragment = this,
+            todaySaying = mainViewModel.getRandomSaying(Date())
         )
-
-        val screenSlidePagerAdapter = ScreenSlidePagerAdapter(
-            fragments,
-            requireActivity().supportFragmentManager,
-            lifecycle,
-            mainViewModel.getRandomSaying(Date())
-        )
-        binding.viewPager.offscreenPageLimit = fragments.size
-        binding.viewPager.adapter = screenSlidePagerAdapter
     }
 
     override fun onDetach() {
@@ -111,5 +114,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             setCanceledOnTouchOutside(true)
             setCancelable(true)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.viewPager.adapter = null
+        _binding = null
     }
 }
