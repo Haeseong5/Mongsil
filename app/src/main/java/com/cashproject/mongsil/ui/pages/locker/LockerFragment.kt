@@ -45,6 +45,12 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
         })
     }
 
+    //TODO 메뉴바텀시트 수정 필요
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.getAllLike()
+    }
+
     private fun initToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.tbLocker)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
