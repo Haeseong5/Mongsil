@@ -158,38 +158,40 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
     }
 
     private fun showBottomMenuDialog() {
-        MenuBottomSheetFragment(
-            saying = argument.saying ?: return,
-            selectedDate = argument.selectedDate
-        ).apply {
-            setSaveBtnOnClickListener {
-                mainActivity?.showAdMob()
-                val bitmap =
-                    this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-                try {
-                    bitmap.bitmap.saveImage(requireActivity()).run {
-                        activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+        click.run {
+            MenuBottomSheetFragment(
+                saying = argument.saying ?: return@run,
+                selectedDate = argument.selectedDate
+            ).apply {
+                setSaveBtnOnClickListener {
+                    mainActivity?.showAdMob()
+                    val bitmap =
+                        this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+                    try {
+                        bitmap.bitmap.saveImage(requireActivity()).run {
+                            activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, e.message.toString())
+                        activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, e.message.toString())
-                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
                 }
-            }
-            setHideCommentBtnOnClickListener {
-                if (PreferencesManager.isVisibilityComment)
-                    this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
-                else
-                    this@DetailFragment.binding.llSayingComment.visibility = View.GONE
-            }
-            setShareBtnOnClickListener {
-                try {
-                    shareToSNS()
-                } catch (e: Exception) {
-                    Log.e(TAG, e.message.toString())
-                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+                setHideCommentBtnOnClickListener {
+                    if (PreferencesManager.isVisibilityComment)
+                        this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
+                    else
+                        this@DetailFragment.binding.llSayingComment.visibility = View.GONE
                 }
-            }
-        }.show(childFragmentManager, "approval")
+                setShareBtnOnClickListener {
+                    try {
+                        shareToSNS()
+                    } catch (e: Exception) {
+                        Log.e(TAG, e.message.toString())
+                        activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+                    }
+                }
+            }.show(childFragmentManager, "approval")
+        }
     }
 
     private fun showEmoticonBottomSheet() {
