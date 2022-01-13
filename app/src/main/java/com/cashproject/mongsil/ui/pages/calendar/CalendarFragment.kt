@@ -35,7 +35,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.getAllComments()
-
+        Log.d(this.javaClass.name, "this: $this dayAdapter: $dayAdapter")
         initRecyclerView()
         initClickListener()
         mainViewModel.sayingList.observe(viewLifecycleOwner, {

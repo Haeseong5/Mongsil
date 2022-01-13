@@ -29,12 +29,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        d(TAG, "++onAttach")
+        d(TAG, "++onAttach $this")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        d(TAG, "++onCreate")
+        d(TAG, "++onCreate $this")
     }
 
     override fun onCreateView(
@@ -42,7 +42,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        d(TAG, "++onCreateView!!!")
+        d(TAG, "++onCreateView $this")
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         binding.lifecycleOwner = this
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
@@ -52,42 +52,42 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        d(TAG, "++onViewCreated!!!")
+        d(TAG, "++onViewCreated $this")
     }
 
     override fun onStart() {
         super.onStart()
-        d(TAG, "++onStart")
+        d(TAG, "++onStart $this")
     }
 
     override fun onResume() {
         super.onResume()
-        d(TAG, "++onResume")
+        d(TAG, "++onResume $this")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        d(TAG, "++onDestroyView")
+        d(TAG, "++onDestroyView $this")
     }
 
     override fun onPause() {
         super.onPause()
-        d(TAG, "++onPause")
+        d(TAG, "++onPause $this")
     }
 
     override fun onStop() {
         super.onStop()
-        d(TAG, "++onStop")
+        d(TAG, "++onStop $this")
     }
 
     override fun onDetach() {
         super.onDetach()
-        d(TAG, "++onDetach()")
+        d(TAG, "++onDetach $this")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        d(TAG, "++onDestroy!!!")
+        d(TAG, "++onDestroy $this")
     }
 
 }

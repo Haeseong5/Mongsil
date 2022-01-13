@@ -37,6 +37,13 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
 
+//    private val mainPagerAdapter by lazy {
+//        MainPagerAdapter(
+//            parentFragment = this,
+//            todaySaying = mainViewModel.getRandomSaying(Date())
+//        )
+//    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
@@ -64,10 +71,13 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewPager.offscreenPageLimit = 3
+//        Log.d(this.javaClass.name, "mainPagerAdapter address: $mainPagerAdapter")
         binding.viewPager.adapter = MainPagerAdapter(
-            parentFragment = this,
+            childFragmentManager,
+            viewLifecycleOwner.lifecycle,
             todaySaying = mainViewModel.getRandomSaying(Date())
         )
+
     }
 
     override fun onDetach() {
