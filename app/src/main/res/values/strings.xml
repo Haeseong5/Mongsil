@@ -30,4 +30,5 @@
 
     <string name="review">리뷰 남기기</string>
     <string name="finish">종료</string>
+    <string name="fcm_event_msg" />
 </resources>

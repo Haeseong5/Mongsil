@@ -3,8 +3,6 @@ package com.cashproject.mongsil.ui.pages.detail
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +11,12 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.admob.adMobInitial
+import com.cashproject.mongsil.admob.showAdMob
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FrammentDetailBinding
 import com.cashproject.mongsil.extension.getImageUri
@@ -80,7 +79,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivity?.adMobInitial()
+        mainActivity?.adMob?.adMobInitial(requireActivity())
         hasWriteStoragePermission(requireActivity())
     }
 
@@ -164,7 +163,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
                 selectedDate = argument.selectedDate
             ).apply {
                 setSaveBtnOnClickListener {
-                    mainActivity?.showAdMob()
+                    mainActivity?.adMob?.showAdMob()
                     val bitmap =
                         this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
                     try {

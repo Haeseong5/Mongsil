@@ -13,12 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.base.SuperFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
 import com.cashproject.mongsil.extension.findNavControllerSafely
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import java.lang.Exception
 
-class SplashFragment : Fragment() {
+class SplashFragment : SuperFragment() {
 
     private lateinit var binding: FragmentSplashBinding
     private lateinit var callback: OnBackPressedCallback

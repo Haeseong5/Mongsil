@@ -17,7 +17,7 @@ import com.cashproject.mongsil.ui.main.IntroActivity
 import com.google.android.play.core.review.ReviewManagerFactory
 import java.util.*
 
-
+//TODO 스플래시 끄기
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
