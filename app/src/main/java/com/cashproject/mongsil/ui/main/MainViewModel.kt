@@ -13,7 +13,6 @@ import com.cashproject.mongsil.model.db.datasource.LocalDataSource
 import com.google.firebase.firestore.ktx.toObject
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.random.Random
@@ -54,15 +53,20 @@ class MainViewModel(
     }
 
     fun getRandomSaying(date: Date): Saying {
-        val day = date.time
-        val sayings = sayingList.value ?: emptyList()
-        val cachedIdx = hashMap[day]
-        return if (cachedIdx == null) {
-            val randomIdx = Random.nextInt(sayings.size)
-            hashMap[day] = randomIdx
-            sayings[randomIdx]
-        } else {
-            sayings[cachedIdx]
+        try {
+            val day = date.time
+            val sayings = sayingList.value ?: emptyList()
+            val cachedIdx = hashMap[day]
+            return if (cachedIdx == null) {
+                val randomIdx = Random.nextInt(sayings.size)
+                hashMap[day] = randomIdx
+                sayings[randomIdx]
+            } else {
+                sayings[cachedIdx]
+            }
+        } catch (e: Exception) {
+            Log.e(this.javaClass.name, e.localizedMessage)
+            return Saying()
         }
     }
 

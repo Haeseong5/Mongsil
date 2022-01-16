@@ -52,6 +52,7 @@ class FirestoreDataSource {
      */
     fun getSayingList(): Task<QuerySnapshot> {
         return db.collection(COLLECTION)
+            .limit(40)
             .get()
     }
 

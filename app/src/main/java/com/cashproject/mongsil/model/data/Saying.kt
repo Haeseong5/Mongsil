@@ -16,6 +16,11 @@ data class Saying(
     @ColumnInfo var image: String,
     @ColumnInfo var s: String, //square image
     @ColumnInfo var date: Date //deprecated
-): Parcelable {
-    constructor() : this("", "", "defaultImageUrl", Date())
+) : Parcelable {
+    constructor() : this(
+        "default",
+        "https://mblogthumb-phinf.pstatic.net/20141227_166/studygir_14196771148363Yi0G_JPEG/bo99_%282%29.jpg?type=w2",
+        "https://t1.daumcdn.net/cfile/tistory/2577184451E8D75605",
+        Date()
+    )
 }
