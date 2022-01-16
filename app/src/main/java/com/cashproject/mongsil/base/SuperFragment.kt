@@ -12,6 +12,18 @@ import androidx.fragment.app.Fragment
 open class SuperFragment : Fragment() {
     val TAG = this.javaClass.simpleName
 
+    fun printLog(message: String) {
+        Log.d(TAG, message)
+    }
+
+    fun printErrorLog(message: String) {
+        Log.e(TAG, message)
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "++onAttach $this")
@@ -69,17 +81,5 @@ open class SuperFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "++onDestroy $this")
-    }
-
-    fun printLog(message: String) {
-        Log.d(TAG, message)
-    }
-
-    fun printErrorLog(message: String) {
-        Log.e(TAG, message)
-    }
-
-    fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }
