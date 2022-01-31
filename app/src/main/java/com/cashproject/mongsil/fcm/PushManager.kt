@@ -3,7 +3,6 @@ package com.cashproject.mongsil.fcm
 import android.content.Context
 import android.util.Log
 import com.cashproject.mongsil.R
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -77,16 +76,16 @@ class PushManager {
             }
     }
 
-    fun loadFCMToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(tag, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-            // Get new FCM registration token
-            val token = task.result
-            // Log and toast
-            Log.d(tag, "Fetching FCM registration token success: $token")
-        })
-    }
+//    fun loadFCMToken() {
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w(tag, "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
+//            // Get new FCM registration token
+//            val token = task.result
+//            // Log and toast
+//            Log.d(tag, "Fetching FCM registration token success: $token")
+//        })
+//    }
 }

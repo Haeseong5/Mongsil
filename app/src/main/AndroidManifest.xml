@@ -21,10 +21,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Mongsil"
-        tools:targetApi="n">
+        android:theme="@style/Theme.Mongsil">
         <activity android:name=".ui.MainActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
