@@ -1,8 +1,9 @@
 package com.cashproject.mongsil.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
@@ -12,7 +13,8 @@ import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.*
-import java.util.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * MainActivity - MainViewModel
@@ -44,10 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this, getString(R.string.ad_app_id))
 
-        pushManager.apply {
-            subscribeEventNotification(this@MainActivity)
-            subscribeUpdateNotification(this@MainActivity)
-        }
+        setupPushNotification()
 
         mainViewModel.apply {
             getSayingList()
@@ -56,6 +55,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             sayingList.observe(this@MainActivity) {
                 printLog("success to load $it")
+            }
+        }
+    }
+
+    private fun setupPushNotification() {
+        lifecycleScope.launch {
+            PushManager.pushNotificationEvent.collect { isEnabled ->
+                printLog("Push Notification Settings : $isEnabled")
+                pushManager.updatePushNotificationSubscription(this@MainActivity, isEnabled)
             }
         }
     }

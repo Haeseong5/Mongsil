@@ -3,6 +3,7 @@ package com.cashproject.mongsil.admob
 import android.content.Context
 import android.util.Log
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.extension.errorLog
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -20,23 +21,28 @@ fun InterstitialAd.showAdMob() {
 
 
 fun InterstitialAd.adMobInitial(context: Context) {
-    // Create the InterstitialAd and set it up.
-    adUnitId = context.getString(R.string.ad_interstitial_id)
-    loadAd(AdRequest.Builder().build())
-    adListener = (object : AdListener() {
-        override fun onAdLoaded() {
-            Log.i("onAdFailedToLoad", "onAdLoaded()")
+    try {
+        if (adUnitId != null) {
+            adUnitId = context.getString(R.string.ad_interstitial_id)
         }
+        loadAd(AdRequest.Builder().build())
+        adListener = (object : AdListener() {
+            override fun onAdLoaded() {
+                Log.i("onAdFailedToLoad", "onAdLoaded()")
+            }
 
-        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-            val error = "domain: ${loadAdError.domain}, code: ${loadAdError.code}, " +
-                    "message: ${loadAdError.message}"
+            override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                val error = "domain: ${loadAdError.domain}, code: ${loadAdError.code}, " +
+                        "message: ${loadAdError.message}"
 
-            Log.i("onAdFailedToLoad", error)
-        }
+                Log.i("onAdFailedToLoad", error)
+            }
 
-        override fun onAdClosed() {
-            loadAd(AdRequest.Builder().build())
-        }
-    })
+            override fun onAdClosed() {
+                loadAd(AdRequest.Builder().build())
+            }
+        })
+    } catch (e: Exception) {
+        e.stackTraceToString().errorLog()
+    }
 }

@@ -76,41 +76,44 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_alarm_time_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="알림 시간 설정"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:onClick="@{() -> fragment.showBottomListDialog()}"
-                app:layout_constraintStart_toStartOf="@+id/tv_alarm"
-                app:layout_constraintTop_toBottomOf="@+id/tv_alarm"
-                app:layout_constraintBottom_toBottomOf="@+id/alarm_arrow"/>
+<!--            <TextView-->
+<!--                android:id="@+id/tv_alarm_time_setting"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:text="알림 시간 설정"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="normal"-->
+<!--                android:onClick="@{() -> fragment.showBottomListDialog()}"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/tv_alarm"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_alarm"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/alarm_arrow"/>-->
 
-            <TextView
-                android:id="@+id/tv_alarm_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:text="00:00"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:onClick="@{() -> fragment.showBottomListDialog()}"
-                app:layout_constraintEnd_toStartOf="@id/alarm_arrow"
-                app:layout_constraintTop_toTopOf="@+id/alarm_arrow"
-                app:layout_constraintBottom_toBottomOf="@id/alarm_arrow"/>
+<!--            <TextView-->
+<!--                android:id="@+id/tv_alarm_time"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                tools:text="00:00"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="normal"-->
+<!--                android:visibility="gone"-->
+<!--                android:onClick="@{() -> fragment.showBottomListDialog()}"-->
+<!--                app:layout_constraintEnd_toStartOf="@id/alarm_arrow"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/alarm_arrow"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/alarm_arrow"/>-->
 
-            <ImageView
-                android:id="@+id/alarm_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_close_copy"
-                app:layout_constraintEnd_toEndOf="parent"
-                style="@style/ImageViewStyle"
-                android:onClick="@{() -> fragment.showBottomListDialog()}"
-                app:layout_constraintTop_toBottomOf="@id/iv_alarm_switch" />
+<!--            <ImageView-->
+<!--                android:id="@+id/alarm_arrow"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_close_copy"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                style="@style/ImageViewStyle"-->
+<!--                android:visibility="gone"-->
+<!--                android:onClick="@{() -> fragment.showBottomListDialog()}"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/iv_alarm_switch" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

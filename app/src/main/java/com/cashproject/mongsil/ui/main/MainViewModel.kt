@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.extension.addTo
+import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.util.PreferencesManager
 import com.google.firebase.firestore.ktx.toObject
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
@@ -24,7 +26,8 @@ import kotlin.random.Random
 
 class MainViewModel(
     private val localDataSource: LocalDataSource,
-    private val firestoreDataSource: FirestoreDataSource
+    private val firestoreDataSource: FirestoreDataSource,
+    private val pushManager: PushManager = PushManager()
 ) : BaseViewModel() {
 
     private val _sayingList = MutableLiveData<List<Saying>>()
@@ -37,6 +40,10 @@ class MainViewModel(
     val likeList: LiveData<List<Saying>> get() = _likeList
 
     private val hashMap = HashMap<Long, Int>()
+
+    init {
+        initPushNotificationSettings()
+    }
 
     fun getSayingList() {
         firestoreDataSource.getSayingList()
@@ -119,10 +126,14 @@ class MainViewModel(
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     val comments = commentList.value?.filter { it.id != id }
-                    _commentList.postValue(comments)
+                    _commentList.postValue(comments!!)
                 }, {
                     errorSubject.onNext(it)
                 })
         )
+    }
+
+    private fun initPushNotificationSettings() {
+        pushManager.emitPushEvent(PreferencesManager.isEnabledPushNotification)
     }
 }

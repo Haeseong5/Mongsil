@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.util
 
-import android.text.format.DateUtils
 import android.util.Log.d
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -17,8 +16,6 @@ object DateUtil {
 
     private val dateFormat = SimpleDateFormat("MMdd", Locale.KOREA)
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.KOREA)
-
-    fun getToday() {}
 
     fun timeToString(hour: Int, minute: Int): String {
         val date = Date().apply {

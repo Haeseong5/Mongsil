@@ -10,7 +10,7 @@ open class SuperActivity : AppCompatActivity() {
     val TAG: String = this.javaClass.simpleName
 
     fun printLog(message: String) {
-        Log.d(TAG, message)
+        Log.d(TAG, "@@@ $message")
     }
 
     fun printErrorLog(message: String) {

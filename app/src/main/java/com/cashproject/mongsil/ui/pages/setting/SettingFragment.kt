@@ -18,6 +18,8 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import java.util.*
 
 //TODO 스플래시 끄기
+//TODO 앱 버전 확인 -> 업데이트
+// 푸시메세지
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
@@ -58,7 +60,7 @@ class SettingFragment : Fragment() {
     }
 
     fun startAlarm() {
-        findNavController().navigate(R.id.action_setting_to_alarm)
+        findNavController().navigate(R.id.action_to_alarm)
     }
 
     fun sendEmail() {

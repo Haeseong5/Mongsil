@@ -86,6 +86,7 @@ dependencies {
 
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
 
     def RxAndroidVersion = '2.1.1'
     def RxJavaVersion = '2.2.19'

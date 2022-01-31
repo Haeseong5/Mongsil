@@ -8,14 +8,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import android.app.Notification
 
@@ -33,13 +29,20 @@ import android.os.Build
 
 import androidx.core.app.NotificationManagerCompat
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.extension.errorLog
 import com.cashproject.mongsil.ui.MainActivity
+import com.cashproject.mongsil.util.PreferencesManager
+import kotlinx.coroutines.*
 
-
+/**
+ * FCM 트러블 슈팅: https://6developer.com/928
+ */
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val TAG = this.javaClass.simpleName
     private var job: Job = Job()
+
+    private val uncaughtExceptionHandler = CoroutineExceptionHandler { _, _ -> }
 
     companion object {
         const val TOKEN_COLLECTION = "UserToken"
@@ -53,12 +56,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
     /**
-     * [토큰 생성 모니터링]
+     * 토큰 생성 모니터링
      * 새 토큰이 생성될 때마다 onNewToken 콜백이 호출됩니다.
      */
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
-        CoroutineScope(Dispatchers.IO + job).launch {
+        CoroutineScope(Dispatchers.IO + uncaughtExceptionHandler + job).launch {
             try {
                 sendRegistrationToServer(token).collect { state ->
                     when (state) {
@@ -87,24 +90,27 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }.flowOn(Dispatchers.IO)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "From: ${remoteMessage.from}")
+        Log.d(TAG, "onMessageReceived From: ${remoteMessage.from}")
+        Log.d(TAG, "onMessageReceived data: ${remoteMessage.data}")
+        Log.d(TAG, "onMessageReceived Notification Body: ${remoteMessage.notification?.body}")
 
-        // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-
-            // Check if message contains a notification payload.
-            remoteMessage.notification?.let {
-                Log.d(TAG, "Message Notification Body: ${it.body}")
+        if (!PreferencesManager.isEnabledPushNotification) return
+        // Check if message contains a notification payload.
+        remoteMessage.notification?.let {
+            runCatching {
                 sendMessage(remoteMessage)
+            }.onFailure {
+                it.stackTraceToString().errorLog()
             }
         }
+
     }
 
     @SuppressLint("WrongConstant", "UnspecifiedImmutableFlag")
     private fun sendMessage(remoteMessage: RemoteMessage) {
         val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) //앱 켜진상태에서는 재실행 x
+
 
         /**
          * https://velog.io/@haero_kim/Android-PendingIntent-%EA%B0%9C%EB%85%90-%EC%9D%B5%ED%9E%88%EA%B8%B0
@@ -138,8 +144,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 NotificationCompat.Builder(applicationContext)
             }
 
-        val title: String = remoteMessage.notification?.title ?: return
-        val body: String = remoteMessage.notification?.body ?: return
+        val title: String = remoteMessage.notification?.title ?: ""
+        val body: String = remoteMessage.notification?.body ?: ""
 
         builder
             .setSmallIcon(R.drawable.emoticon_01_happy)

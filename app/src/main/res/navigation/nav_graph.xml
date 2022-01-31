@@ -26,11 +26,6 @@
         <action
             android:id="@+id/action_setting_to_locker"
             app:destination="@id/lockerFragment" />
-        <action
-            android:id="@+id/action_setting_to_alarm"
-            app:destination="@id/alarmFragment"
-            app:enterAnim="@anim/slide_in"
-            app:popEnterAnim="@anim/fade_in" />
         <argument
             android:name="docId"
             app:argType="string" />
@@ -84,6 +79,12 @@
         app:popEnterAnim="@anim/fade_in"
         app:popExitAnim="@anim/slide_out"
         />
+
+    <action
+        android:id="@+id/action_to_alarm"
+        app:destination="@id/alarmFragment"
+        app:enterAnim="@anim/slide_in"
+        app:popEnterAnim="@anim/fade_in" />
 
     <fragment
         android:id="@+id/alarmFragment"
