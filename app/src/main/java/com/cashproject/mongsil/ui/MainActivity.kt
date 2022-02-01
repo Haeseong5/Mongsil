@@ -11,7 +11,6 @@ import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,8 +31,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     val progressBar: ProgressDialog by lazy { ProgressDialog(this@MainActivity) }
 
-    val adMob: InterstitialAd by lazy { InterstitialAd(this@MainActivity) }
-
     private val viewModelFactory: ViewModelFactory by lazy {
         Injection.provideViewModelFactory(this@MainActivity)
     }
@@ -44,7 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(this, getString(R.string.ad_app_id))
+        MobileAds.initialize(this)
 
         setupPushNotification()
 

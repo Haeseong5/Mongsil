@@ -40,7 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
             context,
             NOTIFICATION_ID,
             contentIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
         )
         val builder =
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)

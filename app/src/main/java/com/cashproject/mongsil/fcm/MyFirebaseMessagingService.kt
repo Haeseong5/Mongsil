@@ -122,7 +122,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             this,
             0,
             intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
         )
 
         val notificationManager = NotificationManagerCompat.from(

@@ -15,8 +15,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.admob.adMobInitial
-import com.cashproject.mongsil.admob.showAdMob
+import com.cashproject.mongsil.admob.showInterstitialAd
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FrammentDetailBinding
 import com.cashproject.mongsil.extension.getImageUri
@@ -33,8 +32,13 @@ import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
 import com.cashproject.mongsil.util.isSameDay
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.parcelize.Parcelize
 import java.util.*
+
 
 class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
@@ -77,9 +81,11 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     val currentImageUrl get() = argument.saying.image
 
+    var mInterstitialAd: InterstitialAd? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivity?.adMob?.adMobInitial(requireActivity())
+        initInterstitialAd()
         hasWriteStoragePermission(requireActivity())
     }
 
@@ -97,7 +103,6 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
 
         when (argument.from) {
@@ -163,7 +168,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
                 selectedDate = argument.selectedDate
             ).apply {
                 setSaveBtnOnClickListener {
-                    mainActivity?.adMob?.showAdMob()
+                    showInterstitialAd(mInterstitialAd, requireActivity())
                     val bitmap =
                         this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
                     try {
@@ -226,6 +231,28 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
         super.onResume()
         //임시로 이모티콘 갱신
         binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+    }
+
+    private fun initInterstitialAd() {
+        val adRequest: AdRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(requireContext(),
+            requireContext().getString(R.string.ad_interstitial_id),
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until
+                    // an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i(TAG, "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.i(TAG, loadAdError.message)
+                    mInterstitialAd = null
+                }
+            })
     }
 }
 
