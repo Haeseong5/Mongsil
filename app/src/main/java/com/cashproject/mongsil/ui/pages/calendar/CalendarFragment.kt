@@ -38,13 +38,13 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         Log.d(this.javaClass.name, "this: $this dayAdapter: $dayAdapter")
         initRecyclerView()
         initClickListener()
-        mainViewModel.sayingList.observe(viewLifecycleOwner, {
+        mainViewModel.sayingList.observe(viewLifecycleOwner) {
             dayAdapter.update(it as ArrayList<Saying>)
-        })
+        }
 
-        mainViewModel.commentList.observe(viewLifecycleOwner, {
+        mainViewModel.commentList.observe(viewLifecycleOwner) {
             binding.customCalendarView.notifyDataChanged(it)
-        })
+        }
     }
 
     private fun initRecyclerView() {

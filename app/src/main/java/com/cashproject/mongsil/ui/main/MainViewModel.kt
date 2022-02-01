@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.extension.addTo
+import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
@@ -93,6 +94,7 @@ class MainViewModel(
         localDataSource.getAllComments()
             .subscribeOn(Schedulers.io())
             .subscribe({
+                "$it".log()
                 _commentList.postValue(it)
             }, {
                 errorSubject.onNext(it)
@@ -109,6 +111,7 @@ class MainViewModel(
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     val comments = (commentList.value ?: emptyList()) + comment
+                    "$comments".log()
                     _commentList.postValue(comments)
                 }, {
                     errorSubject.onNext(it)

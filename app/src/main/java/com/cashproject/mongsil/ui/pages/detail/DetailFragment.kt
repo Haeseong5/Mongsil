@@ -90,6 +90,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
     ): View? {
         val rootView = super.onCreateView(inflater, container, savedInstanceState)
         binding.fragment = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.mainViewModel = mainViewModel
         return rootView
     }
@@ -120,7 +121,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
         mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner) {
             it.filter { comment ->
-                isSameDay(comment.time, argument.selectedDate)
+                isSameDay(comment.date, argument.selectedDate)
             }.let { comments ->
                 commentAdapter.update(comments)
                 binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
@@ -148,7 +149,8 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
             Comment(
                 content = binding.etSayingCommentInput.text.toString(),
                 time = Date(),
-                emotion = selectedEmoticonId
+                emotion = selectedEmoticonId,
+                date = argument.selectedDate
             )
         )
         binding.etSayingCommentInput.text?.clear()
