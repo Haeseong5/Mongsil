@@ -51,9 +51,7 @@ class FirestoreDataSource {
         Calendar
      */
     fun getSayingList(): Task<QuerySnapshot> {
-        return db.collection(COLLECTION)
-            .limit(40)
-            .get()
+        return db.collection(COLLECTION).get()
     }
 
 

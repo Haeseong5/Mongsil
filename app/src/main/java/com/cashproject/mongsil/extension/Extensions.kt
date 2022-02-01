@@ -3,9 +3,9 @@ package com.cashproject.mongsil.extension
 import android.util.Log
 
 fun String.log() {
-    Log.d("@@@", this)
+    Log.d("fastLog", this)
 }
 
 fun String.errorLog() {
-    Log.e("@@@", this)
+    Log.e("errorLog", this)
 }

@@ -20,7 +20,4 @@ interface CommentDao {
     @Query("DELETE FROM Comment WHERE id = :id")
     fun deleteById(id: Int) : Completable
 
-    @Query("DELETE FROM Comment WHERE id = :docId")
-    fun deleteByDocId(docId: String) : Completable
-
 }

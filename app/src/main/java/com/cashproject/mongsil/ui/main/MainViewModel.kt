@@ -11,8 +11,9 @@ import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.model.remote.SayingApi
+import com.cashproject.mongsil.model.remote.SayingService
 import com.cashproject.mongsil.util.PreferencesManager
-import com.google.firebase.firestore.ktx.toObject
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -27,7 +28,8 @@ import kotlin.random.Random
 class MainViewModel(
     private val localDataSource: LocalDataSource,
     private val firestoreDataSource: FirestoreDataSource,
-    private val pushManager: PushManager = PushManager()
+    private val sayingApi: SayingApi = SayingService(),
+    private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
     private val _sayingList = MutableLiveData<List<Saying>>()
@@ -46,25 +48,23 @@ class MainViewModel(
     }
 
     fun getSayingList() {
-        firestoreDataSource.getSayingList()
-            .addOnSuccessListener { documents ->
-                documents.map {
-                    it.toObject<Saying>().apply { docId = it.id }
-                }.let {
-                    _sayingList.postValue(it)
-                }
+        viewModelScope.launch {
+            runCatching {
+                sayingApi.getSayings()
+            }.onSuccess {
+                _sayingList.postValue(it)
+            }.onFailure {
+                Log.e(TAG, "Error getting documents: ", it)
             }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Error getting documents: ", exception)
-            }
+        }
     }
 
     fun getRandomSaying(date: Date): Saying {
-        try {
+        return try {
             val day = date.time
             val sayings = sayingList.value ?: emptyList()
             val cachedIdx = hashMap[day]
-            return if (cachedIdx == null) {
+            if (cachedIdx == null) {
                 val randomIdx = Random.nextInt(sayings.size)
                 hashMap[day] = randomIdx
                 sayings[randomIdx]
@@ -73,7 +73,7 @@ class MainViewModel(
             }
         } catch (e: Exception) {
             Log.e(this.javaClass.name, e.localizedMessage)
-            return Saying()
+            Saying()
         }
     }
 

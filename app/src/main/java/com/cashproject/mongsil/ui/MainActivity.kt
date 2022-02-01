@@ -2,7 +2,6 @@ package com.cashproject.mongsil.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
@@ -12,7 +11,8 @@ import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

@@ -6,21 +6,26 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.util.*
 
 @Keep
 @Parcelize
+@Serializable
 @Entity
 data class Saying(
-    @PrimaryKey var docId: String,
-    @ColumnInfo var image: String,
-    @ColumnInfo var s: String, //square image
-    @ColumnInfo var date: Date //deprecated
-) : Parcelable {
-    constructor() : this(
-        "default",
-        "https://mblogthumb-phinf.pstatic.net/20141227_166/studygir_14196771148363Yi0G_JPEG/bo99_%282%29.jpg?type=w2",
-        "https://t1.daumcdn.net/cfile/tistory/2577184451E8D75605",
-        Date()
-    )
-}
+    @PrimaryKey
+    @SerialName("id")
+    val docId: String = "",
+    @ColumnInfo
+    val image: String = "",
+    @ColumnInfo(name = "s")
+    val squareImage: String = "",
+
+    @Deprecated("사용되지 않는 필드입니다.")
+    @Contextual
+    @ColumnInfo
+    val date: Date = Date()
+) : Parcelable

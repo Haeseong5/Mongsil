@@ -75,7 +75,7 @@ class MainFragment : Fragment() {
         binding.viewPager.adapter = MainPagerAdapter(
             childFragmentManager,
             viewLifecycleOwner.lifecycle,
-            todaySaying = mainViewModel.getRandomSaying(Date())
+            todaySaying = mainViewModel.getRandomSaying(Date()) ?: return
         )
 
     }

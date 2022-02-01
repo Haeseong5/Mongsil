@@ -120,7 +120,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
         mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner) {
             it.filter { comment ->
-                isSameDay(comment.date, argument.selectedDate)
+                isSameDay(comment.time, argument.selectedDate)
             }.let { comments ->
                 commentAdapter.update(comments)
                 binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
@@ -148,9 +148,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
             Comment(
                 content = binding.etSayingCommentInput.text.toString(),
                 time = Date(),
-                date = argument.selectedDate,
-                emotion = selectedEmoticonId,
-                docId = argument.saying.docId
+                emotion = selectedEmoticonId
             )
         )
         binding.etSayingCommentInput.text?.clear()

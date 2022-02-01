@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:background="@color/grey_light"
-            bindImage="@{saying.s}"/>
+            bindImage="@{saying.squareImage}"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"

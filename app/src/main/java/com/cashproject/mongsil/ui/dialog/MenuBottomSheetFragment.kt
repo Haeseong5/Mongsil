@@ -92,9 +92,6 @@ class MenuBottomSheetFragment(
 
     private fun setOnClickListener() {
         binding.ivSayingLike.setOnClickListener {
-            saying.apply {
-                date = selectedDate
-            }
             if (mLike) viewModel.unLike(saying.docId)
             else viewModel.like(saying)
             likeBtnListener?.invoke()

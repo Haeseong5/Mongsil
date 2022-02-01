@@ -27,7 +27,10 @@ import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
  * Factory for ViewModels
  */
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val localDataSource: LocalDataSource, private val firestoreDataSource: FirestoreDataSource) : ViewModelProvider.Factory {
+class ViewModelFactory(
+    private val localDataSource: LocalDataSource,
+    private val firestoreDataSource: FirestoreDataSource
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {

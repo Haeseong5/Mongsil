@@ -135,7 +135,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
             val reviews = mutableListOf<Comment>()
             while (it.hasNext()) {
                 val item = it.next()
-                if (CalendarUtil.isCalendarAndDateSame(cal, item.date)) {
+                if (CalendarUtil.isCalendarAndDateSame(cal, item.time)) {
                     reviews.add(item)
                 }
             }

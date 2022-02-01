@@ -2,6 +2,8 @@ package com.cashproject.mongsil.model.db
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cashproject.mongsil.model.data.Comment
 import com.cashproject.mongsil.model.data.Saying
 import com.cashproject.mongsil.model.db.dao.CommentDao
@@ -17,6 +19,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
+        private const val DB_FILE_NAME = "Mongsil.db"
+
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -28,9 +32,13 @@ abstract class AppDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                AppDatabase::class.java, "Mongsil.db"
-            )
-//                .fallbackToDestructiveMigration() //기존 데이터 손실을 허용하고 마이그레션
-                .build()
+                AppDatabase::class.java, DB_FILE_NAME
+            ).build()
+    }
+}
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE Book ADD COLUMN pub_year INTEGER")
     }
 }
