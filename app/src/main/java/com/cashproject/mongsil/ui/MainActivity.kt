@@ -1,12 +1,15 @@
 package com.cashproject.mongsil.ui
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.extension.makeStatusBarTransparent
 import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
@@ -41,6 +44,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.makeStatusBarTransparent()
+
+
         MobileAds.initialize(this)
 
         setupPushNotification()

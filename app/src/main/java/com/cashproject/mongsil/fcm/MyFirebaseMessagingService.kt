@@ -148,7 +148,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val body: String = remoteMessage.notification?.body ?: ""
 
         builder
-            .setSmallIcon(R.drawable.emoticon_01_happy)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.emoticon_01_happy))
             .setContentTitle(title)
             .setContentText(body)
@@ -159,7 +159,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setDefaults(Notification.DEFAULT_ALL)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setContentIntent(pendingIntent)
-            .setSmallIcon(R.drawable.emoticon_01_happy)
 
         val notification: Notification = builder.build()
         notificationManager.notify(1, notification)
