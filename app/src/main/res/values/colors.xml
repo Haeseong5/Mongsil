@@ -58,10 +58,6 @@
     <color name="emoticon_06_shame_background">#ffecc9</color>
     <color name="emoticon_06_shame_text">#d9ad58</color>
 
-    <!--admob dialog-->
-    <color name="tedBtnPrimary">#3F51B5</color>
-    <color name="tedBtnHighlight">#1F3195</color>
-
     <color name="transparent">#00000000</color>
     <color name="black87">#de000000</color>
     <color name="black54">#8a000000</color>

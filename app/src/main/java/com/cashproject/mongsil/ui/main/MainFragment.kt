@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentMainBinding
-import com.cashproject.mongsil.ui.dialog.admob.OnBackPressListener
-import com.cashproject.mongsil.ui.dialog.admob.TedAdmobDialog
+import gun0912.ted.tedadmobdialog.OnBackPressListener
+import gun0912.ted.tedadmobdialog.TedAdmobDialog
 import java.util.*
 
 class MainFragment : Fragment() {

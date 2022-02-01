@@ -125,4 +125,5 @@ dependencies {
 
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
+    implementation project(path: ':tedadmobdialog')
 }
