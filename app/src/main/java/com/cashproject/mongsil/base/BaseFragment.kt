@@ -32,7 +32,7 @@ abstract class BaseFragment<T : ViewDataBinding> : SuperFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
         return binding.root

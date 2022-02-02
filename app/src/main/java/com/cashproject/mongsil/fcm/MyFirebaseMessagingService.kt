@@ -109,7 +109,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     @SuppressLint("WrongConstant", "UnspecifiedImmutableFlag")
     private fun sendMessage(remoteMessage: RemoteMessage) {
         val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) //앱 켜진상태에서는 재실행 x
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
 
         /**
