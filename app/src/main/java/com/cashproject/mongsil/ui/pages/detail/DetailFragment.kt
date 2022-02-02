@@ -15,7 +15,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.admob.showInterstitialAd
+import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FrammentDetailBinding
 import com.cashproject.mongsil.extension.getImageUri

@@ -134,13 +134,10 @@ public class TedAdmobDialog extends AlertDialog {
     private void openPlayStore() {
         String packageName = getContext().getPackageName();
         try {
-
             getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
         } catch (android.content.ActivityNotFoundException anfe) {
             getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
         }
-
-
     }
 
     private void showNative() {
