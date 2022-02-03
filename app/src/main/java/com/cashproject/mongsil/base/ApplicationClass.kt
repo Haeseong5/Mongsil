@@ -9,9 +9,12 @@ import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.manager.setChildAdmobMode
 import com.cashproject.mongsil.model.data.Emoticon
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.FILENAME
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 
 
 class ApplicationClass : Application(){
@@ -25,8 +28,8 @@ class ApplicationClass : Application(){
     override fun onCreate() {
         super.onCreate()
         prefs = getSharedPreferences(FILENAME, 0)
-//        createNotificationChannel()
         initEmoticons()
+        setChildAdmobMode()
     }
 
     private fun createNotificationChannel() {
