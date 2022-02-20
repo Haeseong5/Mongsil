@@ -16,10 +16,10 @@ import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import java.util.*
 
 class MainPagerAdapter(
-    fragmentManager: FragmentManager,
+    fa: FragmentManager,
     lifecycle: Lifecycle,
     private val todaySaying: Saying
-) : FragmentStateAdapter(fragmentManager, lifecycle) {
+) : FragmentStateAdapter(fa, lifecycle) {
 
     override fun getItemCount(): Int = 3
 

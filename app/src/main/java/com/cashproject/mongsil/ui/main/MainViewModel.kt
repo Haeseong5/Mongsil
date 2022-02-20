@@ -16,6 +16,10 @@ import com.cashproject.mongsil.model.remote.SayingApi
 import com.cashproject.mongsil.model.remote.SayingService
 import com.cashproject.mongsil.util.PreferencesManager
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.HashMap
@@ -42,10 +46,17 @@ class MainViewModel(
     private val _likeList = MutableLiveData<List<Saying>>()
     val likeList: LiveData<List<Saying>> get() = _likeList
 
+    private val _selectedPagePosition = MutableStateFlow<Int>(1)
+    val selectedPagePosition = _selectedPagePosition.asStateFlow()
+
     private val hashMap = HashMap<Long, Int>()
 
     init {
         initPushNotificationSettings()
+    }
+
+    fun selectPage(position: Int) {
+        _selectedPagePosition.value = position
     }
 
     fun getSayingList() {

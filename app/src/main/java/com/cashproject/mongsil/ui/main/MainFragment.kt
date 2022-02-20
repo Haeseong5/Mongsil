@@ -11,23 +11,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.base.SuperFragment
 import com.cashproject.mongsil.databinding.FragmentMainBinding
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
 import java.util.*
 
-class MainFragment : Fragment() {
-
-    private val TAG = "MainFragment"
+class MainFragment : SuperFragment() {
 
     companion object {
         const val PAGE_CALENDAR = 0
         const val PAGE_HOME = 1
         const val PAGE_LOCKER = 2
     }
-
-//    override val layoutResourceId: Int
-//        get() = R.layout.fragment_main
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -38,11 +34,7 @@ class MainFragment : Fragment() {
     val binding get() = _binding!!
 
     private val mainPagerAdapter by lazy {
-        MainPagerAdapter(
-            childFragmentManager,
-            viewLifecycleOwner.lifecycle,
-            todaySaying = mainViewModel.getRandomSaying(Date())
-        )
+        MainPagerAdapter(requireActivity().supportFragmentManager, lifecycle, mainViewModel.getRandomSaying(Date()))
     }
 
     override fun onAttach(context: Context) {
@@ -73,7 +65,10 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewPager.offscreenPageLimit = 3
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewPager.adapter = mainPagerAdapter
+        binding.viewPager.apply {
+            adapter = mainPagerAdapter
+            setCurrentItem(mainViewModel.selectedPagePosition.value, false)
+        }
     }
 
     override fun onDetach() {
@@ -122,7 +117,16 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun saveCurrentPagePosition() {
+        try {
+            mainViewModel.selectPage(binding.viewPager.currentItem)
+        } catch (e: Exception) {
+            Log.e(TAG, e.stackTraceToString())
+        }
+    }
+
     override fun onDestroyView() {
+        saveCurrentPagePosition()
         super.onDestroyView()
         binding.viewPager.adapter = null
         _binding = null

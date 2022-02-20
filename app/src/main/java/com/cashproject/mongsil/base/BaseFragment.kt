@@ -16,8 +16,8 @@ import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 abstract class BaseFragment<T : ViewDataBinding> : SuperFragment() {
 
-    lateinit var binding: T
-
+    var _binding: T? = null
+    val binding get() = _binding!!
     val mainActivity by lazy { activity as? MainActivity }
 
     lateinit var viewModelFactory: ViewModelFactory
@@ -31,11 +31,16 @@ abstract class BaseFragment<T : ViewDataBinding> : SuperFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         viewModelFactory = Injection.provideViewModelFactory(activity as Context)
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

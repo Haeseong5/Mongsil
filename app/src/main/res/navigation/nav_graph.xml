@@ -58,8 +58,8 @@
             android:id="@+id/action_locker_to_detail"
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out" />
         <argument
             android:name="docId"
