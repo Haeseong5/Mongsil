@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# 스택 트레이스 재추적의 모호성을 방지하려면 다음 규칙을 모듈의 proguard-rules.pro 파일에 추가해야 합니다.
+-keepattributes LineNumberTable,SourceFile
+-renamesourcefileattribute SourceFile
