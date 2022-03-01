@@ -9,26 +9,17 @@ import android.widget.TextView
 import com.cashproject.mongsil.R
 
 
-class CheckDialog(context : Context) {
+class CheckDialog(
+    context : Context,
+    val accept: () -> Unit,
+    val acceptText: String? = null
+) {
     private val dialog = Dialog(context)
 
     private lateinit var tvMessage : TextView
     private lateinit var btAccept : TextView
     private lateinit var btnCancel : TextView
 
-    private lateinit var listener : AcceptBtnClickListener
-
-    interface AcceptBtnClickListener {
-        fun onClicked()
-    }
-
-    fun setAcceptBtnOnClickListener(listener: () -> Unit) {
-        this.listener = object: AcceptBtnClickListener {
-            override fun onClicked() {
-                listener()
-            }
-        }
-    }
     fun start(message : String) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_check)
@@ -38,8 +29,9 @@ class CheckDialog(context : Context) {
         tvMessage.text = message
 
         btAccept = dialog.findViewById(R.id.dialog_bt_accept)
+        btAccept.text = acceptText ?: "확인"
         btAccept.setOnClickListener {
-            listener.onClicked()
+            accept.invoke()
             dialog.dismiss()
         }
 

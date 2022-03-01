@@ -209,11 +209,12 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
     }
 
     private fun showCheckDialog(id: Int) {
-        val dialog = CheckDialog(requireContext())
-        dialog.setAcceptBtnOnClickListener {
-            mainViewModel.deleteCommentById(id)
+        CheckDialog(
+            context = requireContext(),
+            accept = { mainViewModel.deleteCommentById(id) }
+        ).also {
+            it.start(getString(R.string.message_delete))
         }
-        dialog.start(getString(R.string.message_delete))
     }
 
     private fun shareToSNS() {

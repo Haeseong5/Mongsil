@@ -1,14 +1,13 @@
 package com.cashproject.mongsil.ui
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.di.Injection
+import com.cashproject.mongsil.manager.RemoteConfigManager
 import com.cashproject.mongsil.extension.makeStatusBarTransparent
 import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
@@ -41,15 +40,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     val mainViewModel: MainViewModel by viewModels { viewModelFactory }
 
     private val pushManager = PushManager()
-
+    private val remoteConfigManager by lazy { RemoteConfigManager(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.makeStatusBarTransparent()
-
-
         MobileAds.initialize(this)
-
         setupPushNotification()
+        remoteConfigManager.apply {
+            initializeFirebaseRemoteConfig()
+            setRemoteConfigListener()
+        }
 
         mainViewModel.apply {
             getSayingList()

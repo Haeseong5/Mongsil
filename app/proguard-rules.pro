@@ -24,3 +24,23 @@
 #스택 트레이스 재추적의 모호성을 방지하려면 다음 규칙을 모듈의 proguard-rules.pro 파일에 추가해야 합니다.
 -keepattributes LineNumberTable,SourceFile
 -renamesourcefileattribute SourceFile
+
+# kotlinx.serialization // https://github.com/Kotlin/kotlinx.serialization
+-if @kotlinx.serialization.Serializable class **
+-keepclassmembers class <1> {
+    static <1>$Companion Companion;
+}
+-if @kotlinx.serialization.Serializable class ** {
+    static **$* *;
+}
+-keepclassmembers class <2>$<3> {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-if @kotlinx.serialization.Serializable class ** {
+    public static ** INSTANCE;
+}
+-keepclassmembers class <1> {
+    public static <1> INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keepattributes RuntimeVisibleAnnotations,AnnotationDefault

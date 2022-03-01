@@ -2,24 +2,18 @@ package com.cashproject.mongsil.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
 import com.cashproject.mongsil.databinding.FragmentSplashBinding
-import com.cashproject.mongsil.extension.findNavControllerSafely
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.*
-import java.lang.Exception
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SplashFragment : SuperFragment() {
 

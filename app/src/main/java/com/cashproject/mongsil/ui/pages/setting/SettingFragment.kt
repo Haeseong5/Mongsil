@@ -5,17 +5,22 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.base.ApplicationClass
 import com.cashproject.mongsil.databinding.FragmentSettingBinding
 import com.cashproject.mongsil.extension.intentAction
+import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.manager.isOldVersion
+import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
 import com.google.android.play.core.review.ReviewManagerFactory
-import java.util.*
 
 //TODO 스플래시 끄기
 //TODO 앱 버전 확인 -> 업데이트
@@ -36,12 +41,30 @@ class SettingFragment : Fragment() {
     ): View {
         return FragmentSettingBinding.inflate(inflater, container, false)
             .also { binding ->
-                binding.fragment = this
-                binding.lifecycleOwner = this
                 this.binding = binding
+                binding.fragment = this
+                binding.lifecycleOwner = viewLifecycleOwner
             }.root
     }
 
+    fun showAppVersionDialog() {
+        CheckDialog(
+            context = requireContext(),
+            accept = { openPlayStore(context ?: return@CheckDialog) },
+            acceptText = "업데이트"
+        ).also {
+            it.start(
+                getString(
+                    R.string.app_version,
+                    BuildConfig.VERSION_NAME,
+                    ApplicationClass.appVersion.latestAppVersionName
+                )
+            )
+            if (isOldVersion()) {
+                showAppVersionDialog()
+            }
+        }
+    }
 
     fun showReadyMessage() {
         activity?.showToast("준비 중입니다.")
@@ -70,7 +93,7 @@ class SettingFragment : Fragment() {
             putExtra(Intent.EXTRA_SUBJECT, "몽실에게 건의하기") //제목
             putExtra(
                 Intent.EXTRA_TEXT,
-                "앱 버전 (App Version): ${BuildConfig.VERSION_NAME}\n" +
+                "앱 버전 (App Version): ${BuildConfig.VERSION_NAME}\n" +
                         "Android (SDK): ${Build.VERSION.SDK_INT}\n" +
                         "Android Version(Release): ${Build.VERSION.RELEASE}\n" +
                         "내용: "
