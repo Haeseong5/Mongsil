@@ -151,9 +151,9 @@
             android:layout_marginBottom="22dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
+            android:onClick="@{() -> fragment.backUp()}"
             android:padding="@dimen/margin8"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 style="@style/ImageViewStyle"

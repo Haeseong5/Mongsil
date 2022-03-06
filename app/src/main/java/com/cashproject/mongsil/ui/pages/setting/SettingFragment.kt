@@ -28,6 +28,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
+    private val viewModel = SettingViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +65,10 @@ class SettingFragment : Fragment() {
                 showAppVersionDialog()
             }
         }
+    }
+
+    fun backUp() {
+
     }
 
     fun showReadyMessage() {

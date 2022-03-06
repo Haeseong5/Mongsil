@@ -61,19 +61,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      */
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
-        CoroutineScope(Dispatchers.IO + uncaughtExceptionHandler + job).launch {
-            try {
-                sendRegistrationToServer(token).collect { state ->
-                    when (state) {
-                        is State.Success -> Log.d(TAG, "Success sendRegistrationToServer()")
-                        is State.Failed -> Log.d(TAG, "Failed sendRegistrationToServer()")
-                        else -> {}
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, e.stackTraceToString())
-            }
-        }
+//        CoroutineScope(Dispatchers.IO + uncaughtExceptionHandler + job).launch {
+//            try {
+//                sendRegistrationToServer(token).collect { state ->
+//                    when (state) {
+//                        is State.Success -> Log.d(TAG, "Success sendRegistrationToServer()")
+//                        is State.Failed -> Log.d(TAG, "Failed sendRegistrationToServer()")
+//                        else -> {}
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                Log.e(TAG, e.stackTraceToString())
+//            }
+//        }
     }
 
     /**
@@ -103,7 +103,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 it.stackTraceToString().errorLog()
             }
         }
-
     }
 
     @SuppressLint("WrongConstant", "UnspecifiedImmutableFlag")

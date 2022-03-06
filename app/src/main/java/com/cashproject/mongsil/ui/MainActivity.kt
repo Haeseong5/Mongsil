@@ -57,7 +57,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             getAllLike()
 
             sayingList.observe(this@MainActivity) {
-                printLog("success to load $it")
+                printLog("success to load ${it.size}")
             }
         }
     }

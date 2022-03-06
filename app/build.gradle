@@ -111,6 +111,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
 
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
     implementation 'com.google.firebase:firebase-ads:20.5.0'
