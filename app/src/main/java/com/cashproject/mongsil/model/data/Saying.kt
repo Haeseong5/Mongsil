@@ -27,5 +27,9 @@ data class Saying(
     @Deprecated("사용되지 않는 필드입니다.")
     @Contextual
     @ColumnInfo
-    val date: Date = Date()
+    val date: Date = Date(),
+
+    @ColumnInfo
+    val test: String = "test filed"
+
 ) : Parcelable

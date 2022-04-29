@@ -91,4 +91,16 @@
         android:name="com.cashproject.mongsil.ui.pages.setting.alarm.AlarmFragment"
         android:label="alarm"
         tools:layout="@layout/fragment_alarm" />
+
+    <fragment
+        android:id="@+id/backupFragment"
+        android:name="com.cashproject.mongsil.ui.pages.setting.backup.BackupFragment"
+        android:label="backup"
+        tools:layout="@layout/fragment_backup" />
+
+    <action
+        android:id="@+id/action_to_backupFragment"
+        app:destination="@id/backupFragment"
+        app:enterAnim="@anim/slide_in"
+        app:popEnterAnim="@anim/fade_in" />
 </navigation>

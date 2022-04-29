@@ -11,7 +11,7 @@ import com.cashproject.mongsil.model.db.dao.LockerDao
 
 //https://github.com/android/architecture-components-samples/tree/master/PersistenceMigrationsSample/app/src/room3/java/com/example/android/persistence/migrations
 
-@Database(entities = [Saying::class, Comment::class], version = 2)
+@Database(entities = [Saying::class, Comment::class], version = 3)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun lockerDao(): LockerDao
@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val DB_FILE_NAME = "Mongsil.db"
+        const val DB_FILE_NAME = "Mongsil.db"
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -33,12 +33,13 @@ abstract class AppDatabase : RoomDatabase() {
             Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java, DB_FILE_NAME
-            ).build()
+            ).addMigrations(MIGRATION_2_3).
+            build()
     }
 }
 
 val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE Book ADD COLUMN pub_year INTEGER")
+        database.execSQL("ALTER TABLE Saying ADD COLUMN test TEXT")
     }
 }

@@ -68,7 +68,7 @@ class SettingFragment : Fragment() {
     }
 
     fun backUp() {
-
+        findNavController().navigate(R.id.action_to_backupFragment)
     }
 
     fun showReadyMessage() {
