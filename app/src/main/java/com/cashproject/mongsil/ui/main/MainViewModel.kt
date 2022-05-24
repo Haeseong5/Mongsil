@@ -74,7 +74,7 @@ class MainViewModel(
             }
         } catch (e: Exception) {
             Log.e(this.javaClass.name, e.localizedMessage)
-            Saying()
+            Saying(test = "r")
         }
     }
 
