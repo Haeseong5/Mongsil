@@ -25,7 +25,8 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
             ContentDiffUtil(
                 items,
                 newItemList
-            ), false)
+            ), false
+        )
         diffResult.dispatchUpdatesTo(this)
         items.clear()
         items.addAll(newItemList)
@@ -37,13 +38,14 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
         holder.bindView(items[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
-     = ViewHolder(ItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(ItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
-    inner class ViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(private val binding: ItemCommentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(item: Comment){
+        fun bindView(item: Comment) {
             binding.comment = item
             binding.commentIvEmoticon.setImageResource(emoticons[item.emotion].icon)
             binding.commentTvTime.text = DateUtil.commentDateToString(date = item.time)
@@ -56,7 +58,10 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
         }
     }
 
-    class ContentDiffUtil(private val oldList: List<Comment>, private val currentList: List<Comment>) : DiffUtil.Callback() {
+    class ContentDiffUtil(
+        private val oldList: List<Comment>,
+        private val currentList: List<Comment>
+    ) : DiffUtil.Callback() {
 
         //1. 아이템의 고유 id 값이 같은지
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -70,6 +75,7 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
         //변화하기 전 데이터셋 사이즈
         override fun getOldListSize(): Int = oldList.size
+
         //변화한 후 데이터셋 사이즈
         override fun getNewListSize(): Int = currentList.size
     }

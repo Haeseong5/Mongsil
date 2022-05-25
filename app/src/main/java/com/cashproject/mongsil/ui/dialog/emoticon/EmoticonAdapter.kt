@@ -11,7 +11,7 @@ import com.cashproject.mongsil.model.data.Emoticons.emoticons
 
 class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
 
-    private var items: ArrayList<Emoticon> = emoticons
+    private var items: List<Emoticon> = emoticons
 
     private var listener: ((item: Emoticon) -> Unit)? = null
 
