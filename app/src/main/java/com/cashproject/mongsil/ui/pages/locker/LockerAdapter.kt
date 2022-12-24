@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemLockerBinding
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 
 /**
  * diffUtil 다른거 써 보기

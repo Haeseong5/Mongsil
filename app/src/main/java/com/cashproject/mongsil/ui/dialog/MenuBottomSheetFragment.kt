@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.cashproject.mongsil.di.Injection
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment

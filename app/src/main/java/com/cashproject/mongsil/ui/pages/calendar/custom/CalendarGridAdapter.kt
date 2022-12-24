@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.model.data.Comment
+import com.cashproject.mongsil.data.db.entity.Comment
 import com.cashproject.mongsil.model.data.Day
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.CalendarUtil

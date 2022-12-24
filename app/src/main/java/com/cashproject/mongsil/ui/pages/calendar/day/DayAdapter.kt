@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.databinding.ItemLoadingBinding
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 import com.cashproject.mongsil.util.DateUtil
 import java.util.*
 import kotlin.collections.ArrayList

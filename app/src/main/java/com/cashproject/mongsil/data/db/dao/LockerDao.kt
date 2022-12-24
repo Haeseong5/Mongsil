@@ -1,10 +1,9 @@
-package com.cashproject.mongsil.model.db.dao
+package com.cashproject.mongsil.data.db.dao
 
 import androidx.room.*
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.Single
 
 @Dao
 interface LockerDao {

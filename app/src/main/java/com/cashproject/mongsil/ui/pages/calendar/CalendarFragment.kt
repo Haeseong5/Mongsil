@@ -4,19 +4,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
-import com.cashproject.mongsil.extension.addTo
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
 import com.cashproject.mongsil.ui.pages.detail.DetailFragment
-import com.cashproject.mongsil.util.RxEventBus
-import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {

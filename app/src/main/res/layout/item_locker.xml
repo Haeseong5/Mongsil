@@ -6,7 +6,7 @@
     <data>
         <variable
             name="saying"
-            type="com.cashproject.mongsil.model.data.Saying" />
+            type="com.cashproject.mongsil.data.db.entity.Saying" />
     </data>
 
     <com.cashproject.mongsil.util.SquareLayout

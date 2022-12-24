@@ -3,7 +3,6 @@ package com.cashproject.mongsil.ui.pages.calendar.custom
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log.d
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ViewCalendarTopLayoutBinding
-import com.cashproject.mongsil.model.data.Comment
+import com.cashproject.mongsil.data.db.entity.Comment
 import com.cashproject.mongsil.model.data.Day
 import com.cashproject.mongsil.util.CalendarUtil.convertCalendarToString
 import com.cashproject.mongsil.util.CalendarUtil.isMonthSame

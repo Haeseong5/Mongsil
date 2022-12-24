@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.model.remote
 
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 
 class SayingService : SayingApi {
 

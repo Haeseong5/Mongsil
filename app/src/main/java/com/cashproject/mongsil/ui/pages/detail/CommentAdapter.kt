@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemCommentBinding
-import com.cashproject.mongsil.model.data.Comment
+import com.cashproject.mongsil.data.db.entity.Comment
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.DateUtil
 

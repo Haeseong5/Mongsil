@@ -17,11 +17,11 @@
 package com.cashproject.mongsil.di
 
 import android.content.Context
-import com.cashproject.mongsil.model.db.AppDatabase
-import com.cashproject.mongsil.model.db.dao.CommentDao
-import com.cashproject.mongsil.model.db.dao.LockerDao
+import com.cashproject.mongsil.data.db.AppDatabase
+import com.cashproject.mongsil.data.db.dao.CommentDao
+import com.cashproject.mongsil.data.db.dao.LockerDao
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
-import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.data.db.LocalDataSource
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 

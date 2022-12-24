@@ -19,7 +19,7 @@ package com.cashproject.mongsil.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
-import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.data.db.LocalDataSource
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
 

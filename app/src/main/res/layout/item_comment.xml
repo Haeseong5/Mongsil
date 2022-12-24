@@ -6,7 +6,7 @@
     <data>
         <variable
             name="comment"
-            type="com.cashproject.mongsil.model.data.Comment" />
+            type="com.cashproject.mongsil.data.db.entity.Comment" />
         <variable
             name="dateutil"
             type="com.cashproject.mongsil.util.DateUtil" />

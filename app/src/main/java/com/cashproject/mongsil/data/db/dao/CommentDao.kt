@@ -1,7 +1,7 @@
-package com.cashproject.mongsil.model.db.dao
+package com.cashproject.mongsil.data.db.dao
 
 import androidx.room.*
-import com.cashproject.mongsil.model.data.Comment
+import com.cashproject.mongsil.data.db.entity.Comment
 import io.reactivex.Completable
 import io.reactivex.Single
 

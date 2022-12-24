@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model.data
+package com.cashproject.mongsil.data.db.entity
 
 import android.os.Parcelable
 import androidx.annotation.Keep

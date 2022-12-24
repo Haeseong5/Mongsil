@@ -1,7 +1,6 @@
-package com.cashproject.mongsil.model.db
+package com.cashproject.mongsil.data.db
 
 import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import java.util.*
 
 

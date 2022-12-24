@@ -1,9 +1,9 @@
-package com.cashproject.mongsil.model.db.datasource
+package com.cashproject.mongsil.data.db
 
-import com.cashproject.mongsil.model.data.Comment
-import com.cashproject.mongsil.model.data.Saying
-import com.cashproject.mongsil.model.db.dao.CommentDao
-import com.cashproject.mongsil.model.db.dao.LockerDao
+import com.cashproject.mongsil.data.db.entity.Comment
+import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.dao.CommentDao
+import com.cashproject.mongsil.data.db.dao.LockerDao
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.data.db.entity.Saying
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
-import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.data.db.LocalDataSource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.reactivex.android.schedulers.AndroidSchedulers
