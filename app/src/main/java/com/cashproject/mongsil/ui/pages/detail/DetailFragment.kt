@@ -21,9 +21,9 @@ import com.cashproject.mongsil.databinding.FrammentDetailBinding
 import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.data.db.entity.Comment
+import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
-import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
@@ -62,7 +62,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     @Parcelize
     data class Argument(
-        val saying: Saying,
+        val sayingEntity: SayingEntity,
         val selectedDate: Date,
         val from: String? = null
     ) : Parcelable
@@ -79,7 +79,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     private val commentAdapter: CommentAdapter by lazy { CommentAdapter() }
 
-    val currentImageUrl get() = argument.saying.image
+    val currentImageUrl get() = argument.sayingEntity.image
 
     var mInterstitialAd: InterstitialAd? = null
 
@@ -124,7 +124,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
             showCheckDialog(it.id)
         }
 
-        mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner) {
+        mainActivity?.mainViewModel?.commentEntityList?.observe(viewLifecycleOwner) {
             it.filter { comment ->
                 isSameDay(comment.date, argument.selectedDate)
             }.let { comments ->
@@ -151,7 +151,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
 
     fun onClickSubmitComment() {
         mainViewModel.insertComment(
-            Comment(
+            CommentEntity(
                 content = binding.etSayingCommentInput.text.toString(),
                 time = Date(),
                 emotion = selectedEmoticonId,
@@ -164,7 +164,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
     private fun showBottomMenuDialog() {
         click.run {
             MenuBottomSheetFragment(
-                saying = argument.saying ?: return@run,
+                sayingEntity = argument.sayingEntity ?: return@run,
                 selectedDate = argument.selectedDate
             ).apply {
                 setSaveBtnOnClickListener {

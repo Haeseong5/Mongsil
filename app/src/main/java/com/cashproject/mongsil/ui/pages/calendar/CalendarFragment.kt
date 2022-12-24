@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
-import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
@@ -34,11 +34,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         Log.d(this.javaClass.name, "this: $this dayAdapter: $dayAdapter")
         initRecyclerView()
         initClickListener()
-        mainViewModel.sayingList.observe(viewLifecycleOwner) {
-            dayAdapter.update(it as ArrayList<Saying>)
+        mainViewModel.sayingEntityList.observe(viewLifecycleOwner) {
+            dayAdapter.update(it as ArrayList<SayingEntity>)
         }
 
-        mainViewModel.commentList.observe(viewLifecycleOwner) {
+        mainViewModel.commentEntityList.observe(viewLifecycleOwner) {
             binding.customCalendarView.notifyDataChanged(it)
         }
     }
@@ -71,7 +71,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 DetailFragment.start(
                     fragment = this,
                     argument = DetailFragment.Argument(
-                        saying = mainViewModel.getRandomSaying(it.calendar.time),
+                        sayingEntity = mainViewModel.getRandomSaying(it.calendar.time),
                         selectedDate = it.calendar.time
                     )
                 )
@@ -82,7 +82,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
             DetailFragment.start(
                 fragment = this,
                 argument = DetailFragment.Argument(
-                    saying = item,
+                    sayingEntity = item,
                     selectedDate = selectedDate
                 )
             )

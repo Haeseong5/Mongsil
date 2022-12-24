@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.GridView
 import androidx.viewpager.widget.PagerAdapter
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.data.db.entity.Comment
+import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.model.data.Day
 
 import java.util.*
@@ -24,7 +24,7 @@ class CalendarPagerAdapter(private val context: Context) : PagerAdapter() {
         this.onDayClickListener = listener
     }
 
-    fun setList(list: List<Comment>) {
+    fun setList(list: List<CommentEntity>) {
         val views = viewContainer ?: return
         (0 until views.childCount).forEach { i ->
             ((views.getChildAt(i) as GridView).adapter as? CalendarGridAdapter)?.updateList(list)

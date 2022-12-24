@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemDayBinding
 import com.cashproject.mongsil.databinding.ItemLoadingBinding
-import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.util.DateUtil
 import java.util.*
 import kotlin.collections.ArrayList
@@ -15,15 +15,15 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
 
     private var isLoaderVisible = false
 
-    private var items: ArrayList<Saying> = ArrayList()
+    private var items: ArrayList<SayingEntity> = ArrayList()
 
-    private var listener: ((item: Saying, selectedDate: Date) -> Unit)? = null
+    private var listener: ((item: SayingEntity, selectedDate: Date) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (item: Saying, selectedDate: Date) -> Unit) {
+    fun setOnItemClickListener(listener: (item: SayingEntity, selectedDate: Date) -> Unit) {
         this.listener = listener
     }
 
-    fun update(newItemList: ArrayList<Saying>) {
+    fun update(newItemList: ArrayList<SayingEntity>) {
         val diffResult =
             DiffUtil.calculateDiff(DayAdapter.ContentDiffUtil(items, newItemList), false)
         diffResult.dispatchUpdatesTo(this)
@@ -31,12 +31,12 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
         items.addAll(newItemList)
     }
 
-    fun add(saying: Saying) {
-        items.add(saying)
+    fun add(sayingEntity: SayingEntity) {
+        items.add(sayingEntity)
         notifyItemInserted(items.size-1) //삽입된 위치만 갱신
     }
 
-    fun isLoading(flag: Boolean, newItemList: ArrayList<Saying>){
+    fun isLoading(flag: Boolean, newItemList: ArrayList<SayingEntity>){
         isLoaderVisible = flag
         update(newItemList)
     }
@@ -77,7 +77,7 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
 
     inner class ListViewHolder(val binding: ItemDayBinding) : SuperViewHolder(binding) {
 
-        override fun bindView(item: Saying, position: Int) {
+        override fun bindView(item: SayingEntity, position: Int) {
             binding.saying = item
 
             val cal = Calendar.getInstance()
@@ -101,7 +101,7 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
     }
 
     inner class FooterHolder(val binding: ItemLoadingBinding) : SuperViewHolder(binding) {
-        override fun bindView(item: Saying, position: Int) {
+        override fun bindView(item: SayingEntity, position: Int) {
 
             binding.root.setOnClickListener {
 //                listener?.invoke(item, ) //익명함수 호출
@@ -114,8 +114,8 @@ class DayAdapter(private val viewTypeCase: ViewTypeCase) : RecyclerView.Adapter<
     }
 
     class ContentDiffUtil(
-        private val oldList: List<Saying>,
-        private val currentList: List<Saying>
+        private val oldList: List<SayingEntity>,
+        private val currentList: List<SayingEntity>
     ) : DiffUtil.Callback() {
 
         //1. 아이템의 고유 id 값이 같은지

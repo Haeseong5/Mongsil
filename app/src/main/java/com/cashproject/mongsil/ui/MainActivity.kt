@@ -14,7 +14,6 @@ import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.MobileAds
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -56,7 +55,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             getAllComments()
             getAllLike()
 
-            sayingList.observe(this@MainActivity) {
+            sayingEntityList.observe(this@MainActivity) {
                 printLog("success to load ${it.size}")
             }
         }

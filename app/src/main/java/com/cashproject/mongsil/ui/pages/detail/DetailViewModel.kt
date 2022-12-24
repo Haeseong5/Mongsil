@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
-import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.data.db.LocalDataSource
 import com.google.firebase.firestore.ktx.firestore
@@ -25,9 +25,9 @@ class DetailViewModel(
         Firebase.firestore
     }
 
-    fun like(saying: Saying) {
+    fun like(sayingEntity: SayingEntity) {
         addDisposable(
-            localDataSource.insertLikeSaying(saying)
+            localDataSource.insertLikeSaying(sayingEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

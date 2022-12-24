@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
-import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.detail.DetailFragment
 import java.util.*
@@ -41,7 +41,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
         initRecyclerView()
 
         mainActivity?.mainViewModel?.likeList?.observe(viewLifecycleOwner, Observer {
-            lockerAdapter.update(it as ArrayList<Saying>)
+            lockerAdapter.update(it as ArrayList<SayingEntity>)
         })
     }
 
@@ -73,7 +73,7 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
                 DetailFragment.start(
                     fragment = this,
                     argument = DetailFragment.Argument(
-                        saying = it,
+                        sayingEntity = it,
                         selectedDate = Date(),
                         from = "locker",
                     ),

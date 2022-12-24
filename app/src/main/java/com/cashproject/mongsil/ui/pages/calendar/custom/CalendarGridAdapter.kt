@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.data.db.entity.Comment
+import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.model.data.Day
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.CalendarUtil
@@ -26,7 +26,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         private const val SIZE_OF_DAY = 7 * 6
         private const val SUNDAY = 0
         private const val SATURDAY = 6
-        private val reviewList = mutableListOf<Comment>()
+        private val reviewList = mutableListOf<CommentEntity>()
         private val TAG = this::class.java.simpleName
     }
 
@@ -37,7 +37,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
         setCalendar()
     }
 
-    fun updateList(list: List<Comment>) {
+    fun updateList(list: List<CommentEntity>) {
         reviewList.apply {
             clear()
             addAll(list)
@@ -96,11 +96,11 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
             todayCv.visibility = View.VISIBLE
         }
 
-        if (day.comments.isNotEmpty()) {
+        if (day.commentEntities.isNotEmpty()) {
             posterIv.visibility = View.VISIBLE
             dayTv.visibility = View.GONE
-            val lastIndex = day.comments.lastIndex
-            posterIv.setImageResource(emoticons[day.comments[lastIndex].emotion].icon)
+            val lastIndex = day.commentEntities.lastIndex
+            posterIv.setImageResource(emoticons[day.commentEntities[lastIndex].emotion].icon)
         } else {
             posterIv.visibility = View.GONE
             dayTv.visibility = View.VISIBLE
@@ -132,7 +132,7 @@ class CalendarGridAdapter(private val context: Context, private val calendar: Ca
 
         while (dayList.size < SIZE_OF_DAY) {
             val it = reviewList.iterator()
-            val reviews = mutableListOf<Comment>()
+            val reviews = mutableListOf<CommentEntity>()
             while (it.hasNext()) {
                 val item = it.next()
                 if (CalendarUtil.isCalendarAndDateSame(cal, item.date)) {

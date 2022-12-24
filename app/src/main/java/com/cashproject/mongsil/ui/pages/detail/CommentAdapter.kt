@@ -6,21 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemCommentBinding
-import com.cashproject.mongsil.data.db.entity.Comment
+import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.model.data.Emoticons.emoticons
 import com.cashproject.mongsil.util.DateUtil
 
 class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
-    private var items: ArrayList<Comment> = ArrayList()
+    private var items: ArrayList<CommentEntity> = ArrayList()
 
-    private var listener: ((item: Comment) -> Unit)? = null
+    private var listener: ((item: CommentEntity) -> Unit)? = null
 
-    fun setOnItemLongClickListener(listener: (item: Comment) -> Unit) {
+    fun setOnItemLongClickListener(listener: (item: CommentEntity) -> Unit) {
         this.listener = listener
     }
 
-    fun update(newItemList: List<Comment>) {
+    fun update(newItemList: List<CommentEntity>) {
         val diffResult = DiffUtil.calculateDiff(
             ContentDiffUtil(
                 items,
@@ -45,7 +45,7 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: ItemCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(item: Comment) {
+        fun bindView(item: CommentEntity) {
             binding.comment = item
             binding.commentIvEmoticon.setImageResource(emoticons[item.emotion].icon)
             binding.commentTvTime.text = DateUtil.commentDateToString(date = item.time)
@@ -59,8 +59,8 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     }
 
     class ContentDiffUtil(
-        private val oldList: List<Comment>,
-        private val currentList: List<Comment>
+        private val oldList: List<CommentEntity>,
+        private val currentList: List<CommentEntity>
     ) : DiffUtil.Callback() {
 
         //1. 아이템의 고유 id 값이 같은지

@@ -1,8 +1,6 @@
 package com.cashproject.mongsil.databinding;
 import com.cashproject.mongsil.R;
 import com.cashproject.mongsil.BR;
-import com.cashproject.mongsil.data.db.entity.Saying;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
@@ -74,7 +72,7 @@ public class ItemDayBindingImpl extends ItemDayBinding  {
     public boolean setVariable(int variableId, @Nullable Object variable)  {
         boolean variableSet = true;
         if (BR.saying == variableId) {
-            setSaying((Saying) variable);
+            setSaying((com.cashproject.mongsil.data.db.entity.SayingEntity) variable);
         }
         else {
             variableSet = false;
@@ -82,7 +80,7 @@ public class ItemDayBindingImpl extends ItemDayBinding  {
             return variableSet;
     }
 
-    public void setSaying(@Nullable Saying Saying) {
+    public void setSaying(@Nullable com.cashproject.mongsil.data.db.entity.SayingEntity Saying) {
         this.mSaying = Saying;
         synchronized(this) {
             mDirtyFlags |= 0x1L;
@@ -105,7 +103,7 @@ public class ItemDayBindingImpl extends ItemDayBinding  {
             dirtyFlags = mDirtyFlags;
             mDirtyFlags = 0;
         }
-        Saying saying = mSaying;
+        com.cashproject.mongsil.data.db.entity.SayingEntity saying = mSaying;
         java.lang.String sayingSquareImage = null;
 
         if ((dirtyFlags & 0x3L) != 0) {

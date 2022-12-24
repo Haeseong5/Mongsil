@@ -14,13 +14,15 @@ import java.util.*
 @Keep
 @Parcelize
 @Serializable
-@Entity
-data class Saying(
+@Entity(tableName = "Saying")
+data class SayingEntity(
     @PrimaryKey
     @SerialName("id")
     val docId: String = "",
+
     @ColumnInfo
     val image: String = "",
+
     @ColumnInfo(name = "s")
     val squareImage: String = "",
 

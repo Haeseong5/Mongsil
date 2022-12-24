@@ -1,8 +1,6 @@
 package com.cashproject.mongsil.databinding;
 import com.cashproject.mongsil.R;
 import com.cashproject.mongsil.BR;
-import com.cashproject.mongsil.data.db.entity.Comment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
@@ -66,7 +64,7 @@ public class ItemCommentBindingImpl extends ItemCommentBinding  {
     public boolean setVariable(int variableId, @Nullable Object variable)  {
         boolean variableSet = true;
         if (BR.comment == variableId) {
-            setComment((Comment) variable);
+            setComment((com.cashproject.mongsil.data.db.entity.CommentEntity) variable);
         }
         else if (BR.dateutil == variableId) {
             setDateutil((com.cashproject.mongsil.util.DateUtil) variable);
@@ -77,7 +75,7 @@ public class ItemCommentBindingImpl extends ItemCommentBinding  {
             return variableSet;
     }
 
-    public void setComment(@Nullable Comment Comment) {
+    public void setComment(@Nullable com.cashproject.mongsil.data.db.entity.CommentEntity Comment) {
         this.mComment = Comment;
         synchronized(this) {
             mDirtyFlags |= 0x1L;
@@ -103,7 +101,7 @@ public class ItemCommentBindingImpl extends ItemCommentBinding  {
             dirtyFlags = mDirtyFlags;
             mDirtyFlags = 0;
         }
-        Comment comment = mComment;
+        com.cashproject.mongsil.data.db.entity.CommentEntity comment = mComment;
         java.lang.String commentContent = null;
 
         if ((dirtyFlags & 0x5L) != 0) {

@@ -8,8 +8,8 @@ import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.fcm.PushManager
-import com.cashproject.mongsil.data.db.entity.Comment
-import com.cashproject.mongsil.data.db.entity.Saying
+import com.cashproject.mongsil.data.db.entity.CommentEntity
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.data.db.LocalDataSource
 import com.cashproject.mongsil.model.remote.SayingApi
@@ -35,14 +35,14 @@ class MainViewModel(
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
-    private val _sayingList = MutableLiveData<List<Saying>>()
-    val sayingList: LiveData<List<Saying>> get() = _sayingList
+    private val _sayingEntityList = MutableLiveData<List<SayingEntity>>()
+    val sayingEntityList: LiveData<List<SayingEntity>> get() = _sayingEntityList
 
-    private val _commentList = MutableLiveData<List<Comment>>()
-    val commentList: LiveData<List<Comment>> get() = _commentList
+    private val _commentEntityList = MutableLiveData<List<CommentEntity>>()
+    val commentEntityList: LiveData<List<CommentEntity>> get() = _commentEntityList
 
-    private val _likeList = MutableLiveData<List<Saying>>()
-    val likeList: LiveData<List<Saying>> get() = _likeList
+    private val _likeList = MutableLiveData<List<SayingEntity>>()
+    val likeList: LiveData<List<SayingEntity>> get() = _likeList
 
     private val _selectedPagePosition = MutableStateFlow<Int>(1)
     val selectedPagePosition = _selectedPagePosition.asStateFlow()
@@ -62,17 +62,17 @@ class MainViewModel(
             runCatching {
                 sayingApi.getSayings()
             }.onSuccess {
-                _sayingList.postValue(it)
+                _sayingEntityList.postValue(it)
             }.onFailure {
                 Log.e(TAG, "Error getting documents: ", it)
             }
         }
     }
 
-    fun getRandomSaying(date: Date): Saying {
+    fun getRandomSaying(date: Date): SayingEntity {
         return try {
             val day = date.time
-            val sayings = sayingList.value ?: emptyList()
+            val sayings = sayingEntityList.value ?: emptyList()
             val cachedIdx = hashMap[day]
             if (cachedIdx == null) {
                 val randomIdx = Random.nextInt(sayings.size)
@@ -83,7 +83,7 @@ class MainViewModel(
             }
         } catch (e: Exception) {
             Log.e(this.javaClass.name, e.localizedMessage)
-            Saying()
+            SayingEntity()
         }
     }
 
@@ -104,7 +104,7 @@ class MainViewModel(
             .subscribeOn(Schedulers.io())
             .subscribe({
                 "$it".log()
-                _commentList.postValue(it)
+                _commentEntityList.postValue(it)
             }, {
                 errorSubject.onNext(it)
                 Log.e(TAG, it.localizedMessage.toString())
@@ -113,15 +113,15 @@ class MainViewModel(
             }).addTo(compositeDisposable)
     }
 
-    fun insertComment(comment: Comment) {
+    fun insertComment(commentEntity: CommentEntity) {
         addDisposable(
-            localDataSource.insertComment(comment)
+            localDataSource.insertComment(commentEntity)
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    val comments = (commentList.value ?: emptyList()) + comment
+                    val comments = (commentEntityList.value ?: emptyList()) + commentEntity
                     "$comments".log()
-                    _commentList.postValue(comments)
+                    _commentEntityList.postValue(comments)
                 }, {
                     errorSubject.onNext(it)
                     Log.e(TAG, it.localizedMessage.toString())
@@ -137,8 +137,8 @@ class MainViewModel(
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    val comments = commentList.value?.filter { it.id != id }
-                    _commentList.postValue(comments!!)
+                    val comments = commentEntityList.value?.filter { it.id != id }
+                    _commentEntityList.postValue(comments!!)
                 }, {
                     errorSubject.onNext(it)
                 })

@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ViewCalendarTopLayoutBinding
-import com.cashproject.mongsil.data.db.entity.Comment
+import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.model.data.Day
 import com.cashproject.mongsil.util.CalendarUtil.convertCalendarToString
 import com.cashproject.mongsil.util.CalendarUtil.isMonthSame
@@ -53,7 +53,7 @@ internal class CalendarView(
         this.onDayClickListener = listener
     }
 
-    fun notifyDataChanged(list: List<Comment>) {
+    fun notifyDataChanged(list: List<CommentEntity>) {
         calendarPagerAdapter.setList(list)
     }
 
