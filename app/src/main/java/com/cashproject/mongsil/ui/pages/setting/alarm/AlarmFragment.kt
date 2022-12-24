@@ -5,11 +5,9 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentAlarmBinding
-import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.fcm.PushManager
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.PreferencesManager.isEnabledPushNotification
