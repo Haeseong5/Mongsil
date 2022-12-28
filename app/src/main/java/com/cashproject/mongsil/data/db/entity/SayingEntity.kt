@@ -11,9 +11,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.*
 
-/**
- * 북마크 명언 id만 저장하면 되므로, 해당 Entity 필요 없음.
- */
 @Keep
 @Parcelize
 @Serializable
@@ -23,9 +20,11 @@ data class SayingEntity(
     @SerialName("id")
     val docId: String = "",
 
+    @Deprecated("사용되지 않는 필드입니다.")
     @ColumnInfo
     val image: String = "",
 
+    @Deprecated("사용되지 않는 필드입니다.")
     @ColumnInfo(name = "s")
     val squareImage: String = "",
 
@@ -34,6 +33,7 @@ data class SayingEntity(
     @ColumnInfo
     val date: Date = Date(),
 
+    @Deprecated("사용되지 않는 필드입니다.")
     @ColumnInfo
     val test: String = "test filed"
 
