@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.databinding.FragmentBackupBinding
-import com.cashproject.mongsil.data.db.DatabaseUtils
+import com.cashproject.mongsil.data.db.utils.DatabaseUtils
 
 
 class BackupFragment : Fragment() {

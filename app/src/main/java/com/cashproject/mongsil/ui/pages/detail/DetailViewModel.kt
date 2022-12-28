@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.data.db.LocalDataSource
+import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class DetailViewModel(
-    private val localDataSource: LocalDataSource,
+    private val diaryService: DiaryService,
     private val firestoreDataSource: FireStoreDataSource
 ) : BaseViewModel() {
 
@@ -27,7 +27,7 @@ class DetailViewModel(
 
     fun like(sayingEntity: SayingEntity) {
         addDisposable(
-            localDataSource.insertLikeSaying(sayingEntity)
+            diaryService.insertLikeSaying(sayingEntity)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -43,7 +43,7 @@ class DetailViewModel(
     }
 
     fun unLike(docId: String) {
-        addDisposable(localDataSource.deleteLikeSayingByDocId(docId = docId)
+        addDisposable(diaryService.deleteLikeSayingByDocId(docId = docId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -61,7 +61,7 @@ class DetailViewModel(
 
     fun findByDocId(docId: String) {
         addDisposable(
-            localDataSource.findByDocId(docId)
+            diaryService.findByDocId(docId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError {

@@ -6,18 +6,18 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 
 @Dao
-interface LockerDao {
+interface BookmarkDao {
 
     @Query("SELECT * FROM Saying")
     suspend fun getAll(): List<SayingEntity>
 
     @Query("SELECT * FROM Saying WHERE docId = :docId")
-    fun findByDocId(docId: String): Maybe<SayingEntity>
+    suspend fun findByDocId(docId: String): SayingEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(sayingEntity: SayingEntity) : Completable
+    suspend fun insert(sayingEntity: SayingEntity)
 
     @Query("DELETE FROM Saying WHERE docId = :docId")
-    fun delete(docId: String) : Completable
+    suspend fun delete(docId: String)
 
 }

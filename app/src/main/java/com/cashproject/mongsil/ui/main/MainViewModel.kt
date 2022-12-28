@@ -10,9 +10,9 @@ import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.data.db.LocalDataSource
-import com.cashproject.mongsil.data.api.SayingApi
-import com.cashproject.mongsil.data.api.SayingService
+import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.data.api.PosterApi
+import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.cashproject.mongsil.util.PreferencesManager
 import io.reactivex.schedulers.Schedulers
@@ -29,9 +29,9 @@ import kotlin.random.Random
  */
 
 class MainViewModel(
-    private val localDataSource: LocalDataSource,
+    private val diaryService: DiaryService,
     private val firestoreDataSource: FireStoreDataSource,
-    private val sayingApi: SayingApi = SayingService(),
+    private val posterApi: PosterApi = PosterService(),
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
@@ -60,7 +60,7 @@ class MainViewModel(
     fun getSayingList() {
         viewModelScope.launch {
             runCatching {
-                sayingApi.getSayings()
+                posterApi.getAllPosters()
             }.onSuccess {
                 _sayingEntityList.postValue(it)
             }.onFailure {
@@ -90,7 +90,7 @@ class MainViewModel(
     fun getAllLike() {
         viewModelScope.launch {
             try {
-                localDataSource.getAllLikeData().let {
+                diaryService.getAllLikeData().let {
                     _likeList.postValue(it)
                 }
             } catch (e: Exception) {
@@ -100,7 +100,7 @@ class MainViewModel(
     }
 
     fun getAllComments() {
-        localDataSource.getAllComments()
+        diaryService.getAllComments()
             .subscribeOn(Schedulers.io())
             .subscribe({
                 "$it".log()
@@ -115,7 +115,7 @@ class MainViewModel(
 
     fun insertComment(commentEntity: CommentEntity) {
         addDisposable(
-            localDataSource.insertComment(commentEntity)
+            diaryService.insertComment(commentEntity)
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -133,7 +133,7 @@ class MainViewModel(
 
     fun deleteCommentById(id: Int) {
         addDisposable(
-            localDataSource.deleteCommentById(id)
+            diaryService.deleteComment(id)
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

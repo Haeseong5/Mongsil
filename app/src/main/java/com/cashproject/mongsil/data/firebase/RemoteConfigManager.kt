@@ -4,7 +4,7 @@ import android.app.Activity
 import android.util.Log
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.base.ApplicationClass
+import com.cashproject.mongsil.base.App
 import com.cashproject.mongsil.extension.fromJson
 import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.extension.openPlayStore
@@ -40,7 +40,7 @@ class RemoteConfigManager(private val activity: Activity) {
                     "### ${remoteConfig.getLong("latestAppVersionCode")}".log()
 
                     if (task.isSuccessful) {
-                        ApplicationClass.appVersion =
+                        App.appVersion =
                             remoteConfig.getValue(APP_VERSION_KEY).asString().fromJson<AppVersion>()
                         if (isOldVersion()) {
                             showAppVersionDialog()
@@ -50,8 +50,8 @@ class RemoteConfigManager(private val activity: Activity) {
                         Log.i(
                             "###" + this.javaClass.name,
                             "Config params updated: $updated\t" +
-                                    "latestAppVersionCode : ${ApplicationClass.appVersion.latestAppVersionCode}\t" +
-                                    "latestAppVersionName : ${ApplicationClass.appVersion.latestAppVersionName}"
+                                    "latestAppVersionCode : ${App.appVersion.latestAppVersionCode}\t" +
+                                    "latestAppVersionName : ${App.appVersion.latestAppVersionName}"
                         )
                     }
                 } catch (e: Exception) {
@@ -70,7 +70,7 @@ class RemoteConfigManager(private val activity: Activity) {
                 activity.getString(
                     R.string.app_version,
                     BuildConfig.VERSION_NAME,
-                    ApplicationClass.appVersion.latestAppVersionName
+                    App.appVersion.latestAppVersionName
                 )
             )
         }
@@ -83,5 +83,5 @@ class RemoteConfigManager(private val activity: Activity) {
  * 9 < 10 -> false
  */
 fun isOldVersion(): Boolean {
-    return BuildConfig.VERSION_CODE < ApplicationClass.appVersion.latestAppVersionCode
+    return BuildConfig.VERSION_CODE < App.appVersion.latestAppVersionCode
 }

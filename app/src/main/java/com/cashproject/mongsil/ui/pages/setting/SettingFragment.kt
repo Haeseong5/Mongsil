@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.base.ApplicationClass
+import com.cashproject.mongsil.base.App
 import com.cashproject.mongsil.data.firebase.isOldVersion
 import com.cashproject.mongsil.databinding.FragmentSettingBinding
 import com.cashproject.mongsil.extension.intentAction
@@ -58,7 +58,7 @@ class SettingFragment : Fragment() {
                 getString(
                     R.string.app_version,
                     BuildConfig.VERSION_NAME,
-                    ApplicationClass.appVersion.latestAppVersionName
+                    App.appVersion.latestAppVersionName
                 )
             )
             if (isOldVersion()) {

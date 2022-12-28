@@ -4,17 +4,19 @@ import android.content.Context
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.cashproject.mongsil.base.App
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.data.db.dao.CommentDao
-import com.cashproject.mongsil.data.db.dao.LockerDao
+import com.cashproject.mongsil.data.db.dao.DiaryDao
+import com.cashproject.mongsil.data.db.dao.BookmarkDao
+import com.cashproject.mongsil.data.db.utils.DateConverter
 
 @Database(entities = [SayingEntity::class, CommentEntity::class], version = 4)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun lockerDao(): LockerDao
-    abstract fun commentDao(): CommentDao
+    abstract fun bookmarkDao(): BookmarkDao
+    abstract fun diaryDao(): DiaryDao
 
     companion object {
 
@@ -23,7 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase =
+        fun getInstance(context: Context = App.context): AppDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }

@@ -1,8 +1,7 @@
 package com.cashproject.mongsil.util
 
 import android.util.Log
-import com.cashproject.mongsil.base.ApplicationClass.Companion.prefs
-import com.cashproject.mongsil.data.firebase.fcm.PushManager
+import com.cashproject.mongsil.base.App.Companion.prefs
 
 const val FILENAME = "prefs"
 private const val PREF_HOUR = "hour"

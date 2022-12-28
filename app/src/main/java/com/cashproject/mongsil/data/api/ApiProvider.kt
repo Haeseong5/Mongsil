@@ -13,22 +13,7 @@ import kotlin.reflect.KClass
 
 object ApiProvider {
 
-    private const val DEFAULT_REQUEST_TIME_OUT = 30 * 1000L
     private const val LONG_REQUEST_TIME_OUT = 60 * 1000L
-
-    private fun createOkHttpClientBuilder(): OkHttpClient.Builder {
-        val apiClientBuilder = OkHttpClient.Builder()
-        if (BuildConfig.DEBUG) {
-            val loggingInterceptor = HttpLoggingInterceptor()
-            loggingInterceptor.level = (HttpLoggingInterceptor.Level.HEADERS)
-            apiClientBuilder.addInterceptor(loggingInterceptor)
-        }
-        apiClientBuilder.readTimeout(DEFAULT_REQUEST_TIME_OUT, TimeUnit.MILLISECONDS)
-        apiClientBuilder.writeTimeout(DEFAULT_REQUEST_TIME_OUT, TimeUnit.MILLISECONDS)
-        apiClientBuilder.connectTimeout(DEFAULT_REQUEST_TIME_OUT, TimeUnit.MILLISECONDS)
-
-        return apiClientBuilder
-    }
 
     private fun createLongOkHttpClientBuilder(): OkHttpClient.Builder {
         val apiClientBuilder = OkHttpClient.Builder()
@@ -46,7 +31,6 @@ object ApiProvider {
 
     private val contentType = "application/json".toMediaType()
 
-    //https://github.com/Kotlin/kotlinx.serialization/issues/169
     @ExperimentalSerializationApi
     private val json = Json {
         ignoreUnknownKeys = true
