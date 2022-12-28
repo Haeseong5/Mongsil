@@ -6,8 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ItemEmoticonBinding
-import com.cashproject.mongsil.domain.model.Emoticon
-import com.cashproject.mongsil.domain.model.Emoticons.emoticons
+import com.cashproject.mongsil.ui.model.Emoticon
+import com.cashproject.mongsil.ui.model.Emoticons.emoticons
 
 class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
 

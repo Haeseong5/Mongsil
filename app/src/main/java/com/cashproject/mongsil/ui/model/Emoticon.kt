@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.domain.model
+package com.cashproject.mongsil.ui.model
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes

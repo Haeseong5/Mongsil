@@ -13,11 +13,11 @@ import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.ApplicationClass
+import com.cashproject.mongsil.data.firebase.isOldVersion
 import com.cashproject.mongsil.databinding.FragmentSettingBinding
 import com.cashproject.mongsil.extension.intentAction
 import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.manager.isOldVersion
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
 import com.google.android.play.core.review.ReviewManagerFactory

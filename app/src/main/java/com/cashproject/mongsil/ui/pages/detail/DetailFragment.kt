@@ -22,7 +22,7 @@ import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.domain.model.Emoticons.emoticons
+import com.cashproject.mongsil.ui.model.Emoticons.emoticons
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
