@@ -3,7 +3,7 @@ package com.cashproject.mongsil.base
 import android.app.Application
 import android.content.SharedPreferences
 import com.cashproject.mongsil.manager.setChildAdmobMode
-import com.cashproject.mongsil.model.AppVersion
+import com.cashproject.mongsil.data.firebase.fcm.AppVersion
 import com.cashproject.mongsil.util.FILENAME
 
 

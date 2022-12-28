@@ -14,8 +14,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.model.data.Day
-import com.cashproject.mongsil.model.data.Emoticons.emoticons
+import com.cashproject.mongsil.domain.model.Day
+import com.cashproject.mongsil.domain.model.Emoticons.emoticons
 import com.cashproject.mongsil.util.CalendarUtil
 import java.util.*
 

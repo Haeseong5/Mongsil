@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.data.db.LocalDataSource
+import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 
 class DetailViewModel(
     private val localDataSource: LocalDataSource,
-    private val firestoreDataSource: FirestoreDataSource
+    private val firestoreDataSource: FireStoreDataSource
 ) : BaseViewModel() {
 
     private val _isLike = MutableLiveData<Boolean>()

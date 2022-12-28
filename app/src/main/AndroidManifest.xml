@@ -54,7 +54,7 @@
             포그라운드 앱의 알림 수신, 데이터 페이로드 수신, 업스트림 메시지 전송 등을 수행하려면 이 서비스를 확장해야 합니다.
         -->
         <service
-            android:name=".fcm.MyFirebaseMessagingService"
+            android:name=".data.firebase.fcm.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

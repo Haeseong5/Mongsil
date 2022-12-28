@@ -1,15 +1,13 @@
-package com.cashproject.mongsil.fcm
+package com.cashproject.mongsil.data.firebase.fcm
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.cashproject.mongsil.model.FcmModel
 import com.cashproject.mongsil.model.State
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await

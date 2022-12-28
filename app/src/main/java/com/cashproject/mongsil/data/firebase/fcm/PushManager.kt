@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.fcm
+package com.cashproject.mongsil.data.firebase.fcm
 
 import android.content.Context
 import android.util.Log

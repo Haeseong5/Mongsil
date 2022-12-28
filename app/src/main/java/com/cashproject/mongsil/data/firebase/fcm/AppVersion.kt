@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model
+package com.cashproject.mongsil.data.firebase.fcm
 
 import kotlinx.serialization.Serializable
 

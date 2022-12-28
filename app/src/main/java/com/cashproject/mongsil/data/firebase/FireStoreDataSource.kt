@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model.db.datasource
+package com.cashproject.mongsil.data.firebase
 
 import com.cashproject.mongsil.base.ApplicationClass
 import com.cashproject.mongsil.util.DateUtil
@@ -9,7 +9,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import java.util.*
 
-class FirestoreDataSource {
+class FireStoreDataSource {
 
     companion object {
         const val COLLECTION = "Mongsil"

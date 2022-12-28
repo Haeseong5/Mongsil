@@ -7,7 +7,7 @@ import android.widget.GridView
 import androidx.viewpager.widget.PagerAdapter
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.model.data.Day
+import com.cashproject.mongsil.domain.model.Day
 
 import java.util.*
 

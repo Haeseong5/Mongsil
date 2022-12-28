@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.databinding.ItemCommentBinding
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.model.data.Emoticons.emoticons
+import com.cashproject.mongsil.domain.model.Emoticons.emoticons
 import com.cashproject.mongsil.util.DateUtil
 
 class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {

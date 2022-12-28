@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model.remote
+package com.cashproject.mongsil.data.api
 
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import retrofit2.http.GET

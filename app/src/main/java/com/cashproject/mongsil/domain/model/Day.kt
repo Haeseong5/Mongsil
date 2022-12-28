@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model.data
+package com.cashproject.mongsil.domain.model
 
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import java.util.*

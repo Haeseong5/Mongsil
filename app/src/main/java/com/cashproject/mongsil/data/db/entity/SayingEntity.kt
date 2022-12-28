@@ -11,6 +11,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.*
 
+/**
+ * 북마크 명언 id만 저장하면 되므로, 해당 Entity 필요 없음.
+ */
 @Keep
 @Parcelize
 @Serializable

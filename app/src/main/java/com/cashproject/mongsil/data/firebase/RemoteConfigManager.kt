@@ -1,15 +1,14 @@
-package com.cashproject.mongsil.manager
+package com.cashproject.mongsil.data.firebase
 
 import android.app.Activity
 import android.util.Log
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.ApplicationClass
-import com.cashproject.mongsil.extension.errorLog
 import com.cashproject.mongsil.extension.fromJson
 import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.extension.openPlayStore
-import com.cashproject.mongsil.model.AppVersion
+import com.cashproject.mongsil.data.firebase.fcm.AppVersion
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig

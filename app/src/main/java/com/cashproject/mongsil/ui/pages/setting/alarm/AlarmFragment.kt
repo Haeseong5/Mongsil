@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentAlarmBinding
-import com.cashproject.mongsil.fcm.PushManager
+import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.util.ClickUtil
 import com.cashproject.mongsil.util.PreferencesManager.isEnabledPushNotification
 import com.cashproject.mongsil.util.PreferencesManager.updateEnablePushMessage

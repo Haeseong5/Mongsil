@@ -1,17 +1,15 @@
 package com.cashproject.mongsil.ui.dialog.emoticon
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.DialogEmoticonBinding
-import com.cashproject.mongsil.model.data.Emoticon
+import com.cashproject.mongsil.domain.model.Emoticon
 
 class EmoticonDialog : DialogFragment() {
     lateinit var binding: DialogEmoticonBinding

@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.extension.addTo
 import com.cashproject.mongsil.extension.log
-import com.cashproject.mongsil.fcm.PushManager
+import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
 import com.cashproject.mongsil.data.db.LocalDataSource
-import com.cashproject.mongsil.model.remote.SayingApi
-import com.cashproject.mongsil.model.remote.SayingService
+import com.cashproject.mongsil.data.api.SayingApi
+import com.cashproject.mongsil.data.api.SayingService
+import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.cashproject.mongsil.util.PreferencesManager
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +30,7 @@ import kotlin.random.Random
 
 class MainViewModel(
     private val localDataSource: LocalDataSource,
-    private val firestoreDataSource: FirestoreDataSource,
+    private val firestoreDataSource: FireStoreDataSource,
     private val sayingApi: SayingApi = SayingService(),
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {

@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ViewCalendarTopLayoutBinding
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.model.data.Day
+import com.cashproject.mongsil.domain.model.Day
 import com.cashproject.mongsil.util.CalendarUtil.convertCalendarToString
 import com.cashproject.mongsil.util.CalendarUtil.isMonthSame
 import java.util.*
