@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
+import com.cashproject.mongsil.data.repository.model.toLegacy
 import com.cashproject.mongsil.databinding.FragmentMainBinding
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
@@ -34,7 +35,7 @@ class MainFragment : SuperFragment() {
     val binding get() = _binding!!
 
     private val mainPagerAdapter by lazy {
-        MainPagerAdapter(requireActivity().supportFragmentManager, lifecycle, mainViewModel.getRandomSaying(Date()))
+        MainPagerAdapter(requireActivity().supportFragmentManager, lifecycle, mainViewModel.getRandomSaying(Date()).toLegacy())
     }
 
     override fun onAttach(context: Context) {

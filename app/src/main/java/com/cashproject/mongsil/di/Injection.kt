@@ -24,8 +24,8 @@ import com.cashproject.mongsil.data.db.dao.BookmarkDao
 import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
-import com.cashproject.mongsil.repository.BookmarkRepository
-import com.cashproject.mongsil.repository.MemoryCacheRepository
+import com.cashproject.mongsil.data.repository.BookmarkRepository
+import com.cashproject.mongsil.data.repository.MemoryCacheRepository
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 

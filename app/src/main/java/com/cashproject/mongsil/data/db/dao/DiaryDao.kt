@@ -6,6 +6,7 @@ import com.cashproject.mongsil.data.db.entity.CommentEntity
 @Dao
 interface DiaryDao {
 
+    //TODO 월별/일별 조회 쿼리
     @Query("SELECT * FROM Comment WHERE docId = :docId ORDER BY time ASC")
     suspend fun getAllComments(docId: String): List<CommentEntity>
 

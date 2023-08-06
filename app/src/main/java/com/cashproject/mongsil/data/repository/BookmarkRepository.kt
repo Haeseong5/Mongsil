@@ -1,13 +1,12 @@
-package com.cashproject.mongsil.repository
+package com.cashproject.mongsil.data.repository
 
 import com.cashproject.mongsil.data.service.BookmarkService
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.data.repository.model.Poster
 
 class BookmarkRepository(
     private val bookmarkService: BookmarkService,
     private val memoryCacheRepository: MemoryCacheRepository,
 ) {
-
     suspend fun getBookmarkedPosters(): List<Poster> {
         val bookmarkIds = bookmarkService.getAllBookmarkedPosters()
             .map { it.docId }

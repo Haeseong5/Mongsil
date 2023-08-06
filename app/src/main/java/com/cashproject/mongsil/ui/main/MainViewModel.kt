@@ -14,6 +14,9 @@ import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.api.PosterApi
 import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
+import com.cashproject.mongsil.data.repository.mapper.toPosters
+import com.cashproject.mongsil.data.repository.model.Poster
+import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.util.PreferencesManager
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,12 +34,13 @@ import kotlin.random.Random
 class MainViewModel(
     private val diaryService: DiaryService,
     private val firestoreDataSource: FireStoreDataSource,
-    private val posterApi: PosterApi = PosterService(),
+    private val posterApi: PosterApi = PosterService,
+    private val bookmarkService: BookmarkService = BookmarkService(),
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
-    private val _sayingEntityList = MutableLiveData<List<SayingEntity>>()
-    val sayingEntityList: LiveData<List<SayingEntity>> get() = _sayingEntityList
+    private val _allPosters = MutableLiveData<List<Poster>>()
+    val allPosters: LiveData<List<Poster>> get() = _allPosters
 
     private val _commentEntityList = MutableLiveData<List<CommentEntity>>()
     val commentEntityList: LiveData<List<CommentEntity>> get() = _commentEntityList
@@ -60,19 +64,20 @@ class MainViewModel(
     fun getSayingList() {
         viewModelScope.launch {
             runCatching {
-                posterApi.getAllPosters()
+                posterApi.getAllPosters().toPosters()
             }.onSuccess {
-                _sayingEntityList.postValue(it)
+                _allPosters.postValue(it)
             }.onFailure {
+                errorSubject.onNext(it)
                 Log.e(TAG, "Error getting documents: ", it)
             }
         }
     }
 
-    fun getRandomSaying(date: Date): SayingEntity {
+    fun getRandomSaying(date: Date): Poster {
         return try {
             val day = date.time
-            val sayings = sayingEntityList.value ?: emptyList()
+            val sayings = allPosters.value ?: emptyList()
             val cachedIdx = hashMap[day]
             if (cachedIdx == null) {
                 val randomIdx = Random.nextInt(sayings.size)
@@ -83,66 +88,59 @@ class MainViewModel(
             }
         } catch (e: Exception) {
             Log.e(this.javaClass.name, e.localizedMessage)
-            SayingEntity()
+            errorSubject.onNext(e)
+            Poster("","","")
         }
     }
 
     fun getAllLike() {
         viewModelScope.launch {
             try {
-                diaryService.getAllLikeData().let {
+                bookmarkService.getAllBookmarkedPosters().let {
                     _likeList.postValue(it)
                 }
             } catch (e: Exception) {
-
+                e.printStackTrace()
+                errorSubject.onNext(e)
             }
         }
     }
 
     fun getAllComments() {
-        diaryService.getAllComments()
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                "$it".log()
-                _commentEntityList.postValue(it)
-            }, {
-                errorSubject.onNext(it)
-                Log.e(TAG, it.localizedMessage.toString())
-                Log.e(TAG, it.message.toString())
-                Log.e(TAG, it.stackTraceToString())
-            }).addTo(compositeDisposable)
+        viewModelScope.launch {
+            try {
+                val comments = diaryService.getAllComments()
+                _commentEntityList.value = comments
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorSubject.onNext(e)
+            }
+        }
     }
 
     fun insertComment(commentEntity: CommentEntity) {
-        addDisposable(
-            diaryService.insertComment(commentEntity)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    val comments = (commentEntityList.value ?: emptyList()) + commentEntity
-                    "$comments".log()
-                    _commentEntityList.postValue(comments)
-                }, {
-                    errorSubject.onNext(it)
-                    Log.e(TAG, it.localizedMessage.toString())
-                    Log.e(TAG, it.message.toString())
-                    Log.e(TAG, it.stackTraceToString())
-                })
-        )
+        viewModelScope.launch {
+            try {
+                diaryService.insertComment(commentEntity)
+                val comments = (commentEntityList.value ?: emptyList()) + commentEntity
+                _commentEntityList.postValue(comments)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorSubject.onNext(e)
+            }
+        }
     }
 
     fun deleteCommentById(id: Int) {
-        addDisposable(
-            diaryService.deleteComment(id)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    val comments = commentEntityList.value?.filter { it.id != id }
-                    _commentEntityList.postValue(comments!!)
-                }, {
-                    errorSubject.onNext(it)
-                })
-        )
+        viewModelScope.launch {
+            try {
+                diaryService.deleteComment(id)
+                val comments = commentEntityList.value?.filter { it.id != id }
+                _commentEntityList.postValue(comments!!)
+            } catch (e: Exception) {
+                errorSubject.onNext(e)
+            }
+        }
     }
 
     private fun initPushNotificationSettings() {

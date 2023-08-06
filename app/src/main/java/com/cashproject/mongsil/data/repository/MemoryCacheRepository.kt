@@ -1,8 +1,8 @@
-package com.cashproject.mongsil.repository
+package com.cashproject.mongsil.data.repository
 
 import com.cashproject.mongsil.data.service.PosterService
-import com.cashproject.mongsil.repository.mapper.toPosters
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.data.repository.mapper.toPosters
+import com.cashproject.mongsil.data.repository.model.Poster
 import java.util.concurrent.atomic.AtomicReference
 
 class MemoryCacheRepository(private val posterService: PosterService) {

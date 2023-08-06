@@ -12,7 +12,7 @@ interface BookmarkDao {
     suspend fun getAll(): List<SayingEntity>
 
     @Query("SELECT * FROM Saying WHERE docId = :docId")
-    suspend fun findByDocId(docId: String): SayingEntity
+    suspend fun findByDocId(docId: String): SayingEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sayingEntity: SayingEntity)

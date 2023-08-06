@@ -35,7 +35,7 @@ class ViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                DetailViewModel(diaryService, firestoreDataSource) as T
+                DetailViewModel() as T
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(diaryService, firestoreDataSource) as T

@@ -9,6 +9,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import com.cashproject.mongsil.data.repository.model.toLegacy
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
@@ -34,8 +35,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         Log.d(this.javaClass.name, "this: $this dayAdapter: $dayAdapter")
         initRecyclerView()
         initClickListener()
-        mainViewModel.sayingEntityList.observe(viewLifecycleOwner) {
-            dayAdapter.update(it as ArrayList<SayingEntity>)
+        mainViewModel.allPosters.observe(viewLifecycleOwner) {
+            dayAdapter.update(it.toLegacy() as ArrayList<SayingEntity>)
         }
 
         mainViewModel.commentEntityList.observe(viewLifecycleOwner) {
@@ -71,7 +72,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 DetailFragment.start(
                     fragment = this,
                     argument = DetailFragment.Argument(
-                        sayingEntity = mainViewModel.getRandomSaying(it.calendar.time),
+                        sayingEntity = mainViewModel.getRandomSaying(it.calendar.time).toLegacy(),
                         selectedDate = it.calendar.time
                     )
                 )

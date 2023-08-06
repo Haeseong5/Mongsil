@@ -55,7 +55,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             getAllComments()
             getAllLike()
 
-            sayingEntityList.observe(this@MainActivity) {
+            allPosters.observe(this@MainActivity) {
                 printLog("success to load ${it.size}")
             }
         }
