@@ -49,21 +49,22 @@ class SettingFragment : Fragment() {
     }
 
     fun showAppVersionDialog() {
-        CheckDialog(
-            context = requireContext(),
-            accept = { openPlayStore(context ?: return@CheckDialog) },
-            acceptText = "업데이트"
-        ).also {
-            it.start(
-                getString(
-                    R.string.app_version,
-                    BuildConfig.VERSION_NAME,
-                    App.appVersion.latestAppVersionName
+        if (isOldVersion()) {
+            CheckDialog(
+                context = requireContext(),
+                accept = { openPlayStore(context ?: return@CheckDialog) },
+                acceptText = "업데이트"
+            ).also {
+                it.start(
+                    getString(
+                        R.string.app_version,
+                        BuildConfig.VERSION_NAME,
+                        App.appVersion.latestAppVersionName
+                    )
                 )
-            )
-            if (isOldVersion()) {
-                showAppVersionDialog()
             }
+        }else{
+            requireContext().showToast("최신 버전입니다.")
         }
     }
 
