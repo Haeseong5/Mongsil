@@ -52,7 +52,6 @@
         android:name="com.cashproject.mongsil.ui.pages.locker.LockerFragment"
         android:label="@string/locker"
         app:popUpTo="@id/detailFragment"
-        app:popUpToInclusive="true"
         tools:layout="@layout/fragment_locker">
         <action
             android:id="@+id/action_locker_to_detail"
