@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.data.api
 
-import androidx.viewbinding.BuildConfig
+import com.cashproject.mongsil.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
