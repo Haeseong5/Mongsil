@@ -15,11 +15,15 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.App
 import com.cashproject.mongsil.data.firebase.isOldVersion
 import com.cashproject.mongsil.databinding.FragmentSettingBinding
+import com.cashproject.mongsil.databinding.FragmentSettingComposeBinding
 import com.cashproject.mongsil.extension.intentAction
 import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
+import com.cashproject.mongsil.ui.pages.setting.composable.SettingButtonType
+import com.cashproject.mongsil.ui.pages.setting.composable.SettingScreen
+import com.cashproject.mongsil.ui.pages.setting.composable.UiAction
 import com.google.android.play.core.review.ReviewManagerFactory
 
 //TODO 스플래시 끄기
@@ -27,12 +31,13 @@ import com.google.android.play.core.review.ReviewManagerFactory
 // 푸시메세지
 class SettingFragment : Fragment() {
 
-    private lateinit var binding: FragmentSettingBinding
+    private lateinit var binding: FragmentSettingComposeBinding
     private val viewModel = SettingViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -40,10 +45,36 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return FragmentSettingBinding.inflate(inflater, container, false)
+        return FragmentSettingComposeBinding.inflate(inflater, container, false)
             .also { binding ->
                 this.binding = binding
-                binding.fragment = this
+                binding.composeView.setContent {
+                    SettingScreen(
+                        onUiAction = {
+                            when (it) {
+                                UiAction.Back -> {
+                                    findNavController().popBackStack()
+                                }
+
+                                is UiAction.OnClickMenu -> {
+                                    when (it.type) {
+                                        SettingButtonType.NOTIFICATION_SETTING -> startAlarm()
+                                        SettingButtonType.APP_INTRODUCTION -> introApp()
+                                        SettingButtonType.SUGGESTION -> sendEmail()
+                                        SettingButtonType.BACKUP -> {
+                                            requireContext().showToast("준비 중입니다.")
+                                            backUp()
+                                        }
+                                        SettingButtonType.OTHER_APP_FROM_THE_DEVELOPER -> showMoreApps()
+                                        SettingButtonType.APP_VERSION_CHECK -> showAppVersionDialog()
+                                        SettingButtonType.NONE -> {}
+                                    }
+
+                                }
+                            }
+                        },
+                    )
+                }
                 binding.lifecycleOwner = viewLifecycleOwner
             }.root
     }
@@ -63,7 +94,7 @@ class SettingFragment : Fragment() {
                     )
                 )
             }
-        }else{
+        } else {
             requireContext().showToast("최신 버전입니다.")
         }
     }

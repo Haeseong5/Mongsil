@@ -32,4 +32,14 @@
     <string name="review">리뷰 남기기</string>
     <string name="finish">종료</string>
     <string name="fcm_event_msg">fcm_event_msg</string>
+
+    <!--SettingScreen-->
+    <string name="setting_screen_title">설정</string>
+    <string name="setting_notification_setting">알림 설정</string>
+    <string name="setting_app_introduction">앱 소개</string>
+    <string name="setting_suggestion">건의하기</string>
+    <string name="setting_backup">백업</string>
+    <string name="setting_other_app_from_the_developer">개발자의 다른 앱</string>
+    <string name="setting_app_version_check">앱 버전 확인</string>
+
 </resources>
