@@ -18,7 +18,8 @@ class BookmarkRepository(
     }
 
     suspend fun addBookmark(id: String) {
-        bookmarkService.insertBookmarkPoster(id)
+        // 현재 미사용 주석 처리
+//        bookmarkService.insertBookmarkPoster(id)
     }
 
     suspend fun deleteBookmark(id: String) {

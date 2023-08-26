@@ -15,8 +15,8 @@ class BookmarkService(
         return bookmarkDao.getAll()
     }
 
-    suspend fun insertBookmarkPoster(id: String) {
-        return bookmarkDao.insert(SayingEntity(docId = id))
+    suspend fun insertBookmarkPoster(sayingEntity: SayingEntity) {
+        return bookmarkDao.insert(sayingEntity)
     }
 
     suspend fun deleteBookmarkPoster(id: String) {
