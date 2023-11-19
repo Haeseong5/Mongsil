@@ -19,7 +19,7 @@ fun List<PosterResponse>.toDomain(): List<Poster> {
     }
 }
 
-
+@Deprecated("toDomain() 함수로 변경해야 함.")
 fun List<Poster>.toLegacy(): List<SayingEntity> {
     return this.map {
         SayingEntity(
@@ -30,7 +30,7 @@ fun List<Poster>.toLegacy(): List<SayingEntity> {
     }
 }
 
-
+@Deprecated("toDomain() 함수로 변경해야 함.")
 fun Poster.toLegacy(): SayingEntity {
     return SayingEntity(
         docId = this.id,
