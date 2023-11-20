@@ -14,6 +14,7 @@ import com.cashproject.mongsil.ui.dialog.ProgressDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /**
@@ -25,6 +26,7 @@ import kotlinx.coroutines.launch
  *       - LockerFragment
  */
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val layoutResourceId: Int

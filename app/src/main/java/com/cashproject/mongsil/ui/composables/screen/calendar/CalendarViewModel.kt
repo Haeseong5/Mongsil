@@ -16,18 +16,6 @@ class CalendarViewModel : ViewModel() {
     val finish = MutableSharedFlow<Unit>()
     val error = MutableSharedFlow<Throwable>()
 
-//    fun searchRecord(records: List<WorkoutRecord>): List<LocalDate> {
-//        val temp = mutableListOf<LocalDate>()
-//        records.forEach {
-//            temp.add(timeMillisToLocalDate(it.date.time))
-//        }
-//        return temp
-//    }
-
-    fun timeMillisToLocalDate(timeMillis: Long): LocalDate {
-        val instant = Instant.ofEpochMilli(timeMillis)
-        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
-    }
 
     private fun CoroutineScope.launchWithCatching(
         useProgress: Boolean = true,

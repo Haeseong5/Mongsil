@@ -3,27 +3,27 @@ package com.cashproject.mongsil.ui.main
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
-import com.cashproject.mongsil.extension.addTo
-import com.cashproject.mongsil.extension.log
-import com.cashproject.mongsil.data.firebase.fcm.PushManager
+import com.cashproject.mongsil.data.api.PosterApi
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.data.service.DiaryService
-import com.cashproject.mongsil.data.api.PosterApi
-import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
+import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.data.repository.mapper.toPosters
 import com.cashproject.mongsil.data.repository.model.Poster
 import com.cashproject.mongsil.data.service.BookmarkService
+import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.util.PreferencesManager
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.HashMap
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
 import kotlin.random.Random
 
 /**
@@ -53,8 +53,16 @@ class MainViewModel(
 
     private val hashMap = HashMap<Long, Int>()
 
+    val records: MutableStateFlow<List<CommentEntity>> = MutableStateFlow(emptyList())
+
     init {
         initPushNotificationSettings()
+
+        viewModelScope.launch {
+            commentEntityList.asFlow().collect {
+                searchRecord(it)
+            }
+        }
     }
 
     fun selectPage(position: Int) {
@@ -89,7 +97,7 @@ class MainViewModel(
         } catch (e: Exception) {
             Log.e(this.javaClass.name, e.localizedMessage)
             errorSubject.onNext(e)
-            Poster("","","")
+            Poster("", "", "")
         }
     }
 
@@ -145,5 +153,19 @@ class MainViewModel(
 
     private fun initPushNotificationSettings() {
         pushManager.emitPushEvent(PreferencesManager.isEnabledPushNotification)
+    }
+
+
+    fun searchRecord(records: List<CommentEntity>): List<LocalDate> {
+        val temp = mutableListOf<LocalDate>()
+        records.forEach {
+            temp.add(timeMillisToLocalDate(it.date.time))
+        }
+        return temp
+    }
+
+    private fun timeMillisToLocalDate(timeMillis: Long): LocalDate {
+        val instant = Instant.ofEpochMilli(timeMillis)
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
     }
 }

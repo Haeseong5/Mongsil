@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.ui.composables.calendar.CalendarLayoutInfo
 import com.cashproject.mongsil.ui.composables.calendar.CalendarState
@@ -48,6 +49,7 @@ import com.cashproject.mongsil.ui.composables.calendar.core.firstDayOfWeekFromLo
 import com.cashproject.mongsil.ui.composables.calendar.core.nextMonth
 import com.cashproject.mongsil.ui.composables.calendar.core.previousMonth
 import com.cashproject.mongsil.ui.composables.calendar.rememberCalendarState
+import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.theme.dpToSp
 import com.cashproject.mongsil.ui.theme.latoTextStyle
 import kotlinx.coroutines.flow.filterNotNull
@@ -60,9 +62,12 @@ import java.util.Locale
 
 
 @Composable
-fun CalendarScreen() {
+fun CalendarScreen(
+    viewModel : MainViewModel = viewModel()
+) {
     var records by remember { mutableStateOf(emptyList<LocalDate>()) }
 
+    viewModel.commentEntityList
     CalendarScreenContent(
         records = records,
         )

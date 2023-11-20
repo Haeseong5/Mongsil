@@ -7,8 +7,10 @@ import android.content.SharedPreferences
 import com.cashproject.mongsil.manager.setChildAdmobMode
 import com.cashproject.mongsil.data.firebase.fcm.AppVersion
 import com.cashproject.mongsil.util.FILENAME
+import dagger.hilt.android.HiltAndroidApp
 
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
