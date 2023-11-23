@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.composables.screen.calendar
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,17 +14,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,11 +34,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.ui.composables.calendar.CalendarLayoutInfo
 import com.cashproject.mongsil.ui.composables.calendar.CalendarState
@@ -49,9 +51,14 @@ import com.cashproject.mongsil.ui.composables.calendar.core.firstDayOfWeekFromLo
 import com.cashproject.mongsil.ui.composables.calendar.core.nextMonth
 import com.cashproject.mongsil.ui.composables.calendar.core.previousMonth
 import com.cashproject.mongsil.ui.composables.calendar.rememberCalendarState
+import com.cashproject.mongsil.ui.composables.extensions.composableActivityViewModel
 import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.main.model.CalendarUiModel
+import com.cashproject.mongsil.ui.main.model.CalendarUiState
+import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.theme.dpToSp
 import com.cashproject.mongsil.ui.theme.latoTextStyle
+import com.cashproject.mongsil.ui.theme.pxToDp
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -63,19 +70,18 @@ import java.util.Locale
 
 @Composable
 fun CalendarScreen(
-    viewModel : MainViewModel = viewModel()
+    viewModel: MainViewModel = composableActivityViewModel()
 ) {
-    var records by remember { mutableStateOf(emptyList<LocalDate>()) }
+    val uiState by viewModel.calendarUiState.collectAsState()
 
-    viewModel.commentEntityList
     CalendarScreenContent(
-        records = records,
-        )
+        uiState = uiState,
+    )
 }
 
 @Composable
 fun CalendarScreenContent(
-    records: List<LocalDate> = emptyList(),
+    uiState: CalendarUiState = CalendarUiState(),
     onClickDay: (LocalDate) -> Unit = {},
 ) {
     val currentMonth = remember { YearMonth.now() }
@@ -99,9 +105,7 @@ fun CalendarScreenContent(
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.onGloballyPositioned { coordinates ->
-                Log.d("++##", "height : ${coordinates.size.height}")
-            }
+            modifier = Modifier
         ) {
             SimpleCalendarTitle(
                 modifier = Modifier
@@ -120,15 +124,23 @@ fun CalendarScreenContent(
                 },
             )
 
+
             HorizontalCalendar(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .height(pxToDp(pixels = 863f))
+                    .onGloballyPositioned { coordinates ->
+                        Log.d("++##", "height : ${coordinates.size.height.dp}")
+                    },
                 state = state,
-                dayContent = {
+                dayContent = { day ->
+                    val emoticonId = uiState.calendarUiModel.find { it.date == day.date }?.emotionId
                     Day(
-                        day = it,
-                        isRecord = records.contains(it.date),
+                        day = day,
+                        isRecord = uiState.calendarUiModel.any { it.date == day.date },
+                        emoticonId = emoticonId,
                         onClick = {
-                            onClickDay.invoke(it.date)
+                            onClickDay.invoke(day.date)
                         }
                     )
                 },
@@ -193,6 +205,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 fun BoxScope.Day(
     day: CalendarDay,
     isRecord: Boolean = false,
+    emoticonId: Int?,
     onClick: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -234,6 +247,13 @@ fun BoxScope.Day(
                 else -> Color.Black
             }
         )
+
+        if (emoticonId != null) {
+            Image(
+                painter = painterResource(id = Emoticons.emoticons[emoticonId].icon),
+                contentDescription = ""
+            )
+        }
     }
 }
 

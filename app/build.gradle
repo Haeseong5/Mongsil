@@ -166,9 +166,11 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    // compose viewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+//     livedata
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    // hiltViewModel
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
-    // livedata
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    // compose constraintLayout
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 }

@@ -16,13 +16,16 @@ import com.cashproject.mongsil.data.repository.model.Poster
 import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.service.PosterService
+import com.cashproject.mongsil.ui.main.model.CalendarUiMapper
+import com.cashproject.mongsil.ui.main.model.CalendarUiModel
+import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.util.PreferencesManager
+import com.cashproject.mongsil.util.timeMillisToLocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 import java.util.Date
 import kotlin.random.Random
 
@@ -39,6 +42,12 @@ class MainViewModel(
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
+    // TODO ViewModel 화면 단위로 분리
+    private val _calendarUiState: MutableStateFlow<CalendarUiState> =
+        MutableStateFlow(CalendarUiState())
+    val calendarUiState: StateFlow<CalendarUiState>
+        get() = _calendarUiState.asStateFlow()
+
     private val _allPosters = MutableLiveData<List<Poster>>()
     val allPosters: LiveData<List<Poster>> get() = _allPosters
 
@@ -53,14 +62,16 @@ class MainViewModel(
 
     private val hashMap = HashMap<Long, Int>()
 
-    val records: MutableStateFlow<List<CommentEntity>> = MutableStateFlow(emptyList())
-
     init {
         initPushNotificationSettings()
 
         viewModelScope.launch {
             commentEntityList.asFlow().collect {
-                searchRecord(it)
+                _calendarUiState.emit(
+                    calendarUiState.value.copy(
+                        calendarUiModel = CalendarUiMapper.mapper(it)
+                    )
+                )
             }
         }
     }
@@ -153,19 +164,5 @@ class MainViewModel(
 
     private fun initPushNotificationSettings() {
         pushManager.emitPushEvent(PreferencesManager.isEnabledPushNotification)
-    }
-
-
-    fun searchRecord(records: List<CommentEntity>): List<LocalDate> {
-        val temp = mutableListOf<LocalDate>()
-        records.forEach {
-            temp.add(timeMillisToLocalDate(it.date.time))
-        }
-        return temp
-    }
-
-    private fun timeMillisToLocalDate(timeMillis: Long): LocalDate {
-        val instant = Instant.ofEpochMilli(timeMillis)
-        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
     }
 }
