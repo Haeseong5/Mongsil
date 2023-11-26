@@ -18,19 +18,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -73,10 +78,37 @@ fun CalendarScreen(
     viewModel: MainViewModel = composableActivityViewModel()
 ) {
     val uiState by viewModel.calendarUiState.collectAsState()
+    var isVisibleCalendar by remember { mutableStateOf(true) }
 
-    CalendarScreenContent(
-        uiState = uiState,
-    )
+    Box {
+
+        if (isVisibleCalendar) {
+            CalendarScreenContent(
+                uiState = uiState,
+            )
+        } else {
+
+        }
+
+        // size ??
+        FloatingActionButton(
+            modifier = Modifier
+                .padding(20.dp)
+                .align(Alignment.BottomEnd),
+            containerColor = Color(0xFFfdca42),
+            contentColor = Color(0xFF6D5107),
+            shape = FloatingActionButtonDefaults.largeShape,
+            onClick = {
+                isVisibleCalendar = !isVisibleCalendar
+            },
+            content = {
+                Image(
+                    modifier = Modifier.size(32.dp),
+                    painter = painterResource(id = if (isVisibleCalendar) R.drawable.ic_list else R.drawable.ic_calendar),
+                    contentDescription = ""
+                )
+            })
+    }
 }
 
 @Composable
@@ -143,6 +175,9 @@ fun CalendarScreenContent(
                             onClickDay.invoke(day.date)
                         }
                     )
+                    if (isToday(day)) {
+                        TodayRedDot(modifier = Modifier.align(Alignment.TopEnd))
+                    }
                 },
                 monthHeader = {
                     DaysOfWeekTitle(daysOfWeek = daysOfWeek)
@@ -209,7 +244,6 @@ fun BoxScope.Day(
     onClick: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
     val context = LocalContext.current
 
     Box(
@@ -237,7 +271,7 @@ fun BoxScope.Day(
                     else -> 0.4f
                 }
             ),
-            text = day.date.dayOfMonth.toString(),
+            text = if (isRecord) "" else day.date.dayOfMonth.toString(),
             fontWeight = if (isRecord || isToday(day)) FontWeight(700) else FontWeight(400),
             style = latoTextStyle,
             fontSize = dpToSp(dp = 14.dp),
@@ -250,10 +284,33 @@ fun BoxScope.Day(
 
         if (emoticonId != null) {
             Image(
+                modifier = Modifier.alpha(
+                    when (day.position) {
+                        DayPosition.MonthDate -> 1.0f
+                        else -> 0.4f
+                    }
+                ),
                 painter = painterResource(id = Emoticons.emoticons[emoticonId].icon),
                 contentDescription = ""
             )
         }
+    }
+}
+
+// TODO 그림자 추가 및 사이즈 수정
+@Composable
+fun TodayRedDot(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(9.dp)
+            .clip(shape = CircleShape)
+            .background(color = Color.Red)
+//            .shadow(
+//                elevation = 1.dp,
+//                shape = CircleShape
+//            )
+    ) {
+
     }
 }
 
