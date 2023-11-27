@@ -42,14 +42,16 @@ class MainViewModel(
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
-    // TODO ViewModel 화면 단위로 분리
+    // 캘린더
     private val _calendarUiState: MutableStateFlow<CalendarUiState> =
         MutableStateFlow(CalendarUiState())
     val calendarUiState: StateFlow<CalendarUiState>
         get() = _calendarUiState.asStateFlow()
 
-    private val _allPosters = MutableLiveData<List<Poster>>()
-    val allPosters: LiveData<List<Poster>> get() = _allPosters
+    // 캘린더 리스트
+    private val _allPosters : MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())
+    val allPosters: StateFlow<List<Poster>> get() = _allPosters.asStateFlow()
+
 
     private val _commentEntityList = MutableLiveData<List<CommentEntity>>()
     val commentEntityList: LiveData<List<CommentEntity>> get() = _commentEntityList
@@ -64,6 +66,7 @@ class MainViewModel(
 
     init {
         initPushNotificationSettings()
+        getSayingList()
 
         viewModelScope.launch {
             commentEntityList.asFlow().collect {
@@ -80,17 +83,25 @@ class MainViewModel(
         _selectedPagePosition.value = position
     }
 
-    fun getSayingList() {
+    private fun getSayingList() {
         viewModelScope.launch {
-            runCatching {
-                posterApi.getAllPosters().toPosters()
-            }.onSuccess {
-                _allPosters.postValue(it)
-            }.onFailure {
-                errorSubject.onNext(it)
-                Log.e(TAG, "Error getting documents: ", it)
+            try {
+                _allPosters.emit(posterApi.getAllPosters().toPosters())
+            }catch (e:Exception){
+                e.printStackTrace()
             }
         }
+
+//        viewModelScope.launch {
+//            runCatching {
+//                posterApi.getAllPosters().toPosters()
+//            }.onSuccess {
+//                _allPosters.postValue(it)
+//            }.onFailure {
+//                errorSubject.onNext(it)
+//                Log.e(TAG, "Error getting documents: ", it)
+//            }
+//        }
     }
 
     fun getRandomSaying(date: Date): Poster {

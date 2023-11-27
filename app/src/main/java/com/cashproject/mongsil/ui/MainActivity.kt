@@ -53,13 +53,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         mainViewModel.apply {
-            getSayingList()
+//            getSayingList()
             getAllComments()
             getAllLike()
 
-            allPosters.observe(this@MainActivity) {
-                printLog("success to load ${it.size}")
-            }
+//            allPosters.observe(this@MainActivity) {
+//                printLog("success to load ${it.size}")
+//            }
         }
     }
 
