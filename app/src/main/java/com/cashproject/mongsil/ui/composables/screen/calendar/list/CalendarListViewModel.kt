@@ -24,9 +24,7 @@ class CalendarListViewModel(
     private fun getSayingList() {
         viewModelScope.launch {
             try {
-                val calendar = Calendar.getInstance().apply {
-                    this.add(MONTH, 1)
-                }
+                val calendar = Calendar.getInstance()
 
                 val posterList = posterApi.getAllPosters().toPosters()
                 posters.emit(

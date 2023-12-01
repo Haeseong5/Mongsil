@@ -78,6 +78,7 @@ fun CalendarDay(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                modifier = Modifier.padding(6.dp),
                 text = poster.day,
                 fontSize = dpToSp(dp = 30.dp),
                 style = latoTextStyle,
@@ -86,11 +87,13 @@ fun CalendarDay(
             Column() {
                 Text(
                     text = poster.month,
+                    fontSize = dpToSp(dp = 14.dp),
                     style = latoTextStyle,
                     color = Color.White
                 )
                 Text(
                     text = poster.year,
+                    fontSize = dpToSp(dp = 14.dp),
                     style = latoTextStyle,
                     color = Color.White
                 )
@@ -104,5 +107,26 @@ fun CalendarDay(
 @Preview
 @Composable
 fun PreviewCalendarListScreen() {
-    CalendarListScreenContent()
+    CalendarListScreenContent(
+        posters = listOf(
+            SquarePosterUiModel(
+                year = "2023",
+                month = "5",
+                day = "5",
+                squareImage = ""
+            ),
+            SquarePosterUiModel(
+                year = "2023",
+                month = "5",
+                day = "10",
+                squareImage = ""
+            ),
+            SquarePosterUiModel(
+                year = "2023",
+                month = "5",
+                day = "1",
+                squareImage = ""
+            )
+        )
+    )
 }

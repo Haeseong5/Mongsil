@@ -157,10 +157,7 @@ fun CalendarScreenContent(
             HorizontalCalendar(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .height(pxToDp(pixels = 863f))
-                    .onGloballyPositioned { coordinates ->
-                        Log.d("++##", "height : ${coordinates.size.height.dp}")
-                    },
+                    .height(pxToDp(pixels = 863f)),
                 state = state,
                 dayContent = { day ->
                     val emoticonId = uiState.calendarUiModel.find { it.date == day.date }?.emotionId

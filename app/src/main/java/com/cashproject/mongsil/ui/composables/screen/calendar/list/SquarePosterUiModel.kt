@@ -18,7 +18,7 @@ fun List<Poster>.toUiModel(calendar: Calendar): List<SquarePosterUiModel> {
         if (i != 0) calendar.add(DAY_OF_MONTH, -1)
         SquarePosterUiModel(
             year = calendar.get(YEAR).toString(),
-            month = calendar.get(MONTH).toString(),
+            month = (calendar.get(MONTH) + 1).toString(),
             day = calendar.get(DAY_OF_MONTH).toString(),
             squareImage = it.squareImage
         )
