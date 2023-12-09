@@ -1,25 +1,19 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
-import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.data.repository.model.toLegacy
-import com.cashproject.mongsil.ui.composables.screen.calendar.CalendarScreen
+import com.cashproject.mongsil.ui.compose.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
-import com.cashproject.mongsil.ui.pages.detail.DetailFragment
-import java.util.*
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 

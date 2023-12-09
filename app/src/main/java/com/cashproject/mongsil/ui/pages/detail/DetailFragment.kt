@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,6 +26,8 @@ import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.ui.model.Emoticons.emoticons
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import com.cashproject.mongsil.ui.compose.screen.calendar.CalendarScreen
+import com.cashproject.mongsil.ui.compose.screen.calendar.detail.CalendarDetailScreen
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
@@ -93,47 +97,61 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val rootView = super.onCreateView(inflater, container, savedInstanceState)
-        binding.fragment = this
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.mainViewModel = mainViewModel
-        return rootView
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                CalendarDetailScreen()
+            }
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
 
-        when (argument.from) {
-            "locker" -> {
-                binding.llSayingComment.visibility = View.GONE
-            }
-            "home" -> {
-                binding.ivDetailFinish.visibility = View.GONE
-            }
-        }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        val rootView = super.onCreateView(inflater, container, savedInstanceState)
+//        binding.fragment = this
+//        binding.lifecycleOwner = viewLifecycleOwner
+//        binding.mainViewModel = mainViewModel
+//        return rootView
+//    }
 
-        binding.rvSayingCommentList.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
-            setHasFixedSize(true)
-            adapter = commentAdapter
-        }
-
-        commentAdapter.setOnItemLongClickListener {
-            showCheckDialog(it.id)
-        }
-
-        mainActivity?.mainViewModel?.commentEntityList?.observe(viewLifecycleOwner) {
-            it.filter { comment ->
-                isSameDay(comment.date, argument.selectedDate)
-            }.let { comments ->
-                commentAdapter.update(comments)
-                binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
-            }
-        }
-
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+//
+//        when (argument.from) {
+//            "locker" -> {
+//                binding.llSayingComment.visibility = View.GONE
+//            }
+//            "home" -> {
+//                binding.ivDetailFinish.visibility = View.GONE
+//            }
+//        }
+//
+//        binding.rvSayingCommentList.apply {
+//            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+//            setHasFixedSize(true)
+//            adapter = commentAdapter
+//        }
+//
+//        commentAdapter.setOnItemLongClickListener {
+//            showCheckDialog(it.id)
+//        }
+//
+//        mainActivity?.mainViewModel?.commentEntityList?.observe(viewLifecycleOwner) {
+//            it.filter { comment ->
+//                isSameDay(comment.date, argument.selectedDate)
+//            }.let { comments ->
+//                commentAdapter.update(comments)
+//                binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
+//            }
+//        }
+//
+//    }
 
     fun onClickBackgroundImage() {
         showBottomMenuDialog()
@@ -231,7 +249,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
     override fun onResume() {
         super.onResume()
         //임시로 이모티콘 갱신
-        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
+//        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
     }
 
     private fun initInterstitialAd() {
