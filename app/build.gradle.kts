@@ -65,9 +65,9 @@ dependencies {
 
     //androidx
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation(androidMaterial)
-    implementation("androidx.annotation:annotation:1.5.0")
+    implementation("androidx.annotation:annotation:1.7.0")
 
     //lifeCycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
