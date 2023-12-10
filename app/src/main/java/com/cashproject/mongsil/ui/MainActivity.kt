@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
  *       - LockerFragment
  */
 
-@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val layoutResourceId: Int

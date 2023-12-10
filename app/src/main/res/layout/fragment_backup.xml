@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
+        android:textColor="@color/blackOrWhite"
         android:text="backup"/>
 
     <Button
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
+        android:textColor="@color/blackOrWhite"
         android:text="restore"/>
 
 </LinearLayout>

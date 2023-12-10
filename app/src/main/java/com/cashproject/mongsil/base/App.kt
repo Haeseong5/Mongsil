@@ -9,8 +9,6 @@ import com.cashproject.mongsil.data.firebase.fcm.AppVersion
 import com.cashproject.mongsil.util.FILENAME
 import dagger.hilt.android.HiltAndroidApp
 
-
-@HiltAndroidApp
 class App : Application() {
 
     companion object {
