@@ -35,10 +35,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
-            add("-opt-in=kotlin.RequireOptIn")
-            add("-Xjvm-default=all")
-        }
     }
 
     composeOptions {
