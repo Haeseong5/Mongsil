@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.extensions
+package com.cashproject.mongsil.ui.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height

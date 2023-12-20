@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.common
+package com.cashproject.mongsil.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cashproject.mongsil.ui.compose.extensions.VerticalSpacer
 import com.cashproject.mongsil.ui.theme.Gray400
 import com.cashproject.mongsil.ui.theme.latoTextStyle
 

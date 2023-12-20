@@ -1,9 +1,8 @@
-package com.cashproject.mongsil.ui.compose.screen.calendar.detail
+package com.cashproject.mongsil.ui.screen.calendar.detail
 
-import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,26 +24,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.ui.compose.common.RoundedInputBox
-import com.cashproject.mongsil.ui.compose.extensions.composableActivityViewModel
+import com.cashproject.mongsil.ui.component.RoundedInputBox
+import com.cashproject.mongsil.extension.composableActivityViewModel
 import com.cashproject.mongsil.ui.main.MainViewModel
-import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
-import com.cashproject.mongsil.ui.theme.colorYellow
 import com.cashproject.mongsil.ui.theme.dpToSp
-import com.cashproject.mongsil.ui.theme.latoTextStyle
 import com.cashproject.mongsil.util.PreferencesManager
 import java.util.Date
 
 @Composable
-fun CalendarDetailScreen(
+fun DiaryScreen(
     viewModel: MainViewModel = composableActivityViewModel()
 ) {
     val comments = viewModel.commentEntityList.observeAsState()
@@ -56,7 +50,7 @@ fun CalendarDetailScreen(
     })
 
 
-    CalendarDetailScreenContent(
+    DiaryScreenContent(
         comments = comments.value?.filter { it.date == Date() } ?: emptyList(),
         url = url,
         onUiAction = {
@@ -83,7 +77,7 @@ sealed interface CalendarDetailUiAction {
 }
 
 @Composable
-private fun CalendarDetailScreenContent(
+private fun DiaryScreenContent(
     comments: List<CommentEntity> = emptyList(),
     url: String = "",
     onUiAction: (CalendarDetailUiAction) -> Unit = {},
@@ -94,8 +88,13 @@ private fun CalendarDetailScreenContent(
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
             model = url,
-            contentDescription = "",
-            contentScale = ContentScale.Crop
+            contentDescription = "명언 이미지",
+            contentScale = ContentScale.FillHeight
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.3f))
         )
 
         // TODO visible 옵션 추가
@@ -208,5 +207,5 @@ fun SayingCommentList() {
 @Preview
 @Composable
 private fun PreviewCalendarDetailScreen() {
-    CalendarDetailScreenContent()
+    DiaryScreenContent()
 }

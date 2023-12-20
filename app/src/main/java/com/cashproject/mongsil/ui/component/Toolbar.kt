@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.common
+package com.cashproject.mongsil.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

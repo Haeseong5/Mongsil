@@ -9,8 +9,8 @@ import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.data.service.DiaryService
-import com.cashproject.mongsil.ui.compose.screen.calendar.detail.Comment
-import com.cashproject.mongsil.ui.compose.screen.calendar.detail.DetailUiModel
+import com.cashproject.mongsil.ui.screen.calendar.detail.Comment
+import com.cashproject.mongsil.ui.screen.calendar.detail.DetailUiModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel

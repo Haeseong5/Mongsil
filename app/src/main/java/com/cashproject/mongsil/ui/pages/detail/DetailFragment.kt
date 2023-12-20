@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.base.BaseFragment
@@ -24,10 +23,8 @@ import com.cashproject.mongsil.extension.getImageUri
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.ui.model.Emoticons.emoticons
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.ui.compose.screen.calendar.CalendarScreen
-import com.cashproject.mongsil.ui.compose.screen.calendar.detail.CalendarDetailScreen
+import com.cashproject.mongsil.ui.screen.calendar.detail.DiaryScreen
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
@@ -35,7 +32,6 @@ import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.cashproject.mongsil.util.PreferencesManager
 import com.cashproject.mongsil.util.PreferencesManager.selectedEmoticonId
-import com.cashproject.mongsil.util.isSameDay
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -101,7 +97,7 @@ class DetailFragment : BaseFragment<FrammentDetailBinding>() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                CalendarDetailScreen()
+                DiaryScreen()
             }
         }
     }

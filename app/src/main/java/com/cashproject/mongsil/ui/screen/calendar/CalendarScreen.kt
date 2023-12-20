@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.screen.calendar
+package com.cashproject.mongsil.ui.screen.calendar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,8 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.ui.compose.extensions.composableActivityViewModel
-import com.cashproject.mongsil.ui.compose.screen.calendar.list.CalendarListScreen
+import com.cashproject.mongsil.extension.composableActivityViewModel
+import com.cashproject.mongsil.ui.screen.calendar.list.CalendarListScreen
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.ui.model.Emoticons

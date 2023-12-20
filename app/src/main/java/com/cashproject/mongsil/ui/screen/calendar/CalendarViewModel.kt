@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.screen.calendar
+package com.cashproject.mongsil.ui.screen.calendar
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope

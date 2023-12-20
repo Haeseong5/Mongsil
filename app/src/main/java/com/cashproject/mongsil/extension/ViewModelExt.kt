@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.extensions
+package com.cashproject.mongsil.extension
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable

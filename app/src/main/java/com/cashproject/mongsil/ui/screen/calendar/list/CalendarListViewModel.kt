@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.screen.calendar.list
+package com.cashproject.mongsil.ui.screen.calendar.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

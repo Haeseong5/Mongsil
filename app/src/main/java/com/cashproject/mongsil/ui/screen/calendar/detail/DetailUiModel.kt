@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.compose.screen.calendar.detail
+package com.cashproject.mongsil.ui.screen.calendar.detail
 
 import java.util.Date
 
