@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -63,6 +64,7 @@ fun CalendarDay(
 ) {
     Box {
         AsyncImage(
+            modifier = Modifier.aspectRatio(1f, true),
             model = poster.squareImage,
             contentScale = ContentScale.Crop,
             contentDescription = ""
