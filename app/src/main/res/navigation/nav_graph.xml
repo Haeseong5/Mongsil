@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.cashproject.mongsil.ui.pages.detail.DetailFragment"
+        android:name="com.cashproject.mongsil.ui.pages.detail.DiaryFragment"
         android:label="detail"
         tools:layout="@layout/framment_detail" />
 

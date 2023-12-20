@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.ui.screen.calendar.list
 
-import com.cashproject.mongsil.data.repository.model.Poster
+import com.cashproject.mongsil.repository.model.Poster
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_MONTH
 import java.util.Calendar.MONTH

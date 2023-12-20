@@ -66,7 +66,6 @@ fun CalendarDay(
         AsyncImage(
             modifier = Modifier.aspectRatio(1f, true),
             model = poster.squareImage,
-            contentScale = ContentScale.Crop,
             contentDescription = ""
         )
         Row(

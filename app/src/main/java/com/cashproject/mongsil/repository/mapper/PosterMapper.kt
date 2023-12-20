@@ -1,7 +1,7 @@
-package com.cashproject.mongsil.data.repository.mapper
+package com.cashproject.mongsil.repository.mapper
 
 import com.cashproject.mongsil.data.api.dto.PosterResponse
-import com.cashproject.mongsil.data.repository.model.Poster
+import com.cashproject.mongsil.repository.model.Poster
 
 fun List<PosterResponse>.toPosters(): List<Poster> {
     return map {

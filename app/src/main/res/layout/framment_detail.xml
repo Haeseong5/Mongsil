@@ -7,7 +7,7 @@
 
         <variable
             name="fragment"
-            type="com.cashproject.mongsil.ui.pages.detail.DetailFragment" />
+            type="com.cashproject.mongsil.ui.pages.detail.DiaryFragment" />
 
         <variable
             name="mainViewModel"
@@ -25,7 +25,6 @@
             android:onClick="@{()->fragment.onClickBackgroundImage()}"
             android:scaleType="centerCrop"
             android:src="@drawable/emoticon_05"
-            app:bindImage="@{fragment.currentImageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

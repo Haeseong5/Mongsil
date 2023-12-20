@@ -2,16 +2,17 @@ package com.cashproject.mongsil.data.db.dao
 
 import androidx.room.*
 import com.cashproject.mongsil.data.db.entity.CommentEntity
+import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface DiaryDao {
 
-    //TODO 월별/일별 조회 쿼리
-    @Query("SELECT * FROM Comment WHERE docId = :docId ORDER BY time ASC")
-    suspend fun getAllComments(docId: String): List<CommentEntity>
+    @Query("SELECT * FROM Comment ORDER BY time ASC")
+    suspend fun getAllComments(): List<CommentEntity>
 
-    @Query("SELECT * FROM Comment")
-    suspend fun getAllComments() : List<CommentEntity>
+    @Query("SELECT * FROM Comment WHERE strftime('%Y-%m-%d', date/1000, 'unixepoch') = strftime('%Y-%m-%d', :date/1000, 'unixepoch')")
+    fun loadCommentListByDate(date: Long): Flow<List<CommentEntity>>
 
     @Insert
     suspend fun insert(commentEntity: CommentEntity)

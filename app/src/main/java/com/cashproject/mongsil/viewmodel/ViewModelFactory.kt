@@ -20,9 +20,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
-import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.ui.main.MainViewModel
-import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
+import com.cashproject.mongsil.ui.pages.detail.DiaryViewModel
 
 /**
  * Factory for ViewModels
@@ -36,13 +35,6 @@ class ViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                DetailViewModel(
-//                    bookmarkService = bookmarkService,
-//                    diaryService = diaryService
-                ) as T
-            }
-
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(diaryService, firestoreDataSource) as T
             }

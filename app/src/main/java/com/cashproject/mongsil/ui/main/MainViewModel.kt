@@ -11,8 +11,8 @@ import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
-import com.cashproject.mongsil.data.repository.mapper.toPosters
-import com.cashproject.mongsil.data.repository.model.Poster
+import com.cashproject.mongsil.repository.mapper.toPosters
+import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.service.PosterService

@@ -3,7 +3,7 @@ package com.cashproject.mongsil.ui.screen.calendar.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.api.PosterApi
-import com.cashproject.mongsil.data.repository.mapper.toPosters
+import com.cashproject.mongsil.repository.mapper.toPosters
 import com.cashproject.mongsil.data.service.PosterService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

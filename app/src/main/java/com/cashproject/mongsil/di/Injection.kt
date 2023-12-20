@@ -24,8 +24,8 @@ import com.cashproject.mongsil.data.db.dao.BookmarkDao
 import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
-import com.cashproject.mongsil.data.repository.BookmarkRepository
-import com.cashproject.mongsil.data.repository.MemoryCacheRepository
+import com.cashproject.mongsil.repository.BookmarkRepository
+import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 
@@ -55,17 +55,17 @@ object Injection {
     }
 
     /** repository */
-    fun provideMemoryCacheRepository(posterService: PosterService): MemoryCacheRepository {
-        return MemoryCacheRepository(posterService)
+    fun provideMemoryCacheRepository(posterService: PosterService): PosterRepository {
+        return PosterRepository(posterService)
     }
 
     private fun provideBookmarkRepository(
         bookmarkService: BookmarkService,
-        memoryCacheRepository: MemoryCacheRepository,
+        posterRepository: PosterRepository,
     ): BookmarkRepository {
         return BookmarkRepository(
             bookmarkService = bookmarkService,
-            memoryCacheRepository = memoryCacheRepository
+            posterRepository = posterRepository
         )
     }
 

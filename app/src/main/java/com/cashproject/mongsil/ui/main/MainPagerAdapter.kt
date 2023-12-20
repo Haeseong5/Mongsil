@@ -11,9 +11,9 @@ import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_CALENDAR
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_HOME
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_LOCKER
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
-import com.cashproject.mongsil.ui.pages.detail.DetailFragment
+import com.cashproject.mongsil.ui.pages.detail.DiaryFragment
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
-import java.util.*
+import java.util.Date
 
 class MainPagerAdapter(
     fa: FragmentManager,
@@ -29,9 +29,9 @@ class MainPagerAdapter(
                 CalendarFragment()
             }
             PAGE_HOME -> {
-                DetailFragment().apply {
+                DiaryFragment().apply {
                     arguments = bundleOf(
-                        "argument" to DetailFragment.Argument(
+                        "argument" to DiaryFragment.Argument(
                             sayingEntity = todaySayingEntity,
                             selectedDate = Date(),
                             from = "home"

@@ -13,7 +13,7 @@ import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentLockerBinding
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.ui.main.MainViewModel
-import com.cashproject.mongsil.ui.pages.detail.DetailFragment
+import com.cashproject.mongsil.ui.pages.detail.DiaryFragment
 import java.util.*
 
 
@@ -70,9 +70,9 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
 
         lockerAdapter.setOnItemClickListener {
             click.run {
-                DetailFragment.start(
+                DiaryFragment.start(
                     fragment = this,
-                    argument = DetailFragment.Argument(
+                    argument = DiaryFragment.Argument(
                         sayingEntity = it,
                         selectedDate = Date(),
                         from = "locker",

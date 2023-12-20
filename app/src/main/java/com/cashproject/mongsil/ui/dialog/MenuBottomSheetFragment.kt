@@ -14,7 +14,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
+import com.cashproject.mongsil.ui.pages.detail.DiaryViewModel
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
@@ -28,7 +28,7 @@ class MenuBottomSheetFragment(
 ) : BottomSheetDialogFragment() {
     lateinit var binding: FragmentBottomSheetSayingBinding
 
-    private val viewModel: DetailViewModel by viewModels { viewModelFactory }
+    private val viewModel: DiaryViewModel by viewModels { viewModelFactory }
     lateinit var viewModelFactory: ViewModelFactory
 
     private var likeBtnListener: (() -> Unit)? = null
@@ -115,28 +115,28 @@ class MenuBottomSheetFragment(
     }
 
     private fun observeIsLike() {
-        viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            mLike = it
-            if (mLike) {
-                binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
-            } else {
-                binding.ivSayingLike.apply {
-                    setImageResource(R.drawable.ic_like)
-                    val currentNightMode =
-                        requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                    when (currentNightMode) {
-                        Configuration.UI_MODE_NIGHT_NO -> {
-                            imageTintList = ColorStateList.valueOf(Color.parseColor("#333333"))
-
-                        }
-                        Configuration.UI_MODE_NIGHT_YES -> {
-                            imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-
-                        }
-                    }
-                }
-            }
-        })
+//        viewModel.isLike.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+//            mLike = it
+//            if (mLike) {
+//                binding.ivSayingLike.setImageResource(R.drawable.ic_like_sel)
+//            } else {
+//                binding.ivSayingLike.apply {
+//                    setImageResource(R.drawable.ic_like)
+//                    val currentNightMode =
+//                        requireActivity().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+//                    when (currentNightMode) {
+//                        Configuration.UI_MODE_NIGHT_NO -> {
+//                            imageTintList = ColorStateList.valueOf(Color.parseColor("#333333"))
+//
+//                        }
+//                        Configuration.UI_MODE_NIGHT_YES -> {
+//                            imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+//
+//                        }
+//                    }
+//                }
+//            }
+//        })
     }
 
 }

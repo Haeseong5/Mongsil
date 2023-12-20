@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.data.repository.model
+package com.cashproject.mongsil.repository.model
 
 import com.cashproject.mongsil.data.api.dto.PosterResponse
 import com.cashproject.mongsil.data.db.entity.SayingEntity

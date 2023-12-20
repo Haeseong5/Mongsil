@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
-import com.cashproject.mongsil.data.repository.model.toLegacy
+import com.cashproject.mongsil.repository.model.toLegacy
 import com.cashproject.mongsil.databinding.FragmentMainBinding
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog

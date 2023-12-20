@@ -32,3 +32,7 @@ fun openPlayStore(context: Context) {
         )
     }
 }
+
+fun Throwable.printErrorLog(tag: String = "", message: String = "") {
+    Log.e(tag, message, this)
+}
