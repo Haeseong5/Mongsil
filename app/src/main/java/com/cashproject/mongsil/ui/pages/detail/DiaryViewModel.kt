@@ -50,7 +50,7 @@ class DiaryViewModel(
         loadComments()
     }
 
-    private fun updateUiState(action: DiaryUiState.() -> DiaryUiState) {
+    fun updateUiState(action: DiaryUiState.() -> DiaryUiState) {
         _uiState.update { action.invoke(it) }
     }
 

@@ -11,27 +11,18 @@ import com.cashproject.mongsil.ui.main.MainViewModel
 fun DiaryScreen(
     mainViewModel: MainViewModel,
     diaryViewModel: DiaryViewModel,
+    onUiEvent: (DiaryUiEvent) -> Unit = {}
 ) {
-    val context = LocalContext.current
-    val uiEventHandler = remember(mainViewModel, diaryViewModel) {
-        DiaryUiEventHandler(
-            mainViewModel = mainViewModel,
-            viewModel = diaryViewModel,
-            context = context
-        )
-    }
     val uiState = diaryViewModel.uiState.collectAsState()
 
     LaunchedEffect(diaryViewModel.error) {
         diaryViewModel.error.collect {
-            uiEventHandler.handleEvent(
-                DiaryUiEvent.Error(it)
-            )
+            onUiEvent(DiaryUiEvent.Error(it))
         }
     }
 
     DiaryScreenContent(
         uiState = uiState.value,
-        onUiEvent = uiEventHandler::handleEvent
+        onUiEvent = onUiEvent
     )
 }

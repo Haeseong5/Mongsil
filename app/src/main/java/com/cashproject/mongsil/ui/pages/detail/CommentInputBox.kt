@@ -17,11 +17,13 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.RoundedInputBox
+import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.theme.dpToSp
 
 @Composable
 fun CommentInputBox(
     modifier: Modifier = Modifier,
+    emoticonId: Int,
     inputComment: (String) -> Unit = {},
     onClickEmoticon: () -> Unit = {},
     onConfirm: () -> Unit = {}
@@ -37,7 +39,7 @@ fun CommentInputBox(
             modifier = Modifier.noRippleClickable {
                 onClickEmoticon.invoke()
             },
-            painter = painterResource(id = R.drawable.emoticon_01_happy),
+            painter = painterResource(Emoticons.emoticons[emoticonId].icon),
             contentDescription = "",
         )
 

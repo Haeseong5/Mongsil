@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.noRippleClickable
+import com.cashproject.mongsil.ui.model.Emoticons
 
 @Composable
 fun DiaryScreenContent(
@@ -46,15 +47,6 @@ fun DiaryScreenContent(
                 .background(Color.Black.copy(alpha = 0.3f))
         )
 
-        Image(
-            modifier = Modifier.noRippleClickable {
-                // 백스택
-            },
-            painter = painterResource(id = R.drawable.emoticon_01_happy),
-            contentDescription = "",
-
-            )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,6 +54,7 @@ fun DiaryScreenContent(
         ) {
             CommentInputBox(
                 modifier = Modifier.fillMaxWidth(),
+                emoticonId = uiState.emoticonId,
                 inputComment = {
                     inputComment = it
                 },

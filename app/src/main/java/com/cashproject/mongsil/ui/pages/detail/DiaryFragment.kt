@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
@@ -65,6 +66,14 @@ class DiaryFragment : Fragment() {
         )
     }
 
+    private val uiEventHandler : DiaryUiEventHandler by lazy {
+        DiaryUiEventHandler(
+            mainViewModel = mainViewModel,
+            viewModel = diaryViewModel,
+            fragment = this,
+        )
+    }
+
     var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +93,7 @@ class DiaryFragment : Fragment() {
                 DiaryScreen(
                     mainViewModel = mainViewModel,
                     diaryViewModel = diaryViewModel,
+                    onUiEvent = uiEventHandler::handleEvent
                 )
             }
         }
@@ -201,16 +211,6 @@ class DiaryFragment : Fragment() {
 //                }
 //            }.show(childFragmentManager, "approval")
 //
-    }
-
-    private fun showEmoticonBottomSheet() {
-//        val bottomSheetFragment = EmoticonDialog()
-//        bottomSheetFragment.show(childFragmentManager, "approval")
-//        bottomSheetFragment.setEmoticonBtnClickListener {
-//            selectedEmoticonId = it.id
-//            binding.ivSayingEmoticon.setImageResource(it.icon)
-//            bottomSheetFragment.dismiss()
-//        }
     }
 
     private fun showCheckDialog(id: Int) {
