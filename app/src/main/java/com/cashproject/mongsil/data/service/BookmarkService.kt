@@ -3,6 +3,7 @@ package com.cashproject.mongsil.data.service
 import com.cashproject.mongsil.data.db.AppDatabase
 import com.cashproject.mongsil.data.db.dao.BookmarkDao
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import kotlinx.coroutines.flow.Flow
 
 class BookmarkService(
     private val bookmarkDao: BookmarkDao = AppDatabase.getInstance().bookmarkDao()
@@ -11,7 +12,7 @@ class BookmarkService(
     suspend fun findPosterById(id: String): SayingEntity? {
         return bookmarkDao.findByDocId(id)
     }
-    suspend fun getAllBookmarkedPosters(): List<SayingEntity> {
+    fun getAllBookmarkedPosters(): Flow<List<SayingEntity>> {
         return bookmarkDao.getAll()
     }
 

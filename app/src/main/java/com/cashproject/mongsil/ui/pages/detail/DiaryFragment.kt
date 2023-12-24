@@ -6,12 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -19,11 +17,9 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.toTextFormat
-import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.CheckDialog
-import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
-import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.dialog.menu.MenuBottomSheetDialog
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -176,38 +172,38 @@ class DiaryFragment : Fragment() {
 //        binding.etSayingCommentInput.text?.clear()
     }
 
-    fun showBottomMenuDialog(poster: Poster) {
-        MenuBottomSheetFragment(
+    fun showMenuBottomSheetDialog(poster: Poster) {
+        MenuBottomSheetDialog(
             poster = poster,
             selectedDate = argument.selectedDate
         ).apply {
-            setSaveBtnOnClickListener {
-                showInterstitialAd(mInterstitialAd, requireActivity())
-//                val bitmap =
-//                    this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-//                try {
-//                    bitmap.bitmap.saveImage(requireActivity()).run {
-//                        activity?.showToast("갤러리에 이미지가 저장되었습니다.")
-//                    }
-//                } catch (e: Exception) {
-//                    Log.e(TAG, e.message.toString())
-//                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
-//                }
-            }
-            setHideCommentBtnOnClickListener {
-//                if (PreferencesManager.isVisibilityComment)
-//                    this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
-//                else
-//                    this@DetailFragment.binding.llSayingComment.visibility = View.GONE
-            }
-            setShareBtnOnClickListener {
-//                try {
-//                    shareToSNS()
-//                } catch (e: Exception) {
-//                    Log.e(TAG, e.message.toString())
-//                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
-//                }
-            }
+//            setSaveBtnOnClickListener {
+//                showInterstitialAd(mInterstitialAd, requireActivity())
+////                val bitmap =
+////                    this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+////                try {
+////                    bitmap.bitmap.saveImage(requireActivity()).run {
+////                        activity?.showToast("갤러리에 이미지가 저장되었습니다.")
+////                    }
+////                } catch (e: Exception) {
+////                    Log.e(TAG, e.message.toString())
+////                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+////                }
+//            }
+//            setHideCommentBtnOnClickListener {
+////                if (PreferencesManager.isVisibilityComment)
+////                    this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
+////                else
+////                    this@DetailFragment.binding.llSayingComment.visibility = View.GONE
+//            }
+//            setShareBtnOnClickListener {
+////                try {
+////                    shareToSNS()
+////                } catch (e: Exception) {
+////                    Log.e(TAG, e.message.toString())
+////                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+////                }
+//            }
         }.show(childFragmentManager, "approval")
     }
 
@@ -220,17 +216,6 @@ class DiaryFragment : Fragment() {
         ).also {
             it.start(getString(R.string.message_delete))
         }
-    }
-
-    private fun shareToSNS() {
-//        val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-//        val imageUri = getImageUri(requireActivity(), bitmap.bitmap)
-//
-//        val intent = Intent(Intent.ACTION_SEND)
-//        intent.type = "image/*"
-//        intent.putExtra(Intent.EXTRA_STREAM, imageUri)
-//        val chooser = Intent.createChooser(intent, "친구에게 공유하기")
-//        startActivity(chooser)
     }
 
     override fun onResume() {

@@ -2,7 +2,6 @@ package com.cashproject.mongsil.ui.pages.detail
 
 import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
-import com.cashproject.mongsil.ui.main.MainViewModel
 
 class DiaryUiEventHandler(
     private val viewModel: DiaryViewModel,
@@ -43,8 +42,8 @@ class DiaryUiEventHandler(
                 fragment.showCheckDialog(event.commentId)
             }
 
-            is DiaryUiEvent.ShowPosterDialog -> {
-                fragment.showBottomMenuDialog(event.poster)
+            is DiaryUiEvent.ShowMenuBottomSheetDialog -> {
+                fragment.showMenuBottomSheetDialog(event.poster)
             }
         }
     }

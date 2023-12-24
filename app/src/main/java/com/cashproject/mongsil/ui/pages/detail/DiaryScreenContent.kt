@@ -46,6 +46,7 @@ fun DiaryScreenContent(
 
         DiaryTopLayout(
             modifier = Modifier.align(Alignment.TopCenter),
+            uiState = uiState,
             onUiEvent = onUiEvent,
         )
 

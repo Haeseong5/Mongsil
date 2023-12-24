@@ -19,5 +19,5 @@ sealed interface DiaryUiEvent {
         val throwable: Throwable,
     ) : DiaryUiEvent
 
-    data class ShowPosterDialog(val poster: Poster) : DiaryUiEvent
+    data class ShowMenuBottomSheetDialog(val poster: Poster) : DiaryUiEvent
 }

@@ -127,7 +127,7 @@ class MainViewModel(
         viewModelScope.launch {
             try {
                 bookmarkService.getAllBookmarkedPosters().let {
-                    _likeList.postValue(it)
+//                    _likeList.postValue(it.toDo)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -81,7 +80,7 @@ fun DiaryTopLayout(
                 .size(28.dp)
                 .align(Alignment.TopEnd)
                 .noRippleClickable {
-                    onUiEvent.invoke(DiaryUiEvent.ShowPosterDialog(uiState.poster))
+                    onUiEvent.invoke(DiaryUiEvent.ShowMenuBottomSheetDialog(uiState.poster))
                 },
             colorFilter = ColorFilter.tint(Color.White),
             painter = rememberVectorPainter(image = Icons.Outlined.MoreVert),

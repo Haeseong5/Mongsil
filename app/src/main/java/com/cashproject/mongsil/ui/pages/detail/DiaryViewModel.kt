@@ -41,7 +41,9 @@ class DiaryViewModel(
     }
 
     private val _uiState: MutableStateFlow<DiaryUiState> = MutableStateFlow(
-        DiaryUiState(date = date)
+        DiaryUiState(
+            date = date
+        )
     )
     val uiState: StateFlow<DiaryUiState> = _uiState.asStateFlow()
 

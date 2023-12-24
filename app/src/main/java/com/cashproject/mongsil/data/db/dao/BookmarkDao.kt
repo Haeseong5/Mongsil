@@ -4,12 +4,13 @@ import androidx.room.*
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookmarkDao {
 
     @Query("SELECT * FROM Saying")
-    suspend fun getAll(): List<SayingEntity>
+    fun getAll(): Flow<List<SayingEntity>>
 
     @Query("SELECT * FROM Saying WHERE docId = :docId")
     suspend fun findByDocId(docId: String): SayingEntity?
