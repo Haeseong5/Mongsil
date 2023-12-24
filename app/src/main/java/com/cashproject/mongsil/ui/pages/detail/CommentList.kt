@@ -16,9 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.R
@@ -27,6 +30,7 @@ import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.VerticalSpacer
 import com.gigamole.composefadingedges.verticalFadingEdges
+
 
 @Composable
 fun CommentList(
@@ -103,6 +107,13 @@ fun Comment(
             Text(
                 text = comment.content,
                 color = Color.White,
+                style = TextStyle.Default.copy(
+                    shadow = Shadow(
+                        color = Color.Black.copy(alpha = 0.5f),
+                        offset = Offset(1.0f, 1.0f),
+                        blurRadius = 2f
+                    )
+                ),
                 fontSize = 16.sp
             )
         }
