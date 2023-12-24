@@ -59,7 +59,6 @@ class DiaryFragment : Fragment() {
             ?: throw IllegalArgumentException("Argument must exist")
     }
 
-    private val mainViewModel: MainViewModel by activityViewModels()
     private val diaryViewModel: DiaryViewModel by viewModels {
         DiaryViewModel.createViewModelFactory(
             date = argument.selectedDate
@@ -68,13 +67,10 @@ class DiaryFragment : Fragment() {
 
     private val uiEventHandler : DiaryUiEventHandler by lazy {
         DiaryUiEventHandler(
-            mainViewModel = mainViewModel,
             viewModel = diaryViewModel,
             fragment = this,
         )
     }
-
-    var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +87,6 @@ class DiaryFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 DiaryScreen(
-                    mainViewModel = mainViewModel,
                     diaryViewModel = diaryViewModel,
                     onUiEvent = uiEventHandler::handleEvent
                 )
@@ -213,14 +208,14 @@ class DiaryFragment : Fragment() {
 //
     }
 
-    private fun showCheckDialog(id: Int) {
-        CheckDialog(
-            context = requireContext(),
-            accept = { mainViewModel.deleteCommentById(id) }
-        ).also {
-            it.start(getString(R.string.message_delete))
-        }
-    }
+//    private fun showCheckDialog(id: Int) {
+//        CheckDialog(
+//            context = requireContext(),
+//            accept = { mainViewModel.deleteCommentById(id) }
+//        ).also {
+//            it.start(getString(R.string.message_delete))
+//        }
+//    }
 
     private fun shareToSNS() {
 //        val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable

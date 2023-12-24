@@ -1,5 +1,8 @@
 package com.cashproject.mongsil.ui.pages.detail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,14 +21,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
+import com.cashproject.mongsil.extension.noRippleClickable
 
 @Composable
 fun DiaryScreenContent(
     uiState: DiaryUiState = DiaryUiState(),
     onUiEvent: (DiaryUiEvent) -> Unit = {},
 ) {
+    var commentUiVisibility by remember { mutableStateOf(true) }
+
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .noRippleClickable {
+                commentUiVisibility = !commentUiVisibility
+            }
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
@@ -33,44 +43,46 @@ fun DiaryScreenContent(
             contentDescription = "명언 이미지",
             contentScale = ContentScale.FillHeight
         )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.3f))
-        )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            Color.Transparent,
-                            Color.Black.copy(alpha = 0.3f)
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            enter = fadeIn(),
+            exit = fadeOut(),
+            visible = commentUiVisibility
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.3f)
+                            )
                         )
                     )
+                    .noRippleClickable {  }
+            ) {
+                CommentList(
+                    modifier = Modifier.fillMaxHeight(0.7f),
+                    comments = uiState.comments,
                 )
-                .align(Alignment.BottomCenter),
-        ) {
-            CommentList(
-                modifier = Modifier.fillMaxHeight(0.7f),
-                comments = uiState.comments,
-            )
-            CommentInputBox(
-                modifier = Modifier.fillMaxWidth(),
-                emoticonId = uiState.emoticonId,
-                text = uiState.inputText,
-                onValueChange = {
-                    onUiEvent.invoke(DiaryUiEvent.TextChanged(it))
-                },
-                onClickEmoticon = {
-                    onUiEvent.invoke(DiaryUiEvent.ClickEmoticon)
-                },
-                onConfirm = {
-                    onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
-                    onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
-                }
-            )
+                CommentInputBox(
+                    modifier = Modifier.fillMaxWidth(),
+                    emoticonId = uiState.emoticonId,
+                    text = uiState.inputText,
+                    onValueChange = {
+                        onUiEvent.invoke(DiaryUiEvent.TextChanged(it))
+                    },
+                    onClickEmoticon = {
+                        onUiEvent.invoke(DiaryUiEvent.ClickEmoticon)
+                    },
+                    onConfirm = {
+                        onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
+                        onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
+                    }
+                )
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ import com.cashproject.mongsil.ui.main.MainViewModel
 
 class DiaryUiEventHandler(
     private val viewModel: DiaryViewModel,
-    private val mainViewModel: MainViewModel,
     private val fragment: DiaryFragment,
 ) {
     fun handleEvent(event: DiaryUiEvent) {

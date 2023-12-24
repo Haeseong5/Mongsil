@@ -9,7 +9,6 @@ import com.cashproject.mongsil.ui.main.MainViewModel
 
 @Composable
 fun DiaryScreen(
-    mainViewModel: MainViewModel,
     diaryViewModel: DiaryViewModel,
     onUiEvent: (DiaryUiEvent) -> Unit = {}
 ) {

@@ -23,9 +23,6 @@ import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.VerticalSpacer
-import com.cashproject.mongsil.ui.theme.dpToSp
-import com.gigamole.composefadingedges.content.FadingEdgesContentType
-import com.gigamole.composefadingedges.content.scrollconfig.FadingEdgesScrollConfig
 import com.gigamole.composefadingedges.verticalFadingEdges
 
 @Composable
