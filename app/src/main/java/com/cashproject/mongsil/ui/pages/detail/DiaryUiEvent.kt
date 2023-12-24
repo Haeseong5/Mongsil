@@ -4,9 +4,14 @@ sealed interface DiaryUiEvent {
     data class SubmitComment(
         val content: String,
     ) : DiaryUiEvent
-    data object ClickEmoticon: DiaryUiEvent
+
+    data object ClickEmoticon : DiaryUiEvent
+
+    data class TextChanged(
+        val text: String,
+    ) : DiaryUiEvent
 
     data class Error(
         val throwable: Throwable,
-    ): DiaryUiEvent
+    ) : DiaryUiEvent
 }

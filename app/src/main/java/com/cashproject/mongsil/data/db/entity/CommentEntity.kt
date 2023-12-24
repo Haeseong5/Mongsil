@@ -3,6 +3,9 @@ package com.cashproject.mongsil.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.cashproject.mongsil.ui.model.Emoticon
+import com.cashproject.mongsil.ui.model.Emoticons
+import com.cashproject.mongsil.ui.model.defaultEmoticon
 import java.util.*
 
 @Entity(tableName = "Comment")
@@ -21,3 +24,7 @@ data class CommentEntity(
     @ColumnInfo
     val docId: String = ""
 )
+
+fun Int.toEmoticon(): Emoticon {
+    return Emoticons.emoticons.find { it.id == this } ?: defaultEmoticon
+}

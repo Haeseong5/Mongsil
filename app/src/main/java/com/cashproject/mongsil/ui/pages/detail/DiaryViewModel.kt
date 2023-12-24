@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.repository.PosterRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -80,7 +81,7 @@ class DiaryViewModel(
                 commentsFlow.collectLatest {
                     updateUiState {
                         copy(
-                            comments = it
+                            comments = it.asReversed()
                         )
                     }
                 }
@@ -99,7 +100,7 @@ class DiaryViewModel(
             try {
                 val comment = Comment(
                     content = content,
-                    emotionId = emoticonId,
+                    emoticon = emoticonId.toEmoticon(),
                     date = date,
                     time = Date()
                 )

@@ -1,14 +1,11 @@
 package com.cashproject.mongsil.ui.pages.detail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,22 +13,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
-import com.cashproject.mongsil.R
-import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.ui.model.Emoticons
 
 @Composable
 fun DiaryScreenContent(
     uiState: DiaryUiState = DiaryUiState(),
     onUiEvent: (DiaryUiEvent) -> Unit = {},
 ) {
-    var inputComment by remember { mutableStateOf("") }
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -50,30 +42,36 @@ fun DiaryScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.3f)
+                        )
+                    )
+                )
                 .align(Alignment.BottomCenter),
         ) {
+            CommentList(
+                modifier = Modifier.fillMaxHeight(0.7f),
+                comments = uiState.comments,
+            )
             CommentInputBox(
                 modifier = Modifier.fillMaxWidth(),
                 emoticonId = uiState.emoticonId,
-                inputComment = {
-                    inputComment = it
+                text = uiState.inputText,
+                onValueChange = {
+                    onUiEvent.invoke(DiaryUiEvent.TextChanged(it))
                 },
                 onClickEmoticon = {
                     onUiEvent.invoke(DiaryUiEvent.ClickEmoticon)
                 },
                 onConfirm = {
-                    onUiEvent.invoke(DiaryUiEvent.SubmitComment(inputComment))
+                    onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
+                    onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
                 }
             )
         }
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            content = {
-                items(uiState.comments) {
-                    Text(text = it.content)
-                }
-            }
-        )
     }
 }
 

@@ -14,17 +14,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.cashproject.mongsil.R
+import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.RoundedInputBox
+import com.cashproject.mongsil.ui.model.Emoticon
 import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.theme.dpToSp
 
 @Composable
 fun CommentInputBox(
     modifier: Modifier = Modifier,
+    text: String,
     emoticonId: Int,
-    inputComment: (String) -> Unit = {},
+    onValueChange: (String) -> Unit = {},
     onClickEmoticon: () -> Unit = {},
     onConfirm: () -> Unit = {}
 ) {
@@ -39,13 +41,15 @@ fun CommentInputBox(
             modifier = Modifier.noRippleClickable {
                 onClickEmoticon.invoke()
             },
-            painter = painterResource(Emoticons.emoticons[emoticonId].icon),
+            painter = painterResource(emoticonId.toEmoticon().icon),
             contentDescription = "",
         )
 
         RoundedInputBox(
             modifier = Modifier.weight(1f),
-            inputText = inputComment
+            text = text,
+            onValueChange = onValueChange,
+            hint = "오늘의 기분을 입력해주세요.",
         )
         Text(
             modifier = Modifier.noRippleClickable {

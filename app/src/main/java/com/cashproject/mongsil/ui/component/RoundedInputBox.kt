@@ -33,11 +33,11 @@ import com.cashproject.mongsil.ui.theme.latoTextStyle
 @Composable
 fun RoundedInputBox(
     modifier: Modifier = Modifier,
+    text: String = "",
+    hint: String = "",
     maxLength: Int = Int.MAX_VALUE,
-    hint: String = "오늘의 기분을 입력해주세요.",
-    inputText: (String) -> Unit = { },
+    onValueChange: (text: String) -> Unit = {},
 ) {
-    var input by remember { mutableStateOf("") }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -45,10 +45,11 @@ fun RoundedInputBox(
             .background(color = Color.Transparent),
     ) {
         BasicTextField(
-            value = input,
+            value = text,
             onValueChange = {
-                if (it.length <= maxLength) input = it
-                inputText.invoke(it)
+                if (it.length <= maxLength){
+                    onValueChange.invoke(it)
+                }
             },
             maxLines = maxLength,
             modifier = Modifier
@@ -60,7 +61,6 @@ fun RoundedInputBox(
                     color = Color.White,
                     shape = CircleShape
                 ),
-
             textStyle = latoTextStyle.copy(Color.White),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -70,7 +70,7 @@ fun RoundedInputBox(
                         .wrapContentHeight()
                         .align(Alignment.BottomCenter)
                 ) {
-                    if (input.isEmpty()) {
+                    if (text.isEmpty()) {
                         Text(
                             modifier = Modifier
                                 .align(Alignment.CenterStart)
@@ -80,7 +80,6 @@ fun RoundedInputBox(
                             style = latoTextStyle,
                         )
                     }
-
                     Box(
                         modifier = Modifier
                             .align(Alignment.CenterStart)
@@ -88,7 +87,6 @@ fun RoundedInputBox(
                     ) {
                         innerTextField()
                     }
-
                 }
             }
         )

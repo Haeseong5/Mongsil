@@ -95,6 +95,8 @@ dependencies {
     implementation(activityCompose)
     androidTestImplementation(platform(compose_bom))
     androidTestImplementation(composeUiTest)
+
+    implementation("com.github.GIGAMOLE:ComposeFadingEdges:1.0.4")
     implementation ("com.kizitonwose.calendar:compose:2.4.0")
 
     //Ads

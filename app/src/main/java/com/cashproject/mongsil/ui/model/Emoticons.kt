@@ -2,6 +2,14 @@ package com.cashproject.mongsil.ui.model
 
 import com.cashproject.mongsil.R
 
+val defaultEmoticon = Emoticon(
+    0,
+    "행복",
+    R.drawable.emoticon_01_happy,
+    R.color.emoticon_01_happy_text,
+    R.color.emoticon_01_happy_background
+)
+
 object Emoticons {
     val emoticons = listOf(
         Emoticon(

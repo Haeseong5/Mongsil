@@ -33,6 +33,12 @@ class DiaryUiEventHandler(
             is DiaryUiEvent.Error -> {
                 event.throwable.handleError(fragment.requireContext())
             }
+
+            is DiaryUiEvent.TextChanged -> {
+                viewModel.updateUiState {
+                    copy(inputText = event.text)
+                }
+            }
         }
     }
 }
