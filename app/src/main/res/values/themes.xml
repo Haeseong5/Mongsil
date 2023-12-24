@@ -11,14 +11,22 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/background_color</item>
 
-        <!-- window theme-->
-        <item name="android:windowBackground">@color/background_color</item>
-        <item name="android:colorBackground">@color/background_color</item>
-        <item name="android:windowTranslucentStatus">true</item> <!--statusBar 반투명 여부-->
-        <item name="android:windowTranslucentNavigation">true</item> <!--navigationBar 반투명 여부-->
-        <item name="android:statusBarColor">@android:color/transparent</item> <!--statusBar color 설정-->
-        <!--마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원-->
-        <!--상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.-->
+        <!--        https://developer.android.com/develop/ui/views/layout/edge-to-edge?hl=ko-->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Optional: set to transparent if your app is drawing behind the status bar. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Optional: set for a light status bar with dark content. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+
+        <!--        &lt;!&ndash; window theme&ndash;&gt;-->
+        <!--        <item name="android:windowBackground">@color/background_color</item>-->
+        <!--        <item name="android:colorBackground">@color/background_color</item>-->
+        <!--        <item name="android:windowTranslucentStatus">true</item> &lt;!&ndash;statusBar 반투명 여부&ndash;&gt;-->
+        <!--        <item name="android:windowTranslucentNavigation">true</item> &lt;!&ndash;navigationBar 반투명 여부&ndash;&gt;-->
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item> &lt;!&ndash;statusBar color 설정&ndash;&gt;-->
+        <!--        &lt;!&ndash;마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원&ndash;&gt;-->
+        <!--        &lt;!&ndash;상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.&ndash;&gt;-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!--custom font-family 적용-->
