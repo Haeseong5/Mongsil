@@ -13,3 +13,11 @@ fun Throwable.handleError(context: Context) {
     printErrorLog()
     printStackTrace()
 }
+
+fun Context.showToast(message: String) {
+    Toast.makeText(
+        this,
+        message,
+        Toast.LENGTH_LONG
+    ).show()
+}

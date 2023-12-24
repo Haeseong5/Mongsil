@@ -4,14 +4,13 @@ import androidx.fragment.app.Fragment
 import com.cashproject.mongsil.extension.handleError
 
 class MenuEventHandler(
-    private val fragment: Fragment,
+    private val fragment: MenuBottomSheetDialog,
     private val viewModel: MenuViewModel,
 ) {
     fun handleEvent(event: MenuUiEvent) {
         when (event) {
             MenuUiEvent.Save -> {
-
-
+                fragment.onSave()
             }
 
             MenuUiEvent.Scrap -> {
@@ -19,7 +18,7 @@ class MenuEventHandler(
             }
 
             MenuUiEvent.Share -> {
-
+                fragment.onShare()
             }
 
             is MenuUiEvent.Error -> {

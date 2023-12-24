@@ -47,8 +47,8 @@ class DiaryViewModel(
     )
     val uiState: StateFlow<DiaryUiState> = _uiState.asStateFlow()
 
-    private val _error = MutableSharedFlow<Throwable>(extraBufferCapacity = 1)
-    val error = _error.asSharedFlow()
+    private val _sideEffect = MutableSharedFlow<DiarySideEffect>(extraBufferCapacity = 1)
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         loadPoster()
@@ -59,10 +59,14 @@ class DiaryViewModel(
         _uiState.update { action.invoke(it) }
     }
 
-    private fun emitError(throwable: Throwable) {
+    fun emitSideEffect(sideEffect: DiarySideEffect) {
         viewModelScope.launch {
-            _error.emit(throwable)
+            _sideEffect.emit(sideEffect)
         }
+    }
+
+    private fun emitError(throwable: Throwable) {
+        emitSideEffect(DiarySideEffect.Error(throwable))
     }
 
     private fun loadPoster() {

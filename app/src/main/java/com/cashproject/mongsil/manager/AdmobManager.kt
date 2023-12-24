@@ -2,15 +2,20 @@ package com.cashproject.mongsil.manager
 
 import android.app.Activity
 import android.util.Log
+import com.cashproject.mongsil.extension.printErrorLog
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.interstitial.InterstitialAd
 
 fun showInterstitialAd(interstitialAd: InterstitialAd?, activity: Activity) {
-    if (interstitialAd != null) {
-        interstitialAd.show(activity);
-    } else {
-        Log.d("TAG", "The interstitial ad wasn't ready yet.");
+    try {
+        if (interstitialAd != null) {
+            interstitialAd.show(activity);
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        }
+    } catch (e: Exception) {
+        e.printErrorLog()
     }
 }
 

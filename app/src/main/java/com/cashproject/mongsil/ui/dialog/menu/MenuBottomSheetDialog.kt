@@ -28,6 +28,9 @@ class MenuBottomSheetDialog(
         MenuEventHandler(this, viewModel)
     }
 
+    var onSave: () -> Unit = {}
+    var onShare: () -> Unit = {}
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

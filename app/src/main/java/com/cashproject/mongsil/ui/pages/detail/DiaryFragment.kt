@@ -17,6 +17,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.toTextFormat
+import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.menu.MenuBottomSheetDialog
@@ -160,50 +161,18 @@ class DiaryFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    fun onClickSubmitComment() {
-//        mainViewModel.insertComment(
-//            CommentEntity(
-//                content = binding.etSayingCommentInput.text.toString(),
-//                time = Date(),
-//                emotion = selectedEmoticonId,
-//                date = argument.selectedDate
-//            )
-//        )
-//        binding.etSayingCommentInput.text?.clear()
-    }
-
     fun showMenuBottomSheetDialog(poster: Poster) {
         MenuBottomSheetDialog(
             poster = poster,
             selectedDate = argument.selectedDate
         ).apply {
-//            setSaveBtnOnClickListener {
-//                showInterstitialAd(mInterstitialAd, requireActivity())
-////                val bitmap =
-////                    this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-////                try {
-////                    bitmap.bitmap.saveImage(requireActivity()).run {
-////                        activity?.showToast("갤러리에 이미지가 저장되었습니다.")
-////                    }
-////                } catch (e: Exception) {
-////                    Log.e(TAG, e.message.toString())
-////                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
-////                }
-//            }
-//            setHideCommentBtnOnClickListener {
-////                if (PreferencesManager.isVisibilityComment)
-////                    this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
-////                else
-////                    this@DetailFragment.binding.llSayingComment.visibility = View.GONE
-//            }
-//            setShareBtnOnClickListener {
-////                try {
-////                    shareToSNS()
-////                } catch (e: Exception) {
-////                    Log.e(TAG, e.message.toString())
-////                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
-////                }
-//            }
+            onSave = {
+                showInterstitialAd(mInterstitialAd, requireActivity())
+                diaryViewModel.emitSideEffect(DiarySideEffect.SavePoster)
+            }
+            onShare = {
+                diaryViewModel.emitSideEffect(DiarySideEffect.Share)
+            }
         }.show(childFragmentManager, "approval")
     }
 
@@ -216,12 +185,6 @@ class DiaryFragment : Fragment() {
         ).also {
             it.start(getString(R.string.message_delete))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //임시로 이모티콘 갱신
-//        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
     }
 
     private fun initInterstitialAd() {

@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.noRippleClickable
-import java.util.*
 
 @Composable
 fun MenuScreen(

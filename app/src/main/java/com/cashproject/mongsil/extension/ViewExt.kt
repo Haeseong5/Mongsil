@@ -3,6 +3,7 @@ package com.cashproject.mongsil.extension
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.cashproject.mongsil.util.LiveEvent
 import com.google.android.material.snackbar.Snackbar
@@ -92,10 +94,6 @@ fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
     val bytes = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
 
-    //    java.lang.SecurityException: Permission Denial: writing com.android.providers.media.MediaProvider uri content://media/external/images/media from pid=22556, uid=10210 requires android.permission.WRITE_EXTERNAL_STORAGE, or grantUriPermission()
-    //  java.lang.IllegalStateException: MediaStore.Images.Media.…gsil",
-    //            null
-    //        ) must not be null
     val path: String = MediaStore.Images.Media.insertImage(
         context.contentResolver,
         bitmap,
@@ -103,6 +101,19 @@ fun getImageUri(context: Context, bitmap: Bitmap): Uri? {
         null
     )
     return Uri.parse(path)
+}
+
+fun Bitmap?.shareImage(context: Context) {
+    try {
+        val imageUri = getImageUri(context, requireNotNull(this))
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_STREAM, imageUri)
+        val chooser = Intent.createChooser(intent, "친구에게 공유하기")
+        ContextCompat.startActivity(context, chooser, null)
+    } catch (e: Exception) {
+        e.handleError(context)
+    }
 }
 
 /**
