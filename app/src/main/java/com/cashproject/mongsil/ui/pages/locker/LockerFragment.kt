@@ -70,14 +70,14 @@ class LockerFragment : BaseFragment<FragmentLockerBinding>() {
 
         lockerAdapter.setOnItemClickListener {
             click.run {
-                DiaryFragment.start(
-                    fragment = this,
-                    argument = DiaryFragment.Argument(
-                        sayingEntity = it,
-                        selectedDate = Date(),
-                        from = "locker",
-                    ),
-                )
+//                DiaryFragment.start(
+//                    fragment = this,
+//                    argument = DiaryFragment.Argument(
+//                        sayingEntity = it,
+//                        selectedDate = Date(),
+//                        from = "locker",
+//                    ),
+//                )
             }
         }
     }

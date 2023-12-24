@@ -70,7 +70,8 @@ import java.util.Locale
 
 @Composable
 fun CalendarScreen(
-    viewModel: MainViewModel = composableActivityViewModel()
+    viewModel: MainViewModel = composableActivityViewModel(),
+    onStartDiary: (LocalDate) -> Unit = {},
 ) {
     val uiState by viewModel.calendarUiState.collectAsState()
     var isVisibleCalendar by remember { mutableStateOf(true) }
@@ -80,9 +81,7 @@ fun CalendarScreen(
         if (isVisibleCalendar) {
             CalendarScreenContent(
                 uiState = uiState,
-                onClickDay = {
-                    //TODO land to diaryFragment
-                }
+                onClickDay = onStartDiary
             )
         } else {
             CalendarListScreen()

@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.theme.dpToSp
 import com.cashproject.mongsil.ui.theme.latoTextStyle
 
@@ -64,7 +65,11 @@ fun CalendarDay(
 ) {
     Box {
         AsyncImage(
-            modifier = Modifier.aspectRatio(1f, true),
+            modifier = Modifier
+                .aspectRatio(1f, true)
+                .noRippleClickable { 
+                    //TODO 디테일 화면 랜딩
+                },
             model = poster.squareImage,
             contentDescription = ""
         )

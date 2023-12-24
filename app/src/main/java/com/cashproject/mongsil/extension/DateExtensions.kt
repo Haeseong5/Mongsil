@@ -1,6 +1,8 @@
 package com.cashproject.mongsil.extension
 
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
 
@@ -18,4 +20,9 @@ fun Date.toTextFormat(
 ): String {
     val dateFormat = SimpleDateFormat(format.pattern, Locale.getDefault())
     return dateFormat.format(this)
+}
+
+fun LocalDate.toDate(): Date {
+    val instant = atStartOfDay(ZoneId.systemDefault()).toInstant()
+    return Date.from(instant)
 }

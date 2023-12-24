@@ -9,11 +9,17 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.activityViewModels
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
+import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
+import com.cashproject.mongsil.extension.toDate
 import com.cashproject.mongsil.ui.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
 import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
+import com.cashproject.mongsil.ui.pages.detail.DiaryFragment
+import java.util.Date
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
@@ -36,7 +42,19 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                CalendarScreen()
+                CalendarScreen(
+                    onStartDiary = {
+                        val date = it.toDate()
+                        DiaryFragment.start(
+                            this@CalendarFragment,
+                            argument = DiaryFragment.Argument(
+                                poster = mainViewModel.getRandomSaying(date),
+                                selectedDate = date,
+                                from = "calendar"
+                            )
+                        )
+                    }
+                )
             }
         }
     }

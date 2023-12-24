@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_CALENDAR
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_HOME
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_LOCKER
@@ -18,7 +19,7 @@ import java.util.Date
 class MainPagerAdapter(
     fa: FragmentManager,
     lifecycle: Lifecycle,
-    private val todaySayingEntity: SayingEntity
+    private val todayPoster: Poster
 ) : FragmentStateAdapter(fa, lifecycle) {
 
     override fun getItemCount(): Int = 3
@@ -32,7 +33,7 @@ class MainPagerAdapter(
                 DiaryFragment().apply {
                     arguments = bundleOf(
                         "argument" to DiaryFragment.Argument(
-                            sayingEntity = todaySayingEntity,
+                            poster = todayPoster,
                             selectedDate = Date(),
                             from = "home"
                         )

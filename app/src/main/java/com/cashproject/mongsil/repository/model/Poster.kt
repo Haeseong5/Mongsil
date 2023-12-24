@@ -1,13 +1,16 @@
 package com.cashproject.mongsil.repository.model
 
+import android.os.Parcelable
 import com.cashproject.mongsil.data.api.dto.PosterResponse
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Poster(
     val id: String,
     val image: String,
     val squareImage: String,
-)
+): Parcelable
 
 fun List<PosterResponse>.toDomain(): List<Poster> {
     return this.map {

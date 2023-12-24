@@ -52,7 +52,7 @@ class DiaryFragment : Fragment() {
 
     @Parcelize
     data class Argument(
-        val sayingEntity: SayingEntity,
+        val poster: Poster,
         val selectedDate: Date,
         val from: String? = null
     ) : Parcelable
