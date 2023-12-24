@@ -7,6 +7,8 @@ sealed interface DiaryUiEvent {
 
     data object ClickEmoticon : DiaryUiEvent
 
+    data class ShowDeleteDialog(val commentId: Int): DiaryUiEvent
+
     data class TextChanged(
         val text: String,
     ) : DiaryUiEvent

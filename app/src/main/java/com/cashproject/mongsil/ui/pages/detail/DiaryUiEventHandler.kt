@@ -38,6 +38,10 @@ class DiaryUiEventHandler(
                     copy(inputText = event.text)
                 }
             }
+
+            is DiaryUiEvent.ShowDeleteDialog -> {
+                fragment.showCheckDialog(event.commentId)
+            }
         }
     }
 }

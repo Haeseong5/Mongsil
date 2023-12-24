@@ -111,6 +111,16 @@ class DiaryViewModel(
         }
     }
 
+    fun deleteCommentById(id: Int) {
+        viewModelScope.launch {
+            try {
+                diaryService.deleteComment(id)
+            } catch (e: Exception) {
+                emitError(e)
+            }
+        }
+    }
+
 
     fun like(sayingEntity: SayingEntity) { }
 //        viewModelScope.launch {

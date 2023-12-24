@@ -1,6 +1,9 @@
 package com.cashproject.mongsil.ui.pages.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +31,8 @@ import com.gigamole.composefadingedges.verticalFadingEdges
 @Composable
 fun CommentList(
     modifier: Modifier = Modifier,
-    comments: List<Comment>
+    comments: List<Comment>,
+    onLongClick: (Int) -> Unit = {},
 ) {
     val listState = rememberLazyListState()
 
@@ -52,18 +56,33 @@ fun CommentList(
             ),
         content = {
             items(comments) {
-                Comment(comment = it)
+                Comment(
+                    comment = it,
+                    onLongClick = onLongClick,
+                )
             }
         }
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Comment(comment: Comment) {
+fun Comment(
+    comment: Comment,
+    onLongClick: (Int) -> Unit = {},
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .combinedClickable(
+                interactionSource = MutableInteractionSource(),
+                indication = null,
+                onLongClick = {
+                    onLongClick.invoke(comment.id)
+                },
+                onClick = {}
+            )
     ) {
         Image(
             modifier = Modifier

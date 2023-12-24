@@ -66,6 +66,9 @@ fun DiaryScreenContent(
                 CommentList(
                     modifier = Modifier.fillMaxHeight(0.7f),
                     comments = uiState.comments,
+                    onLongClick = {
+                        onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))
+                    }
                 )
                 CommentInputBox(
                     modifier = Modifier.fillMaxWidth(),

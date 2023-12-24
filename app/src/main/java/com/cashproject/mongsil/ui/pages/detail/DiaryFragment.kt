@@ -208,14 +208,16 @@ class DiaryFragment : Fragment() {
 //
     }
 
-//    private fun showCheckDialog(id: Int) {
-//        CheckDialog(
-//            context = requireContext(),
-//            accept = { mainViewModel.deleteCommentById(id) }
-//        ).also {
-//            it.start(getString(R.string.message_delete))
-//        }
-//    }
+    fun showCheckDialog(id: Int) {
+        CheckDialog(
+            context = requireContext(),
+            accept = {
+                diaryViewModel.deleteCommentById(id)
+            }
+        ).also {
+            it.start(getString(R.string.message_delete))
+        }
+    }
 
     private fun shareToSNS() {
 //        val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
