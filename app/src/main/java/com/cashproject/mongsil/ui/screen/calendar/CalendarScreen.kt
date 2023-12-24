@@ -80,6 +80,9 @@ fun CalendarScreen(
         if (isVisibleCalendar) {
             CalendarScreenContent(
                 uiState = uiState,
+                onClickDay = {
+                    //TODO land to diaryFragment
+                }
             )
         } else {
             CalendarListScreen()

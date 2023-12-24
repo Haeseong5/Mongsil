@@ -34,7 +34,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="@dimen/margin16"
-            android:onClick="@{()->fragment.onClickBackBtn()}"
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +80,6 @@
                     android:id="@+id/iv_saying_emoticon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{()->fragment.onClickEmoticon()}"
                     android:src="@drawable/emoticon_01_happy" />
 
                 <com.google.android.material.textfield.TextInputEditText

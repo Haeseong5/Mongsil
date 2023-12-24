@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.ui.pages.detail
 
+import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 
@@ -40,6 +41,10 @@ class DiaryUiEventHandler(
 
             is DiaryUiEvent.ShowMenuBottomSheetDialog -> {
                 fragment.showMenuBottomSheetDialog(event.poster)
+            }
+
+            DiaryUiEvent.Finish -> {
+                fragment.findNavController().popBackStack()
             }
         }
     }

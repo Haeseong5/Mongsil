@@ -9,11 +9,13 @@ sealed interface DiaryUiEvent {
 
     data object ClickEmoticon : DiaryUiEvent
 
-    data class ShowDeleteDialog(val commentId: Int): DiaryUiEvent
+    data class ShowDeleteDialog(val commentId: Int) : DiaryUiEvent
 
     data class TextChanged(
         val text: String,
     ) : DiaryUiEvent
 
     data class ShowMenuBottomSheetDialog(val poster: Poster) : DiaryUiEvent
+
+    data object Finish : DiaryUiEvent
 }

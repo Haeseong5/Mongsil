@@ -19,19 +19,21 @@ import java.util.Date
 
 
 class DiaryViewModel(
-    val date: Date,
+    private val date: Date,
+    private val isPagerItem: Boolean,
     private val diaryService: DiaryService = DiaryService(),
     private val posterRepository: PosterRepository = PosterRepository(),
 ) : ViewModel() {
 
     companion object {
-        fun createViewModelFactory(date: Date): ViewModelProvider.Factory {
+        fun createViewModelFactory(date: Date, isPagerItem: Boolean): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     if (modelClass.isAssignableFrom(DiaryViewModel::class.java)) {
                         return DiaryViewModel(
                             date = date,
+                            isPagerItem = isPagerItem,
                         ) as T
                     }
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
@@ -42,7 +44,8 @@ class DiaryViewModel(
 
     private val _uiState: MutableStateFlow<DiaryUiState> = MutableStateFlow(
         DiaryUiState(
-            date = date
+            date = date,
+            isPagerItem = isPagerItem,
         )
     )
     val uiState: StateFlow<DiaryUiState> = _uiState.asStateFlow()

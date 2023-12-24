@@ -64,7 +64,8 @@ class DiaryFragment : Fragment() {
 
     private val diaryViewModel: DiaryViewModel by viewModels {
         DiaryViewModel.createViewModelFactory(
-            date = argument.selectedDate
+            date = argument.selectedDate,
+            isPagerItem = argument.from == "home"
         )
     }
 
@@ -102,63 +103,6 @@ class DiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("DiaryFragment", argument.selectedDate.toTextFormat(DateFormat.YearMonthDayAndTime))
-    }
-
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        val rootView = super.onCreateView(inflater, container, savedInstanceState)
-//        binding.fragment = this
-//        binding.lifecycleOwner = viewLifecycleOwner
-//        binding.mainViewModel = mainViewModel
-//        return rootView
-//    }
-
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        binding.ivSayingEmoticon.setImageResource(emoticons[selectedEmoticonId].icon)
-//
-//        when (argument.from) {
-//            "locker" -> {
-//                binding.llSayingComment.visibility = View.GONE
-//            }
-//            "home" -> {
-//                binding.ivDetailFinish.visibility = View.GONE
-//            }
-//        }
-//
-//        binding.rvSayingCommentList.apply {
-//            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
-//            setHasFixedSize(true)
-//            adapter = commentAdapter
-//        }
-//
-//        commentAdapter.setOnItemLongClickListener {
-//            showCheckDialog(it.id)
-//        }
-//
-//        mainActivity?.mainViewModel?.commentEntityList?.observe(viewLifecycleOwner) {
-//            it.filter { comment ->
-//                isSameDay(comment.date, argument.selectedDate)
-//            }.let { comments ->
-//                commentAdapter.update(comments)
-//                binding.rvSayingCommentList.scrollToPosition(comments.size - 1)
-//            }
-//        }
-//
-//    }
-
-    fun onClickEmoticon() {
-//        click.run {
-//            showEmoticonBottomSheet()
-//        }
-    }
-
-    fun onClickBackBtn() {
-        findNavController().popBackStack()
     }
 
     fun showMenuBottomSheetDialog(poster: Poster) {

@@ -49,14 +49,19 @@ fun DiaryTopLayout(
             )
             .padding(12.dp)
     ) {
-        Image(
-            modifier = Modifier
-                .size(28.dp)
-                .align(Alignment.TopStart),
-            painter = rememberVectorPainter(image = Icons.Outlined.Close),
-            colorFilter = ColorFilter.tint(Color.White),
-            contentDescription = "info"
-        )
+        if (!uiState.isPagerItem) {
+            Image(
+                modifier = Modifier
+                    .size(28.dp)
+                    .align(Alignment.TopStart)
+                    .noRippleClickable {
+                        onUiEvent.invoke(DiaryUiEvent.Finish)
+                    },
+                painter = rememberVectorPainter(image = Icons.Outlined.Close),
+                colorFilter = ColorFilter.tint(Color.White),
+                contentDescription = "info"
+            )
+        }
 
         Row(
             modifier = Modifier.align(Alignment.TopCenter),

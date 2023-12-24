@@ -9,4 +9,5 @@ data class DiaryUiState(
     val comments: List<Comment> = emptyList(),
     val emoticonId: Int = 0,
     val inputText: String = "",
+    val isPagerItem: Boolean = false,
 )

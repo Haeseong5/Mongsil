@@ -91,7 +91,7 @@ fun DiaryScreenContent(
                 posterBitmap = it.result.drawable.toBitmapOrNull()
             },
             contentDescription = "명언 이미지",
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.FillWidth
         )
 
         AnimatedVisibility(
