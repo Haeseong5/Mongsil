@@ -19,10 +19,16 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.toTextFormat
+import com.cashproject.mongsil.manager.showInterstitialAd
+import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.CheckDialog
+import com.cashproject.mongsil.ui.dialog.MenuBottomSheetFragment
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
@@ -65,12 +71,14 @@ class DiaryFragment : Fragment() {
         )
     }
 
-    private val uiEventHandler : DiaryUiEventHandler by lazy {
+    private val uiEventHandler: DiaryUiEventHandler by lazy {
         DiaryUiEventHandler(
             viewModel = diaryViewModel,
             fragment = this,
         )
     }
+
+    private var mInterstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,10 +154,6 @@ class DiaryFragment : Fragment() {
 //
 //    }
 
-    fun onClickBackgroundImage() {
-        showBottomMenuDialog()
-    }
-
     fun onClickEmoticon() {
 //        click.run {
 //            showEmoticonBottomSheet()
@@ -172,40 +176,39 @@ class DiaryFragment : Fragment() {
 //        binding.etSayingCommentInput.text?.clear()
     }
 
-    private fun showBottomMenuDialog() {
-//            MenuBottomSheetFragment(
-//                sayingEntity = argument.sayingEntity ?: return@run,
-//                selectedDate = argument.selectedDate
-//            ).apply {
-//                setSaveBtnOnClickListener {
-//                    showInterstitialAd(mInterstitialAd, requireActivity())
-//                    val bitmap =
-//                        this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-//                    try {
-//                        bitmap.bitmap.saveImage(requireActivity()).run {
-//                            activity?.showToast("갤러리에 이미지가 저장되었습니다.")
-//                        }
-//                    } catch (e: Exception) {
-//                        Log.e(TAG, e.message.toString())
-//                        activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
+    fun showBottomMenuDialog(poster: Poster) {
+        MenuBottomSheetFragment(
+            poster = poster,
+            selectedDate = argument.selectedDate
+        ).apply {
+            setSaveBtnOnClickListener {
+                showInterstitialAd(mInterstitialAd, requireActivity())
+//                val bitmap =
+//                    this@DetailFragment.binding.ivSayingBackgroundImage.drawable as BitmapDrawable
+//                try {
+//                    bitmap.bitmap.saveImage(requireActivity()).run {
+//                        activity?.showToast("갤러리에 이미지가 저장되었습니다.")
 //                    }
+//                } catch (e: Exception) {
+//                    Log.e(TAG, e.message.toString())
+//                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
 //                }
-//                setHideCommentBtnOnClickListener {
-//                    if (PreferencesManager.isVisibilityComment)
-//                        this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
-//                    else
-//                        this@DetailFragment.binding.llSayingComment.visibility = View.GONE
+            }
+            setHideCommentBtnOnClickListener {
+//                if (PreferencesManager.isVisibilityComment)
+//                    this@DetailFragment.binding.llSayingComment.visibility = View.VISIBLE
+//                else
+//                    this@DetailFragment.binding.llSayingComment.visibility = View.GONE
+            }
+            setShareBtnOnClickListener {
+//                try {
+//                    shareToSNS()
+//                } catch (e: Exception) {
+//                    Log.e(TAG, e.message.toString())
+//                    activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
 //                }
-//                setShareBtnOnClickListener {
-//                    try {
-//                        shareToSNS()
-//                    } catch (e: Exception) {
-//                        Log.e(TAG, e.message.toString())
-//                        activity?.showToast("외부 저장소 쓰기 권한을 허용해주세요 ㅜㅜ.")
-//                    }
-//                }
-//            }.show(childFragmentManager, "approval")
-//
+            }
+        }.show(childFragmentManager, "approval")
     }
 
     fun showCheckDialog(id: Int) {
@@ -237,25 +240,27 @@ class DiaryFragment : Fragment() {
     }
 
     private fun initInterstitialAd() {
-//        val adRequest: AdRequest = AdRequest.Builder().build()
-//
-//        InterstitialAd.load(requireContext(),
-//            requireContext().getString(R.string.ad_interstitial_id),
-//            adRequest,
-//            object : InterstitialAdLoadCallback() {
-//                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-//                    // The mInterstitialAd reference will be null until
-//                    // an ad is loaded.
-//                    mInterstitialAd = interstitialAd
-//                    Log.i(TAG, "onAdLoaded")
-//                }
-//
-//                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-//                    // Handle the error
-//                    Log.i(TAG, loadAdError.message)
-//                    mInterstitialAd = null
-//                }
-//            })
+        val adRequest: AdRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            requireContext(),
+            requireContext().getString(R.string.ad_interstitial_id),
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until
+                    // an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    Log.i("TAG", "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.i("TAG", loadAdError.message)
+                    mInterstitialAd = null
+                }
+            }
+        )
     }
 }
 

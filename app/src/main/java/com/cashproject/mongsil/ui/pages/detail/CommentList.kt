@@ -29,6 +29,7 @@ import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.VerticalSpacer
+import com.cashproject.mongsil.ui.theme.textShadow
 import com.gigamole.composefadingedges.verticalFadingEdges
 
 
@@ -108,11 +109,7 @@ fun Comment(
                 text = comment.content,
                 color = Color.White,
                 style = TextStyle.Default.copy(
-                    shadow = Shadow(
-                        color = Color.Black.copy(alpha = 0.5f),
-                        offset = Offset(1.0f, 1.0f),
-                        blurRadius = 2f
-                    )
+                    shadow = textShadow
                 ),
                 fontSize = 16.sp
             )

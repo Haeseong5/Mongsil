@@ -14,6 +14,8 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.FragmentBottomSheetSayingBinding
 import com.cashproject.mongsil.di.Injection
 import com.cashproject.mongsil.data.db.entity.SayingEntity
+import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.model.toLegacy
 import com.cashproject.mongsil.ui.pages.detail.DiaryViewModel
 import com.cashproject.mongsil.util.DateUtil
 import com.cashproject.mongsil.util.PreferencesManager.isVisibilityComment
@@ -23,13 +25,14 @@ import java.util.*
 
 
 class MenuBottomSheetFragment(
-    private val sayingEntity: SayingEntity,
+    private val poster: Poster,
     private val selectedDate: Date,
 ) : BottomSheetDialogFragment() {
+    private val sayingEntity: SayingEntity = poster.toLegacy()
     lateinit var binding: FragmentBottomSheetSayingBinding
 
-    private val viewModel: DiaryViewModel by viewModels { viewModelFactory }
-    lateinit var viewModelFactory: ViewModelFactory
+//    private val viewModel: DiaryViewModel by viewModels { viewModelFactory }
+//    lateinit var viewModelFactory: ViewModelFactory
 
     private var likeBtnListener: (() -> Unit)? = null
     private var saveBtnListener: (() -> Unit)? = null
@@ -65,11 +68,11 @@ class MenuBottomSheetFragment(
             container,
             false
         )
-        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
+//        viewModelFactory = Injection.provideViewModelFactory(activity as Context)
         initDateIcon()
         initCommentIcon()
         setOnClickListener()
-        viewModel.findByDocId(sayingEntity.docId)
+//        viewModel.findByDocId(sayingEntity.docId)
         observeIsLike()
         return binding.root
     }
@@ -92,8 +95,8 @@ class MenuBottomSheetFragment(
 
     private fun setOnClickListener() {
         binding.ivSayingLike.setOnClickListener {
-            if (mLike) viewModel.unLike(sayingEntity.docId)
-            else viewModel.like(sayingEntity)
+//            if (mLike) viewModel.unLike(sayingEntity.docId)
+//            else viewModel.like(sayingEntity)
             likeBtnListener?.invoke()
             dismiss()
         }

@@ -1,7 +1,9 @@
 package com.cashproject.mongsil.ui.theme
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -31,3 +33,10 @@ val latoTextStyle: TextStyle
         fontWeight = FontWeight(500),
         color = Color.Black
     )
+
+
+val textShadow = Shadow(
+    color = Color.Black.copy(alpha = 0.5f),
+    offset = Offset(1.0f, 1.0f),
+    blurRadius = 2f
+)

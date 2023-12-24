@@ -40,7 +40,9 @@ class DiaryViewModel(
         }
     }
 
-    private val _uiState: MutableStateFlow<DiaryUiState> = MutableStateFlow(DiaryUiState())
+    private val _uiState: MutableStateFlow<DiaryUiState> = MutableStateFlow(
+        DiaryUiState(date = date)
+    )
     val uiState: StateFlow<DiaryUiState> = _uiState.asStateFlow()
 
     private val _error = MutableSharedFlow<Throwable>(extraBufferCapacity = 1)
@@ -66,7 +68,7 @@ class DiaryViewModel(
             try {
                 val poster = posterRepository.getRandomSinglePoster()
                 updateUiState {
-                    copy(posterUrl = poster.image)
+                    copy(poster = poster)
                 }
             } catch (e: Exception) {
                 emitError(e)
@@ -122,8 +124,9 @@ class DiaryViewModel(
     }
 
 
-    fun like(sayingEntity: SayingEntity) { }
-//        viewModelScope.launch {
+    fun like(sayingEntity: SayingEntity) {}
+
+    //        viewModelScope.launch {
 //            try {
 //                bookmarkService.insertBookmarkPoster(sayingEntity)
 //            } catch (e: Exception) {
@@ -132,7 +135,7 @@ class DiaryViewModel(
 //        }
 //    }
 //
-    fun unLike(docId: String) { }
+    fun unLike(docId: String) {}
 //        viewModelScope.launch {
 //            try {
 //                bookmarkService.deleteBookmarkPoster(docId)
@@ -144,7 +147,7 @@ class DiaryViewModel(
 //    }
 
 
-    fun findByDocId(docId: String) { }
+    fun findByDocId(docId: String) {}
 //        try {
 //            viewModelScope.launch {
 //                val poster = bookmarkService.findPosterById(docId)

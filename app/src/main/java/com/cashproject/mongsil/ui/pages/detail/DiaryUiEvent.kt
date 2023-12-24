@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.ui.pages.detail
 
+import com.cashproject.mongsil.repository.model.Poster
+
 sealed interface DiaryUiEvent {
     data class SubmitComment(
         val content: String,
@@ -16,4 +18,6 @@ sealed interface DiaryUiEvent {
     data class Error(
         val throwable: Throwable,
     ) : DiaryUiEvent
+
+    data class ShowPosterDialog(val poster: Poster) : DiaryUiEvent
 }

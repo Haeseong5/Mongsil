@@ -39,9 +39,14 @@ fun DiaryScreenContent(
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
-            model = uiState.posterUrl,
+            model = uiState.poster.image,
             contentDescription = "명언 이미지",
             contentScale = ContentScale.FillHeight
+        )
+
+        DiaryTopLayout(
+            modifier = Modifier.align(Alignment.TopCenter),
+            onUiEvent = onUiEvent,
         )
 
         AnimatedVisibility(
@@ -61,10 +66,10 @@ fun DiaryScreenContent(
                             )
                         )
                     )
-                    .noRippleClickable {  }
+                    .noRippleClickable { }
             ) {
                 CommentList(
-                    modifier = Modifier.fillMaxHeight(0.7f),
+                    modifier = Modifier.fillMaxHeight(0.6f),
                     comments = uiState.comments,
                     onLongClick = {
                         onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))

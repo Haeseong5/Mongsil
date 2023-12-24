@@ -22,7 +22,6 @@
             android:id="@+id/iv_saying_background_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="@{()->fragment.onClickBackgroundImage()}"
             android:scaleType="centerCrop"
             android:src="@drawable/emoticon_05"
             app:layout_constraintBottom_toBottomOf="parent"

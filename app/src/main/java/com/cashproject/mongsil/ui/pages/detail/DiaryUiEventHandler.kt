@@ -42,6 +42,10 @@ class DiaryUiEventHandler(
             is DiaryUiEvent.ShowDeleteDialog -> {
                 fragment.showCheckDialog(event.commentId)
             }
+
+            is DiaryUiEvent.ShowPosterDialog -> {
+                fragment.showBottomMenuDialog(event.poster)
+            }
         }
     }
 }
