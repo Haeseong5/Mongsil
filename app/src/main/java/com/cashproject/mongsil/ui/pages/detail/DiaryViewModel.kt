@@ -132,39 +132,4 @@ class DiaryViewModel(
             }
         }
     }
-
-
-    fun like(sayingEntity: SayingEntity) {}
-
-    //        viewModelScope.launch {
-//            try {
-//                bookmarkService.insertBookmarkPoster(sayingEntity)
-//            } catch (e: Exception) {
-////                errorSubject.onNext(e)
-//            }
-//        }
-//    }
-//
-    fun unLike(docId: String) {}
-//        viewModelScope.launch {
-//            try {
-//                bookmarkService.deleteBookmarkPoster(docId)
-////                _isLike.postValue(false)
-//            } catch (e: Exception) {
-////                errorSubject.onNext(e)
-//            }
-//        }
-//    }
-
-
-    fun findByDocId(docId: String) {}
-//        try {
-//            viewModelScope.launch {
-//                val poster = bookmarkService.findPosterById(docId)
-////                _isLike.value = poster != null
-//            }
-//        } catch (e: Exception) {
-////            errorSubject.onNext(e)
-//        }
-//    }
 }
