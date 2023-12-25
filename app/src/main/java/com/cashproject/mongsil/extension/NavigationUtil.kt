@@ -57,10 +57,16 @@ fun getStatusBarHeight(activity: Activity): Int {
     return rectangle.top
 }
 
+private var cachedStatusBarHeight: Dp = 0.dp
+
 @Composable
 fun getStatusBarHeight(): Dp {
-    return androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
-        .calculateTopPadding().value.dp
+    return if (cachedStatusBarHeight <= 0.dp) {
+        androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
+            .calculateTopPadding().value.dp.also {
+                cachedStatusBarHeight = it
+            }
+    } else cachedStatusBarHeight
 }
 
 val getNavigationBarHeightDp

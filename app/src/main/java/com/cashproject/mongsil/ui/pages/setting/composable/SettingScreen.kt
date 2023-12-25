@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.Toolbar
 import com.cashproject.mongsil.ui.theme.gamjaflowerFamily
@@ -32,7 +33,11 @@ import com.cashproject.mongsil.ui.theme.gamjaflowerFamily
 fun SettingScreen(
     onUiAction: (UiAction) -> Unit = {},
 ) {
-    Box() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = getStatusBarHeight())
+    ) {
         Column() {
             Toolbar(
                 title = "설정",
