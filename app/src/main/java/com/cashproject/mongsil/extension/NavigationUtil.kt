@@ -8,8 +8,10 @@ import android.os.Build
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -60,3 +62,8 @@ fun getStatusBarHeight(): Dp {
     return androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
         .calculateTopPadding().value.dp
 }
+
+val getNavigationBarHeightDp
+    @Composable
+    get() = androidx.compose.foundation.layout.WindowInsets.navigationBars.asPaddingValues()
+        .calculateTopPadding().value.dp

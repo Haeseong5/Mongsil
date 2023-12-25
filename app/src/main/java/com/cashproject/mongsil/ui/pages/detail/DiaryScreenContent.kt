@@ -9,9 +9,19 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +44,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.getImageUri
+import com.cashproject.mongsil.extension.getNavigationBarHeightDp
 import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.extension.saveImage
@@ -42,6 +53,7 @@ import com.cashproject.mongsil.extension.showToast
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DiaryScreenContent(
     uiState: DiaryUiState = DiaryUiState(),
@@ -51,7 +63,6 @@ fun DiaryScreenContent(
     var commentUiVisibility by remember { mutableStateOf(true) }
     var posterBitmap: Bitmap? by remember { mutableStateOf(null) }
     val context = LocalContext.current
-
     LaunchedEffect(sideEffect) {
         sideEffect.collect {
             when (it) {
@@ -107,7 +118,8 @@ fun DiaryScreenContent(
         }
 
         AnimatedVisibility(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier
+                .align(Alignment.BottomCenter),
             enter = fadeIn(),
             exit = fadeOut(),
             visible = commentUiVisibility
@@ -123,6 +135,10 @@ fun DiaryScreenContent(
                             )
                         )
                     )
+                    .consumeWindowInsets(
+                        WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
+                    )
+                    .imePadding()
                     .noRippleClickable { }
             ) {
                 CommentList(
@@ -133,7 +149,8 @@ fun DiaryScreenContent(
                     }
                 )
                 CommentInputBox(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     emoticonId = uiState.emoticonId,
                     text = uiState.inputText,
                     onValueChange = {
