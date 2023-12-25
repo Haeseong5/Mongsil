@@ -18,41 +18,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_calendar_day_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:visibility="gone"
-            android:clipToPadding="false"
-            android:visibility="@{flag ? View.VISIBLE : View.GONE}"
-            android:orientation="vertical"/>
-
-        <com.cashproject.mongsil.ui.pages.calendar.custom.CalendarView
-            android:id="@+id/custom_calendar_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin16"
-            android:visibility="@{flag ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_calendar_floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:backgroundTint="@color/colorYellow"
-            app:tint="@color/floating_action_btn_color"
-            android:src="@{flag ? @drawable/ic_calendar : @drawable/ic_list}"
-            tools:src="@drawable/ic_list"
-            android:scaleType="fitXY"
-            app:fabSize="normal"
-            app:borderWidth="0dp"
-            app:layout_anchorGravity="center"
-            android:foregroundGravity="center"
-            android:layout_margin="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

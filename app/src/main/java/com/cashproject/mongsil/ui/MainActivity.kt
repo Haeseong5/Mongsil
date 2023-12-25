@@ -10,7 +10,6 @@ import com.cashproject.mongsil.base.BaseActivity
 import com.cashproject.mongsil.data.firebase.RemoteConfigManager
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.di.Injection
-import com.cashproject.mongsil.extension.makeStatusBarTransparent
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.extension.getNavigationBarHeight
 import com.cashproject.mongsil.ui.dialog.ProgressDialog
