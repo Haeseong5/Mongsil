@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.data.db.entity.toEmoticon
-import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.data.repository.DiaryRepository
+import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ import java.util.Date
 class DiaryViewModel(
     private val date: Date,
     private val isPagerItem: Boolean,
-    private val diaryService: DiaryService = DiaryService(),
+    private val diaryRepository: DiaryRepository = DiaryRepositoryImpl(),
     private val posterRepository: PosterRepository = PosterRepository(),
 ) : ViewModel() {
 
@@ -88,7 +89,7 @@ class DiaryViewModel(
     private fun loadComments(selectedDate: Date = date) {
         viewModelScope.launch {
             try {
-                val commentsFlow = diaryService.loadCommentsByDate(selectedDate)
+                val commentsFlow = diaryRepository.loadCommentListByDate(selectedDate)
                 commentsFlow.collectLatest {
                     updateUiState {
                         copy(
@@ -115,7 +116,7 @@ class DiaryViewModel(
                     date = date,
                     time = Date()
                 )
-                diaryService.insertComment(comment.toEntity())
+                diaryRepository.insert(comment)
             } catch (e: Exception) {
                 emitError(e)
             }
@@ -125,7 +126,7 @@ class DiaryViewModel(
     fun deleteCommentById(id: Int) {
         viewModelScope.launch {
             try {
-                diaryService.deleteComment(id)
+                diaryRepository.delete(id)
             } catch (e: Exception) {
                 emitError(e)
             }
