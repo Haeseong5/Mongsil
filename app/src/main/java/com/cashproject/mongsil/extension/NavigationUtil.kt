@@ -7,6 +7,11 @@ import android.graphics.Rect
 import android.os.Build
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 fun Context.getNavigationBarHeight(): Int {
     val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -48,4 +53,10 @@ fun getStatusBarHeight(activity: Activity): Int {
     val rectangle = Rect()
     activity.window.decorView.getWindowVisibleDisplayFrame(rectangle)
     return rectangle.top
+}
+
+@Composable
+fun getStatusBarHeight(): Dp {
+    return androidx.compose.foundation.layout.WindowInsets.systemBars.asPaddingValues()
+        .calculateTopPadding().value.dp
 }

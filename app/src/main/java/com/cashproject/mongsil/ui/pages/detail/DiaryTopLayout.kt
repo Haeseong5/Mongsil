@@ -4,10 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -19,10 +22,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.extension.DateFormat
+import com.cashproject.mongsil.extension.getStatusBarHeight
+import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.HorizontalSpacer
@@ -35,19 +41,21 @@ fun DiaryTopLayout(
     uiState: DiaryUiState = DiaryUiState(),
     onUiEvent: (DiaryUiEvent) -> Unit = {}
 ) {
+    val statusBarHeightDp = getStatusBarHeight()
+
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp)
             .background(
                 brush = Brush.verticalGradient(
                     listOf(
-                        Color.Black.copy(0.1f),
+                        Color.Black.copy(0.2f),
                         Color.Transparent
                     )
                 )
             )
-            .padding(12.dp)
+            .padding(top = statusBarHeightDp)
+            .height(60.dp)
     ) {
         if (!uiState.isPagerItem) {
             Image(

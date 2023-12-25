@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.extension.DateFormat
+import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.repository.model.Poster
