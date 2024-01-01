@@ -60,6 +60,7 @@ fun DiaryTopLayout(
         if (!uiState.isPagerItem) {
             Image(
                 modifier = Modifier
+                    .padding(start = 8.dp)
                     .size(28.dp)
                     .align(Alignment.TopStart)
                     .noRippleClickable {
@@ -72,7 +73,9 @@ fun DiaryTopLayout(
         }
 
         Row(
-            modifier = Modifier.align(Alignment.TopCenter),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -90,6 +93,7 @@ fun DiaryTopLayout(
 
         Image(
             modifier = Modifier
+                .padding(end = 2.dp)
                 .size(28.dp)
                 .align(Alignment.TopEnd)
                 .noRippleClickable {

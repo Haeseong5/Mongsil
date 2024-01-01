@@ -43,7 +43,6 @@ import com.cashproject.mongsil.extension.showToast
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DiaryScreenContent(
     uiState: DiaryUiState = DiaryUiState(),
