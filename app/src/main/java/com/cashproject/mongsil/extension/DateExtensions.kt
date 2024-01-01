@@ -26,3 +26,10 @@ fun LocalDate.toDate(): Date {
     val instant = atStartOfDay(ZoneId.systemDefault()).toInstant()
     return Date.from(instant)
 }
+
+fun Date.toLocalDate(): LocalDate {
+    val date = this
+    val instant = date.toInstant()
+    val zonedDateTime = instant.atZone(ZoneId.systemDefault())
+    return zonedDateTime.toLocalDate()
+}

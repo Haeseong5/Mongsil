@@ -35,7 +35,11 @@ class MainFragment : SuperFragment() {
     val binding get() = _binding!!
 
     private val mainPagerAdapter by lazy {
-        MainPagerAdapter(requireActivity().supportFragmentManager, lifecycle, mainViewModel.getRandomSaying(Date()))
+        MainPagerAdapter(
+            requireActivity().supportFragmentManager,
+            lifecycle,
+            mainViewModel.getRandomSaying(Date())
+        )
     }
 
     override fun onAttach(context: Context) {

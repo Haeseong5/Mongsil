@@ -53,16 +53,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             initializeFirebaseRemoteConfig()
             setRemoteConfigListener()
         }
-
-        mainViewModel.apply {
-//            getSayingList()
-            getAllComments()
-            getAllLike()
-
-//            allPosters.observe(this@MainActivity) {
-//                printLog("success to load ${it.size}")
-//            }
-        }
     }
 
     private fun setupPushNotification() {

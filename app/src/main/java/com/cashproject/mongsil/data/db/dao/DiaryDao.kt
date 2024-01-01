@@ -20,4 +20,6 @@ interface DiaryDao {
     @Query("DELETE FROM Comment WHERE id = :id")
     suspend fun delete(id: Int)
 
+    @Query("SELECT * FROM Comment ORDER BY time DESC LIMIT 1")
+    fun loadLastCommentsByDate(): Flow<List<CommentEntity>>
 }

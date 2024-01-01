@@ -42,22 +42,9 @@ class MainViewModel(
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 
-    // 캘린더
-    private val _calendarUiState: MutableStateFlow<CalendarUiState> =
-        MutableStateFlow(CalendarUiState())
-    val calendarUiState: StateFlow<CalendarUiState>
-        get() = _calendarUiState.asStateFlow()
-
     // 캘린더 리스트
-    private val _allPosters : MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())
+    private val _allPosters: MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())
     val allPosters: StateFlow<List<Poster>> get() = _allPosters.asStateFlow()
-
-
-    private val _commentEntityList = MutableLiveData<List<CommentEntity>>()
-    val commentEntityList: LiveData<List<CommentEntity>> get() = _commentEntityList
-
-    private val _likeList = MutableLiveData<List<SayingEntity>>()
-    val likeList: LiveData<List<SayingEntity>> get() = _likeList
 
     private val _selectedPagePosition = MutableStateFlow<Int>(1)
     val selectedPagePosition = _selectedPagePosition.asStateFlow()
@@ -67,16 +54,6 @@ class MainViewModel(
     init {
         initPushNotificationSettings()
         getSayingList()
-
-        viewModelScope.launch {
-            commentEntityList.asFlow().collect {
-                _calendarUiState.emit(
-                    calendarUiState.value.copy(
-                        calendarUiModel = CalendarUiMapper.mapper(it)
-                    )
-                )
-            }
-        }
     }
 
     fun selectPage(position: Int) {
@@ -87,27 +64,16 @@ class MainViewModel(
         viewModelScope.launch {
             try {
                 _allPosters.emit(posterApi.getAllPosters().toPosters())
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-
-//        viewModelScope.launch {
-//            runCatching {
-//                posterApi.getAllPosters().toPosters()
-//            }.onSuccess {
-//                _allPosters.postValue(it)
-//            }.onFailure {
-//                errorSubject.onNext(it)
-//                Log.e(TAG, "Error getting documents: ", it)
-//            }
-//        }
     }
 
     fun getRandomSaying(date: Date): Poster {
         return try {
             val day = date.time
-            val sayings = allPosters.value ?: emptyList()
+            val sayings = allPosters.value
             val cachedIdx = hashMap[day]
             if (cachedIdx == null) {
                 val randomIdx = Random.nextInt(sayings.size)
@@ -120,56 +86,6 @@ class MainViewModel(
             Log.e(this.javaClass.name, e.localizedMessage)
             errorSubject.onNext(e)
             Poster("", "", "")
-        }
-    }
-
-    fun getAllLike() {
-        viewModelScope.launch {
-            try {
-                bookmarkService.getAllBookmarkedPosters().let {
-//                    _likeList.postValue(it.toDo)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                errorSubject.onNext(e)
-            }
-        }
-    }
-
-    fun getAllComments() {
-        viewModelScope.launch {
-            try {
-                val comments = diaryService.getAllComments()
-                _commentEntityList.value = comments
-            } catch (e: Exception) {
-                e.printStackTrace()
-                errorSubject.onNext(e)
-            }
-        }
-    }
-
-    fun insertComment(commentEntity: CommentEntity) {
-        viewModelScope.launch {
-            try {
-                diaryService.insertComment(commentEntity)
-                val comments = (commentEntityList.value ?: emptyList()) + commentEntity
-                _commentEntityList.postValue(comments)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                errorSubject.onNext(e)
-            }
-        }
-    }
-
-    fun deleteCommentById(id: Int) {
-        viewModelScope.launch {
-            try {
-                diaryService.deleteComment(id)
-                val comments = commentEntityList.value?.filter { it.id != id }
-                _commentEntityList.postValue(comments!!)
-            } catch (e: Exception) {
-                errorSubject.onNext(e)
-            }
         }
     }
 

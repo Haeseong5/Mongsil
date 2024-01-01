@@ -28,4 +28,8 @@ class DiaryService(
     suspend fun deleteComment(id: Int) {
         return diaryDao.delete(id)
     }
+
+    fun loadLastCommentsByDate(): Flow<List<CommentEntity>> {
+        return diaryDao.loadLastCommentsByDate()
+    }
 }
