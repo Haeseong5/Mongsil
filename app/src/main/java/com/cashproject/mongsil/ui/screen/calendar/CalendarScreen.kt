@@ -21,7 +21,6 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,11 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.extension.composableActivityViewModel
-import com.cashproject.mongsil.ui.screen.calendar.list.CalendarListScreen
-import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.ui.model.Emoticons
+import com.cashproject.mongsil.ui.screen.calendar.list.CalendarListScreen
 import com.cashproject.mongsil.ui.theme.dpToSp
 import com.cashproject.mongsil.ui.theme.latoTextStyle
 import com.cashproject.mongsil.ui.theme.pxToDp
@@ -159,7 +156,8 @@ fun CalendarScreenContent(
                     .height(pxToDp(pixels = 863f)),
                 state = state,
                 dayContent = { day ->
-                    val emoticonId = uiState.calendarUiModel.find { it.date == day.date }?.emotionId
+                    val emoticonId =
+                        uiState.calendarUiModel.lastOrNull { it.date == day.date }?.emotionId
                     Day(
                         day = day,
                         isRecord = uiState.calendarUiModel.any { it.date == day.date },

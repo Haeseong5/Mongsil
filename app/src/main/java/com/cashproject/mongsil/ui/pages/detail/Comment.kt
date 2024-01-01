@@ -3,7 +3,6 @@ package com.cashproject.mongsil.ui.pages.detail
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.ui.model.Emoticon
-import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.model.defaultEmoticon
 import java.util.Date
 
@@ -21,7 +20,7 @@ fun List<CommentEntity>.toDomain(): List<Comment> {
             id = it.id,
             content = it.content,
             emoticon = it.emotion.toEmoticon(),
-            time = it.time,
+            time = it.writeTime,
             date = it.date
         )
     }
@@ -32,7 +31,7 @@ fun Comment.toEntity(): CommentEntity {
         id = id,
         content = content,
         emotion = emoticon.id,
-        time = time,
+        writeTime = time,
         date = date
     )
 }

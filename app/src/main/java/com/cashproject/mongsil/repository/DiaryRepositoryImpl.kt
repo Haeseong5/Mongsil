@@ -2,6 +2,7 @@ package com.cashproject.mongsil.repository
 
 import com.cashproject.mongsil.data.repository.DiaryRepository
 import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.extension.excludeTimeFromDate
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.toDailyEmoticons
 import com.cashproject.mongsil.ui.pages.detail.Comment
@@ -14,12 +15,18 @@ import java.util.Date
 class DiaryRepositoryImpl(
     private val diaryService: DiaryService = DiaryService()
 ): DiaryRepository {
-    override suspend fun getAllComments(): List<Comment> {
-        return diaryService.getAllComments().toDomain()
+    override fun getAllComments(): Flow<List<Comment>> {
+        return diaryService.getAllComments().map { it.toDomain() }
     }
 
     override fun loadCommentListByDate(date: Date): Flow<List<Comment>> {
-        return diaryService.loadCommentsByDate(date)
+        return diaryService.getAllComments()
+            .map {
+                it.toDomain()
+                    .filter { comment ->
+                        (comment.date.excludeTimeFromDate() == date.excludeTimeFromDate())
+                    }
+            }
     }
 
     override suspend fun insert(comment: Comment) {
@@ -31,6 +38,6 @@ class DiaryRepositoryImpl(
     }
 
     override fun loadDailyEmotions(): Flow<List<DailyEmoticon>> {
-        return diaryService.loadLastCommentsByDate().map { it.toDailyEmoticons() }
+        return diaryService.getAllComments().map { it.toDailyEmoticons() }
     }
 }

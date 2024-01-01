@@ -7,7 +7,7 @@ import java.util.Date
 
 interface DiaryRepository {
 
-    suspend fun getAllComments(): List<Comment>
+    fun getAllComments(): Flow<List<Comment>>
 
     fun loadCommentListByDate(date: Date): Flow<List<Comment>>
 
