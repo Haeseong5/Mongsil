@@ -54,7 +54,7 @@ fun DiaryTopLayout(
                     )
                 )
             )
-            .padding(top = statusBarHeightDp)
+            .padding(top = statusBarHeightDp + 8.dp)
             .height(60.dp)
     ) {
         if (!uiState.isPagerItem) {

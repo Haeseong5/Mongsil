@@ -1,27 +1,24 @@
 package com.cashproject.mongsil.ui.pages.detail
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,16 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toBitmapOrNull
-import androidx.core.os.bundleOf
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.cashproject.mongsil.R
-import com.cashproject.mongsil.extension.getImageUri
-import com.cashproject.mongsil.extension.getNavigationBarHeightDp
 import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.extension.saveImage
@@ -63,6 +53,11 @@ fun DiaryScreenContent(
     var commentUiVisibility by remember { mutableStateOf(true) }
     var posterBitmap: Bitmap? by remember { mutableStateOf(null) }
     val context = LocalContext.current
+
+    fun updateCommentUiVisibility() {
+        commentUiVisibility = !commentUiVisibility
+    }
+
     LaunchedEffect(sideEffect) {
         sideEffect.collect {
             when (it) {
@@ -90,7 +85,7 @@ fun DiaryScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .noRippleClickable {
-                commentUiVisibility = !commentUiVisibility
+                updateCommentUiVisibility()
             }
     ) {
         AsyncImage(
@@ -127,6 +122,7 @@ fun DiaryScreenContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .fillMaxHeight(0.7f)
                     .background(
                         brush = Brush.verticalGradient(
                             listOf(
@@ -139,10 +135,13 @@ fun DiaryScreenContent(
                         WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
                     )
                     .imePadding()
-                    .noRippleClickable { }
+                    .noRippleClickable {
+                        updateCommentUiVisibility()
+                    },
+                verticalArrangement = Arrangement.Bottom
             ) {
                 CommentList(
-                    modifier = Modifier.fillMaxHeight(0.6f),
+                    modifier = Modifier,
                     comments = uiState.comments,
                     onLongClick = {
                         onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))
@@ -172,7 +171,13 @@ fun DiaryScreenContent(
 @Preview
 @Composable
 private fun Preview() {
-    DiaryScreenContent(
-        uiState = DiaryUiState()
-    )
+    Box(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+    ) {
+        DiaryScreenContent(
+            uiState = DiaryUiState()
+        )
+    }
 }
