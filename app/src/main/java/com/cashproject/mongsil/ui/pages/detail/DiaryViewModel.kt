@@ -3,11 +3,12 @@ package com.cashproject.mongsil.ui.pages.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.cashproject.mongsil.data.db.entity.SayingEntity
 import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.data.repository.DiaryRepository
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
+import com.cashproject.mongsil.repository.model.DailyEmoticon
+import com.cashproject.mongsil.ui.model.defaultEmoticon
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -93,7 +94,11 @@ class DiaryViewModel(
                 commentsFlow.collectLatest {
                     updateUiState {
                         copy(
-                            comments = it.asReversed()
+                            comments = it.asReversed(),
+                            dailyEmoticon = DailyEmoticon(
+                                emoticon = it.lastOrNull()?.emoticon ?: defaultEmoticon,
+                                date = selectedDate
+                            )
                         )
                     }
                 }

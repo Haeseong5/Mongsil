@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.ui.pages.detail
 
+import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.Poster
 import java.util.Date
 
@@ -10,4 +11,5 @@ data class DiaryUiState(
     val emoticonId: Int = 0,
     val inputText: String = "",
     val isPagerItem: Boolean = false,
+    val dailyEmoticon: DailyEmoticon = DailyEmoticon()
 )
