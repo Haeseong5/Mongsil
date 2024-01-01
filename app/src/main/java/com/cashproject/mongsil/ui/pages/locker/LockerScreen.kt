@@ -9,8 +9,11 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
@@ -31,9 +34,8 @@ fun LockerScreen(
         Toolbar(
             modifier = Modifier,
             title = "관심",
-            isVisibleSettingButton = true,
-            visibleBack = false,
-            onEndButtonClick = onSetting
+            actionIcon = Icons.Outlined.Settings,
+            actionIconClicked = onSetting,
         )
         LockerScreenContent(
             uiState = uiState,

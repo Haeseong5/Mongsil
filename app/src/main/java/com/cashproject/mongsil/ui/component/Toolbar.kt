@@ -1,30 +1,24 @@
 package com.cashproject.mongsil.ui.component
 
 import android.graphics.BlurMaskFilter
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -66,65 +60,48 @@ fun Modifier.shadow(
     }
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Toolbar(
     modifier: Modifier = Modifier,
     title: String = "",
-    onBackButtonClick: () -> Unit = {},
-    onEndButtonClick: () -> Unit = {},
-    visibleBack: Boolean = true,
-    isVisibleSettingButton: Boolean = false,
+    navigationIcon: ImageVector? = null,
+    navigationIconClicked: () -> Unit = {},
+    actionIcon: ImageVector? = null,
+    actionIconClicked: () -> Unit = {},
 ) {
-    Surface(
-        modifier = Modifier
-            .background(Color.White)
-            .height(56.dp)
-            .fillMaxWidth()
-            .shadow(Color.Black.copy(alpha = 0.5f), offsetY = 1.dp, blurRadius = 1.dp)
-            .padding(bottom = 4.dp)
-    ) {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .background(Color.White)
-        ) {
-            if (visibleBack) {
-                Icon(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .align(Alignment.CenterStart)
-                        .size(24.dp)
-                        .noRippleClickable {
-                            onBackButtonClick.invoke()
-                        },
-                    painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
-                    contentDescription = ""
-                )
-            }
-
+    CenterAlignedTopAppBar(
+        modifier = modifier,
+        title = {
             Text(
-                modifier = Modifier.align(Alignment.Center),
                 text = title,
                 fontSize = 20.sp,
                 fontFamily = gamjaflowerFamily
             )
-
-            if (isVisibleSettingButton) {
-                Icon(
+        },
+        navigationIcon = {
+            navigationIcon?.let {
+                Image(
                     modifier = Modifier
-                        .padding(end = 16.dp)
-                        .align(Alignment.CenterEnd)
-                        .size(24.dp)
-                        .noRippleClickable {
-                            onEndButtonClick.invoke()
-                        },
-                    painter = painterResource(id = R.drawable.ic_baseline_settings_24),
+                        .padding(start = 12.dp)
+                        .noRippleClickable(onClick = navigationIconClicked),
+                    imageVector = navigationIcon,
+                    contentDescription = ""
+                )
+            }
+        },
+        actions = {
+            actionIcon?.let {
+                Image(
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                        .noRippleClickable(onClick = actionIconClicked),
+                    imageVector = it,
                     contentDescription = ""
                 )
             }
         }
-    }
+    )
 }
 
 @Preview(showBackground = true)
