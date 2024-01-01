@@ -8,8 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -140,7 +138,9 @@ fun DiaryScreenContent(
                 verticalArrangement = Arrangement.Bottom
             ) {
                 CommentList(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .weight(1f, false)
+                        .noRippleClickable {},
                     comments = uiState.comments,
                     onLongClick = {
                         onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))
@@ -176,7 +176,22 @@ private fun Preview() {
             .fillMaxSize()
     ) {
         DiaryScreenContent(
-            uiState = DiaryUiState()
+            uiState = DiaryUiState(
+                comments = listOf(
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                    Comment(),
+                )
+            )
         )
     }
 }

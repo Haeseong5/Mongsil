@@ -1,31 +1,18 @@
 package com.cashproject.mongsil.ui.main
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.api.PosterApi
-import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.data.db.entity.SayingEntity
-import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
+import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.repository.mapper.toPosters
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.data.service.BookmarkService
-import com.cashproject.mongsil.data.service.DiaryService
-import com.cashproject.mongsil.data.service.PosterService
-import com.cashproject.mongsil.ui.main.model.CalendarUiMapper
-import com.cashproject.mongsil.ui.main.model.CalendarUiModel
-import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.util.PreferencesManager
-import com.cashproject.mongsil.util.timeMillisToLocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.util.Date
 import kotlin.random.Random
 
@@ -35,10 +22,7 @@ import kotlin.random.Random
  */
 
 class MainViewModel(
-    private val diaryService: DiaryService,
-    private val firestoreDataSource: FireStoreDataSource,
     private val posterApi: PosterApi = PosterService,
-    private val bookmarkService: BookmarkService = BookmarkService(),
     private val pushManager: PushManager = PushManager(),
 ) : BaseViewModel() {
 

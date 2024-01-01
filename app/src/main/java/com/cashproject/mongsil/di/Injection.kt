@@ -17,13 +17,13 @@
 package com.cashproject.mongsil.di
 
 import android.content.Context
-import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.data.db.AppDatabase
-import com.cashproject.mongsil.data.db.dao.DiaryDao
 import com.cashproject.mongsil.data.db.dao.BookmarkDao
-import com.cashproject.mongsil.data.service.DiaryService
-import com.cashproject.mongsil.data.service.BookmarkService
+import com.cashproject.mongsil.data.db.dao.DiaryDao
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
+import com.cashproject.mongsil.data.service.BookmarkService
+import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.repository.BookmarkRepository
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
@@ -74,6 +74,6 @@ object Injection {
         val commentDataSource = provideDiaryDao(context)
 
         val diaryService = DiaryService(commentDataSource)
-        return ViewModelFactory(diaryService, provideFirestoreDataSource())
+        return ViewModelFactory(diaryService)
     }
 }
