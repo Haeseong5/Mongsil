@@ -14,7 +14,6 @@ import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.App
 import com.cashproject.mongsil.data.firebase.isOldVersion
-import com.cashproject.mongsil.databinding.FragmentSettingBinding
 import com.cashproject.mongsil.databinding.FragmentSettingComposeBinding
 import com.cashproject.mongsil.extension.intentAction
 import com.cashproject.mongsil.extension.openPlayStore
@@ -24,6 +23,7 @@ import com.cashproject.mongsil.ui.main.IntroActivity
 import com.cashproject.mongsil.ui.pages.setting.composable.SettingButtonType
 import com.cashproject.mongsil.ui.pages.setting.composable.SettingScreen
 import com.cashproject.mongsil.ui.pages.setting.composable.UiAction
+import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.google.android.play.core.review.ReviewManagerFactory
 
 //TODO 스플래시 끄기
@@ -49,31 +49,34 @@ class SettingFragment : Fragment() {
             .also { binding ->
                 this.binding = binding
                 binding.composeView.setContent {
-                    SettingScreen(
-                        onUiAction = {
-                            when (it) {
-                                UiAction.Back -> {
-                                    findNavController().popBackStack()
-                                }
-
-                                is UiAction.OnClickMenu -> {
-                                    when (it.type) {
-                                        SettingButtonType.NOTIFICATION_SETTING -> startAlarm()
-                                        SettingButtonType.APP_INTRODUCTION -> introApp()
-                                        SettingButtonType.SUGGESTION -> sendEmail()
-                                        SettingButtonType.BACKUP -> {
-                                            requireContext().showToast("준비 중입니다.")
-                                            backUp()
-                                        }
-                                        SettingButtonType.OTHER_APP_FROM_THE_DEVELOPER -> showMoreApps()
-                                        SettingButtonType.APP_VERSION_CHECK -> showAppVersionDialog()
-                                        SettingButtonType.NONE -> {}
+                    MongsilTheme {
+                        SettingScreen(
+                            onUiAction = {
+                                when (it) {
+                                    UiAction.Back -> {
+                                        findNavController().popBackStack()
                                     }
 
+                                    is UiAction.OnClickMenu -> {
+                                        when (it.type) {
+                                            SettingButtonType.NOTIFICATION_SETTING -> startAlarm()
+                                            SettingButtonType.APP_INTRODUCTION -> introApp()
+                                            SettingButtonType.SUGGESTION -> sendEmail()
+                                            SettingButtonType.BACKUP -> {
+                                                requireContext().showToast("준비 중입니다.")
+                                                backUp()
+                                            }
+
+                                            SettingButtonType.OTHER_APP_FROM_THE_DEVELOPER -> showMoreApps()
+                                            SettingButtonType.APP_VERSION_CHECK -> showAppVersionDialog()
+                                            SettingButtonType.NONE -> {}
+                                        }
+
+                                    }
                                 }
-                            }
-                        },
-                    )
+                            },
+                        )
+                    }
                 }
                 binding.lifecycleOwner = viewLifecycleOwner
             }.root

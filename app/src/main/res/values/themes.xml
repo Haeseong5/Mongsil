@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Mongsil" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -17,16 +17,16 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Optional: set for a light status bar with dark content. -->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+        <!--        <item name="android:windowTranslucentNavigation">false</item>-->
 
         <!--        &lt;!&ndash; window theme&ndash;&gt;-->
-        <!--        <item name="android:windowBackground">@color/background_color</item>-->
-        <!--        <item name="android:colorBackground">@color/background_color</item>-->
+        <item name="android:windowBackground">@color/background_color</item>
+        <item name="android:colorBackground">@color/background_color</item>
         <!--        <item name="android:windowTranslucentStatus">true</item> &lt;!&ndash;statusBar 반투명 여부&ndash;&gt;-->
         <!--        <item name="android:windowTranslucentNavigation">true</item> &lt;!&ndash;navigationBar 반투명 여부&ndash;&gt;-->
         <!--        <item name="android:statusBarColor">@android:color/transparent</item> &lt;!&ndash;statusBar color 설정&ndash;&gt;-->
-        <!--        &lt;!&ndash;마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원&ndash;&gt;-->
-        <!--        &lt;!&ndash;상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.&ndash;&gt;-->
+        <!--마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원-->
+        <!--상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
         <!--custom font-family 적용-->

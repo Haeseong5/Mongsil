@@ -17,6 +17,8 @@ val Gray20 = Color(0xFF333333)
 
 val black1 = Color(0xFF1E1E1E)
 
+val primary = black1
+
 val primaryBackgroundColor
     @Composable
     get() = if (isSystemInDarkTheme()) Color.DarkGray else Color.White

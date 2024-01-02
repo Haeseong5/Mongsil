@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.pages.detail.DiaryFragment
+import com.cashproject.mongsil.ui.theme.MongsilTheme
 import java.util.Date
 
 
@@ -29,15 +30,17 @@ class LockerFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 val uiState = viewModel.uiState.collectAsState()
-                LockerScreen(
-                    uiState = uiState.value,
-                    onSetting = {
-                        goToSettingScreen()
-                    },
-                    onPoster = {
-                        goToDiaryScreen(it)
-                    }
-                )
+                MongsilTheme {
+                    LockerScreen(
+                        uiState = uiState.value,
+                        onSetting = {
+                            goToSettingScreen()
+                        },
+                        onPoster = {
+                            goToDiaryScreen(it)
+                        }
+                    )
+                }
             }
         }
     }
