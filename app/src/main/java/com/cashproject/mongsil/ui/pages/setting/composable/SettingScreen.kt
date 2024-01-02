@@ -28,7 +28,7 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.Toolbar
-import com.cashproject.mongsil.ui.theme.gamjaflowerFamily
+import com.cashproject.mongsil.ui.theme.regularFont
 
 
 @Composable
@@ -116,7 +116,7 @@ private fun SettingItem(
             text = text,
             letterSpacing = (-0.05).sp,
             fontSize = 20.sp,
-            fontFamily = gamjaflowerFamily
+            fontFamily = regularFont
         )
         if (isVisibleRightArrow) {
             Image(

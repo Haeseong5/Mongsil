@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.ui.screen.calendar
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.theme.dpToSp
-import com.cashproject.mongsil.ui.theme.latoTextStyle
+import com.cashproject.mongsil.ui.theme.primaryTextColor
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import java.time.YearMonth
 
 @Composable
@@ -39,10 +41,11 @@ fun SimpleCalendarTitle(
         Text(
             modifier = Modifier.padding(horizontal = 30.dp),
             text = "${currentMonth.year}년 ${currentMonth.month.value}월",
-            style = latoTextStyle,
+            style = primaryTextStyle,
             fontSize = dpToSp(dp = 20.dp),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
+            color = primaryTextColor
         )
         CalendarNavigationIcon(
             icon = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
@@ -66,11 +69,18 @@ private fun CalendarNavigationIcon(
             },
         painter = icon,
         contentDescription = contentDescription,
+        tint = primaryTextColor
     )
 }
 
-@Preview
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun SimpleCalendarTitle() {
+private fun SimpleCalendarTitleDarkMode() {
+    SimpleCalendarTitle(currentMonth = YearMonth.now())
+}
+
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+private fun SimpleCalendarTitleLightMode() {
     SimpleCalendarTitle(currentMonth = YearMonth.now())
 }

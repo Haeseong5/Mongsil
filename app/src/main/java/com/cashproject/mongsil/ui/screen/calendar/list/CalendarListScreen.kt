@@ -16,14 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.theme.dpToSp
-import com.cashproject.mongsil.ui.theme.latoTextStyle
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 
 @Composable
 fun CalendarListScreen(
@@ -67,7 +66,7 @@ fun CalendarDay(
         AsyncImage(
             modifier = Modifier
                 .aspectRatio(1f, true)
-                .noRippleClickable { 
+                .noRippleClickable {
                     //TODO 디테일 화면 랜딩
                 },
             model = poster.squareImage,
@@ -83,20 +82,20 @@ fun CalendarDay(
                 modifier = Modifier.padding(6.dp),
                 text = poster.day,
                 fontSize = dpToSp(dp = 30.dp),
-                style = latoTextStyle,
+                style = primaryTextStyle,
                 color = Color.White
             )
             Column() {
                 Text(
                     text = poster.month,
                     fontSize = dpToSp(dp = 14.dp),
-                    style = latoTextStyle,
+                    style = primaryTextStyle,
                     color = Color.White
                 )
                 Text(
                     text = poster.year,
                     fontSize = dpToSp(dp = 14.dp),
-                    style = latoTextStyle,
+                    style = primaryTextStyle,
                     color = Color.White
                 )
 

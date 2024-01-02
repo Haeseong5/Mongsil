@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.ui.theme.Gray400
-import com.cashproject.mongsil.ui.theme.latoTextStyle
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 
 @Composable
 fun RoundedInputBox(
@@ -55,13 +55,13 @@ fun RoundedInputBox(
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .padding(horizontal =8.dp, vertical = 12.dp)
+                .padding(horizontal = 8.dp, vertical = 12.dp)
                 .border(
                     width = 1.dp,
                     color = Color.White,
                     shape = CircleShape
                 ),
-            textStyle = latoTextStyle.copy(Color.White),
+            textStyle = primaryTextStyle.copy(Color.White),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             decorationBox = { innerTextField ->
@@ -77,7 +77,7 @@ fun RoundedInputBox(
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
                             text = hint,
                             color = Gray400,
-                            style = latoTextStyle,
+                            style = primaryTextStyle,
                         )
                     }
                     Box(
@@ -118,14 +118,14 @@ fun RoundedWideInputBox(
                 }
             },
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-            textStyle = latoTextStyle,
+            textStyle = primaryTextStyle,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             decorationBox = { innerTextField ->
                 Box(modifier = Modifier.fillMaxHeight()) {
                     if (input.isEmpty()) {
                         Text(
                             text = hint,
-                            style = latoTextStyle,
+                            style = primaryTextStyle,
 //                            style = body2.copy(color = Gray400),
                         )
                     }

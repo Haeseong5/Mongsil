@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.ui.screen.calendar
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,19 +32,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.screen.calendar.list.CalendarListScreen
 import com.cashproject.mongsil.ui.theme.dpToSp
-import com.cashproject.mongsil.ui.theme.latoTextStyle
+import com.cashproject.mongsil.ui.theme.primaryBackgroundColor
+import com.cashproject.mongsil.ui.theme.primaryTextColor
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import com.cashproject.mongsil.ui.theme.pxToDp
 import com.kizitonwose.calendar.compose.CalendarLayoutInfo
 import com.kizitonwose.calendar.compose.CalendarState
@@ -126,7 +132,7 @@ fun CalendarScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White),
+            .background(color = primaryBackgroundColor),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -167,7 +173,11 @@ fun CalendarScreenContent(
                         }
                     )
                     if (isToday(day)) {
-                        TodayRedDot(modifier = Modifier.align(Alignment.TopEnd))
+                        NotificationBadge(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(1.dp)
+                        )
                     }
                 },
                 monthHeader = {
@@ -221,7 +231,8 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                style = latoTextStyle
+                style = primaryTextStyle,
+                color = primaryTextColor
             )
         }
     }
@@ -264,12 +275,12 @@ fun BoxScope.Day(
             ),
             text = if (isRecord) "" else day.date.dayOfMonth.toString(),
             fontWeight = if (isRecord || isToday(day)) FontWeight(700) else FontWeight(400),
-            style = latoTextStyle,
+            style = primaryTextStyle,
             fontSize = dpToSp(dp = 14.dp),
             color = when (day.date.dayOfWeek) {
                 DayOfWeek.SUNDAY -> Color(context.getColor(R.color.sunday))
                 DayOfWeek.SATURDAY -> Color(context.getColor(R.color.saturday))
-                else -> Color.Black
+                else -> primaryTextColor
             }
         )
 
@@ -288,21 +299,18 @@ fun BoxScope.Day(
     }
 }
 
-// TODO 그림자 추가 및 사이즈 수정
 @Composable
-fun TodayRedDot(modifier: Modifier = Modifier) {
+fun NotificationBadge(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .size(9.dp)
+            .shadow(
+                elevation = (1.5).dp,
+                shape = CircleShape
+            )
             .clip(shape = CircleShape)
+            .size(9.dp)
             .background(color = Color.Red)
-//            .shadow(
-//                elevation = 1.dp,
-//                shape = CircleShape
-//            )
-    ) {
-
-    }
+    ) { }
 }
 
 
@@ -311,9 +319,20 @@ fun isToday(day: CalendarDay): Boolean {
     return day.date.isEqual(today)
 }
 
-
-@Preview
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Composable
-private fun PreviewCalendarScreen() {
+private fun PreviewCalendarScreenLightMode(@PreviewParameter(SampleLoaderProvider::class) uiState: CalendarUiState) {
     CalendarScreenContent()
+}
+
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun PreviewCalendarScreenDarkMode(@PreviewParameter(SampleLoaderProvider::class) uiState: CalendarUiState) {
+    CalendarScreenContent()
+}
+
+class SampleLoaderProvider : PreviewParameterProvider<CalendarUiState> {
+    override val values: Sequence<CalendarUiState> = sequenceOf(
+        CalendarUiState(),
+    )
 }

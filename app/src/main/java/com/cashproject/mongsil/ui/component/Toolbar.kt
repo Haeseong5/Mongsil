@@ -3,13 +3,8 @@ package com.cashproject.mongsil.ui.component
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,14 +14,12 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.ui.theme.gamjaflowerFamily
+import com.cashproject.mongsil.ui.theme.regularFont
 
 fun Modifier.shadow(
     color: Color = Color.Black,
@@ -76,7 +69,7 @@ fun Toolbar(
             Text(
                 text = title,
                 fontSize = 20.sp,
-                fontFamily = gamjaflowerFamily
+                fontFamily = regularFont
             )
         },
         navigationIcon = {

@@ -20,20 +20,18 @@ fun dpToSp(dp: Dp) = with(LocalDensity.current) { dp.toSp() }
 @Composable
 fun pxToDp(pixels: Float) = with(LocalDensity.current) { pixels.toDp() }
 
-
-val gamjaflowerFamily = FontFamily(
+val regularFont = FontFamily(
     Font(R.font.gamjaflower_regular, FontWeight(500), FontStyle.Normal)
 )
 
-val latoTextStyle: TextStyle
+val primaryTextStyle: TextStyle
     @Composable
     get() = TextStyle(
-        fontFamily = gamjaflowerFamily,
+        fontFamily = regularFont,
         fontSize = dpToSp(18.dp),
         fontWeight = FontWeight(500),
-        color = Color.Black
+        color = primaryTextColor
     )
-
 
 val textShadow = Shadow(
     color = Color.Black.copy(alpha = 0.5f),
