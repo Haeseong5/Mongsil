@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.ui.theme.regularFont
+import com.cashproject.mongsil.ui.theme.primaryBackgroundColor
 
 fun Modifier.shadow(
     color: Color = Color.Black,
@@ -65,11 +66,11 @@ fun Toolbar(
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = primaryBackgroundColor),
         title = {
             Text(
                 text = title,
                 fontSize = 20.sp,
-                fontFamily = regularFont
             )
         },
         navigationIcon = {
