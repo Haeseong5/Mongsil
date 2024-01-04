@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.repository.DiaryRepository
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
+import com.cashproject.mongsil.repository.PosterRepository
+import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.ui.main.model.CalendarScreenType
 import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.ui.main.model.toUiModel
 import kotlinx.coroutines.CoroutineScope
@@ -13,17 +16,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class CalendarViewModel(
     private val diaryRepository: DiaryRepository = DiaryRepositoryImpl(),
+    private val posterRepository: PosterRepository = PosterRepository(),
 ) : ViewModel() {
-
-    val error = MutableSharedFlow<Throwable>()
 
     private val _uiState: MutableStateFlow<CalendarUiState> =
         MutableStateFlow(CalendarUiState())
     val uiState: StateFlow<CalendarUiState>
         get() = _uiState.asStateFlow()
+
+    private val _selectedPagePosition = MutableStateFlow<Int>(1)
+    val selectedPagePosition = _selectedPagePosition.asStateFlow()
+
+    val error = MutableSharedFlow<Throwable>()
 
     init {
         loadComments()
@@ -38,6 +46,27 @@ class CalendarViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun getRandomSaying(date: Date): Poster {
+        val posters: MutableList<Poster> = mutableListOf()
+        viewModelScope.launch {
+            posters.addAll(posterRepository.getAllPosters())
+        }
+        return posterRepository.getRandomSaying(
+            date = date,
+            posters = posters
+        )
+    }
+
+    fun changeScreenType() {
+        viewModelScope.launch {
+            _uiState.emit(
+                uiState.value.copy(
+                    screenType = if (uiState.value.screenType == CalendarScreenType.DEFAULT) CalendarScreenType.LIST else CalendarScreenType.DEFAULT
+                )
+            )
         }
     }
 

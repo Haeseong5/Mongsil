@@ -25,6 +25,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     private val viewModel: CalendarViewModel by viewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,18 +37,21 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 val uiState = viewModel.uiState.collectAsState()
                 CalendarScreen(
                     uiState = uiState.value,
-                    onStartDiary = ::goToDiaryScreen
+                    onStartDiary = ::goToDiaryScreen,
+                    onClickFloating = {
+                        viewModel.changeScreenType()
+                    }
                 )
             }
         }
     }
 
-    private fun goToDiaryScreen(localDate: LocalDate) {
+    private fun goToDiaryScreen(localDate: LocalDate, poster: Poster?) {
         val date = localDate.toDate()
         DiaryFragment.start(
             this@CalendarFragment,
             argument = DiaryFragment.Argument(
-                poster = Poster("", "", ""),
+                poster = poster ?: viewModel.getRandomSaying(date),
                 selectedDate = date,
                 from = "calendar"
             )

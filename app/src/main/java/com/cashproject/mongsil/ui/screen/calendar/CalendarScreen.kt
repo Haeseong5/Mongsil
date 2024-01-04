@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -23,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,6 +45,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.ui.main.model.CalendarScreenType
 import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.screen.calendar.list.CalendarListScreen
@@ -74,19 +78,32 @@ import java.util.Locale
 @Composable
 fun CalendarScreen(
     uiState: CalendarUiState,
-    onStartDiary: (LocalDate) -> Unit = {},
+    onStartDiary: (LocalDate, Poster?) -> Unit,
+    onClickFloating: () -> Unit = {},
 ) {
-    var isVisibleCalendar by remember { mutableStateOf(true) }
+//    var isVisibleCalendar by remember { mutableStateOf(true) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    val listState = rememberLazyListState(0, selectedIndex)
 
     Box {
+        when (uiState.screenType) {
+            CalendarScreenType.DEFAULT -> {
+                CalendarScreenContent(
+                    uiState = uiState,
+                    onClickDay = {
+                        onStartDiary.invoke(it, null)
+                    }
+                )
+            }
 
-        if (isVisibleCalendar) {
-            CalendarScreenContent(
-                uiState = uiState,
-                onClickDay = onStartDiary
-            )
-        } else {
-            CalendarListScreen()
+            CalendarScreenType.LIST -> {
+                CalendarListScreen(
+                    listState = listState,
+                    onClick = { date, poster, index ->
+                        onStartDiary.invoke(date, poster)
+                        selectedIndex = index
+                    })
+            }
         }
 
         // size ??
@@ -98,12 +115,12 @@ fun CalendarScreen(
             contentColor = Color(0xFF6D5107),
             shape = FloatingActionButtonDefaults.largeShape,
             onClick = {
-                isVisibleCalendar = !isVisibleCalendar
+                onClickFloating.invoke()
             },
             content = {
                 Image(
                     modifier = Modifier.size(32.dp),
-                    painter = painterResource(id = if (isVisibleCalendar) R.drawable.ic_list else R.drawable.ic_calendar),
+                    painter = painterResource(id = if (uiState.screenType == CalendarScreenType.DEFAULT) R.drawable.ic_list else R.drawable.ic_calendar),
                     contentDescription = ""
                 )
             })

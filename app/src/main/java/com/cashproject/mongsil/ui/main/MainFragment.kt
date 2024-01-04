@@ -8,15 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
-import com.cashproject.mongsil.repository.model.toLegacy
 import com.cashproject.mongsil.databinding.FragmentMainBinding
+import com.cashproject.mongsil.extension.toDate
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
-import java.util.*
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class MainFragment : SuperFragment() {
 
@@ -38,7 +39,9 @@ class MainFragment : SuperFragment() {
         MainPagerAdapter(
             requireActivity().supportFragmentManager,
             lifecycle,
-            mainViewModel.getRandomSaying(Date())
+            mainViewModel.getRandomSaying(
+                date = LocalDate.now().toDate(),
+            )
         )
     }
 
@@ -70,9 +73,13 @@ class MainFragment : SuperFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewPager.offscreenPageLimit = 3
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewPager.apply {
-            adapter = mainPagerAdapter
-            setCurrentItem(mainViewModel.selectedPagePosition.value, false)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.loadAllPosters()
+            binding.viewPager.apply {
+                adapter = mainPagerAdapter
+                setCurrentItem(mainViewModel.selectedPagePosition.value, false)
+            }
         }
     }
 
