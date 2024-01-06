@@ -1,36 +1,33 @@
 package com.cashproject.mongsil.data.firebase.fcm
 
 import android.annotation.SuppressLint
-import android.util.Log
-import com.cashproject.mongsil.model.State
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.tasks.await
 import android.app.Notification
-
-import androidx.core.app.NotificationCompat
-
-import android.app.NotificationManager
-
 import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
-
 import android.os.Build
-
+import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.base.model.State
 import com.cashproject.mongsil.extension.errorLog
 import com.cashproject.mongsil.ui.MainActivity
 import com.cashproject.mongsil.util.PreferencesManager
-import kotlinx.coroutines.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.tasks.await
 
 /**
  * FCM 트러블 슈팅: https://6developer.com/928

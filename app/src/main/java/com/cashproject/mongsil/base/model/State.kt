@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.model
+package com.cashproject.mongsil.base.model
 
 
 sealed class State<T> {
