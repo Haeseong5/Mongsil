@@ -5,9 +5,9 @@ import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.extension.excludeTimeFromDate
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.toDailyEmoticons
-import com.cashproject.mongsil.ui.pages.detail.Comment
-import com.cashproject.mongsil.ui.pages.detail.toDomain
-import com.cashproject.mongsil.ui.pages.detail.toEntity
+import com.cashproject.mongsil.ui.pages.diary.Comment
+import com.cashproject.mongsil.ui.pages.diary.toDomain
+import com.cashproject.mongsil.ui.pages.diary.toEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date

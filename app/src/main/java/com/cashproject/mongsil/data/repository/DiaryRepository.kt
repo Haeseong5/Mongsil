@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.data.repository
 
 import com.cashproject.mongsil.repository.model.DailyEmoticon
-import com.cashproject.mongsil.ui.pages.detail.Comment
+import com.cashproject.mongsil.ui.pages.diary.Comment
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 

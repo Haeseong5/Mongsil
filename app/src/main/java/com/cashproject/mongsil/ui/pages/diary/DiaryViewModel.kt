@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

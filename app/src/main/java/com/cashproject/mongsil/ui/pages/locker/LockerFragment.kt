@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.ui.pages.detail.DiaryFragment
+import com.cashproject.mongsil.ui.pages.diary.DiaryFragment
 import com.cashproject.mongsil.ui.theme.MongsilTheme
 import java.util.Date
 

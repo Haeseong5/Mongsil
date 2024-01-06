@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 import android.os.Bundle
 import android.os.Parcelable

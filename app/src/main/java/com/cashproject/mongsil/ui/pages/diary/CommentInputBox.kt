@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 
 import androidx.compose.foundation.Image
@@ -17,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.RoundedInputBox
-import com.cashproject.mongsil.ui.model.Emoticon
-import com.cashproject.mongsil.ui.model.Emoticons
 import com.cashproject.mongsil.ui.theme.dpToSp
 
 @Composable

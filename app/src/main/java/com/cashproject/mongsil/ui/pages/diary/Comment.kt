@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 import com.cashproject.mongsil.data.db.entity.CommentEntity
 import com.cashproject.mongsil.data.db.entity.toEmoticon

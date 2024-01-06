@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

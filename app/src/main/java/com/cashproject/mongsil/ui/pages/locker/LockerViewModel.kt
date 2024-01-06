@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.repository.BookmarkRepository
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.ui.dialog.menu.MenuUiEvent
-import com.cashproject.mongsil.ui.pages.detail.DiaryUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

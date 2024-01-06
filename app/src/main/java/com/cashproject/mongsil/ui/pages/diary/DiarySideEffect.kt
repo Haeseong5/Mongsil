@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 sealed interface DiarySideEffect {
     data class Error(val throwable: Throwable) : DiarySideEffect

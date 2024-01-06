@@ -1,7 +1,6 @@
-package com.cashproject.mongsil.ui.pages.detail
+package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.navigation.fragment.findNavController
-import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 
 class DiaryUiEventHandler(
