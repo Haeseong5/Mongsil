@@ -9,26 +9,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Date
 
-/**
- * TODO Coroutines + Flow 적용
- * https://medium.com/firebase-developers/firebase-ing-with-kotlin-coroutines-flow-dab1bc364816
- */
+ class MainViewModel(
+     private val pushManager: PushManager = PushManager(),
+     private val posterRepository: PosterRepository = PosterRepository()
+ ) : BaseViewModel() {
 
-class MainViewModel(
-    private val pushManager: PushManager = PushManager(),
-    private val posterRepository: PosterRepository = PosterRepository()
-) : BaseViewModel() {
-    val allPosters: MutableList<Poster> = mutableListOf()
+     private val allPosters: MutableList<Poster> = mutableListOf()
 
-    private val _selectedPagePosition = MutableStateFlow<Int>(1)
-    val selectedPagePosition = _selectedPagePosition.asStateFlow()
+     private val _selectedPagePosition = MutableStateFlow<Int>(1)
+     val selectedPagePosition = _selectedPagePosition.asStateFlow()
 
-    init {
-        initPushNotificationSettings()
-    }
+     init {
+         initPushNotificationSettings()
+     }
 
-    fun selectPage(position: Int) {
-        _selectedPagePosition.value = position
+     fun selectPage(position: Int) {
+         _selectedPagePosition.value = position
     }
 
     suspend fun loadAllPosters() {

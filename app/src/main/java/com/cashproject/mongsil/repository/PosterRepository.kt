@@ -1,33 +1,32 @@
 package com.cashproject.mongsil.repository
 
-import android.util.Log
 import com.cashproject.mongsil.data.service.PosterService
+import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.repository.mapper.toPosters
 import com.cashproject.mongsil.repository.model.Poster
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
-import java.util.concurrent.atomic.AtomicReference
 import kotlin.random.Random
 
 class PosterRepository(
     private val posterService: PosterService = PosterService
 ) {
     companion object {
-        private val posters: AtomicReference<List<Poster>> = AtomicReference(emptyList())
+        private val posters: MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())
         private val hashMap = HashMap<Long, Int>()
     }
 
-    suspend fun getAllPosters(): List<Poster> {
-        if (posters.get().isEmpty()) {
+    suspend fun getAllPostersFlow(): StateFlow<List<Poster>> {
+        if (posters.value.isEmpty()) {
             val allPosters = posterService.getAllPosters().toPosters()
-            posters.set(allPosters)
+            posters.emit(allPosters)
         }
-        return posters.get()
+        return posters
     }
 
-    suspend fun getRandomSinglePoster(): Poster {
-        val poster = getAllPosters().getOrNull(0)
-        requireNotNull(poster)
-        return poster
+    suspend fun getAllPosters(): List<Poster> {
+        return getAllPostersFlow().value
     }
 
     fun getRandomSaying(
@@ -46,8 +45,7 @@ class PosterRepository(
                 sayings[cachedIdx]
             }
         } catch (e: Exception) {
-            Log.e(this.javaClass.name, e.localizedMessage)
-//            errorSubject.onNext(e)
+            e.printErrorLog()
             Poster(id = "", image = "", squareImage = "")
         }
     }
