@@ -158,8 +158,10 @@ fun DiaryScreenContent(
                         onUiEvent.invoke(DiaryUiEvent.ClickEmoticon)
                     },
                     onConfirm = {
-                        onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
-                        onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
+                        if(uiState.inputText.isNotEmpty()){
+                            onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
+                            onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
+                        }
                     }
                 )
             }
