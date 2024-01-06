@@ -3,6 +3,7 @@ package com.cashproject.mongsil.ui.screen.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.repository.DiaryRepository
+import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.Poster
@@ -34,6 +35,7 @@ class CalendarViewModel(
     val error = MutableSharedFlow<Throwable>()
 
     init {
+        "calendarViewModel init".log()
         loadComments()
     }
 

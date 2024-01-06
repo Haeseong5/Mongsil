@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.ui.pages.detail
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
@@ -31,6 +33,7 @@ import com.cashproject.mongsil.ui.theme.textShadow
 import com.gigamole.composefadingedges.verticalFadingEdges
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommentList(
     modifier: Modifier = Modifier,
@@ -62,8 +65,17 @@ fun CommentList(
                 } else Modifier
             ),
         content = {
-            items(comments) {
+            items(items = comments,
+                key = { comment ->
+                    comment.id
+                }) {
                 Comment(
+                    modifier = Modifier.animateItemPlacement(
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = LinearOutSlowInEasing,
+                        )
+                    ),
                     comment = it,
                     onLongClick = onLongClick,
                 )
@@ -75,11 +87,12 @@ fun CommentList(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Comment(
+    modifier: Modifier = Modifier,
     comment: Comment,
     onLongClick: (Int) -> Unit = {},
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
             .combinedClickable(
