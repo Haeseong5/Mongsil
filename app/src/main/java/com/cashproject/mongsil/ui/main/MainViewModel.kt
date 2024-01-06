@@ -1,12 +1,15 @@
 package com.cashproject.mongsil.ui.main
 
+import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.util.PreferencesManager
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 
  class MainViewModel(
@@ -14,33 +17,36 @@ import java.util.Date
      private val posterRepository: PosterRepository = PosterRepository()
  ) : BaseViewModel() {
 
-     private val allPosters: MutableList<Poster> = mutableListOf()
+     private val _allPosters: MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())
+     val allPosters = _allPosters.asStateFlow()
 
-     private val _selectedPagePosition = MutableStateFlow<Int>(1)
-     val selectedPagePosition = _selectedPagePosition.asStateFlow()
+     val error = MutableSharedFlow<Throwable>()
+
+     val currentPage = MutableStateFlow(1)
 
      init {
          initPushNotificationSettings()
+         loadAllPosters()
      }
 
-     fun selectPage(position: Int) {
-         _selectedPagePosition.value = position
-    }
+     private fun loadAllPosters() {
+         viewModelScope.launch {
+             try {
+                 _allPosters.emit(posterRepository.getAllPosters())
+             } catch (e: Exception) {
+                 error.emit(e)
+             }
+         }
+     }
 
-    suspend fun loadAllPosters() {
-        if (allPosters.isEmpty()) {
-            allPosters.addAll(posterRepository.getAllPosters())
-        }
-    }
+     fun getRandomSaying(date: Date): Poster {
+         return posterRepository.getRandomSaying(
+             date = date,
+             posters = allPosters.value
+         )
+     }
 
-    fun getRandomSaying(date: Date): Poster {
-        return posterRepository.getRandomSaying(
-            date = date,
-            posters = allPosters
-        )
-    }
-
-    private fun initPushNotificationSettings() {
-        pushManager.emitPushEvent(PreferencesManager.isEnabledPushNotification)
-    }
-}
+     private fun initPushNotificationSettings() {
+         pushManager.emitPushEvent(PreferencesManager.isEnabledPushNotification)
+     }
+ }

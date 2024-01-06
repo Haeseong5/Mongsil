@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.viewpager2.widget.ViewPager2
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
 import com.cashproject.mongsil.databinding.FragmentMainBinding
+import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.extension.toDate
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
@@ -26,7 +30,7 @@ class MainFragment : SuperFragment() {
         const val PAGE_LOCKER = 2
     }
 
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var callback: OnBackPressedCallback
     private lateinit var nativeTedAdmobDialog: TedAdmobDialog
@@ -34,14 +38,11 @@ class MainFragment : SuperFragment() {
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
 
-    private val mainPagerAdapter by lazy {
-        MainPagerAdapter(
-            requireActivity().supportFragmentManager,
-            lifecycle,
-            mainViewModel.getRandomSaying(
-                date = LocalDate.now().toDate(),
-            )
-        )
+    private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            mainViewModel.currentPage.tryEmit(position)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -70,14 +71,35 @@ class MainFragment : SuperFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewPager.offscreenPageLimit = 3
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.allPosters.collect {
+                if (it.isNotEmpty() && binding.viewPager.adapter == null) {
+                    initPager()
+                }
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.loadAllPosters()
-            binding.viewPager.apply {
-                adapter = mainPagerAdapter
-                setCurrentItem(mainViewModel.selectedPagePosition.value, false)
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                mainViewModel.error.collect {
+                    it.handleError(requireContext())
+                }
             }
+        }
+    }
+
+    private fun initPager() {
+        binding.viewPager.apply {
+            offscreenPageLimit = 3
+            adapter = MainPagerAdapter(
+                fa = requireActivity().supportFragmentManager,
+                lifecycle = viewLifecycleOwner.lifecycle,
+                todayPoster = mainViewModel.getRandomSaying(
+                    date = LocalDate.now().toDate(),
+                )
+            )
+            registerOnPageChangeCallback(onPageChangeCallback)
+            setCurrentItem(mainViewModel.currentPage.value, false)
         }
     }
 
@@ -127,17 +149,9 @@ class MainFragment : SuperFragment() {
         }
     }
 
-    private fun saveCurrentPagePosition() {
-        try {
-            mainViewModel.selectPage(binding.viewPager.currentItem)
-        } catch (e: Exception) {
-            Log.e(TAG, e.stackTraceToString())
-        }
-    }
-
     override fun onDestroyView() {
-        saveCurrentPagePosition()
         super.onDestroyView()
+        binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
         binding.viewPager.adapter = null
         _binding = null
     }
