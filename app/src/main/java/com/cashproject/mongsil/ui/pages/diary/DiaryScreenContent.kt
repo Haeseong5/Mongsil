@@ -94,6 +94,7 @@ fun DiaryScreenContent(
                 posterBitmap = it.result.drawable.toBitmapOrNull()
             },
             contentDescription = "명언 이미지",
+            alignment = Alignment.TopCenter,
             contentScale = ContentScale.FillWidth
         )
 
@@ -158,7 +159,7 @@ fun DiaryScreenContent(
                         onUiEvent.invoke(DiaryUiEvent.ClickEmoticon)
                     },
                     onConfirm = {
-                        if(uiState.inputText.isNotEmpty()){
+                        if (uiState.inputText.isNotEmpty()) {
                             onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
                             onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
                         }

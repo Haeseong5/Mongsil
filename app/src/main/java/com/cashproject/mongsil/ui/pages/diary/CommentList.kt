@@ -65,10 +65,12 @@ fun CommentList(
                 } else Modifier
             ),
         content = {
-            items(items = comments,
+            items(
+                items = comments,
                 key = { comment ->
                     comment.id
-                }) {
+                }
+            ) {
                 Comment(
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
