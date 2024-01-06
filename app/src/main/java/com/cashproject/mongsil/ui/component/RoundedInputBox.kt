@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,7 +40,6 @@ fun RoundedInputBox(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(16.dp))
             .background(color = Color.Transparent),
     ) {
         BasicTextField(
@@ -59,11 +57,11 @@ fun RoundedInputBox(
                 .border(
                     width = 1.dp,
                     color = Color.White,
-                    shape = CircleShape
+                    shape = RoundedCornerShape(16.dp)
                 ),
             textStyle = primaryTextStyle.copy(Color.White),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            singleLine = false,
+            keyboardOptions = KeyboardOptions.Default,
             decorationBox = { innerTextField ->
                 Box(
                     modifier = Modifier

@@ -134,7 +134,7 @@ fun DiaryScreenContent(
                     )
                     .imePadding()
                     .noRippleClickable {
-                        updateCommentUiVisibility()
+//                        updateCommentUiVisibility()
                     },
                 verticalArrangement = Arrangement.Bottom
             ) {
