@@ -130,8 +130,8 @@ fun CalendarScreenContent(
     onClickDay: (LocalDate) -> Unit = {},
 ) {
     val currentMonth = remember { YearMonth.now() }
-    val startMonth = remember { currentMonth.minusMonths(10) } // Adjust as needed
-    val endMonth = remember { currentMonth.plusMonths(10) } // Adjust as needed
+    val startMonth = remember { currentMonth.minusMonths(50) } // Adjust as needed
+    val endMonth = remember { currentMonth.plusMonths(50) } // Adjust as needed
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
     val daysOfWeek = remember { daysOfWeek() }
     val state = rememberCalendarState(

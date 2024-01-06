@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.menu.MenuViewModel.Companion.createViewModelFactory
+import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -39,10 +40,12 @@ class MenuBottomSheetDialog(
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 val uiState = viewModel.uiState.collectAsState()
-                MenuScreen(
-                    uiState = uiState.value,
-                    onUiEvent = viewModel::emitEvent,
-                )
+                MongsilTheme {
+                    MenuScreen(
+                        uiState = uiState.value,
+                        onUiEvent = viewModel::emitEvent,
+                    )
+                }
             }
         }
     }
@@ -55,16 +58,5 @@ class MenuBottomSheetDialog(
                 eventHandler.handleEvent(it)
             }
         }
-    }
-
-    fun shareToSNS() {
-//        val bitmap = binding.ivSayingBackgroundImage.drawable as BitmapDrawable
-//        val imageUri = getImageUri(requireActivity(), bitmap.bitmap)
-//
-//        val intent = Intent(Intent.ACTION_SEND)
-//        intent.type = "image/*"
-//        intent.putExtra(Intent.EXTRA_STREAM, imageUri)
-//        val chooser = Intent.createChooser(intent, "친구에게 공유하기")
-//        startActivity(chooser)
     }
 }

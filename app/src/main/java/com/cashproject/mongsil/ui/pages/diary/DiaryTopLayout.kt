@@ -20,13 +20,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.HorizontalSpacer
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import com.cashproject.mongsil.ui.theme.textShadow
 
 @Composable
@@ -43,7 +44,7 @@ fun DiaryTopLayout(
             .background(
                 brush = Brush.verticalGradient(
                     listOf(
-                        Color.Black.copy(0.2f),
+                        Color.Black.copy(0.3f),
                         Color.Transparent
                     )
                 )
@@ -55,7 +56,7 @@ fun DiaryTopLayout(
             Image(
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .size(28.dp)
+                    .size(30.dp)
                     .align(Alignment.TopStart)
                     .noRippleClickable {
                         onUiEvent.invoke(DiaryUiEvent.Finish)
@@ -72,9 +73,14 @@ fun DiaryTopLayout(
                 .padding(top = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            HorizontalSpacer(dp = 32.dp)
             Text(
                 text = uiState.date.toTextFormat(DateFormat.YearMonthDay),
-                style = TextStyle.Default.copy(shadow = textShadow, color = Color.White)
+                style = primaryTextStyle.copy(
+                    shadow = textShadow,
+                    color = Color.White,
+                    fontSize = 22.sp
+                )
             )
             HorizontalSpacer(dp = 8.dp)
             Image(
@@ -87,8 +93,8 @@ fun DiaryTopLayout(
 
         Image(
             modifier = Modifier
-                .padding(end = 2.dp)
-                .size(28.dp)
+                .padding(end = 8.dp)
+                .size(30.dp)
                 .align(Alignment.TopEnd)
                 .noRippleClickable {
                     onUiEvent.invoke(DiaryUiEvent.ShowMenuBottomSheetDialog(uiState.poster))

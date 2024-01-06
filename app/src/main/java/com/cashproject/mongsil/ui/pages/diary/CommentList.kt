@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.R
@@ -29,6 +28,7 @@ import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.VerticalSpacer
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import com.cashproject.mongsil.ui.theme.textShadow
 import com.gigamole.composefadingedges.verticalFadingEdges
 
@@ -108,7 +108,7 @@ fun Comment(
     ) {
         Image(
             modifier = Modifier
-                .size(42.dp)
+                .size(46.dp)
                 .padding(end = 8.dp),
             painter = painterResource(id = comment.emoticon.icon),
             contentDescription = null
@@ -118,17 +118,21 @@ fun Comment(
         ) {
             Text(
                 text = comment.time.toTextFormat(DateFormat.HourMinute),
-                color = colorResource(id = R.color.colorYellow),
-                fontSize = 16.sp
+                style = primaryTextStyle.copy(
+                    shadow = textShadow,
+                    color = colorResource(id = R.color.colorYellow),
+                    fontSize = 20.sp
+                ),
             )
-            VerticalSpacer(dp = 8.dp)
+            VerticalSpacer(dp = 2.dp)
             Text(
                 text = comment.content,
                 color = Color.White,
-                style = TextStyle.Default.copy(
-                    shadow = textShadow
-                ),
-                fontSize = 16.sp
+                style = primaryTextStyle.copy(
+                    shadow = textShadow,
+                    color = Color.White,
+                    fontSize = 22.sp
+                )
             )
         }
     }

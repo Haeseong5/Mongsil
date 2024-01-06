@@ -20,6 +20,7 @@ import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.menu.MenuBottomSheetDialog
+import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -92,10 +93,12 @@ class DiaryFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                DiaryScreen(
-                    diaryViewModel = diaryViewModel,
-                    onUiEvent = uiEventHandler::handleEvent
-                )
+                MongsilTheme {
+                    DiaryScreen(
+                        diaryViewModel = diaryViewModel,
+                        onUiEvent = uiEventHandler::handleEvent
+                    )
+                }
             }
         }
     }

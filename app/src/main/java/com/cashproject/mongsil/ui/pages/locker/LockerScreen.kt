@@ -5,15 +5,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
@@ -50,7 +47,7 @@ fun LockerScreenContent(uiState: LockerUiState, onPoster: (Poster) -> Unit) {
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(3),
         content = {
-            items(uiState.posters + uiState.posters + uiState.posters + uiState.posters) {
+            items(uiState.posters) {
                 AsyncImage(
                     modifier = Modifier
                         .aspectRatio(1f)

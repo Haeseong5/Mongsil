@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.databinding.FragmentAlarmBinding
+import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.util.PreferencesManager.isEnabledPushNotification
 import com.cashproject.mongsil.util.PreferencesManager.updateEnablePushMessage
 
@@ -20,6 +22,9 @@ class AlarmFragment : Fragment() {
 
     private lateinit var binding: FragmentAlarmBinding
     private val pushManager = PushManager()
+    private val statusBarHeight by lazy {
+        getStatusBarHeight(requireActivity())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,7 @@ class AlarmFragment : Fragment() {
             .also { binding ->
                 binding.fragment = this
                 binding.lifecycleOwner = viewLifecycleOwner
+                binding.root.updatePadding(top = statusBarHeight)
                 this.binding = binding
             }.root
     }
@@ -70,6 +76,7 @@ class AlarmFragment : Fragment() {
             android.R.id.home -> {
                 findNavController().popBackStack()
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

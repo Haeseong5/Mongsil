@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +29,8 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.Toolbar
-import com.cashproject.mongsil.ui.theme.regularFont
+import com.cashproject.mongsil.ui.theme.primaryTextColor
+import com.cashproject.mongsil.ui.theme.primaryTextStyle
 
 
 @Composable
@@ -107,6 +109,9 @@ private fun SettingItem(
         Image(
             modifier = Modifier.size(30.dp),
             painter = painterResource(id = image),
+            colorFilter = if (image == R.drawable.emoticon_03) null else ColorFilter.tint(
+                primaryTextColor
+            ),
             contentDescription = contentDescription
         )
         Text(
@@ -114,23 +119,23 @@ private fun SettingItem(
                 .padding(start = 8.dp)
                 .weight(1f),
             text = text,
-            letterSpacing = (-0.05).sp,
             fontSize = 20.sp,
-            fontFamily = regularFont
+            style = primaryTextStyle,
+            color = primaryTextColor
         )
         if (isVisibleRightArrow) {
             Image(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 painter = painterResource(id = R.drawable.ic_close_copy),
+                colorFilter = ColorFilter.tint(primaryTextColor),
                 contentDescription = ""
             )
         }
-
     }
 }
 
 sealed interface UiAction {
-    object Back : UiAction
+    data object Back : UiAction
     data class OnClickMenu(val type: SettingButtonType) : UiAction
 }
 

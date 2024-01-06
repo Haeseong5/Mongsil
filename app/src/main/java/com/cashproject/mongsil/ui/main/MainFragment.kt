@@ -93,7 +93,7 @@ class MainFragment : SuperFragment() {
             offscreenPageLimit = 3
             adapter = MainPagerAdapter(
                 fa = requireActivity().supportFragmentManager,
-                lifecycle = viewLifecycleOwner.lifecycle,
+                lifecycle = lifecycle,
                 todayPoster = mainViewModel.getRandomSaying(
                     date = LocalDate.now().toDate(),
                 )

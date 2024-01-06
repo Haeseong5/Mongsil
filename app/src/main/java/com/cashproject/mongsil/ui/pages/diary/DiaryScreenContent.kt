@@ -125,7 +125,7 @@ fun DiaryScreenContent(
                         brush = Brush.verticalGradient(
                             listOf(
                                 Color.Transparent,
-                                Color.Black.copy(alpha = 0.3f)
+                                Color.Black.copy(alpha = 0.7f)
                             )
                         )
                     )
