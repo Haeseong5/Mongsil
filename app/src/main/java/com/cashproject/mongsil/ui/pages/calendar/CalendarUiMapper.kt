@@ -1,7 +1,7 @@
-package com.cashproject.mongsil.ui.main.model
+package com.cashproject.mongsil.ui.pages.calendar
 
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.util.timeMillisToLocalDate
+import com.cashproject.mongsil.extension.timeMillisToLocalDate
 
 object CalendarUiMapper {
     fun mapper(from: List<CommentEntity>): List<CalendarUiModel> {

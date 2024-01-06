@@ -1,26 +1,15 @@
 package com.cashproject.mongsil.extension
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.os.SystemClock
 import android.provider.MediaStore
-import android.view.View
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import com.cashproject.mongsil.util.LiveEvent
-import com.google.android.material.snackbar.Snackbar
-import com.jakewharton.rxbinding3.view.clicks
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.io.ByteArrayOutputStream
@@ -28,15 +17,6 @@ import java.io.File
 import java.io.File.separator
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.util.concurrent.TimeUnit
-
-fun showSnack(view: View, msg : String){
-    Snackbar.make(view, msg, Snackbar.LENGTH_LONG).setAction("RETRY",null).show()
-}
-
-//fun showToast(context : Context, resourceId:String){
-//    Toast.makeText(context,resourceId,Toast.LENGTH_SHORT).show()
-//}
 
 fun Context.showToast(message: String?) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
@@ -114,23 +94,4 @@ fun Bitmap?.shareImage(context: Context) {
     } catch (e: Exception) {
         e.handleError(context)
     }
-}
-
-/**
- * RxBinding의 Throttle 기능 사용하는 Button 함수
- * @param throttleSecond 해당 시간동안 중복 클릭 방지 (기본으로 1초)
- * @param subscribe 클릭 리스너 정의
- */
-fun Button.onThrottleClick(throttleSecond: Long = 1, subscribe: (() -> Unit)? = null) = clicks()
-    .throttleFirst(throttleSecond, TimeUnit.SECONDS)
-    .observeOn(AndroidSchedulers.mainThread())
-    .subscribe { subscribe?.invoke() }
-
-
-fun <T> LiveData<T>.toSingleEvent(): LiveData<T> {
-    val result = LiveEvent<T>()
-    result.addSource(this) {
-        result.value = it
-    }
-    return result
 }

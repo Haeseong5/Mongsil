@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.main.model
+package com.cashproject.mongsil.ui.pages.calendar
 
 data class CalendarUiState(
     val calendarUiModel: List<CalendarUiModel> = emptyList(),

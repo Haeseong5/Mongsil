@@ -20,9 +20,6 @@ import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
-import com.cashproject.mongsil.ui.pages.setting.composable.SettingButtonType
-import com.cashproject.mongsil.ui.pages.setting.composable.SettingScreen
-import com.cashproject.mongsil.ui.pages.setting.composable.UiAction
 import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.google.android.play.core.review.ReviewManagerFactory
 

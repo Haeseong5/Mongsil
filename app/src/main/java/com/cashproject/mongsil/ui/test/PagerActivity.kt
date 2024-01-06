@@ -1,7 +1,6 @@
-package com.cashproject.mongsil.ui.pager
+package com.cashproject.mongsil.ui.test
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -48,7 +47,9 @@ class PagerActivity : ComponentActivity() {
 
         setContent {
             val posts = postList.collectAsState()
-            Box(modifier = Modifier.fillMaxSize().background(Color.Red)) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Red)) {
                 FeedPager(
                     postList = posts.value,
                     onPageScrolled = {},

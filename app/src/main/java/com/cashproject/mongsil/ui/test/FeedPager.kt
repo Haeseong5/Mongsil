@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pager
+package com.cashproject.mongsil.ui.test
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -68,9 +68,11 @@ fun FeedPager(
             )
 
             Text(
-                modifier = Modifier.padding(16.dp).clickable {
-                    onDelete.invoke(it)
-                },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        onDelete.invoke(it)
+                    },
                 text = "Delete"
             )
         }

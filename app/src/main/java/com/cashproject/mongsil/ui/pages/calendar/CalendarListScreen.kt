@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.screen.calendar.list
+package com.cashproject.mongsil.ui.pages.calendar
 
 
 import androidx.compose.foundation.layout.Arrangement

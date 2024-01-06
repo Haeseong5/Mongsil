@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.main.model
+package com.cashproject.mongsil.ui.pages.calendar
 
 import com.cashproject.mongsil.extension.toLocalDate
 import com.cashproject.mongsil.repository.model.DailyEmoticon

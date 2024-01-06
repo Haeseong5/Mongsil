@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.screen.calendar.list
+package com.cashproject.mongsil.ui.pages.calendar
 
 import com.cashproject.mongsil.repository.model.Poster
 import java.util.Calendar

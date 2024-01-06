@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.screen.calendar
+package com.cashproject.mongsil.ui.pages.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,9 +7,6 @@ import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.ui.main.model.CalendarScreenType
-import com.cashproject.mongsil.ui.main.model.CalendarUiState
-import com.cashproject.mongsil.ui.main.model.toUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

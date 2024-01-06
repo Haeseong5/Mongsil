@@ -1,10 +1,10 @@
-package com.cashproject.mongsil.ui.screen.calendar.list
+package com.cashproject.mongsil.ui.pages.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.api.PosterApi
-import com.cashproject.mongsil.repository.mapper.toPosters
 import com.cashproject.mongsil.data.service.PosterService
+import com.cashproject.mongsil.repository.mapper.toPosters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar

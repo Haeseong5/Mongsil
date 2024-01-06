@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.screen.calendar
+package com.cashproject.mongsil.ui.pages.calendar
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -46,10 +46,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.ui.main.model.CalendarScreenType
-import com.cashproject.mongsil.ui.main.model.CalendarUiState
 import com.cashproject.mongsil.ui.model.Emoticons
-import com.cashproject.mongsil.ui.screen.calendar.list.CalendarListScreen
 import com.cashproject.mongsil.ui.theme.dpToSp
 import com.cashproject.mongsil.ui.theme.primaryBackgroundColor
 import com.cashproject.mongsil.ui.theme.primaryTextColor

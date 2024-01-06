@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.extension
 
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -49,4 +50,9 @@ fun Date.excludeTimeFromDate(): Date {
 
     // Get the modified Date object
     return calendar.time
+}
+
+fun Long.timeMillisToLocalDate(): LocalDate {
+    val instant = Instant.ofEpochMilli(this)
+    return instant.atZone(ZoneId.systemDefault()).toLocalDate()
 }

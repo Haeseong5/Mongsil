@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.setting.composable
+package com.cashproject.mongsil.ui.pages.setting
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
