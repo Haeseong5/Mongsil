@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +41,7 @@ import androidx.core.graphics.drawable.toBitmapOrNull
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.cashproject.mongsil.extension.handleError
+import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.shareImage
 import com.cashproject.mongsil.extension.showToast
@@ -58,9 +60,21 @@ fun DiaryScreenContent(
     val context = LocalContext.current
     val imeVisible = WindowInsets.isImeVisible
     val keyboardController = LocalSoftwareKeyboardController.current
+    val listState = rememberLazyListState()
+
     fun updateCommentUiVisibility() {
         if (imeVisible) keyboardController?.hide()
         else commentUiVisibility = !commentUiVisibility
+    }
+
+    LaunchedEffect(uiState.comments.size) {
+        try {
+            if (uiState.comments.isNotEmpty()) {
+                listState.animateScrollToItem(0)
+            }
+        } catch (e: Exception) {
+            e.printErrorLog()
+        }
     }
 
     LaunchedEffect(sideEffect) {
@@ -153,6 +167,7 @@ fun DiaryScreenContent(
                                 updateCommentUiVisibility()
                             }
                         },
+                    listState = listState,
                     comments = uiState.comments,
                     onLongClick = {
                         onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))

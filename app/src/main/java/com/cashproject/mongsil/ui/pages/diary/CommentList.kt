@@ -15,11 +15,11 @@ import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.DateFormat
-import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.VerticalSpacer
 import com.cashproject.mongsil.ui.theme.primaryTextStyle
@@ -40,21 +39,11 @@ import com.gigamole.composefadingedges.verticalFadingEdges
 @Composable
 fun CommentList(
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     comments: List<Comment>,
     onLongClick: (Int) -> Unit = {},
 ) {
-    val listState = rememberLazyListState()
     val imeVisible = WindowInsets.isImeVisible
-
-    LaunchedEffect(comments) {
-        try {
-            if (comments.isNotEmpty()) {
-                listState.animateScrollToItem(0)
-            }
-        } catch (e: Exception) {
-            e.printErrorLog()
-        }
-    }
 
     LazyColumn(
         state = listState,
