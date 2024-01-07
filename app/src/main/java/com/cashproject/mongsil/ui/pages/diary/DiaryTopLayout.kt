@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.extension.DateFormat
@@ -75,7 +76,9 @@ fun DiaryTopLayout(
         ) {
             HorizontalSpacer(dp = 32.dp)
             Text(
-                text = uiState.date.toTextFormat(DateFormat.YearMonthDay),
+                text = if (Locale.current.language == "ko") uiState.date.toTextFormat(DateFormat.KoreaYearMonthDay) else {
+                    uiState.date.toTextFormat(DateFormat.YearMonthDay)
+                },
                 style = primaryTextStyle.copy(
                     shadow = textShadow,
                     color = Color.White,

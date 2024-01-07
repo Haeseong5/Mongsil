@@ -116,6 +116,7 @@ fun Comment(
                     color = colorResource(id = R.color.colorYellow),
                     fontSize = 20.sp
                 ),
+                letterSpacing = 1.5.sp
             )
             VerticalSpacer(dp = 2.dp)
             Text(

@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.ui.theme.Gray400
 import com.cashproject.mongsil.ui.theme.primaryTextStyle
 
@@ -59,7 +60,7 @@ fun RoundedInputBox(
                     color = Color.White,
                     shape = RoundedCornerShape(16.dp)
                 ),
-            textStyle = primaryTextStyle.copy(Color.White),
+            textStyle = primaryTextStyle.copy(Color.White, fontSize = 22.sp),
             singleLine = false,
             keyboardOptions = KeyboardOptions.Default,
             decorationBox = { innerTextField ->
@@ -76,6 +77,7 @@ fun RoundedInputBox(
                             text = hint,
                             color = Gray400,
                             style = primaryTextStyle,
+                            fontSize = 22.sp
                         )
                     }
                     Box(

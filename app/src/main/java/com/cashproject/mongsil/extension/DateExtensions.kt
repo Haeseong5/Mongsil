@@ -11,6 +11,7 @@ import java.util.Locale
 enum class DateFormat(val pattern: String) {
     YearMonthDayAndTime("yyyy-MM-dd HH:mm:ss"),
     YearMonthDay("yyyy-MM-dd"),
+    KoreaYearMonthDay("yyyy년 MM월 dd일"),
     MonthDay("MM-dd"),
     PlainMonthDay("MMdd"),
     HourMinute("HH:mm"),
