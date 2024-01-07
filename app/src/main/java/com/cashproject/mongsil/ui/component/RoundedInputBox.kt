@@ -45,11 +45,11 @@ fun RoundedInputBox(
         BasicTextField(
             value = text,
             onValueChange = {
-                if (it.length <= maxLength){
+                if (it.length <= maxLength) {
                     onValueChange.invoke(it)
                 }
             },
-            maxLines = maxLength,
+            maxLines = 13,
             modifier = Modifier
                 .wrapContentHeight()
                 .fillMaxWidth()

@@ -7,8 +7,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,7 +36,7 @@ import com.cashproject.mongsil.ui.theme.textShadow
 import com.gigamole.composefadingedges.verticalFadingEdges
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun CommentList(
     modifier: Modifier = Modifier,
@@ -41,6 +44,7 @@ fun CommentList(
     onLongClick: (Int) -> Unit = {},
 ) {
     val listState = rememberLazyListState()
+    val imeVisible = WindowInsets.isImeVisible
 
     LaunchedEffect(comments) {
         try {
@@ -58,7 +62,7 @@ fun CommentList(
         modifier = modifier
             .fillMaxWidth()
             .then(
-                if (comments.isNotEmpty()) {
+                if (comments.isNotEmpty() && !imeVisible) {
                     Modifier.verticalFadingEdges(
                         length = 8.dp
                     )

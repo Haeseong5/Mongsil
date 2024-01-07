@@ -81,9 +81,6 @@ fun DiaryScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .noRippleClickable {
-                updateCommentUiVisibility()
-            }
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
@@ -132,10 +129,7 @@ fun DiaryScreenContent(
                     .consumeWindowInsets(
                         WindowInsets.navigationBars.only(WindowInsetsSides.Vertical)
                     )
-                    .imePadding()
-                    .noRippleClickable {
-//                        updateCommentUiVisibility()
-                    },
+                    .imePadding(),
                 verticalArrangement = Arrangement.Bottom
             ) {
                 CommentList(
@@ -159,10 +153,8 @@ fun DiaryScreenContent(
                         onUiEvent.invoke(DiaryUiEvent.ClickEmoticon)
                     },
                     onConfirm = {
-                        if (uiState.inputText.isNotEmpty()) {
-                            onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
-                            onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
-                        }
+                        onUiEvent.invoke(DiaryUiEvent.SubmitComment(uiState.inputText))
+                        onUiEvent.invoke(DiaryUiEvent.TextChanged(""))
                     }
                 )
             }
