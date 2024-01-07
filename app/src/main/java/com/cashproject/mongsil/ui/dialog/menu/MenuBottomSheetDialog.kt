@@ -19,6 +19,7 @@ import java.util.Date
 class MenuBottomSheetDialog(
     private val poster: Poster,
     private val selectedDate: Date,
+    private val dismissOnClick: Boolean = false,
 ) : BottomSheetDialogFragment() {
 
     private val viewModel: MenuViewModel by viewModels {
@@ -26,7 +27,7 @@ class MenuBottomSheetDialog(
     }
 
     private val eventHandler: MenuEventHandler by lazy {
-        MenuEventHandler(this, viewModel)
+        MenuEventHandler(this, viewModel, dismissOnClick)
     }
 
     var onSave: () -> Unit = {}

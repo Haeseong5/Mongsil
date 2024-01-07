@@ -36,6 +36,10 @@
         app:destination="@id/detailFragment" />
 
     <fragment
+        android:id="@+id/posterPreviewFragment"
+        android:name="com.cashproject.mongsil.ui.pages.preview.PosterPreviewFragment"
+        android:label="@string/locker" />
+    <fragment
         android:id="@+id/lockerFragment"
         android:name="com.cashproject.mongsil.ui.pages.locker.LockerFragment"
         android:label="@string/locker"

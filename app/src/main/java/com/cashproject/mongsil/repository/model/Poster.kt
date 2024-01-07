@@ -10,7 +10,11 @@ data class Poster(
     val id: String,
     val image: String,
     val squareImage: String,
-): Parcelable
+) : Parcelable
+
+fun List<Poster>.findPosition(id: String): Int {
+    return indexOfFirst { it.id == id }.coerceIn(0, size)
+}
 
 fun List<PosterResponse>.toDomain(): List<Poster> {
     return this.map {

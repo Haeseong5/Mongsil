@@ -12,9 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.ui.pages.diary.DiaryFragment
+import com.cashproject.mongsil.ui.pages.preview.PosterPreviewFragment
 import com.cashproject.mongsil.ui.theme.MongsilTheme
-import java.util.Date
 
 
 class LockerFragment : Fragment() {
@@ -50,13 +49,9 @@ class LockerFragment : Fragment() {
     }
 
     private fun goToDiaryScreen(poster: Poster) {
-        DiaryFragment.start(
+        PosterPreviewFragment.start(
             fragment = this,
-            argument = DiaryFragment.Argument(
-                poster = poster,
-                selectedDate = Date(),
-                from = "locker",
-            ),
+            posterId = poster.id,
         )
     }
 }

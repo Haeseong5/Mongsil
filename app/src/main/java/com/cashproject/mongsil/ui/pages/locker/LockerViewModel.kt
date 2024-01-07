@@ -47,7 +47,7 @@ class LockerViewModel(
     }
 
 
-    fun emitEvent(e: LockerEvent) {
+    private fun emitEvent(e: LockerEvent) {
         viewModelScope.launch {
             event.emit(e)
         }
