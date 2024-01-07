@@ -78,7 +78,7 @@ fun CommentList(
                 Comment(
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
-                            durationMillis = 500,
+                            durationMillis = 300,
                             easing = LinearOutSlowInEasing,
                         )
                     ),
