@@ -59,16 +59,6 @@ class CalendarViewModel(
         )
     }
 
-    fun changeScreenType() {
-        viewModelScope.launch {
-            _uiState.emit(
-                uiState.value.copy(
-                    screenType = if (uiState.value.screenType == CalendarScreenType.DEFAULT) CalendarScreenType.LIST else CalendarScreenType.DEFAULT
-                )
-            )
-        }
-    }
-
     private fun CoroutineScope.launchWithCatching(
         action: suspend () -> Unit = {}
     ) {

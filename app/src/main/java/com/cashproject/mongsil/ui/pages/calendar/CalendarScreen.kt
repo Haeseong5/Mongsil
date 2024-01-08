@@ -23,12 +23,9 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -76,14 +74,15 @@ import java.util.Locale
 fun CalendarScreen(
     uiState: CalendarUiState,
     onStartDiary: (LocalDate, Poster?) -> Unit,
-    onClickFloating: () -> Unit = {},
+    visibleCalendarScreenType: CalendarScreenType,
+    selectedLastPosterIndex: Int,
+    setSelectedLastPosterIndex: (Int) -> Unit,
+    onClickFloating: (CalendarScreenType) -> Unit = {},
 ) {
-//    var isVisibleCalendar by remember { mutableStateOf(true) }
-    var selectedIndex by remember { mutableIntStateOf(0) }
-    val listState = rememberLazyListState(0, selectedIndex)
+    val listState = rememberLazyListState(selectedLastPosterIndex)
 
     Box {
-        when (uiState.screenType) {
+        when (visibleCalendarScreenType) {
             CalendarScreenType.DEFAULT -> {
                 CalendarScreenContent(
                     uiState = uiState,
@@ -97,8 +96,8 @@ fun CalendarScreen(
                 CalendarListScreen(
                     listState = listState,
                     onClick = { date, poster, index ->
+                        setSelectedLastPosterIndex.invoke(index)
                         onStartDiary.invoke(date, poster)
-                        selectedIndex = index
                     })
             }
         }
@@ -108,16 +107,16 @@ fun CalendarScreen(
             modifier = Modifier
                 .padding(20.dp)
                 .align(Alignment.BottomEnd),
-            containerColor = Color(0xFFfdca42),
-            contentColor = Color(0xFF6D5107),
+            containerColor = colorResource(id = R.color.colorYellow),
+            contentColor = colorResource(id = R.color.floating_action_btn_color),
             shape = FloatingActionButtonDefaults.largeShape,
             onClick = {
-                onClickFloating.invoke()
+                onClickFloating.invoke(visibleCalendarScreenType)
             },
             content = {
                 Image(
                     modifier = Modifier.size(32.dp),
-                    painter = painterResource(id = if (uiState.screenType == CalendarScreenType.DEFAULT) R.drawable.ic_list else R.drawable.ic_calendar),
+                    painter = painterResource(id = if (visibleCalendarScreenType == CalendarScreenType.DEFAULT) R.drawable.ic_list else R.drawable.ic_calendar),
                     contentDescription = ""
                 )
             })

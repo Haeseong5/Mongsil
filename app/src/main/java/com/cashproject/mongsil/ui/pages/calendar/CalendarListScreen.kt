@@ -29,7 +29,7 @@ import java.time.LocalDate
 
 @Composable
 fun CalendarListScreen(
-    listState: LazyListState = rememberLazyListState(),
+    listState: LazyListState,
     onClick: (LocalDate, Poster, Int) -> Unit,
     viewModel: CalendarListViewModel = viewModel()
 ) {
