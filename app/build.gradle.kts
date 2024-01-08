@@ -5,7 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization") version kotlinVersion
-    id ("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -41,11 +41,25 @@ android {
         kotlinCompilerExtensionVersion = compose_compiler_version
     }
 
+    val SIGNED_STORE_FILE: String by rootProject.extra
+    val SIGNED_STORE_PASSWORD: String by rootProject.extra
+    val SIGNED_STORE_KEY_ALIAS: String by rootProject.extra
+    val SIGNED_STORE_KEY_PASSWORD: String by rootProject.extra
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(SIGNED_STORE_FILE)
+            storePassword = SIGNED_STORE_PASSWORD
+            keyAlias = SIGNED_STORE_KEY_ALIAS
+            keyPassword = SIGNED_STORE_KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-
         }
     }
 
@@ -97,7 +111,7 @@ dependencies {
     androidTestImplementation(composeUiTest)
 
     implementation("com.github.GIGAMOLE:ComposeFadingEdges:1.0.4")
-    implementation ("com.kizitonwose.calendar:compose:2.4.0")
+    implementation("com.kizitonwose.calendar:compose:2.4.0")
 
     //Ads
     implementation("com.google.android.gms:play-services-ads:$googleAdVersion")
@@ -147,12 +161,12 @@ dependencies {
     implementation(coil)
 
     //firebase
-    implementation (platform("com.google.firebase:firebase-bom:29.0.4"))
-    implementation ("com.google.firebase:firebase-analytics-ktx")
-    implementation ("com.google.firebase:firebase-storage")
-    implementation ("com.google.firebase:firebase-firestore-ktx")
-    implementation ("com.firebaseui:firebase-ui-storage:6.4.0")
-    implementation ("com.google.firebase:firebase-config-ktx")
-    implementation ("com.google.firebase:firebase-messaging")
-    implementation ("com.google.firebase:firebase-storage-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.firebaseui:firebase-ui-storage:6.4.0")
+    implementation("com.google.firebase:firebase-config-ktx")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-storage-ktx")
 }

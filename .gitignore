@@ -248,3 +248,4 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,windows
 /.idea/kotlinc.xml
+/authentication.gradle

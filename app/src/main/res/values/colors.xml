@@ -11,6 +11,7 @@
     <color name="background_color">#FFFFFF</color>
     <color name="arrow_color">#000000</color>
     <color name="floating_action_btn_color">#6D5107</color>
+    <color name="dark_gray">#FF444444</color>
 
 
     <color name="text_color">#FF000000</color>
