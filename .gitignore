@@ -48,6 +48,7 @@ captures/
 .idea/assetWizardSettings.xml
 .idea/dictionaries
 .idea/libraries
+
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
@@ -187,6 +188,8 @@ obj/
 # IntelliJ IDEA
 *.iws
 /out/
+
+.idea/deploymentTargetDropDown.xml
 
 # User-specific configurations
 .idea/caches/
