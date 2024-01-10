@@ -7,7 +7,7 @@
     <data>
         <variable
             name="emoticon"
-            type="com.cashproject.mongsil.model.data.Emoticon" />
+            type="com.cashproject.mongsil.ui.model.Emoticon" />
     </data>
 <!--app android 차이-->
     <LinearLayout

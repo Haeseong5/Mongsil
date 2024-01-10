@@ -67,7 +67,7 @@
             android:gravity="center_vertical"
             android:onClick="@{() -> fragment.startAlarm()}"
             android:padding="@dimen/margin8"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 style="@style/ImageViewStyle"
@@ -151,9 +151,9 @@
             android:layout_marginBottom="22dp"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:onClick="@{() -> fragment.showReadyMessage()}"
+            android:onClick="@{() -> fragment.backUp()}"
             android:padding="@dimen/margin8"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 style="@style/ImageViewStyle"
@@ -219,6 +219,32 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="-0.05"
                 android:text="개발자의 다른 앱"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_setting_app_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> fragment.showAppVersionDialog()}"
+            android:padding="@dimen/margin8">
+
+            <ImageView
+                style="@style/ImageViewStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_review" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="-0.05"
+                android:text="앱 버전 확인"
                 android:textSize="20sp"
                 android:textStyle="normal" />
         </LinearLayout>

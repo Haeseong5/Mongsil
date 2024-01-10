@@ -4,38 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
-
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.cashproject.mongsil.ui.main.SplashFragment"
-        android:label="splashFragment"
-        tools:layout="@layout/fragment_splash">
-        <action
-            android:id="@+id/action_splashFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true"
-            app:enterAnim="@anim/slide_fade_in"
-            app:exitAnim="@anim/slide_fade_out"
-            app:popEnterAnim="@anim/slide_fade_in"
-            app:popExitAnim="@anim/slide_fade_out"
-            />
-    </fragment>
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.cashproject.mongsil.ui.main.MainFragment"
-        android:label="@string/calendar"
+        android:label="mainFragment"
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_setting_to_locker"
             app:destination="@id/lockerFragment" />
-        <action
-            android:id="@+id/action_setting_to_alarm"
-            app:destination="@id/alarmFragment"
-            app:enterAnim="@anim/slide_in"
-            app:popEnterAnim="@anim/fade_in" />
         <argument
             android:name="docId"
             app:argType="string" />
@@ -49,34 +27,30 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.cashproject.mongsil.ui.pages.detail.DetailFragment"
+        android:name="com.cashproject.mongsil.ui.pages.diary.DiaryFragment"
         android:label="detail"
         tools:layout="@layout/framment_detail" />
 
     <action
         android:id="@+id/action_global_detailFragment"
-        app:destination="@id/detailFragment"
-        app:popUpTo="@id/splashFragment"
-        app:popUpToInclusive="true"
-        app:enterAnim="@anim/slide_fade_in"
-        app:exitAnim="@anim/slide_fade_out"
-        app:popEnterAnim="@anim/slide_fade_in"
-        app:popExitAnim="@anim/slide_fade_out"
-        />
+        app:destination="@id/detailFragment" />
 
+    <fragment
+        android:id="@+id/posterPreviewFragment"
+        android:name="com.cashproject.mongsil.ui.pages.preview.PosterPreviewFragment"
+        android:label="@string/locker" />
     <fragment
         android:id="@+id/lockerFragment"
         android:name="com.cashproject.mongsil.ui.pages.locker.LockerFragment"
         android:label="@string/locker"
         app:popUpTo="@id/detailFragment"
-        app:popUpToInclusive="true"
         tools:layout="@layout/fragment_locker">
         <action
             android:id="@+id/action_locker_to_detail"
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out" />
         <argument
             android:name="docId"
@@ -91,15 +65,33 @@
 
     <action android:id="@+id/action_to_setting"
         app:destination="@id/settingFragment"
-        app:enterAnim="@anim/slide_right_enter"
-        app:exitAnim="@anim/slide_right_exit"
-        app:popEnterAnim="@anim/slide_left_enter"
-        app:popExitAnim="@anim/slide_left_exit"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_out"
         />
+
+    <action
+        android:id="@+id/action_to_alarm"
+        app:destination="@id/alarmFragment"
+        app:enterAnim="@anim/slide_in"
+        app:popEnterAnim="@anim/fade_in" />
 
     <fragment
         android:id="@+id/alarmFragment"
         android:name="com.cashproject.mongsil.ui.pages.setting.alarm.AlarmFragment"
         android:label="alarm"
         tools:layout="@layout/fragment_alarm" />
+
+    <fragment
+        android:id="@+id/backupFragment"
+        android:name="com.cashproject.mongsil.ui.pages.setting.backup.BackupFragment"
+        android:label="backup"
+        tools:layout="@layout/fragment_backup" />
+
+    <action
+        android:id="@+id/action_to_backupFragment"
+        app:destination="@id/backupFragment"
+        app:enterAnim="@anim/slide_in"
+        app:popEnterAnim="@anim/fade_in" />
 </navigation>

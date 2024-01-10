@@ -11,7 +11,8 @@
 
     <string name="emoticon_title">오늘 기분은 어때요?</string>
     <string name="message_delete">정말 삭제 하시겠습니까?</string>
-    <string name="error_message">요청에 실패했습니다.</string>
+    <string name="app_version">현재 버전 : %s\n최신 버전 : %s\n\n앱을 업데이트 하시겠습니까?</string>
+    <string name="error_message">일시적 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
     <string name="network_state_error">네트워크 연결상태를 확인해주세요.</string>
     <string name="notification_channel_id">notification_channel_id</string>
     <string name="notification_channel_name">notification_channel_name</string>
@@ -30,6 +31,15 @@
 
     <string name="review">리뷰 남기기</string>
     <string name="finish">종료</string>
+    <string name="fcm_event_msg">fcm_event_msg</string>
 
-    <integer name="fade_time">1500</integer>
+    <!--SettingScreen-->
+    <string name="setting_screen_title">설정</string>
+    <string name="setting_notification_setting">알림 설정</string>
+    <string name="setting_app_introduction">앱 소개</string>
+    <string name="setting_suggestion">건의하기</string>
+    <string name="setting_backup">백업</string>
+    <string name="setting_other_app_from_the_developer">개발자의 다른 앱</string>
+    <string name="setting_app_version_check">앱 버전 확인</string>
+
 </resources>

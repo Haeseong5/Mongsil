@@ -13,7 +13,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.ui.MainActivity
-import com.cashproject.mongsil.util.PreferencesManager.alarm
+import com.cashproject.mongsil.util.PreferencesManager.isEnabledPushNotification
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -40,7 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
             context,
             NOTIFICATION_ID,
             contentIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
         )
         val builder =
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
@@ -51,7 +51,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-        if (alarm)
+        if (isEnabledPushNotification)
             notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 

@@ -5,26 +5,36 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.databinding.FragmentSettingBinding
+import com.cashproject.mongsil.base.App
+import com.cashproject.mongsil.data.firebase.isOldVersion
+import com.cashproject.mongsil.databinding.FragmentSettingComposeBinding
 import com.cashproject.mongsil.extension.intentAction
+import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
+import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.google.android.play.core.review.ReviewManagerFactory
-import java.util.*
 
-
+//TODO 스플래시 끄기
+//TODO 앱 버전 확인 -> 업데이트
+// 푸시메세지
 class SettingFragment : Fragment() {
 
-    private lateinit var binding: FragmentSettingBinding
+    private lateinit var binding: FragmentSettingComposeBinding
+    private val viewModel = SettingViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -32,14 +42,66 @@ class SettingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return FragmentSettingBinding.inflate(inflater, container, false)
+        return FragmentSettingComposeBinding.inflate(inflater, container, false)
             .also { binding ->
-                binding.fragment = this
-                binding.lifecycleOwner = this
                 this.binding = binding
+                binding.composeView.setContent {
+                    MongsilTheme {
+                        SettingScreen(
+                            onUiAction = {
+                                when (it) {
+                                    UiAction.Back -> {
+                                        findNavController().popBackStack()
+                                    }
+
+                                    is UiAction.OnClickMenu -> {
+                                        when (it.type) {
+                                            SettingButtonType.NOTIFICATION_SETTING -> startAlarm()
+                                            SettingButtonType.APP_INTRODUCTION -> introApp()
+                                            SettingButtonType.SUGGESTION -> sendEmail()
+                                            SettingButtonType.BACKUP -> {
+                                                requireContext().showToast("준비 중입니다.")
+                                                backUp()
+                                            }
+
+                                            SettingButtonType.OTHER_APP_FROM_THE_DEVELOPER -> showMoreApps()
+                                            SettingButtonType.APP_VERSION_CHECK -> showAppVersionDialog()
+                                            SettingButtonType.NONE -> {}
+                                        }
+
+                                    }
+                                }
+                            },
+                        )
+                    }
+                }
+                binding.lifecycleOwner = viewLifecycleOwner
             }.root
     }
 
+    fun showAppVersionDialog() {
+        if (isOldVersion()) {
+            CheckDialog(
+                context = requireContext(),
+                accept = { openPlayStore(context ?: return@CheckDialog) },
+                acceptText = "업데이트"
+            ).also {
+                it.start(
+                    getString(
+                        R.string.app_version,
+                        BuildConfig.VERSION_NAME,
+                        App.appVersion.latestAppVersionName
+                    )
+                )
+            }
+        } else {
+            requireContext().showToast("최신 버전입니다.")
+        }
+    }
+
+    fun backUp() {
+        findNavController().navigate(R.id.action_to_backupFragment)
+    }
 
     fun showReadyMessage() {
         activity?.showToast("준비 중입니다.")
@@ -58,7 +120,7 @@ class SettingFragment : Fragment() {
     }
 
     fun startAlarm() {
-        findNavController().navigate(R.id.action_setting_to_alarm)
+        findNavController().navigate(R.id.action_to_alarm)
     }
 
     fun sendEmail() {
@@ -68,7 +130,7 @@ class SettingFragment : Fragment() {
             putExtra(Intent.EXTRA_SUBJECT, "몽실에게 건의하기") //제목
             putExtra(
                 Intent.EXTRA_TEXT,
-                "앱 버전 (App Version): ${BuildConfig.VERSION_NAME}\n" +
+                "앱 버전 (App Version): ${BuildConfig.VERSION_NAME}\n" +
                         "Android (SDK): ${Build.VERSION.SDK_INT}\n" +
                         "Android Version(Release): ${Build.VERSION.RELEASE}\n" +
                         "내용: "

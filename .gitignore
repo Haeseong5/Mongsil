@@ -48,6 +48,7 @@ captures/
 .idea/assetWizardSettings.xml
 .idea/dictionaries
 .idea/libraries
+
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
@@ -188,6 +189,8 @@ obj/
 *.iws
 /out/
 
+.idea/deploymentTargetDropDown.xml
+
 # User-specific configurations
 .idea/caches/
 .idea/libraries/
@@ -247,3 +250,5 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,windows
+/.idea/kotlinc.xml
+/authentication.gradle

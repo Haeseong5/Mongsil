@@ -6,10 +6,12 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="blackOrWhite">#1E1E1E</color>
+    <color name="darkGreyOrWhite2">#333333</color>
     <color name="whiteOrBlack">#FFFFFFFF</color>
     <color name="background_color">#FFFFFF</color>
     <color name="arrow_color">#000000</color>
     <color name="floating_action_btn_color">#6D5107</color>
+    <color name="dark_gray">#FF444444</color>
 
 
     <color name="text_color">#FF000000</color>
@@ -57,10 +59,6 @@
     <color name="emoticon_09_discomfort_background">#efebea</color>
     <color name="emoticon_06_shame_background">#ffecc9</color>
     <color name="emoticon_06_shame_text">#d9ad58</color>
-
-    <!--admob dialog-->
-    <color name="tedBtnPrimary">#3F51B5</color>
-    <color name="tedBtnHighlight">#1F3195</color>
 
     <color name="transparent">#00000000</color>
     <color name="black87">#de000000</color>

@@ -1,18 +1,17 @@
 package com.cashproject.mongsil.ui.dialog.emoticon
 
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.ItemEmoticonBinding
-import com.cashproject.mongsil.model.data.Emoticon
-import com.cashproject.mongsil.model.data.Emoticons.emoticons
+import com.cashproject.mongsil.ui.model.Emoticon
+import com.cashproject.mongsil.ui.model.Emoticons.emoticons
 
 class EmoticonAdapter : RecyclerView.Adapter<EmoticonAdapter.ViewHolder>() {
 
-    private var items: ArrayList<Emoticon> = emoticons
+    private var items: List<Emoticon> = emoticons
 
     private var listener: ((item: Emoticon) -> Unit)? = null
 

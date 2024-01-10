@@ -18,25 +18,23 @@ package com.cashproject.mongsil.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
-import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.ui.main.MainViewModel
-import com.cashproject.mongsil.ui.pages.detail.DetailViewModel
 
 /**
  * Factory for ViewModels
  */
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val localDataSource: LocalDataSource, private val firestoreDataSource: FirestoreDataSource) : ViewModelProvider.Factory {
+class ViewModelFactory(
+    private val diaryService: DiaryService,
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                DetailViewModel(localDataSource, firestoreDataSource) as T
-            }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(localDataSource, firestoreDataSource) as T
+                MainViewModel() as T
             }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
     }

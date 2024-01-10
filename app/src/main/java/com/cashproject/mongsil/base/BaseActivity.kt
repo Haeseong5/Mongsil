@@ -3,21 +3,17 @@ package com.cashproject.mongsil.base
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-//FragmentActivity는 Activity의 하위 클래스
-abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
-    val TAG: String = this.javaClass.simpleName
-
+abstract class BaseActivity<T : ViewDataBinding> : SuperActivity() {
     lateinit var binding: T
 
     abstract val layoutResourceId: Int
-
-//    abstract val mainViewModel: R
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -27,40 +23,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, layoutResourceId)
     }
 
-    private fun setFullView(){
-        window.apply {
-            setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        }
-    }
-
-    fun printLog(message: String) {
-        Log.d(TAG, message)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "++onStart()")
-    }
-    override fun onResume() {
-        Log.d(TAG, "++onResume()")
-        super.onResume()
-    }
-    override fun onPause() {
-        Log.d(TAG, "++onPause()")
-        super.onPause()
-    }
-    override fun onStop() {
-        Log.d(TAG, "++onStop()")
-        super.onStop()
-    }
-    override fun onDestroy() {
-        Log.d(TAG, "++onDestroy()")
-        compositeDisposable.dispose()
-        super.onDestroy()
-    }
-    fun addDisposable(disposable: Disposable){
+    fun addDisposable(disposable: Disposable) {
         compositeDisposable.add(disposable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 }

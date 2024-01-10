@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Mongsil" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -11,15 +11,20 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/background_color</item>
 
+        <!--        https://developer.android.com/develop/ui/views/layout/edge-to-edge?hl=ko-->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Optional: set to transparent if your app is drawing behind the status bar. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Optional: set for a light status bar with dark content. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <!--        <item name="android:windowTranslucentNavigation">false</item>-->
+
+        <!--        &lt;!&ndash; window theme&ndash;&gt;-->
         <item name="android:windowBackground">@color/background_color</item>
         <item name="android:colorBackground">@color/background_color</item>
-
-        <!--statusBar 투명 여부-->
-        <item name="android:windowTranslucentStatus">true</item>
-        <!--navigationBar 투명 여부-->
-        <item name="android:windowTranslucentNavigation">false</item>
-        <!--statusBar color 설정-->
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--        <item name="android:windowTranslucentStatus">true</item> &lt;!&ndash;statusBar 반투명 여부&ndash;&gt;-->
+        <!--        <item name="android:windowTranslucentNavigation">true</item> &lt;!&ndash;navigationBar 반투명 여부&ndash;&gt;-->
+        <!--        <item name="android:statusBarColor">@android:color/transparent</item> &lt;!&ndash;statusBar color 설정&ndash;&gt;-->
         <!--마시멜로부터 배경이 흰색일 경우, 상태바의 아이콘을 검정으로 바꿔주는 기능 지원-->
         <!--상태바 아래에 다른 뷰가 표시될 수 있도록 합니다. 단, 네비게이션 바 부분은 제외합니다.-->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
@@ -50,15 +55,16 @@
         <item name="android:textColorPrimary">@color/text_color</item>
     </style>
 
-    <style name="ImageViewStyle" >
+    <style name="ImageViewStyle">
         <item name="android:tint">@color/icon_color</item>
     </style>
 
-    <style name="ArrowStyle" >
+    <style name="ArrowStyle">
         <item name="android:tint">@color/arrow_color</item>
     </style>
 
-    <style name="IcLikeSelectedStyle" >
+    <style name="IcLikeSelectedStyle">
         <item name="android:tint">@color/ic_like_sel_color</item>
     </style>
+
 </resources>

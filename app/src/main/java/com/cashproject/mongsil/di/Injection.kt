@@ -17,11 +17,15 @@
 package com.cashproject.mongsil.di
 
 import android.content.Context
-import com.cashproject.mongsil.model.db.AppDatabase
-import com.cashproject.mongsil.model.db.dao.CommentDao
-import com.cashproject.mongsil.model.db.dao.LockerDao
-import com.cashproject.mongsil.model.db.datasource.FirestoreDataSource
-import com.cashproject.mongsil.model.db.datasource.LocalDataSource
+import com.cashproject.mongsil.data.db.AppDatabase
+import com.cashproject.mongsil.data.db.dao.BookmarkDao
+import com.cashproject.mongsil.data.db.dao.DiaryDao
+import com.cashproject.mongsil.data.firebase.FireStoreDataSource
+import com.cashproject.mongsil.data.service.BookmarkService
+import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.data.service.PosterService
+import com.cashproject.mongsil.repository.BookmarkRepository
+import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 
@@ -30,26 +34,46 @@ import com.cashproject.mongsil.viewmodel.ViewModelFactory
  */
 object Injection {
 
-    private fun provideLocalDataSource(context: Context): LockerDao {
+    /** local */
+    private fun provideBookmarkDao(context: Context): BookmarkDao {
         val database = AppDatabase.getInstance(context)
-        return database.lockerDao()
+        return database.bookmarkDao()
     }
 
-    private fun provideCommentDataSource(context: Context): CommentDao {
+    private fun provideDiaryDao(context: Context): DiaryDao {
         val database = AppDatabase.getInstance(context)
-        return database.commentDao()
+        return database.diaryDao()
     }
 
-    private fun provideFirestoreDataSource(): FirestoreDataSource {
-        return FirestoreDataSource()
+    /** remote */
+    private fun providePosterService(): PosterService {
+        return PosterService
     }
 
+    private fun provideFirestoreDataSource(): FireStoreDataSource {
+        return FireStoreDataSource()
+    }
 
+    /** repository */
+    fun provideMemoryCacheRepository(posterService: PosterService): PosterRepository {
+        return PosterRepository(posterService)
+    }
+
+    private fun provideBookmarkRepository(
+        bookmarkService: BookmarkService,
+        posterRepository: PosterRepository,
+    ): BookmarkRepository {
+        return BookmarkRepository(
+            bookmarkService = bookmarkService,
+            posterRepository = posterRepository
+        )
+    }
+
+    /** viewModel */
     fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val lockerDataSource = provideLocalDataSource(context)
-        val commentDataSource = provideCommentDataSource(context)
+        val commentDataSource = provideDiaryDao(context)
 
-        val localDataSource = LocalDataSource(commentDataSource, lockerDataSource)
-        return ViewModelFactory(localDataSource, provideFirestoreDataSource())
+        val diaryService = DiaryService(commentDataSource)
+        return ViewModelFactory(diaryService)
     }
 }

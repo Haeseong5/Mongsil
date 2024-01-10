@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="28dp" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -32,28 +32,38 @@
             <TextView
                 android:id="@+id/dialog_bt_cancel"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:background="#f5f5f5"
+                androd:layout_constraintTop_toTopOf="parent"
+                androd:layout_constraintBottom_toBottomOf="parent"
+                android:gravity="center"
                 android:paddingHorizontal="@dimen/margin30"
                 android:paddingVertical="@dimen/margin16"
-                android:layout_weight="1"
-                android:background="#f5f5f5"
-                android:gravity="center"
+                android:text="취소"
                 android:textColor="#888888"
-                android:text="취소" />
+                androd:layout_constraintEnd_toStartOf="@id/dialog_bt_accept"
+                androd:layout_constraintHorizontal_weight="1"
+                androd:layout_constraintStart_toStartOf="parent"
+                androd:layout_constraintVertical_weight="1" />
 
             <TextView
                 android:id="@+id/dialog_bt_accept"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="확인"
                 android:layout_weight="1"
-
+                androd:layout_constraintEnd_toEndOf="parent"
+                androd:layout_constraintHorizontal_weight="1"
+                androd:layout_constraintVertical_weight="1"
+                androd:layout_constraintTop_toTopOf="parent"
+                androd:layout_constraintBottom_toBottomOf="parent"
+                androd:layout_constraintStart_toEndOf="@+id/dialog_bt_cancel"
+                tools:text="업데이트 하러 가기"
                 android:paddingVertical="@dimen/margin16"
                 android:paddingHorizontal="@dimen/margin30"
                 android:textColor="#6d5107"
                 android:gravity="center"
                 android:background="@color/colorYellow" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>

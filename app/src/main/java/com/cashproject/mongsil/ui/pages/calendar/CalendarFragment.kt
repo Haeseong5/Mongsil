@@ -1,102 +1,68 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseFragment
 import com.cashproject.mongsil.databinding.FragmentCalendarBinding
-import com.cashproject.mongsil.extension.addTo
-import com.cashproject.mongsil.model.data.Saying
+import com.cashproject.mongsil.extension.toDate
+import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.main.MainViewModel
-import com.cashproject.mongsil.ui.pages.calendar.day.DayAdapter
-import com.cashproject.mongsil.ui.pages.calendar.day.ViewTypeCase
-import com.cashproject.mongsil.ui.pages.detail.DetailFragment
-import com.cashproject.mongsil.util.RxEventBus
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.util.*
+import com.cashproject.mongsil.ui.pages.diary.DiaryFragment
+import java.time.LocalDate
 
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     override val layoutResourceId: Int
         get() = R.layout.fragment_calendar
 
+    private val calendarViewModel: CalendarViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
-    private val dayAdapter by lazy {
-        DayAdapter(ViewTypeCase.NORMAL)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val uiState = calendarViewModel.uiState.collectAsState()
+                val currentVisibleCalendarScreenType by mainViewModel.visibleCalendarScreenType.collectAsState()
 
-    var flag: Boolean = false //false: CalendarView, true: RecyclerView
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        initClickListener()
-        observeData()
-    }
-
-    private fun initRecyclerView() {
-        val linearLayoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        binding.rvCalendarDayList.apply {
-            layoutManager = linearLayoutManager
-            setHasFixedSize(true)
-            setItemViewCacheSize(10)
-            adapter = dayAdapter
-        }
-    }
-
-    private fun initClickListener() {
-        binding.fabCalendarFloatingActionButton.setOnClickListener {
-            flag = when (flag) {
-                false -> true
-                true -> false
-            }
-            binding.flag = flag
-        }
-
-        binding.customCalendarView.setOnDayClickListener {
-            click.run {
-                DetailFragment.start(
-                    fragment = this,
-                    argument = DetailFragment.Argument(
-                        saying = mainViewModel.getRandomSaying(it.calendar.time),
-                        selectedDate = it.calendar.time
-                    )
+                CalendarScreen(
+                    uiState = uiState.value,
+                    onStartDiary = ::goToDiaryScreen,
+                    visibleCalendarScreenType = currentVisibleCalendarScreenType,
+                    selectedLastPosterIndex = mainViewModel.selectedLastPosterIndex,
+                    setSelectedLastPosterIndex = {
+                        mainViewModel.selectedLastPosterIndex = it
+                    },
+                    onClickFloating = {
+                        mainViewModel.toggleCalendarScreenType(it)
+                    }
                 )
             }
         }
+    }
 
-        dayAdapter.setOnItemClickListener { item, selectedDate ->
-            DetailFragment.start(
-                fragment = this,
-                argument = DetailFragment.Argument(
-                    saying = item,
-                    selectedDate = selectedDate
-                )
+    private fun goToDiaryScreen(localDate: LocalDate, poster: Poster?) {
+        val date = localDate.toDate()
+        DiaryFragment.start(
+            this@CalendarFragment,
+            argument = DiaryFragment.Argument(
+                poster = poster ?: calendarViewModel.getRandomSaying(date),
+                selectedDate = date,
+                from = "calendar"
             )
-        }
-    }
-
-    private fun observeData() {
-        mainActivity?.mainViewModel?.sayingList?.observe(viewLifecycleOwner, {
-            dayAdapter.update(it as ArrayList<Saying>)
-        })
-
-        mainActivity?.mainViewModel?.commentList?.observe(viewLifecycleOwner, {
-            binding.customCalendarView.notifyDataChanged(it)
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mainActivity?.mainViewModel?.getAllComments()
+        )
     }
 }
