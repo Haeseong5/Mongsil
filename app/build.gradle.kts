@@ -15,8 +15,8 @@ android {
         applicationId = "com.cashproject.mongsil"
         minSdk = 26
         targetSdk = 33
-        versionCode = 11
-        versionName = "1.1.5"
+        versionCode = 20
+        versionName = "1.1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
@@ -58,6 +58,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            isShrinkResources = false
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }

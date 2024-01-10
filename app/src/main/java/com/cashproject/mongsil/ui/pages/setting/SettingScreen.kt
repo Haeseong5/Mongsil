@@ -173,11 +173,11 @@ val buttonList = listOf(
         text = R.string.setting_suggestion,
         type = UiAction.OnClickMenu(SettingButtonType.SUGGESTION)
     ),
-    SettingButton(
-        image = R.drawable.ic_backup,
-        text = R.string.setting_backup,
-        type = UiAction.OnClickMenu(SettingButtonType.BACKUP)
-    ),
+//    SettingButton(
+//        image = R.drawable.ic_backup,
+//        text = R.string.setting_backup,
+//        type = UiAction.OnClickMenu(SettingButtonType.BACKUP)
+//    ),
     SettingButton(
         image = R.drawable.ic_moreapp,
         text = R.string.setting_other_app_from_the_developer,

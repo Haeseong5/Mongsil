@@ -33,8 +33,4 @@ data class SayingEntity(
     @ColumnInfo
     val date: Date = Date(),
 
-    @Deprecated("사용되지 않는 필드입니다.")
-    @ColumnInfo
-    val test: String = "test filed"
-
 ) : Parcelable
