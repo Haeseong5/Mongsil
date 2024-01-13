@@ -3,8 +3,11 @@ package com.cashproject.mongsil.ui.pages.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.repository.DiaryRepository
+import com.cashproject.mongsil.data.repository.EmoticonRepository
 import com.cashproject.mongsil.extension.log
+import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
+import com.cashproject.mongsil.repository.EmoticonRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.Poster
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +22,7 @@ import java.util.Date
 class CalendarViewModel(
     private val diaryRepository: DiaryRepository = DiaryRepositoryImpl(),
     private val posterRepository: PosterRepository = PosterRepository(),
+    private val emoticonRepository: EmoticonRepository = EmoticonRepositoryImpl()
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<CalendarUiState> =
@@ -34,6 +38,27 @@ class CalendarViewModel(
     init {
         "calendarViewModel init".log()
         loadComments()
+        loadEmoticons()
+    }
+
+    suspend fun getEmoticonUrl(emoticonId: Int): String {
+        return try {
+            emoticonRepository.getEmoticon(emoticonId)?.imageUrl ?: ""
+        } catch (e: Exception) {
+            e.printErrorLog()
+            ""
+        }
+    }
+
+    private fun loadEmoticons() {
+        viewModelScope.launch {
+            _uiState.update {
+                uiState.value.copy(
+                    emoticons = emoticonRepository.getEmoticons()
+                )
+            }
+
+        }
     }
 
     private fun loadComments() {

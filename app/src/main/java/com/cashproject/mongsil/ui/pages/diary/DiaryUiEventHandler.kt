@@ -10,7 +10,7 @@ class DiaryUiEventHandler(
     fun handleEvent(event: DiaryUiEvent) {
         when (event) {
             DiaryUiEvent.ClickEmoticon -> {
-                EmoticonDialog().apply {
+                EmoticonDialog(viewModel.uiState.value.emoticons).apply {
                     setEmoticonBtnClickListener {
                         viewModel.updateUiState {
                             copy(

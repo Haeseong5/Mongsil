@@ -3,15 +3,15 @@ package com.cashproject.mongsil.ui.pages.diary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.data.repository.DiaryRepository
+import com.cashproject.mongsil.data.repository.EmoticonRepository
 import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.logger.Logger
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
+import com.cashproject.mongsil.repository.EmoticonRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.ui.model.defaultEmoticon
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +28,8 @@ class DiaryViewModel(
     private val date: Date,
     private val isPagerItem: Boolean,
     private val diaryRepository: DiaryRepository = DiaryRepositoryImpl(),
-    private val posterRepository: PosterRepository = PosterRepository()
+    private val posterRepository: PosterRepository = PosterRepository(),
+    private val emoticonRepository: EmoticonRepository = EmoticonRepositoryImpl()
 ) : ViewModel() {
 
     companion object {
@@ -66,9 +67,20 @@ class DiaryViewModel(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        loadEmotions()
         loadPoster(poster = poster)
         loadComments()
         posterRepository.toString().log()
+    }
+
+    private fun loadEmotions() {
+        viewModelScope.launch {
+            _uiState.emit(
+                uiState.value.copy(
+                    emoticons = emoticonRepository.getEmoticons()
+                )
+            )
+        }
     }
 
     fun updateUiState(action: DiaryUiState.() -> DiaryUiState) {
@@ -107,7 +119,7 @@ class DiaryViewModel(
                         copy(
                             comments = it.asReversed(),
                             dailyEmoticon = DailyEmoticon(
-                                emoticon = it.lastOrNull()?.emoticon ?: defaultEmoticon,
+                                emoticonId = it.lastOrNull()?.emoticonId ?: 1,
                                 date = selectedDate
                             )
                         )
@@ -128,7 +140,7 @@ class DiaryViewModel(
             try {
                 val comment = Comment(
                     content = content,
-                    emoticon = emoticonId.toEmoticon(),
+                    emoticonId = emoticonId,
                     date = date,
                     time = Date()
                 )

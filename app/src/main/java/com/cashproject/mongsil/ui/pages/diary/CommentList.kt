@@ -3,7 +3,6 @@ package com.cashproject.mongsil.ui.pages.diary
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -23,13 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.VerticalSpacer
+import com.cashproject.mongsil.ui.model.Emoticon
 import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import com.cashproject.mongsil.ui.theme.textShadow
 import com.gigamole.composefadingedges.verticalFadingEdges
@@ -41,6 +41,7 @@ fun CommentList(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
     comments: List<Comment>,
+    emoticons: List<Emoticon>,
     onLongClick: (Int) -> Unit = {},
 ) {
     val imeVisible = WindowInsets.isImeVisible
@@ -63,7 +64,7 @@ fun CommentList(
                 key = { comment ->
                     comment.id
                 }
-            ) {
+            ) { comment ->
                 Comment(
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
@@ -71,8 +72,10 @@ fun CommentList(
                             easing = LinearOutSlowInEasing,
                         )
                     ),
-                    comment = it,
+                    comment = comment,
                     onLongClick = onLongClick,
+                    emoticonImageUrl = emoticons.find { it.id == comment.emoticonId }?.imageUrl
+                        ?: ""
                 )
             }
         }
@@ -84,6 +87,7 @@ fun CommentList(
 fun Comment(
     modifier: Modifier = Modifier,
     comment: Comment,
+    emoticonImageUrl: String,
     onLongClick: (Int) -> Unit = {},
 ) {
     Row(
@@ -99,11 +103,11 @@ fun Comment(
                 onClick = {}
             )
     ) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(46.dp)
                 .padding(end = 8.dp),
-            painter = painterResource(id = comment.emoticon.icon),
+            model = emoticonImageUrl,
             contentDescription = null
         )
         Column(

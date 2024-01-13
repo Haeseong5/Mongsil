@@ -11,7 +11,7 @@ data class CalendarUiModel(
 
 fun DailyEmoticon.toUiModel(): CalendarUiModel {
     return CalendarUiModel(
-        emotionId = emoticon.id,
+        emotionId = emoticonId,
         date = date.toLocalDate()
     )
 }

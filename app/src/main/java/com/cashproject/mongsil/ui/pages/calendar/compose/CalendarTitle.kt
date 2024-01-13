@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.calendar
+package com.cashproject.mongsil.ui.pages.calendar.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row

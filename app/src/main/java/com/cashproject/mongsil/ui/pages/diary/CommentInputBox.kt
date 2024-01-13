@@ -4,7 +4,6 @@ package com.cashproject.mongsil.ui.pages.diary
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,10 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.cashproject.mongsil.data.db.entity.toEmoticon
+import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.RoundedInputBox
 import com.cashproject.mongsil.ui.theme.dpToSp
@@ -33,7 +32,7 @@ import com.cashproject.mongsil.ui.theme.dpToSp
 fun CommentInputBox(
     modifier: Modifier = Modifier,
     text: String,
-    emoticonId: Int,
+    emoticonUrl: String,
     onValueChange: (String) -> Unit = {},
     onClickEmoticon: () -> Unit = {},
     onConfirm: () -> Unit = {}
@@ -71,11 +70,13 @@ fun CommentInputBox(
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            modifier = Modifier.noRippleClickable {
-                onClickEmoticon.invoke()
-            },
-            painter = painterResource(emoticonId.toEmoticon().icon),
+        AsyncImage(
+            modifier = Modifier
+                .size(60.dp)
+                .noRippleClickable {
+                    onClickEmoticon.invoke()
+                },
+            model = emoticonUrl,
             contentDescription = "",
         )
 
