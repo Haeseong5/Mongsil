@@ -1,20 +1,17 @@
 package com.cashproject.mongsil.repository.model
 
 import com.cashproject.mongsil.data.db.entity.CommentEntity
-import com.cashproject.mongsil.ui.model.Emoticon
-import com.cashproject.mongsil.ui.model.Emoticons
-import com.cashproject.mongsil.ui.model.defaultEmoticon
 import java.util.Date
 
 data class DailyEmoticon(
-    val emoticon: Emoticon = defaultEmoticon,
+    val emoticonId: Int = 0,
     val date: Date = Date(),
 )
 
 fun List<CommentEntity>.toDailyEmoticons(): List<DailyEmoticon> {
     return map {
         DailyEmoticon(
-            emoticon = Emoticons.emoticons[it.emotion],
+            emoticonId = it.id,
             date = it.date
         )
     }

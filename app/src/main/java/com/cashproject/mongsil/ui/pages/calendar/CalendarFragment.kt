@@ -16,6 +16,7 @@ import com.cashproject.mongsil.databinding.FragmentCalendarBinding
 import com.cashproject.mongsil.extension.toDate
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.pages.calendar.compose.CalendarScreen
 import com.cashproject.mongsil.ui.pages.diary.DiaryFragment
 import java.time.LocalDate
 

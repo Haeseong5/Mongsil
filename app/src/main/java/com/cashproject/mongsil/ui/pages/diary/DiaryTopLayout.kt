@@ -19,10 +19,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.DateFormat
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
@@ -86,10 +86,10 @@ fun DiaryTopLayout(
                 )
             )
             HorizontalSpacer(dp = 8.dp)
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .size(24.dp),
-                painter = painterResource(id = uiState.dailyEmoticon.emoticon.icon),
+                model = uiState.emoticons.find { it.id == uiState.emoticonId }?.imageUrl ?: "",
                 contentDescription = ""
             )
         }

@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.diary
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -104,6 +105,7 @@ fun DiaryScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(imeVisible, commentUiVisibility) {
+                Log.d("++## ", "Click")
                 detectTapGestures {
                     updateCommentUiVisibility()
                 }
@@ -169,6 +171,7 @@ fun DiaryScreenContent(
                         },
                     listState = listState,
                     comments = uiState.comments,
+                    emoticons = uiState.emoticons,
                     onLongClick = {
                         onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))
                     }
@@ -176,7 +179,8 @@ fun DiaryScreenContent(
                 CommentInputBox(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    emoticonId = uiState.emoticonId,
+                    emoticonUrl = uiState.emoticons.find { it.id == uiState.emoticonId }?.imageUrl
+                        ?: "",
                     text = uiState.inputText,
                     onValueChange = {
                         onUiEvent.invoke(DiaryUiEvent.TextChanged(it))
@@ -205,18 +209,6 @@ private fun Preview() {
         DiaryScreenContent(
             uiState = DiaryUiState(
                 comments = listOf(
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
                 )
             )
         )
