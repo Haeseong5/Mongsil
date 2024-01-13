@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.data.db.entity.toEmoticon
 import com.cashproject.mongsil.data.repository.DiaryRepository
 import com.cashproject.mongsil.extension.log
+import com.cashproject.mongsil.logger.Logger
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.DailyEmoticon
@@ -132,6 +133,13 @@ class DiaryViewModel(
                     time = Date()
                 )
                 diaryRepository.insert(comment)
+                Logger.sendLog(
+                    key = "comment",
+                    value = mapOf(
+                        "length" to content.length,
+                        "emoticonId" to emoticonId, //TODO 타입으로 수정
+                    ),
+                )
             } catch (e: Exception) {
                 emitError(e)
             }

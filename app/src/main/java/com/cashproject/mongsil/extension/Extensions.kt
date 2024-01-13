@@ -4,7 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
+import androidx.core.os.bundleOf
 
 fun String.log() {
     Log.d("fastLog", this)
@@ -36,3 +38,5 @@ fun openPlayStore(context: Context) {
 fun Throwable.printErrorLog(tag: String = "###", message: String = "") {
     Log.e(tag, message, this)
 }
+
+fun Map<String, Any?>.toBundle(): Bundle = bundleOf(*this.toList().toTypedArray())
