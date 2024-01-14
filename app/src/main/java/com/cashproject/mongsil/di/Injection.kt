@@ -23,7 +23,6 @@ import com.cashproject.mongsil.data.db.dao.DiaryDao
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
 import com.cashproject.mongsil.data.service.BookmarkService
 import com.cashproject.mongsil.data.service.DiaryService
-import com.cashproject.mongsil.data.service.EmoticonService
 import com.cashproject.mongsil.data.service.PosterService
 import com.cashproject.mongsil.repository.BookmarkRepository
 import com.cashproject.mongsil.repository.PosterRepository
@@ -48,9 +47,6 @@ object Injection {
 
     /** remote */
     private fun providePosterService(): PosterService = PosterService
-
-    private fun provideEmoticon(): EmoticonService = EmoticonService
-
 
     private fun provideFirestoreDataSource(): FireStoreDataSource {
         return FireStoreDataSource()
