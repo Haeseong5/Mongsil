@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.data.service
 
+import com.cashproject.mongsil.data.api.ApiProvider
 import com.cashproject.mongsil.data.api.EmoticonApi
 import com.cashproject.mongsil.data.api.dto.EmoticonResponse
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -7,8 +8,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 object EmoticonService : EmoticonApi {
     @OptIn(ExperimentalSerializationApi::class)
     override suspend fun getEmoticons(): List<EmoticonResponse> {
-        return createMockEmoticons()
-//        return ApiProvider.of(EmoticonApi::class).getEmoticons()
+        return ApiProvider.of(EmoticonApi::class).getEmoticons()
     }
 
     private fun createMockEmoticons(): List<EmoticonResponse> {
