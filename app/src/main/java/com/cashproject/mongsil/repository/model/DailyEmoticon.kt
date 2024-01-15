@@ -11,7 +11,7 @@ data class DailyEmoticon(
 fun List<CommentEntity>.toDailyEmoticons(): List<DailyEmoticon> {
     return map {
         DailyEmoticon(
-            emoticonId = it.id,
+            emoticonId = it.emotion,
             date = it.date
         )
     }
