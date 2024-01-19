@@ -26,11 +26,9 @@ fun CalendarScreen(
     uiState: CalendarUiState,
     onStartDiary: (LocalDate, Poster?) -> Unit,
     visibleCalendarScreenType: CalendarScreenType,
-    selectedLastPosterIndex: Int,
-    setSelectedLastPosterIndex: (Int) -> Unit,
     onClickFloating: (CalendarScreenType) -> Unit = {},
 ) {
-    val listState = rememberLazyListState(selectedLastPosterIndex)
+    val listState = rememberLazyListState()
 
     Box {
         when (visibleCalendarScreenType) {
@@ -47,7 +45,6 @@ fun CalendarScreen(
                 CalendarListScreen(
                     listState = listState,
                     onClick = { date, poster, index ->
-                        setSelectedLastPosterIndex.invoke(index)
                         onStartDiary.invoke(date, poster)
                     })
             }

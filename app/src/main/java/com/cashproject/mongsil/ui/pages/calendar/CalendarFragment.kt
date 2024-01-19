@@ -43,13 +43,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                     uiState = uiState.value,
                     onStartDiary = ::goToDiaryScreen,
                     visibleCalendarScreenType = currentVisibleCalendarScreenType,
-                    selectedLastPosterIndex = mainViewModel.selectedLastPosterIndex,
-                    setSelectedLastPosterIndex = {
-                        mainViewModel.selectedLastPosterIndex = it
-                    },
-                    onClickFloating = {
-                        mainViewModel.toggleCalendarScreenType(it)
-                    }
+                    onClickFloating = mainViewModel::toggleCalendarScreenType
                 )
             }
         }
