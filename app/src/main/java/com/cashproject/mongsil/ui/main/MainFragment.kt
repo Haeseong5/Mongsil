@@ -15,10 +15,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
 import com.cashproject.mongsil.databinding.FragmentMainBinding
+import com.cashproject.mongsil.extension.Direction
+import com.cashproject.mongsil.extension.dpToPx
 import com.cashproject.mongsil.extension.handleError
+import com.cashproject.mongsil.extension.startFakeDrag
 import com.cashproject.mongsil.extension.toDate
+import com.cashproject.mongsil.util.PreferencesManager
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -35,8 +40,20 @@ class MainFragment : SuperFragment() {
     private lateinit var callback: OnBackPressedCallback
     private lateinit var nativeTedAdmobDialog: TedAdmobDialog
 
+    private var firstViewCreated: Boolean = true
+
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
+
+    private val mainPagerAdapter by lazy {
+        MainPagerAdapter(
+            fa = childFragmentManager,
+            lifecycle = lifecycle,
+            todayPoster = mainViewModel.getRandomSaying(
+                date = LocalDate.now().toDate(),
+            )
+        )
+    }
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -86,20 +103,42 @@ class MainFragment : SuperFragment() {
                 }
             }
         }
+
+        observePagerTutorialAnimEvent()
+    }
+
+    private fun observePagerTutorialAnimEvent() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.showPagerTutorialAnim.collect {
+                startPagerTutorialAnim()
+            }
+        }
+    }
+
+    private suspend fun startPagerTutorialAnim() {
+        if (PreferencesManager.isTutorialAnimationViewed && firstViewCreated) {
+            delay(500)
+            binding.viewPager.startFakeDrag(
+                duration = 400L,
+                direction = Direction.START,
+                pxToMove = 50.dpToPx(),
+            )
+            delay(1000)
+            binding.viewPager.startFakeDrag(
+                duration = 400L,
+                direction = Direction.END,
+                pxToMove = 50.dpToPx(),
+            )
+            PreferencesManager.isTutorialAnimationViewed = true
+        }
     }
 
     private fun initPager() {
         binding.viewPager.apply {
-            offscreenPageLimit = 3
-            adapter = MainPagerAdapter(
-                fa = requireActivity().supportFragmentManager,
-                lifecycle = lifecycle,
-                todayPoster = mainViewModel.getRandomSaying(
-                    date = LocalDate.now().toDate(),
-                )
-            )
+            adapter = mainPagerAdapter
             registerOnPageChangeCallback(onPageChangeCallback)
             setCurrentItem(mainViewModel.currentPage.value, false)
+            binding.viewPager.offscreenPageLimit = 3
         }
     }
 
@@ -151,6 +190,7 @@ class MainFragment : SuperFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        firstViewCreated = false
         binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
         binding.viewPager.adapter = null
         _binding = null

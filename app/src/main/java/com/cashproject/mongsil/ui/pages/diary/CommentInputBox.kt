@@ -72,7 +72,7 @@ fun CommentInputBox(
     ) {
         AsyncImage(
             modifier = Modifier
-                .size(60.dp)
+                .size(40.dp)
                 .noRippleClickable {
                     onClickEmoticon.invoke()
                 },

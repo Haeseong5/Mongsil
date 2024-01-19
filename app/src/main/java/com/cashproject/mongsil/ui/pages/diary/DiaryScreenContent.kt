@@ -117,6 +117,7 @@ fun DiaryScreenContent(
                 .data(uiState.poster.image)
                 .build(),
             onSuccess = {
+                onUiEvent.invoke(DiaryUiEvent.LoadedPoster)
                 posterBitmap = it.result.drawable.toBitmapOrNull()
             },
             contentDescription = "명언 이미지",

@@ -26,7 +26,7 @@ import java.util.Date
 class DiaryViewModel(
     private val poster: Poster,
     private val date: Date,
-    private val isPagerItem: Boolean,
+    val isPagerItem: Boolean,
     private val diaryRepository: DiaryRepository = DiaryRepositoryImpl(),
     private val posterRepository: PosterRepository = PosterRepository(),
     private val emoticonRepository: EmoticonRepository = EmoticonRepositoryImpl()
@@ -149,7 +149,7 @@ class DiaryViewModel(
                     key = "comment",
                     value = mapOf(
                         "length" to content.length,
-                        "emoticonId" to emoticonId, //TODO 타입으로 수정
+                        "emoticonId" to emoticonId,
                     ),
                 )
             } catch (e: Exception) {

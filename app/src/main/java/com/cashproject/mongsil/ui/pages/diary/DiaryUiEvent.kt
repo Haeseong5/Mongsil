@@ -18,4 +18,6 @@ sealed interface DiaryUiEvent {
     data class ShowMenuBottomSheetDialog(val poster: Poster) : DiaryUiEvent
 
     data object Finish : DiaryUiEvent
+
+    data object LoadedPoster : DiaryUiEvent
 }

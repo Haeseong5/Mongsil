@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.cashproject.mongsil.manager.showInterstitialAd
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.menu.MenuBottomSheetDialog
+import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.google.android.gms.ads.AdRequest
@@ -70,10 +72,13 @@ class DiaryFragment : Fragment() {
         )
     }
 
+    private val mainViewModel: MainViewModel by activityViewModels()
+
     private val uiEventHandler: DiaryUiEventHandler by lazy {
         DiaryUiEventHandler(
             viewModel = diaryViewModel,
             fragment = this,
+            mainViewModel = mainViewModel
         )
     }
 
@@ -96,7 +101,7 @@ class DiaryFragment : Fragment() {
                 MongsilTheme {
                     DiaryScreen(
                         diaryViewModel = diaryViewModel,
-                        onUiEvent = uiEventHandler::handleEvent
+                        onUiEvent = uiEventHandler::handleEvent,
                     )
                 }
             }

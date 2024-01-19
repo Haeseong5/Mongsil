@@ -46,4 +46,8 @@ object PreferencesManager {
         isEnabledPushNotification = !isEnabledPushNotification
         return isEnabledPushNotification
     }
+
+    var isTutorialAnimationViewed: Boolean
+        get() = prefs.getBoolean("isTutorialAnimationViewed", false)
+        set(value) = prefs.edit().putBoolean("isTutorialAnimationViewed", value).apply()
 }

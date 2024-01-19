@@ -31,12 +31,17 @@ class MainViewModel(
         MutableStateFlow(defaultCalendarScreenType)
     val visibleCalendarScreenType: StateFlow<CalendarScreenType> = _visibleCalendarScreenType
 
-    // 캘린더 리스트 화면에서 마지막으로 선택한 포스터의 index
-    var selectedLastPosterIndex = 0
+    val showPagerTutorialAnim: MutableSharedFlow<Unit> = MutableSharedFlow()
 
     init {
         initPushNotificationSettings()
         loadAllPosters()
+    }
+
+    fun emitPagerTutorialAnimEvent() {
+        viewModelScope.launch {
+            showPagerTutorialAnim.emit(Unit)
+        }
     }
 
     private fun loadAllPosters() {
