@@ -116,7 +116,7 @@ class MainFragment : SuperFragment() {
     }
 
     private suspend fun startPagerTutorialAnim() {
-        if (PreferencesManager.isTutorialAnimationViewed && firstViewCreated) {
+        if (!PreferencesManager.isTutorialAnimationViewed && firstViewCreated) {
             delay(500)
             binding.viewPager.startFakeDrag(
                 duration = 400L,
