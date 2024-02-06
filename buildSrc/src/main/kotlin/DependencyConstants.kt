@@ -42,7 +42,7 @@ const val composeMaterial = "androidx.compose.material:material"
 const val composeMaterial3 = "androidx.compose.material3:material3"
 const val composeMaterialIconsCore = "androidx.compose.material:material-icons-core"
 const val composeMaterialIconsExtended = "androidx.compose.material:material-icons-extended"
-const val activityCompose = "androidx.activity:activity-compose:1.7.2"
+const val activityCompose = "androidx.activity:activity-compose:1.8.0"
 const val composePaging = "androidx.paging:paging-compose:1.0.0-alpha14"
 
 //room
