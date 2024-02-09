@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.navigation.fragment.findNavController
-import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
 
 class DiaryUiEventHandler(
@@ -12,16 +11,19 @@ class DiaryUiEventHandler(
     fun handleEvent(event: DiaryUiEvent) {
         when (event) {
             DiaryUiEvent.ClickEmoticon -> {
-                EmoticonDialog(viewModel.uiState.value.emoticons).apply {
-                    setEmoticonBtnClickListener {
-                        viewModel.updateUiState {
-                            copy(
-                                emoticonId = it.id
-                            )
-                        }
-                        dismiss()
-                    }
-                }.show(fragment.childFragmentManager, null)
+
+                viewModel.updateUiState { copy(isVisibleEmoticonSelectionBottomSheet = true) }
+
+//                EmoticonDialog(viewModel.uiState.value.emoticons).apply {
+//                    setEmoticonBtnClickListener {
+//                        viewModel.updateUiState {
+//                            copy(
+//                                emoticonId = it.id
+//                            )
+//                        }
+//                        dismiss()
+//                    }
+//                }.show(fragment.childFragmentManager, null)
             }
 
             is DiaryUiEvent.SubmitComment -> {

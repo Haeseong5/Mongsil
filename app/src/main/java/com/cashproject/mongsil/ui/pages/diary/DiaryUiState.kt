@@ -13,5 +13,6 @@ data class DiaryUiState(
     val inputText: String = "",
     val isPagerItem: Boolean = false,
     val dailyEmoticon: DailyEmoticon = DailyEmoticon(),
-    val emoticons: List<Emoticon> = emptyList()
+    val emoticons: List<Emoticon> = emptyList(),
+    val isVisibleEmoticonSelectionBottomSheet: Boolean = false,
 )
