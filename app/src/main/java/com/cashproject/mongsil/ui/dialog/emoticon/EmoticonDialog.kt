@@ -11,6 +11,8 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.DialogEmoticonBinding
 import com.cashproject.mongsil.ui.model.Emoticon
 
+
+@Deprecated("Use EmoticonSelectionBottomSheetDialogFragment")
 class EmoticonDialog(
     private val items: List<Emoticon>
 ) : DialogFragment() {

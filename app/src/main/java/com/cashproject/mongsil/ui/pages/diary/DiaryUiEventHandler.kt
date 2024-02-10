@@ -2,6 +2,7 @@ package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.pages.diary.dialog.EmoticonSelectionBottomSheetDialogFragment
 
 class DiaryUiEventHandler(
     private val viewModel: DiaryViewModel,
@@ -11,19 +12,16 @@ class DiaryUiEventHandler(
     fun handleEvent(event: DiaryUiEvent) {
         when (event) {
             DiaryUiEvent.ClickEmoticon -> {
-
-                viewModel.updateUiState { copy(isVisibleEmoticonSelectionBottomSheet = true) }
-
-//                EmoticonDialog(viewModel.uiState.value.emoticons).apply {
-//                    setEmoticonBtnClickListener {
-//                        viewModel.updateUiState {
-//                            copy(
-//                                emoticonId = it.id
-//                            )
-//                        }
-//                        dismiss()
-//                    }
-//                }.show(fragment.childFragmentManager, null)
+                EmoticonSelectionBottomSheetDialogFragment(
+                    emoticons = viewModel.uiState.value.emoticons,
+                    onClickItem = {
+                        viewModel.updateUiState {
+                            copy(
+                                emoticonId = it.id
+                            )
+                        }
+                    }
+                ).show(fragment.childFragmentManager, null)
             }
 
             is DiaryUiEvent.SubmitComment -> {

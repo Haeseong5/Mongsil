@@ -14,5 +14,4 @@ data class DiaryUiState(
     val isPagerItem: Boolean = false,
     val dailyEmoticon: DailyEmoticon = DailyEmoticon(),
     val emoticons: List<Emoticon> = emptyList(),
-    val isVisibleEmoticonSelectionBottomSheet: Boolean = false,
 )
