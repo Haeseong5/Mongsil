@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.theme
 
 import android.os.Build
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
@@ -66,7 +67,7 @@ fun MongsilTheme(
         content = {
             Box(
                 modifier = Modifier
-//                    .background(primaryBackgroundColor)
+                    .background(primaryBackgroundColor)
             ) {
                 content.invoke()
             }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.cashproject.mongsil.R
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.VerticalSpacer
 import com.cashproject.mongsil.ui.model.Emoticon
@@ -61,7 +64,7 @@ fun EmoticonSelectionBottomSheetContent(
                 vertical = 12.dp,
                 horizontal = if (isSmallDevice) 6.dp else 16.dp
             ),
-            text = "오늘 기분은 어때요?",
+            text = stringResource(id = R.string.emoticon_bottom_sheet_dialog_fragment_title),
             style = primaryTextStyle,
             color = primaryTextColor,
             fontSize = 26.sp
@@ -69,7 +72,8 @@ fun EmoticonSelectionBottomSheetContent(
 
         LazyVerticalGrid(
             state = listState,
-            modifier = Modifier.padding(if (isSmallDevice) 6.dp else 16.dp),
+            contentPadding = PaddingValues(vertical = if (isSmallDevice) 6.dp else 16.dp),
+            modifier = Modifier.padding(horizontal = if (isSmallDevice) 6.dp else 16.dp),
             columns = GridCells.Adaptive(90.dp),
             verticalArrangement = Arrangement.spacedBy(if (isSmallDevice) 6.dp else 16.dp),
             horizontalArrangement = Arrangement.spacedBy(if (isSmallDevice) 6.dp else 16.dp),
@@ -81,7 +85,6 @@ fun EmoticonSelectionBottomSheetContent(
                     }
                 ) {
                     EmoticonItem(
-//                    modifier = Modifier.animateItemPlacement(),
                         emoticon = it,
                         onClick = { onClick.invoke(it) },
                     )

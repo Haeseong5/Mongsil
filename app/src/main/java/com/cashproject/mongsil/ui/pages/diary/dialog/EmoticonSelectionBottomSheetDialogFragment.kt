@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.ui.model.Emoticon
-import com.cashproject.mongsil.ui.theme.MongsilTheme
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class EmoticonSelectionBottomSheetDialogFragment(
@@ -20,12 +20,20 @@ class EmoticonSelectionBottomSheetDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            window?.setBackgroundDrawableResource(R.color.transparent)
             setOnShowListener {
                 val bottomSheet =
                     findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
                 bottomSheet.setBackgroundResource(android.R.color.transparent)
             }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dialog?.let {
+            val bottomSheet = it as BottomSheetDialog
+            bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheet.behavior.skipCollapsed = true
         }
     }
 
@@ -37,15 +45,13 @@ class EmoticonSelectionBottomSheetDialogFragment(
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MongsilTheme {
-                    EmoticonSelectionBottomSheetContent(
-                        emoticons = emoticons,
-                        onClick = {
-                            onClickItem.invoke(it)
-                            dismiss()
-                        },
-                    )
-                }
+                EmoticonSelectionBottomSheetContent(
+                    emoticons = emoticons,
+                    onClick = {
+                        onClickItem.invoke(it)
+                        dismiss()
+                    },
+                )
             }
         }
     }
