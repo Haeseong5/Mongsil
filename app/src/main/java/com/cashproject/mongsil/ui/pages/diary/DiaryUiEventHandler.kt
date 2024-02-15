@@ -1,8 +1,9 @@
 package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.navigation.fragment.findNavController
-import com.cashproject.mongsil.ui.dialog.emoticon.EmoticonDialog
+import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.pages.diary.dialog.EmoticonSelectionBottomSheetDialogFragment
 
 class DiaryUiEventHandler(
     private val viewModel: DiaryViewModel,
@@ -12,16 +13,16 @@ class DiaryUiEventHandler(
     fun handleEvent(event: DiaryUiEvent) {
         when (event) {
             DiaryUiEvent.ClickEmoticon -> {
-                EmoticonDialog(viewModel.uiState.value.emoticons).apply {
-                    setEmoticonBtnClickListener {
+                EmoticonSelectionBottomSheetDialogFragment(
+                    emoticons = viewModel.uiState.value.emoticons,
+                    onClickItem = {
                         viewModel.updateUiState {
                             copy(
                                 emoticonId = it.id
                             )
                         }
-                        dismiss()
                     }
-                }.show(fragment.childFragmentManager, null)
+                ).show(fragment.childFragmentManager, null)
             }
 
             is DiaryUiEvent.SubmitComment -> {
@@ -50,6 +51,17 @@ class DiaryUiEventHandler(
 
             DiaryUiEvent.LoadedPoster -> {
                 if (viewModel.isPagerItem) mainViewModel.emitPagerTutorialAnimEvent()
+            }
+
+            DiaryUiEvent.ClickTopLayoutEmoticon -> {
+                EmoticonSelectionBottomSheetDialogFragment(
+                    emoticons = viewModel.uiState.value.emoticons,
+                    onClickItem = {
+//                        viewModel.updateUiState {  }
+                        fragment.requireContext().showToast("ClickTopLayoutEmoticon")
+                    }
+                ).show(fragment.childFragmentManager, null)
+
             }
         }
     }
