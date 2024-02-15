@@ -20,4 +20,6 @@ sealed interface DiaryUiEvent {
     data object Finish : DiaryUiEvent
 
     data object LoadedPoster : DiaryUiEvent
+
+    data object ClickTopLayoutEmoticon : DiaryUiEvent
 }

@@ -71,7 +71,10 @@ fun DiaryTopLayout(
         Row(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 6.dp),
+                .padding(top = 6.dp)
+                .noRippleClickable {
+                    onUiEvent.invoke(DiaryUiEvent.ClickTopLayoutEmoticon)
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             HorizontalSpacer(dp = 32.dp)

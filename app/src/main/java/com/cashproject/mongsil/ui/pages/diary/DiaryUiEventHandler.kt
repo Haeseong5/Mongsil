@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.diary
 
 import androidx.navigation.fragment.findNavController
+import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.ui.main.MainViewModel
 import com.cashproject.mongsil.ui.pages.diary.dialog.EmoticonSelectionBottomSheetDialogFragment
 
@@ -50,6 +51,17 @@ class DiaryUiEventHandler(
 
             DiaryUiEvent.LoadedPoster -> {
                 if (viewModel.isPagerItem) mainViewModel.emitPagerTutorialAnimEvent()
+            }
+
+            DiaryUiEvent.ClickTopLayoutEmoticon -> {
+                EmoticonSelectionBottomSheetDialogFragment(
+                    emoticons = viewModel.uiState.value.emoticons,
+                    onClickItem = {
+//                        viewModel.updateUiState {  }
+                        fragment.requireContext().showToast("ClickTopLayoutEmoticon")
+                    }
+                ).show(fragment.childFragmentManager, null)
+
             }
         }
     }

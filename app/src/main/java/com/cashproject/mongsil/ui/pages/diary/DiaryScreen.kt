@@ -3,6 +3,7 @@ package com.cashproject.mongsil.ui.pages.diary
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
@@ -17,5 +18,13 @@ fun DiaryScreen(
         uiState = uiState,
         sideEffect = sideEffect,
         onUiEvent = onUiEvent
+    )
+}
+
+@Preview
+@Composable
+private fun PreviewDiaryScreen() {
+    DiaryScreenContent(
+        uiState = DiaryUiState(),
     )
 }

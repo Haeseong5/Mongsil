@@ -16,21 +16,16 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.extension.isSmallWidthDevice
 import com.cashproject.mongsil.extension.noRippleClickable
 import com.cashproject.mongsil.ui.component.VerticalSpacer
 import com.cashproject.mongsil.ui.model.Emoticon
@@ -45,13 +40,7 @@ fun EmoticonSelectionBottomSheetContent(
     listState: LazyGridState = rememberLazyGridState(),
     onClick: (Emoticon) -> Unit = {}
 ) {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
-    var isSmallDevice by remember { mutableStateOf(false) }
-
-    LaunchedEffect(key1 = Unit, block = {
-        isSmallDevice = screenWidth <= 360
-    })
+    val isSmallDevice = isSmallWidthDevice()
 
     Column(
         modifier = Modifier
