@@ -41,8 +41,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.drawable.toBitmapOrNull
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.cashproject.mongsil.common.utils.printErrorLog
 import com.cashproject.mongsil.extension.handleError
-import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.shareImage
 import com.cashproject.mongsil.extension.showToast

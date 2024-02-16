@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.ui.pages.diary
 
-import com.cashproject.mongsil.data.db.entity.CommentEntity
+import com.cashproject.mongsil.database.model.CommentEntity
 import java.util.Date
 
 data class Comment(

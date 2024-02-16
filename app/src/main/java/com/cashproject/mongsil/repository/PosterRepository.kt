@@ -1,7 +1,8 @@
 package com.cashproject.mongsil.repository
 
-import com.cashproject.mongsil.data.service.PosterService
-import com.cashproject.mongsil.extension.printErrorLog
+import com.cashproject.mongsil.common.utils.printErrorLog
+import com.cashproject.mongsil.network.PosterDataSource
+import com.cashproject.mongsil.network.retrofit.PosterApi
 import com.cashproject.mongsil.repository.mapper.toPosters
 import com.cashproject.mongsil.repository.model.Poster
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,7 @@ import java.util.Date
 import kotlin.random.Random
 
 class PosterRepository(
-    private val posterService: PosterService = PosterService
+    private val posterService: PosterApi = PosterDataSource
 ) {
     companion object {
         private val posters: MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())

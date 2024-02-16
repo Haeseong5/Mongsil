@@ -2,8 +2,8 @@ package com.cashproject.mongsil.ui.pages.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cashproject.mongsil.data.api.PosterApi
-import com.cashproject.mongsil.data.service.PosterService
+import com.cashproject.mongsil.network.PosterDataSource
+import com.cashproject.mongsil.network.retrofit.PosterApi
 import com.cashproject.mongsil.repository.mapper.toPosters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import java.util.Calendar
 
 
 class CalendarListViewModel(
-    private val posterApi: PosterApi = PosterService,
+    private val posterApi: PosterApi = PosterDataSource,
 ) : ViewModel() {
 
     val posters: MutableStateFlow<List<SquarePosterUiModel>> = MutableStateFlow(emptyList())

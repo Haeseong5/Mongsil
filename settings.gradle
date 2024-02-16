@@ -1,3 +1,7 @@
 include ':app'
 rootProject.name = "Mongsil"
 include ':tedadmobdialog'
+include ':core:network'
+include ':core:database'
+include ':feature:backup'
+include ':core:common'

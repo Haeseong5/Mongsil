@@ -3,6 +3,7 @@ package com.cashproject.mongsil.extension
 import android.content.Context
 import android.widget.Toast
 import com.cashproject.mongsil.R
+import com.cashproject.mongsil.common.utils.printErrorLog
 
 fun Throwable.handleError(context: Context) {
     Toast.makeText(

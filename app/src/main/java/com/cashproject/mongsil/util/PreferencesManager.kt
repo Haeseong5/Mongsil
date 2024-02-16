@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.util
 
 import android.util.Log
-import com.cashproject.mongsil.base.App.Companion.prefs
+import com.cashproject.mongsil.common.App.Companion.prefs
 
 const val FILENAME = "prefs"
 private const val PREF_HOUR = "hour"

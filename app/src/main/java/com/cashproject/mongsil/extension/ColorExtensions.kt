@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.extension
 
 import androidx.compose.ui.graphics.Color
+import com.cashproject.mongsil.common.utils.printErrorLog
 
 fun String.toColor(): Color {
     return try {

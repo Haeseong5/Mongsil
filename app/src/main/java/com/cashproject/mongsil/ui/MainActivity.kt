@@ -5,10 +5,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
-import com.cashproject.mongsil.data.firebase.RemoteConfigManager
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.extension.getNavigationBarHeight
+import com.cashproject.mongsil.network.firebase.remoteconfig.RemoteConfigManager
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 

@@ -1,7 +1,8 @@
 package com.cashproject.mongsil.repository.mapper
 
-import com.cashproject.mongsil.data.api.dto.EmoticonResponse
+
 import com.cashproject.mongsil.extension.toColor
+import com.cashproject.mongsil.network.model.EmoticonResponse
 import com.cashproject.mongsil.ui.model.Emoticon
 
 fun List<EmoticonResponse>.toEmoticon(): List<Emoticon> {

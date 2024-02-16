@@ -3,9 +3,9 @@ package com.cashproject.mongsil.ui.pages.diary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.common.utils.log
 import com.cashproject.mongsil.data.repository.DiaryRepository
 import com.cashproject.mongsil.data.repository.EmoticonRepository
-import com.cashproject.mongsil.extension.log
 import com.cashproject.mongsil.logger.Logger
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.EmoticonRepositoryImpl

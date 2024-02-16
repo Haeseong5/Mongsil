@@ -1,10 +1,12 @@
 package com.cashproject.mongsil.ui.pages.setting.backup
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.cashproject.mongsil.database.utils.DatabaseUtils
 import com.cashproject.mongsil.databinding.FragmentBackupBinding
-import com.cashproject.mongsil.data.db.utils.DatabaseUtils
 
 
 class BackupFragment : Fragment() {

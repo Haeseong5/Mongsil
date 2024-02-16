@@ -18,16 +18,13 @@ package com.cashproject.mongsil.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.cashproject.mongsil.data.service.DiaryService
 import com.cashproject.mongsil.ui.main.MainViewModel
 
 /**
  * Factory for ViewModels
  */
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(
-    private val diaryService: DiaryService,
-) : ViewModelProvider.Factory {
+class ViewModelFactory() : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {

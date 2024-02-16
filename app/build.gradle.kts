@@ -10,14 +10,14 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = sdkCompileVersion
 
     defaultConfig {
         applicationId = "com.cashproject.mongsil"
-        minSdk = 26
-        targetSdk = 34
+        minSdk = sdkMinVersion
+        targetSdk = sdkTargetVersion
         versionCode = 20
-        versionName = "1.1.6"
+        versionName = "1.1.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
@@ -71,30 +71,32 @@ android {
 dependencies {
     //module
     implementation(project(":tedadmobdialog"))
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":core:common"))
 
     //kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     //androidx
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(Dependency.KTX.CORE)
     implementation(androidMaterial)
     implementation("androidx.annotation:annotation:1.7.0")
 
     //lifeCycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation(Dependency.AndroidX.LIFECYCLE.RUNTIME)
+    implementation(Dependency.AndroidX.LIFECYCLE.LIVEDATA)
+    implementation(Dependency.AndroidX.LIFECYCLE.VIEWMODEL)
+    implementation(Dependency.AndroidX.LIFECYCLE.VIEWMODEL_COMPOSE)
 
     //Room
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    implementation("androidx.room:room-rxjava2:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("com.github.salehyarahmadi:RoomDatabaseBackupAndRestore:v1.0.1")
-
-    androidTestImplementation("androidx.room:room-testing:$room_version")
+    implementation(Dependency.AndroidX.ROOM.RUNTIME)
+    implementation(Dependency.AndroidX.ROOM.KTX)
+    implementation(Dependency.AndroidX.ROOM.RXJAVA2)
+    kapt(Dependency.AndroidX.ROOM.COMPILER)
+    implementation(Dependency.AndroidX.ROOM.BACKUP_AND_RESTORE)
+    androidTestImplementation(Dependency.AndroidX.ROOM.TESTING)
 
     //Compose
     implementation(platform(compose_bom))

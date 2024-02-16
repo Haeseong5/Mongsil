@@ -5,10 +5,39 @@ const val sdkMinVersion = 24
 //kotlin
 const val kotlinVersion = "1.9.10"
 
+object Dependency {
+    object KTX {
+        const val CORE = "androidx.core:core-ktx:1.12.0"
+    }
+
+    object AndroidX {
+        object LIFECYCLE {
+            const val lifecycle_version = "2.6.2"
+            const val RUNTIME = "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}"
+            const val LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_version}"
+            const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}"
+            const val VIEWMODEL_COMPOSE =
+                "androidx.lifecycle:lifecycle-viewmodel-compose:${lifecycle_version}"
+        }
+
+        object ROOM {
+            //room
+            const val room_version = "2.6.1"
+            const val RUNTIME = "androidx.room:room-runtime:$room_version"
+            const val KTX = "androidx.room:room-ktx:$room_version"
+            const val RXJAVA2 = "androidx.room:room-rxjava2:$room_version"
+            const val COMPILER = "androidx.room:room-compiler:$room_version"
+            const val BACKUP_AND_RESTORE = "com.github.salehyarahmadi:RoomDatabaseBackupAndRestore:v1.0.1"
+            const val TESTING = "androidx.room:room-testing:$room_version"
+        }
+    }
+}
+
+
 const val androidMaterial = "com.google.android.material:material:1.7.0"
 
 //lifecycle
-const val lifecycle_version = "2.6.2"
+
 
 //navigation
 const val navigationVersion = "2.5.3"
@@ -45,9 +74,6 @@ const val composeMaterialIconsExtended = "androidx.compose.material:material-ico
 const val activityCompose = "androidx.activity:activity-compose:1.8.0"
 const val composePaging = "androidx.paging:paging-compose:1.0.0-alpha14"
 
-//room
-const val room_version = "2.6.1"
-
 //Ads
 const val googleAdVersion = "21.4.0"
 
@@ -57,7 +83,8 @@ const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$corou
 const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 const val coroutinesRx2 = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$coroutines_version"
 const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-const val coroutinePlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
+const val coroutinePlayServices =
+    "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
 
 //rx
 const val rxjava2 = "io.reactivex.rxjava2:rxjava:2.2.19"

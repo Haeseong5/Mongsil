@@ -2,10 +2,10 @@ package com.cashproject.mongsil.ui.pages.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.common.utils.log
+import com.cashproject.mongsil.common.utils.printErrorLog
 import com.cashproject.mongsil.data.repository.DiaryRepository
 import com.cashproject.mongsil.data.repository.EmoticonRepository
-import com.cashproject.mongsil.extension.log
-import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.repository.DiaryRepositoryImpl
 import com.cashproject.mongsil.repository.EmoticonRepositoryImpl
 import com.cashproject.mongsil.repository.PosterRepository

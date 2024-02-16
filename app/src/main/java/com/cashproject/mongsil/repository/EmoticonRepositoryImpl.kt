@@ -1,14 +1,14 @@
 package com.cashproject.mongsil.repository
 
 import com.cashproject.mongsil.data.repository.EmoticonRepository
-import com.cashproject.mongsil.data.service.EmoticonService
+import com.cashproject.mongsil.network.EmoticonDataSource
 import com.cashproject.mongsil.repository.mapper.toEmoticon
 import com.cashproject.mongsil.ui.model.Emoticon
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class EmoticonRepositoryImpl(
-    private val emoticonService: EmoticonService = EmoticonService
+    private val emoticonService: EmoticonDataSource = EmoticonDataSource
 ) : EmoticonRepository {
 
     companion object {

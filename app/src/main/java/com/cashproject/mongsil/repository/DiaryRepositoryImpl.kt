@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.repository
 
 import com.cashproject.mongsil.data.repository.DiaryRepository
-import com.cashproject.mongsil.data.service.DiaryService
+import com.cashproject.mongsil.database.DiaryDataSource
 import com.cashproject.mongsil.extension.excludeTimeFromDate
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.toDailyEmoticons
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 
 class DiaryRepositoryImpl(
-    private val diaryService: DiaryService = DiaryService()
+    private val diaryService: DiaryDataSource = DiaryDataSource()
 ): DiaryRepository {
     override fun getAllComments(): Flow<List<Comment>> {
         return diaryService.getAllComments().map { it.toDomain() }

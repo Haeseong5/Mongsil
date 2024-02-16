@@ -17,13 +17,12 @@
 package com.cashproject.mongsil.di
 
 import android.content.Context
-import com.cashproject.mongsil.data.db.AppDatabase
-import com.cashproject.mongsil.data.db.dao.BookmarkDao
-import com.cashproject.mongsil.data.db.dao.DiaryDao
 import com.cashproject.mongsil.data.firebase.FireStoreDataSource
-import com.cashproject.mongsil.data.service.BookmarkService
-import com.cashproject.mongsil.data.service.DiaryService
-import com.cashproject.mongsil.data.service.PosterService
+import com.cashproject.mongsil.database.AppDatabase
+import com.cashproject.mongsil.database.AppDatabase.Companion.getInstance
+import com.cashproject.mongsil.database.BookmarkDataSource
+import com.cashproject.mongsil.database.dao.BookmarkDao
+import com.cashproject.mongsil.database.dao.DiaryDao
 import com.cashproject.mongsil.repository.BookmarkRepository
 import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
@@ -36,7 +35,7 @@ object Injection {
 
     /** local */
     private fun provideBookmarkDao(context: Context): BookmarkDao {
-        val database = AppDatabase.getInstance(context)
+        val database = getInstance(context)
         return database.bookmarkDao()
     }
 
@@ -45,20 +44,12 @@ object Injection {
         return database.diaryDao()
     }
 
-    /** remote */
-    private fun providePosterService(): PosterService = PosterService
-
     private fun provideFirestoreDataSource(): FireStoreDataSource {
         return FireStoreDataSource()
     }
 
-    /** repository */
-    fun provideMemoryCacheRepository(posterService: PosterService): PosterRepository {
-        return PosterRepository(posterService)
-    }
-
     private fun provideBookmarkRepository(
-        bookmarkService: BookmarkService,
+        bookmarkService: BookmarkDataSource,
         posterRepository: PosterRepository,
     ): BookmarkRepository {
         return BookmarkRepository(
@@ -69,9 +60,6 @@ object Injection {
 
     /** viewModel */
     fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val commentDataSource = provideDiaryDao(context)
-
-        val diaryService = DiaryService(commentDataSource)
-        return ViewModelFactory(diaryService)
+        return ViewModelFactory()
     }
 }

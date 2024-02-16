@@ -1,8 +1,7 @@
 package com.cashproject.mongsil.repository.model
 
 import android.os.Parcelable
-import com.cashproject.mongsil.data.api.dto.PosterResponse
-import com.cashproject.mongsil.data.db.entity.SayingEntity
+import com.cashproject.mongsil.database.model.SayingEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -16,15 +15,6 @@ fun List<Poster>.findPosition(id: String): Int {
     return indexOfFirst { it.id == id }.coerceIn(0, size)
 }
 
-fun List<PosterResponse>.toDomain(): List<Poster> {
-    return this.map {
-        Poster(
-            id = it.id,
-            image = it.image,
-            squareImage = it.squareImage
-        )
-    }
-}
 
 @Deprecated("toDomain() 함수로 변경해야 함.")
 fun List<Poster>.toLegacy(): List<SayingEntity> {
