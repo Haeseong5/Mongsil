@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.os.bundleOf
 
-fun String.log() {
-    Log.d("fastLog", this)
+fun String.log(prefix: String = "") {
+    Log.d("fastLog", "[$prefix] $this")
 }
 
 fun String.errorLog() {

@@ -12,6 +12,7 @@ import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.model.defaultEmoticon
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,6 +51,25 @@ class DiaryViewModel(
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }
             }
+        }
+    }
+
+    val test = Channel<String>()
+
+    init {
+        "init@@".log()
+        emitTest("@@ 11111")
+        emitTest("@@ 333")
+
+        viewModelScope.launch {
+            emitTest("@@ 2222")
+        }
+    }
+
+    fun emitTest(t: String) {
+        "@@ emtTest $t".log()
+        viewModelScope.launch {
+            test.send(t)
         }
     }
 

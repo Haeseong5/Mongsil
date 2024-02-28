@@ -11,6 +11,10 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
@@ -26,9 +30,32 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
+
+fun <T> Flow<T>.collectWithViewLifecycle(fragment: Fragment, block: suspend (T) -> Unit) =
+    fragment.launchAndRepeatWithViewLifecycle { collect { block.invoke(it) } }
+
+inline fun LifecycleOwner.launchAndRepeatWithViewLifecycle(
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    crossinline block: suspend CoroutineScope.() -> Unit
+) {
+    lifecycleScope.launch {
+        lifecycle.repeatOnLifecycle(minActiveState) {
+            block()
+        }
+    }
+}
+
+fun <T> Flow<T>.collectWithViewLifecycle(
+    lifecycleOwner: LifecycleOwner,
+    block: suspend (T) -> Unit
+) = lifecycleOwner.launchAndRepeatWithViewLifecycle { collect { block.invoke(it) } }
 
 class DiaryFragment : Fragment() {
 
@@ -103,8 +130,13 @@ class DiaryFragment : Fragment() {
         }
     }
 
+    private var isFirstCreated: Boolean = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        diaryViewModel.test.consumeAsFlow().collectWithViewLifecycle(viewLifecycleOwner) {
+            Log.d("TestEvent@@", it)
+        }
         Log.d("DiaryFragment", argument.selectedDate.toTextFormat(DateFormat.YearMonthDayAndTime))
     }
 
@@ -156,6 +188,11 @@ class DiaryFragment : Fragment() {
                 }
             }
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isFirstCreated = false
     }
 }
 

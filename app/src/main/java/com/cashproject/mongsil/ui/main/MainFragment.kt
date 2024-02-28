@@ -38,6 +38,16 @@ class MainFragment : SuperFragment() {
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
 
+    val adapter by lazy {
+        MainPagerAdapter(
+            fa = requireActivity().supportFragmentManager,
+            lifecycle = lifecycle,
+            todayPoster = mainViewModel.getRandomSaying(
+                date = LocalDate.now().toDate(),
+            )
+        )
+    }
+
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
@@ -91,13 +101,7 @@ class MainFragment : SuperFragment() {
     private fun initPager() {
         binding.viewPager.apply {
             offscreenPageLimit = 3
-            adapter = MainPagerAdapter(
-                fa = requireActivity().supportFragmentManager,
-                lifecycle = lifecycle,
-                todayPoster = mainViewModel.getRandomSaying(
-                    date = LocalDate.now().toDate(),
-                )
-            )
+            adapter = this@MainFragment.adapter
             registerOnPageChangeCallback(onPageChangeCallback)
             setCurrentItem(mainViewModel.currentPage.value, false)
         }

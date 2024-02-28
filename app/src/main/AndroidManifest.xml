@@ -22,8 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mongsil">
+
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.test.pointer.PointerActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -32,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.main.IntroActivity" />
 
         <receiver
