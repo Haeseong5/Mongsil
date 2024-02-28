@@ -3,7 +3,7 @@ const val sdkTargetVersion = 33
 const val sdkMinVersion = 24
 
 //kotlin
-const val kotlinVersion = "1.9.10"
+const val kotlinVersion = "1.9.22"
 
 const val androidMaterial = "com.google.android.material:material:1.7.0"
 
@@ -26,8 +26,8 @@ const val hiltKapt = "com.google.dagger:hilt-android-compiler:$hilt_version"
 const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
 //compose
-const val compose_compiler_version = "1.5.3"
-const val compose_bom = "androidx.compose:compose-bom:2023.10.00"
+const val compose_compiler_version = "1.5.8"
+const val compose_bom = "androidx.compose:compose-bom:2024.01.00"
 const val composeRuntime = "androidx.compose.runtime:runtime"
 const val composeRuntimeLivedata = "androidx.compose.runtime:runtime-livedata"
 const val composeUi = "androidx.compose.ui:ui"
