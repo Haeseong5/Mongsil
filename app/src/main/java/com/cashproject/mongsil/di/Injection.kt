@@ -23,8 +23,8 @@ import com.cashproject.mongsil.database.AppDatabase.Companion.getInstance
 import com.cashproject.mongsil.database.BookmarkDataSource
 import com.cashproject.mongsil.database.dao.BookmarkDao
 import com.cashproject.mongsil.database.dao.DiaryDao
-import com.cashproject.mongsil.repository.BookmarkRepository
-import com.cashproject.mongsil.repository.PosterRepository
+import com.cashproject.mongsil.repository.repository.BookmarkRepository
+import com.cashproject.mongsil.repository.repository.PosterRepository
 import com.cashproject.mongsil.viewmodel.ViewModelFactory
 
 

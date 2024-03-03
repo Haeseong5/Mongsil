@@ -1,4 +1,5 @@
-package com.cashproject.mongsil.extension
+package com.cashproject.mongsil.common.extensions
+
 
 import androidx.compose.ui.graphics.Color
 import com.cashproject.mongsil.common.utils.printErrorLog

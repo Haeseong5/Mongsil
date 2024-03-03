@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.cashproject.mongsil.ui.pages.diary.model.DiaryUiState
 
 
 @Composable

@@ -4,14 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.common.utils.log
-import com.cashproject.mongsil.data.repository.DiaryRepository
-import com.cashproject.mongsil.data.repository.EmoticonRepository
 import com.cashproject.mongsil.logger.Logger
-import com.cashproject.mongsil.repository.DiaryRepositoryImpl
-import com.cashproject.mongsil.repository.EmoticonRepositoryImpl
-import com.cashproject.mongsil.repository.PosterRepository
 import com.cashproject.mongsil.repository.model.DailyEmoticon
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.repository.DiaryRepository
+import com.cashproject.mongsil.repository.repository.DiaryRepositoryImpl
+import com.cashproject.mongsil.repository.repository.EmoticonRepository
+import com.cashproject.mongsil.repository.repository.EmoticonRepositoryImpl
+import com.cashproject.mongsil.repository.repository.PosterRepository
+import com.cashproject.mongsil.ui.model.toEmoticon
+import com.cashproject.mongsil.ui.pages.diary.model.DiaryUiState
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.toComment
+import com.cashproject.mongsil.ui.pages.diary.model.toDomain
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -77,7 +81,7 @@ class DiaryViewModel(
         viewModelScope.launch {
             _uiState.emit(
                 uiState.value.copy(
-                    emoticons = emoticonRepository.getEmoticons()
+                    emoticons = emoticonRepository.getEmoticons().toEmoticon()
                 )
             )
         }
@@ -117,7 +121,7 @@ class DiaryViewModel(
                 commentsFlow.collectLatest {
                     updateUiState {
                         copy(
-                            comments = it.asReversed(),
+                            comments = it.asReversed().toComment(),
                             dailyEmoticon = DailyEmoticon(
                                 emoticonId = it.lastOrNull()?.emoticonId ?: 1,
                                 date = selectedDate
@@ -138,13 +142,13 @@ class DiaryViewModel(
     ) {
         viewModelScope.launch {
             try {
-                val comment = Comment(
+                val comment = com.cashproject.mongsil.ui.pages.diary.model.Comment(
                     content = content,
                     emoticonId = emoticonId,
                     date = date,
                     time = Date()
                 )
-                diaryRepository.insert(comment)
+                diaryRepository.insert(comment.toDomain())
                 Logger.sendLog(
                     key = "comment",
                     value = mapOf(

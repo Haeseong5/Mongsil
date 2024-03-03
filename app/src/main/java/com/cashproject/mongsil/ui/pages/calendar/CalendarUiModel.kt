@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
-import com.cashproject.mongsil.extension.toLocalDate
+import com.cashproject.mongsil.common.extensions.toLocalDate
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import java.time.LocalDate
 

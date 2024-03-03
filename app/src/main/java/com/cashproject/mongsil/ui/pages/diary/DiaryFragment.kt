@@ -15,13 +15,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.extension.DateFormat
-import com.cashproject.mongsil.extension.toTextFormat
+import com.cashproject.mongsil.common.extensions.DateFormat
+import com.cashproject.mongsil.common.extensions.toTextFormat
 import com.cashproject.mongsil.manager.showInterstitialAd
-import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.dialog.menu.MenuBottomSheetDialog
 import com.cashproject.mongsil.ui.main.MainViewModel
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
 import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.cashproject.mongsil.util.PermissionUtil.hasWriteStoragePermission
 import com.google.android.gms.ads.AdRequest

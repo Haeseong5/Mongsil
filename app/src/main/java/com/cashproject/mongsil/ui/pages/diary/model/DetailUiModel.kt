@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.ui.pages.diary
+package com.cashproject.mongsil.ui.pages.diary.model
 
 import java.util.Date
 

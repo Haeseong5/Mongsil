@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.model.PosterModel
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_MONTH
 import java.util.Calendar.MONTH
@@ -15,7 +15,7 @@ data class SquarePosterUiModel(
     val image: String = "",
 )
 
-fun List<Poster>.toUiModel(calendar: Calendar): List<SquarePosterUiModel> {
+fun List<PosterModel>.toUiModel(calendar: Calendar): List<SquarePosterUiModel> {
     return this.mapIndexed { i, it ->
         if (i != 0) calendar.add(DAY_OF_MONTH, -1)
         SquarePosterUiModel(

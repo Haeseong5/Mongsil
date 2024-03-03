@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.component.Toolbar
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
 
 @Composable
 fun LockerScreen(

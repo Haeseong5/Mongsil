@@ -23,11 +23,12 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.cashproject.mongsil.extension.DateFormat
+import com.cashproject.mongsil.common.extensions.DateFormat
+import com.cashproject.mongsil.common.extensions.toTextFormat
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.HorizontalSpacer
+import com.cashproject.mongsil.ui.pages.diary.model.DiaryUiState
 import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import com.cashproject.mongsil.ui.theme.textShadow
 

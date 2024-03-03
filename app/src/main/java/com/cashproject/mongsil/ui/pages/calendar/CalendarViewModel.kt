@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.common.utils.log
 import com.cashproject.mongsil.common.utils.printErrorLog
-import com.cashproject.mongsil.data.repository.DiaryRepository
-import com.cashproject.mongsil.data.repository.EmoticonRepository
-import com.cashproject.mongsil.repository.DiaryRepositoryImpl
-import com.cashproject.mongsil.repository.EmoticonRepositoryImpl
-import com.cashproject.mongsil.repository.PosterRepository
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.repository.DiaryRepository
+import com.cashproject.mongsil.repository.repository.DiaryRepositoryImpl
+import com.cashproject.mongsil.repository.repository.EmoticonRepository
+import com.cashproject.mongsil.repository.repository.EmoticonRepositoryImpl
+import com.cashproject.mongsil.repository.repository.PosterRepository
+import com.cashproject.mongsil.ui.model.toEmoticon
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.toDomain
+import com.cashproject.mongsil.ui.pages.diary.model.toPoster
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,7 +57,7 @@ class CalendarViewModel(
         viewModelScope.launch {
             _uiState.update {
                 uiState.value.copy(
-                    emoticons = emoticonRepository.getEmoticons()
+                    emoticons = emoticonRepository.getEmoticons().toEmoticon()
                 )
             }
 
@@ -76,12 +79,12 @@ class CalendarViewModel(
     fun getRandomSaying(date: Date): Poster {
         val posters: MutableList<Poster> = mutableListOf()
         viewModelScope.launch {
-            posters.addAll(posterRepository.getAllPosters())
+            posters.addAll(posterRepository.getAllPosters().toPoster())
         }
         return posterRepository.getRandomSaying(
             date = date,
-            posters = posters
-        )
+            posters = posters.toDomain()
+        ).toPoster()
     }
 
     private fun CoroutineScope.launchWithCatching(

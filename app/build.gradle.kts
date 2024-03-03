@@ -74,6 +74,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:database"))
     implementation(project(":core:common"))
+    implementation(project(":core:repository"))
 
     //kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
@@ -115,7 +116,7 @@ dependencies {
     androidTestImplementation(composeUiTest)
 
     implementation("com.github.GIGAMOLE:ComposeFadingEdges:1.0.4")
-    implementation("com.kizitonwose.calendar:compose:2.4.0")
+    implementation("com.kizitonwose.calendar:compose:2.5.0")
 
     //Ads
     implementation("com.google.android.gms:play-services-ads:$googleAdVersion")

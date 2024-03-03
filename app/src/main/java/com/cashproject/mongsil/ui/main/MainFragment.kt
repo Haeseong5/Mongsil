@@ -14,12 +14,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
+import com.cashproject.mongsil.common.extensions.toDate
 import com.cashproject.mongsil.databinding.FragmentMainBinding
 import com.cashproject.mongsil.extension.Direction
 import com.cashproject.mongsil.extension.dpToPx
 import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.extension.startFakeDrag
-import com.cashproject.mongsil.extension.toDate
 import com.cashproject.mongsil.util.PreferencesManager
 import gun0912.ted.tedadmobdialog.OnBackPressListener
 import gun0912.ted.tedadmobdialog.TedAdmobDialog

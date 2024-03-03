@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.ui.pages.calendar.compose
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -14,13 +16,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.pages.calendar.CalendarListScreen
 import com.cashproject.mongsil.ui.pages.calendar.CalendarScreenType
 import com.cashproject.mongsil.ui.pages.calendar.CalendarUiState
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
 import java.time.LocalDate
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarScreen(
     uiState: CalendarUiState,

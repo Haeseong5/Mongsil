@@ -1,9 +1,8 @@
-package com.cashproject.mongsil.repository
+package com.cashproject.mongsil.repository.repository
 
-import com.cashproject.mongsil.data.repository.EmoticonRepository
 import com.cashproject.mongsil.network.EmoticonDataSource
-import com.cashproject.mongsil.repository.mapper.toEmoticon
-import com.cashproject.mongsil.ui.model.Emoticon
+import com.cashproject.mongsil.repository.model.EmoticonModel
+import com.cashproject.mongsil.repository.model.toEmoticonModel
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -12,12 +11,12 @@ class EmoticonRepositoryImpl(
 ) : EmoticonRepository {
 
     companion object {
-        private var cachedEmoticons: List<Emoticon>? = null
+        private var cachedEmoticons: List<EmoticonModel>? = null
     }
 
     private val mutex = Mutex()
 
-    override suspend fun getEmoticon(id: Int): Emoticon? {
+    override suspend fun getEmoticon(id: Int): EmoticonModel? {
         return mutex.withLock {
             val e = cachedEmoticons
             if (e != null) {
@@ -29,7 +28,7 @@ class EmoticonRepositoryImpl(
         }
     }
 
-    override suspend fun getEmoticons(): List<Emoticon> {
+    override suspend fun getEmoticons(): List<EmoticonModel> {
         return mutex.withLock {
             val e = cachedEmoticons
             if (e == null) {
@@ -42,7 +41,7 @@ class EmoticonRepositoryImpl(
         }
     }
 
-    private suspend fun getEmoticonsFromDataSource(): List<Emoticon> {
-        return emoticonService.getEmoticons().toEmoticon()
+    private suspend fun getEmoticonsFromDataSource(): List<EmoticonModel> {
+        return emoticonService.getEmoticons().toEmoticonModel()
     }
 }

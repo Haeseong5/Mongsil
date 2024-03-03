@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.diary
 
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+
 
 sealed interface DiaryUiEvent {
     data class SubmitComment(

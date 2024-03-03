@@ -1,25 +1,24 @@
-package com.cashproject.mongsil.repository
+package com.cashproject.mongsil.repository.repository
 
-import com.cashproject.mongsil.data.repository.DiaryRepository
+import com.cashproject.mongsil.common.extensions.excludeTimeFromDate
 import com.cashproject.mongsil.database.DiaryDataSource
-import com.cashproject.mongsil.extension.excludeTimeFromDate
+import com.cashproject.mongsil.repository.model.CommentModel
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import com.cashproject.mongsil.repository.model.toDailyEmoticons
-import com.cashproject.mongsil.ui.pages.diary.Comment
-import com.cashproject.mongsil.ui.pages.diary.toDomain
-import com.cashproject.mongsil.ui.pages.diary.toEntity
+import com.cashproject.mongsil.repository.model.toDomain
+import com.cashproject.mongsil.repository.model.toEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.Date
 
 class DiaryRepositoryImpl(
     private val diaryService: DiaryDataSource = DiaryDataSource()
-): DiaryRepository {
-    override fun getAllComments(): Flow<List<Comment>> {
+) : DiaryRepository {
+    override fun getAllComments(): Flow<List<CommentModel>> {
         return diaryService.getAllComments().map { it.toDomain() }
     }
 
-    override fun loadCommentListByDate(date: Date): Flow<List<Comment>> {
+    override fun loadCommentListByDate(date: Date): Flow<List<CommentModel>> {
         return diaryService.getAllComments()
             .map {
                 it.toDomain()
@@ -29,7 +28,7 @@ class DiaryRepositoryImpl(
             }
     }
 
-    override suspend fun insert(comment: Comment) {
+    override suspend fun insert(comment: CommentModel) {
         diaryService.insertComment(comment.toEntity())
     }
 

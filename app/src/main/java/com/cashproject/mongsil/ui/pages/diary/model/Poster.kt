@@ -1,7 +1,8 @@
-package com.cashproject.mongsil.repository.model
+package com.cashproject.mongsil.ui.pages.diary.model
 
 import android.os.Parcelable
 import com.cashproject.mongsil.database.model.SayingEntity
+import com.cashproject.mongsil.repository.model.PosterModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -31,6 +32,43 @@ fun List<Poster>.toLegacy(): List<SayingEntity> {
 fun Poster.toLegacy(): SayingEntity {
     return SayingEntity(
         docId = this.id,
+        image = this.image,
+        squareImage = this.squareImage
+    )
+}
+
+
+fun PosterModel.toPoster(): Poster {
+    return Poster(
+        id = this.id,
+        image = this.image,
+        squareImage = this.squareImage
+    )
+}
+
+fun List<PosterModel>.toPoster(): List<Poster> {
+    return this.map {
+        Poster(
+            id = it.id,
+            image = it.image,
+            squareImage = it.squareImage
+        )
+    }
+}
+
+fun List<Poster>.toDomain(): List<PosterModel> {
+    return this.map {
+        PosterModel(
+            id = it.id,
+            image = it.image,
+            squareImage = it.squareImage
+        )
+    }
+}
+
+fun Poster.toDomain(): PosterModel {
+    return PosterModel(
+        id = this.id,
         image = this.image,
         squareImage = this.squareImage
     )

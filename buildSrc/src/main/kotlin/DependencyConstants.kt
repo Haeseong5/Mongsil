@@ -1,6 +1,6 @@
 const val sdkCompileVersion = 34
 const val sdkTargetVersion = 33
-const val sdkMinVersion = 24
+const val sdkMinVersion = 26
 
 //kotlin
 const val kotlinVersion = "1.9.10"

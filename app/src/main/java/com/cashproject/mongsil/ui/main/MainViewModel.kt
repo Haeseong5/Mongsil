@@ -3,10 +3,12 @@ package com.cashproject.mongsil.ui.main
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
-import com.cashproject.mongsil.repository.PosterRepository
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.repository.PosterRepository
 import com.cashproject.mongsil.ui.pages.calendar.CalendarScreenType
 import com.cashproject.mongsil.ui.pages.calendar.defaultCalendarScreenType
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.toDomain
+import com.cashproject.mongsil.ui.pages.diary.model.toPoster
 import com.cashproject.mongsil.util.PreferencesManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +49,7 @@ class MainViewModel(
     private fun loadAllPosters() {
         viewModelScope.launch {
             try {
-                _allPosters.emit(posterRepository.getAllPosters())
+                _allPosters.emit(posterRepository.getAllPosters().toPoster())
             } catch (e: Exception) {
                 error.emit(e)
             }
@@ -57,8 +59,8 @@ class MainViewModel(
     fun getRandomSaying(date: Date): Poster {
         return posterRepository.getRandomSaying(
             date = date,
-            posters = allPosters.value
-        )
+            posters = allPosters.value.toDomain()
+        ).toPoster()
     }
 
     private fun initPushNotificationSettings() {

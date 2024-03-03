@@ -9,8 +9,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.dialog.menu.MenuViewModel.Companion.createViewModelFactory
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
 import com.cashproject.mongsil.ui.theme.MongsilTheme
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch

@@ -2,8 +2,6 @@ package com.cashproject.mongsil.database
 
 import android.content.Context
 import androidx.room.*
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cashproject.mongsil.common.App
 import com.cashproject.mongsil.database.dao.BookmarkDao
 import com.cashproject.mongsil.database.dao.DiaryDao
@@ -11,7 +9,7 @@ import com.cashproject.mongsil.database.model.CommentEntity
 import com.cashproject.mongsil.database.model.SayingEntity
 import com.cashproject.mongsil.database.utils.DateConverter
 
-@Database(entities = [SayingEntity::class, CommentEntity::class], version = 2)
+@Database(entities = [SayingEntity::class, CommentEntity::class], version = 2, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -38,8 +36,8 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
-val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE Saying ADD COLUMN test TEXT")
-    }
-}
+//val MIGRATION_2_3 = object : Migration(2, 3) {
+//    override fun migrate(database: SupportSQLiteDatabase) {
+//        database.execSQL("ALTER TABLE Saying ADD COLUMN test TEXT")
+//    }
+//}

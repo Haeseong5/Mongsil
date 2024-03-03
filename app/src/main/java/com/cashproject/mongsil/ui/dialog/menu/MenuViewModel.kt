@@ -4,10 +4,11 @@ package com.cashproject.mongsil.ui.dialog.menu
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.cashproject.mongsil.extension.DateFormat
-import com.cashproject.mongsil.extension.toTextFormat
-import com.cashproject.mongsil.repository.BookmarkRepository
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.common.extensions.DateFormat
+import com.cashproject.mongsil.common.extensions.toTextFormat
+import com.cashproject.mongsil.repository.repository.BookmarkRepository
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.toDomain
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -80,7 +81,7 @@ class MenuViewModel(
                 if (scrapped) {
                     bookmarkRepository.unlike(poster.id)
                 } else {
-                    bookmarkRepository.bookmark(poster)
+                    bookmarkRepository.bookmark(poster.toDomain())
                 }
             } catch (e: Exception) {
                 emitEvent(MenuUiEvent.Error(e))

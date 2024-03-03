@@ -1,10 +1,10 @@
-package com.cashproject.mongsil.repository
+package com.cashproject.mongsil.repository.repository
 
 import com.cashproject.mongsil.common.utils.printErrorLog
 import com.cashproject.mongsil.network.PosterDataSource
 import com.cashproject.mongsil.network.retrofit.PosterApi
-import com.cashproject.mongsil.repository.mapper.toPosters
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.model.PosterModel
+import com.cashproject.mongsil.repository.model.toPosterModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
@@ -14,26 +14,26 @@ class PosterRepository(
     private val posterService: PosterApi = PosterDataSource
 ) {
     companion object {
-        private val posters: MutableStateFlow<List<Poster>> = MutableStateFlow(emptyList())
+        private val posters: MutableStateFlow<List<PosterModel>> = MutableStateFlow(emptyList())
         private val hashMap = HashMap<Long, Int>()
     }
 
-    suspend fun getAllPostersFlow(): StateFlow<List<Poster>> {
+    suspend fun getAllPostersFlow(): StateFlow<List<PosterModel>> {
         if (posters.value.isEmpty()) {
-            val allPosters = posterService.getAllPosters().toPosters()
+            val allPosters = posterService.getAllPosters().toPosterModel()
             posters.emit(allPosters)
         }
         return posters
     }
 
-    suspend fun getAllPosters(): List<Poster> {
+    suspend fun getAllPosters(): List<PosterModel> {
         return getAllPostersFlow().value
     }
 
     fun getRandomSaying(
         date: Date,
-        posters: List<Poster>
-    ): Poster {
+        posters: List<PosterModel>
+    ): PosterModel {
         return try {
             val day = date.time
             val sayings = posters
@@ -47,7 +47,7 @@ class PosterRepository(
             }
         } catch (e: Exception) {
             e.printErrorLog()
-            Poster(id = "", image = "", squareImage = "")
+            PosterModel(id = "", image = "", squareImage = "")
         }
     }
 

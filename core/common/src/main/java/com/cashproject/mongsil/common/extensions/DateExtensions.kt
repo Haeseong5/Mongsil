@@ -1,5 +1,7 @@
-package com.cashproject.mongsil.extension
+package com.cashproject.mongsil.common.extensions
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
@@ -25,11 +27,13 @@ fun Date.toTextFormat(
     return dateFormat.format(this)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun LocalDate.toDate(): Date {
     val instant = atStartOfDay(ZoneId.systemDefault()).toInstant()
     return Date.from(instant)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun Date.toLocalDate(): LocalDate {
     val date = this
     val instant = date.toInstant()
@@ -53,6 +57,7 @@ fun Date.excludeTimeFromDate(): Date {
     return calendar.time
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun Long.timeMillisToLocalDate(): LocalDate {
     val instant = Instant.ofEpochMilli(this)
     return instant.atZone(ZoneId.systemDefault()).toLocalDate()

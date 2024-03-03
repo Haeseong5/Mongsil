@@ -1,7 +1,6 @@
-package com.cashproject.mongsil.ui.pages.diary
+package com.cashproject.mongsil.ui.pages.diary.model
 
 import com.cashproject.mongsil.repository.model.DailyEmoticon
-import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.model.Emoticon
 import java.util.Date
 

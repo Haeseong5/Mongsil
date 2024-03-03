@@ -1,6 +1,7 @@
-package com.cashproject.mongsil.ui.pages.diary
+package com.cashproject.mongsil.ui.pages.diary.model
 
 import com.cashproject.mongsil.database.model.CommentEntity
+import com.cashproject.mongsil.repository.model.CommentModel
 import java.util.Date
 
 data class Comment(
@@ -31,4 +32,38 @@ fun Comment.toEntity(): CommentEntity {
         writeTime = time,
         date = date
     )
+}
+
+fun Comment.toDomain(): CommentModel {
+    return CommentModel(
+        id = id,
+        content = content,
+        emoticonId = emoticonId,
+        time = time,
+        date = date
+    )
+}
+
+
+fun CommentModel.toComment(): Comment {
+    return Comment(
+        id = id,
+        content = content,
+        emoticonId = emoticonId,
+        time = time,
+        date = date
+    )
+}
+
+
+fun List<CommentModel>.toComment(): List<Comment> {
+    return map {
+        Comment(
+            id = it.id,
+            content = it.content,
+            emoticonId = it.emoticonId,
+            time = it.time,
+            date = it.date
+        )
+    }
 }

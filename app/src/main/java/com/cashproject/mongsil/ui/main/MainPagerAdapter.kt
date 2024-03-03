@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.cashproject.mongsil.repository.model.Poster
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_CALENDAR
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_HOME
 import com.cashproject.mongsil.ui.main.MainFragment.Companion.PAGE_LOCKER
 import com.cashproject.mongsil.ui.pages.calendar.CalendarFragment
 import com.cashproject.mongsil.ui.pages.diary.DiaryFragment
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
 import com.cashproject.mongsil.ui.pages.locker.LockerFragment
 import java.util.Date
 
