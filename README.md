@@ -3,7 +3,7 @@
 두루뭉술한 무난한 하루를 보낸 분도, 파란만장한 하루를 겪은 분도 누구나 자유롭게 사용할 수 있도록 다양한 감정과 어느 시간때든 자유롭게 감정을 기록할 수 있도록 타임라인을 제공합니다.
 
 <p align="center">
-  <img src="unnamed-1.png" alt="Alt text">
+  <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/5d49867d-71bf-4eaf-bce7-8b80ede242ea" alt="unnamed-1" width="50%">
 </p>
 
 # Tech stack 
@@ -20,22 +20,28 @@
 - Architecture
     - Google Guide Architecture
 - Etc
+
     - Multi Module
     - Admob
 
 ## Result 
 
-<div style="display: flex; justify-content: space-between;">ㄴ
-   <img src="1-ezgif.com-video-to-gif-converter-1.gif" alt="alt text" style="max-width: 30%;">
-   <img src="2-ezgif.com-video-to-gif-converter-1.gif" alt="alt text" style="max-width: 30%;">
-   <img src="3-ezgif.com-video-to-gif-converter-1.gif" alt="alt text" style="max-width: 30%;">
-</div>
+<p align="center">
+  <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/1ca92e31-d5cd-4f92-a867-61f7553d350d" width="30%" />
+  <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/94cf7613-13a5-4831-b094-53740368b3d9" width="30%" /> 
+  <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/e3aa89b0-2be8-42e1-a989-489335665f1e" width="30%" />
+</p>
+
 ---
 
-<div style="display: flex; justify-content: space-between;">
-   <img src="Screenshot_20240310_165412-1.png" alt="alt text" style="max-width: 18%;">
-   <img src="Screenshot_20240310_170336-1.png" alt="alt text" style="max-width: 18%;">
-   <img src="Screenshot_20240310_170344-1.png" alt="alt text" style="max-width: 18%;">
-   <img src="Screenshot_20240310_170405-1.png" alt="alt text" style="max-width: 18%;">
-   <img src="Screenshot_20240310_170413-1.png" alt="alt text" style="max-width: 18%;">
-</div>
+<p align="center">
+ <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/2d5294b7-f14b-4d5b-9179-9debcdeb0149" width="18%" style="margin-right: 10px;" />
+ <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/265fffb8-e877-4d34-9aa9-4347072263e7" width="18%" style="margin-right: 10px;" />
+ <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/5eb55c7f-9cd9-4b6a-b092-d6e042d33c2d" width="18%" style="margin-right: 10px;" />
+ <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/1a9b2af8-10df-4b6b-93ad-a7b8bc36e26d" width="18%" style="margin-right: 10px;" />
+ <img src="https://github.com/oyunseong/RelaxingSound/assets/42116216/5b864701-72aa-40e1-a69e-cb017e470c0f" width="18%" />
+</p>
+
+
+
+
