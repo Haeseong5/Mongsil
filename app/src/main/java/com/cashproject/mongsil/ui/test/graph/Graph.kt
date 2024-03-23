@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 fun Graph(
     modifier: Modifier,
     xValues: List<Int>,
-    yValues: List<Int>,
+    yValues: List<Float>,
     points: List<Float>,
     paddingSpace: Dp,
     verticalStep: Int,
@@ -48,7 +48,7 @@ fun Graph(
         Paint().apply {
             color = graphAppearance.graphAxisColor.toArgb()
             textAlign = Paint.Align.CENTER
-            textSize = density.run { 12.sp.toPx() }
+            textSize = density.run { 9.sp.toPx() }
         }
     }
 

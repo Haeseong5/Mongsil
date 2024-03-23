@@ -24,7 +24,7 @@
         android:theme="@style/Theme.Mongsil">
 
         <activity
-            android:name=".ui.test.PagerActivity"
+            android:name=".ui.test.graph.GraphActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

@@ -8,35 +8,50 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import kotlin.random.Random
+import com.cashproject.mongsil.extension.log
 
 class GraphActivity : ComponentActivity() {
+
+    private val transactionRepository = TransactionRepository()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
-            GraphScreen()
+            GraphScreen(
+                graphModel = getGraphModel()
+            )
         }
+    }
+
+
+    private fun getGraphModel(): GraphModel {
+        val t = transactionRepository.filterTransaction().also {
+            val amounts = it.map { it.amount }.sorted()
+            " amounts=$amounts".log()
+        }
+
+        return GraphModel(
+            xValues = listOf(1, 2, 3, 4, 5, 6, 7),
+            yValues = t.map { it.amount }.sorted(), //y축
+            points = t.map { it.amount }, //그래프,
+            verticalStep = 2000,
+        )
     }
 }
 
+// x 1..7 or 1..30
+// y amount
+//https://www.droidcon.com/2022/06/22/creating-a-graph-in-jetpack-compose/
 @Composable
-fun GraphScreen() {
-    val yStep = 50
-    val random = Random
-    /* to test with random points */
-    val points = (0..9).map {
-        var num = random.nextInt(350)
-        if (num <= 50)
-            num += 100
-        num.toFloat()
-    }
-    /* to test with fixed points */
-//                val points = listOf(150f,100f,250f,200f,330f,300f,90f,120f,285f,199f),
+fun GraphScreen(
+    graphModel: GraphModel,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -44,13 +59,14 @@ fun GraphScreen() {
     ) {
         Graph(
             modifier = Modifier
+                .padding(10.dp)
                 .fillMaxWidth()
                 .height(500.dp),
-            xValues = (0..9).map { it + 1 },
-            yValues = (0..6).map { (it + 1) * yStep },
-            points = points,
+            xValues = graphModel.xValues,
+            yValues = graphModel.yValues,
+            points = graphModel.points,
             paddingSpace = 16.dp,
-            verticalStep = yStep,
+            verticalStep = graphModel.verticalStep,
             graphAppearance = GraphAppearance(
                 Color.White,
                 MaterialTheme.colors.primary,
