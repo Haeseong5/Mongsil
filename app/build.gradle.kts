@@ -170,4 +170,10 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics-ktx")
+
+
+    // exo player
+    implementation(exoplayer)
+    implementation(exoplayerCore)
+    implementation(exoplayerUi)
 }

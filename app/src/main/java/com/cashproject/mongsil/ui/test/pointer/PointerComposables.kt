@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.awaitHorizontalDragOrCancellation
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.draggable
@@ -171,20 +170,21 @@ fun AwaitHorizontalDragOrCancellationSample() {
                 awaitEachGesture {
                     "awaitEachGesture".log() //suspend 함수가 없으면 무한 호출
                     val down = awaitFirstDown()
-                    var change =
-                        awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
-                            offsetX.floatValue = (change.position.x - (circleSizePx / 2))
-                            offsetY.floatValue = (change.position.y - (circleSizePx / 2))
-                            change.consume()
-                        }
-                    while (change != null && change.pressed) {
-                        change = awaitHorizontalDragOrCancellation(change.id)
-                        if (change != null && change.pressed) {
-                            offsetX.floatValue = (change.position.x - (circleSizePx / 2))
-                            offsetY.floatValue = (change.position.y - (circleSizePx / 2))
-                            change.consume()
-                        }
-                    }
+
+//                    var change =
+//                        awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
+//                            offsetX.floatValue = (change.position.x - (circleSizePx / 2))
+//                            offsetY.floatValue = (change.position.y - (circleSizePx / 2))
+//                            change.consume()
+//                        }
+//                    while (change != null && change.pressed) {
+//                        change = awaitHorizontalDragOrCancellation(change.id)
+//                        if (change != null && change.pressed) {
+//                            offsetX.floatValue = (change.position.x - (circleSizePx / 2))
+//                            offsetY.floatValue = (change.position.y - (circleSizePx / 2))
+//                            change.consume()
+//                        }
+//                    }
                 }
             }
     ) {

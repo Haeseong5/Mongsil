@@ -86,3 +86,9 @@ const val glideCompiler = "com.github.bumptech.glide:compiler:$glide_version"
 //coil
 const val coil_version = "2.5.0"
 const val coil = "io.coil-kt:coil-compose:$coil_version"
+
+
+const val exoplayerVersion = "2.18.2"
+const val exoplayer = "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
+const val exoplayerCore = "com.google.android.exoplayer:exoplayer-core:$exoplayerVersion"
+const val exoplayerUi = "com.google.android.exoplayer:exoplayer-ui:$exoplayerVersion"
