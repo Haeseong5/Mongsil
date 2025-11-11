@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.compose") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("kotlin-parcelize")
 }
@@ -15,6 +16,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildFeatures {
+        buildConfig = true
+        dataBinding = true
     }
 
     buildTypes {

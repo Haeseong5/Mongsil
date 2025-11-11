@@ -3,7 +3,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
-    id("androidx.navigation.safeargs.kotlin")
+    id("org.jetbrains.kotlin.plugin.compose") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -24,6 +24,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         dataBinding = true
         viewBinding = true
         compose = true
@@ -36,10 +37,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = compose_compiler_version
     }
 
     val SIGNED_STORE_FILE: String by rootProject.extra
@@ -61,7 +58,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             signingConfig = signingConfigs.getByName("release")
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -70,20 +67,17 @@ android {
 
 dependencies {
     //module
-    implementation(project(":tedadmobdialog"))
+//    implementation(project(":tedadmobdialog"))
     implementation(project(":core:network"))
     implementation(project(":core:database"))
     implementation(project(":core:common"))
     implementation(project(":core:repository"))
 
-    //kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-
     //androidx
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.appcompat:appcompat:1.7.1")
     implementation(Dependency.KTX.CORE)
     implementation(androidMaterial)
-    implementation("androidx.annotation:annotation:1.7.0")
+    implementation("androidx.annotation:annotation:1.9.1")
 
     //lifeCycle
     implementation(Dependency.AndroidX.LIFECYCLE.RUNTIME)
@@ -116,7 +110,7 @@ dependencies {
     androidTestImplementation(composeUiTest)
 
     implementation("com.github.GIGAMOLE:ComposeFadingEdges:1.0.4")
-    implementation("com.kizitonwose.calendar:compose:2.5.0")
+    implementation("com.kizitonwose.calendar:compose:2.9.0")
 
     //Ads
     implementation("com.google.android.gms:play-services-ads:$googleAdVersion")

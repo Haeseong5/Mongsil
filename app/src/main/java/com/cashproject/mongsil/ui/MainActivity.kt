@@ -1,7 +1,14 @@
 package com.cashproject.mongsil.ui
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
@@ -38,12 +45,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             initializeFirebaseRemoteConfig()
             setRemoteConfigListener()
         }
+//        setContent {
+//            Box(modifier = Modifier
+//                .fillMaxSize()
+//                .background(Color.Red)) {}
+//        }
     }
 
     private fun setupPushNotification() {
         lifecycleScope.launch {
             PushManager.pushNotificationEvent.collect { isEnabled ->
-                printLog("Push Notification Settings : $isEnabled")
+//                printLog("Push Notification Settings : $isEnabled")
                 pushManager.updatePushNotificationSubscription(this@MainActivity, isEnabled)
             }
         }

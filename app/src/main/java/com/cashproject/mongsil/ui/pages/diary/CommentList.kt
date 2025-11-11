@@ -67,8 +67,8 @@ fun CommentList(
                 }
             ) { comment ->
                 Comment(
-                    modifier = Modifier.animateItemPlacement(
-                        animationSpec = tween(
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = tween(
                             durationMillis = 300,
                             easing = LinearOutSlowInEasing,
                         )

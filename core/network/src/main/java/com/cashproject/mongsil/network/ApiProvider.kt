@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.network
 
+import com.cashproject.mongsil.common.BuildConfig
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json

@@ -1,9 +1,9 @@
-const val sdkCompileVersion = 34
-const val sdkTargetVersion = 33
+const val sdkCompileVersion = 35
+const val sdkTargetVersion = 35
 const val sdkMinVersion = 26
 
 //kotlin
-const val kotlinVersion = "1.9.10"
+const val kotlinVersion = "2.2.0"
 
 object Dependency {
     object KTX {
@@ -22,7 +22,7 @@ object Dependency {
 
         object ROOM {
             //room
-            const val room_version = "2.6.1"
+            const val room_version = "2.8.3"
             const val RUNTIME = "androidx.room:room-runtime:$room_version"
             const val KTX = "androidx.room:room-ktx:$room_version"
             const val RXJAVA2 = "androidx.room:room-rxjava2:$room_version"
@@ -49,14 +49,14 @@ const val navigationTesting = "androidx.navigation:navigation-testing:$navigatio
 const val navigationCompose = "androidx.navigation:navigation-compose:$navigationVersion"
 
 //hilt
-const val hilt_version = "2.48"
+const val hilt_version = "2.56.1"
 const val hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
 const val hiltKapt = "com.google.dagger:hilt-android-compiler:$hilt_version"
 const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
 //compose
-const val compose_compiler_version = "1.5.3"
-const val compose_bom = "androidx.compose:compose-bom:2023.10.00"
+const val compose_compiler_version = "1.5.14"
+const val compose_bom = "androidx.compose:compose-bom:2024.01.00"
 const val composeRuntime = "androidx.compose.runtime:runtime"
 const val composeRuntimeLivedata = "androidx.compose.runtime:runtime-livedata"
 const val composeUi = "androidx.compose.ui:ui"
@@ -71,14 +71,14 @@ const val composeMaterial = "androidx.compose.material:material"
 const val composeMaterial3 = "androidx.compose.material3:material3"
 const val composeMaterialIconsCore = "androidx.compose.material:material-icons-core"
 const val composeMaterialIconsExtended = "androidx.compose.material:material-icons-extended"
-const val activityCompose = "androidx.activity:activity-compose:1.8.0"
+const val activityCompose = "androidx.activity:activity-compose:1.9.0"
 const val composePaging = "androidx.paging:paging-compose:1.0.0-alpha14"
 
 //Ads
 const val googleAdVersion = "21.4.0"
 
 //Corountines
-private const val coroutines_version = "1.6.4"
+private const val coroutines_version = "1.10.2"
 const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 const val coroutinesRx2 = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$coroutines_version"

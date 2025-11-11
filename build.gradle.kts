@@ -3,14 +3,13 @@
 buildscript {
     apply(from = "authentication.gradle")
     repositories {
-        jcenter()
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.4")
-        classpath("com.google.gms:google-services:4.4.0")
+        classpath("com.android.tools.build:gradle:8.13.1")
+        classpath("com.google.gms:google-services:4.4.4")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion")
         classpath("com.google.dagger:hilt-android-gradle-plugin:$hilt_version")
@@ -21,7 +20,6 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven {
             setUrl("https://jitpack.io")
@@ -32,6 +30,6 @@ allprojects {
     }
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+tasks.register<Delete>("clean") {
+    delete(layout.buildDirectory)
 }

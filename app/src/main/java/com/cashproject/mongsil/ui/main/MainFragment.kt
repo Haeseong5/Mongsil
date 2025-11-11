@@ -2,7 +2,6 @@ package com.cashproject.mongsil.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
 import com.cashproject.mongsil.common.extensions.toDate
 import com.cashproject.mongsil.databinding.FragmentMainBinding
@@ -21,8 +19,6 @@ import com.cashproject.mongsil.extension.dpToPx
 import com.cashproject.mongsil.extension.handleError
 import com.cashproject.mongsil.extension.startFakeDrag
 import com.cashproject.mongsil.util.PreferencesManager
-import gun0912.ted.tedadmobdialog.OnBackPressListener
-import gun0912.ted.tedadmobdialog.TedAdmobDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -38,7 +34,7 @@ class MainFragment : SuperFragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var callback: OnBackPressedCallback
-    private lateinit var nativeTedAdmobDialog: TedAdmobDialog
+//    private lateinit var nativeTedAdmobDialog: TedAdmobDialog
 
     private var firstViewCreated: Boolean = true
 
@@ -66,7 +62,7 @@ class MainFragment : SuperFragment() {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                showAdmobDialog()
+//                showAdmobDialog()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -74,7 +70,7 @@ class MainFragment : SuperFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initAdmobDialog()
+//        initAdmobDialog()
     }
 
     override fun onCreateView(
@@ -147,46 +143,46 @@ class MainFragment : SuperFragment() {
         callback.remove()
     }
 
-    private fun showAdmobDialog() {
-        nativeTedAdmobDialog.apply {
-            setCanceledOnTouchOutside(false)
-            setCancelable(true)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-        }
-        nativeTedAdmobDialog.show()
-    }
+//    private fun showAdmobDialog() {
+//        nativeTedAdmobDialog.apply {
+//            setCanceledOnTouchOutside(false)
+//            setCancelable(true)
+//            window?.setBackgroundDrawableResource(android.R.color.transparent)
+//        }
+//        nativeTedAdmobDialog.show()
+//    }
 
-    private fun initAdmobDialog() {
-        nativeTedAdmobDialog =
-            TedAdmobDialog.Builder(
-                requireActivity(),
-                TedAdmobDialog.AdType.NATIVE,
-                getString(R.string.ad_native_id)
-            )
-                .showReviewButton(true)
-                .setOnBackPressListener(object : OnBackPressListener {
-                    override fun onReviewClick() {
-                        Log.d(TAG, "onReviewClick")
-                    }
-
-                    override fun onFinish() {
-                        Log.d(TAG, "onFinish")
-                        requireActivity().finish()
-                    }
-
-                    override fun onAdShow() {
-                        Log.d(TAG, "onAdShow")
-                        nativeTedAdmobDialog.loadNative()
-                    }
-                })
-                .create()
-
-        nativeTedAdmobDialog.loadNative()
-        nativeTedAdmobDialog.apply {
-            setCanceledOnTouchOutside(true)
-            setCancelable(true)
-        }
-    }
+//    private fun initAdmobDialog() {
+//        nativeTedAdmobDialog =
+//            TedAdmobDialog.Builder(
+//                requireActivity(),
+//                TedAdmobDialog.AdType.NATIVE,
+//                getString(R.string.ad_native_id)
+//            )
+//                .showReviewButton(true)
+//                .setOnBackPressListener(object : OnBackPressListener {
+//                    override fun onReviewClick() {
+//                        Log.d(TAG, "onReviewClick")
+//                    }
+//
+//                    override fun onFinish() {
+//                        Log.d(TAG, "onFinish")
+//                        requireActivity().finish()
+//                    }
+//
+//                    override fun onAdShow() {
+//                        Log.d(TAG, "onAdShow")
+//                        nativeTedAdmobDialog.loadNative()
+//                    }
+//                })
+//                .create()
+//
+//        nativeTedAdmobDialog.loadNative()
+//        nativeTedAdmobDialog.apply {
+//            setCanceledOnTouchOutside(true)
+//            setCancelable(true)
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
