@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -41,6 +42,9 @@ class MainFragment : SuperFragment() {
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
 
+    private var lastBackPressedTime: Long = 0
+
+
     private val mainPagerAdapter by lazy {
         MainPagerAdapter(
             fa = childFragmentManager,
@@ -62,6 +66,13 @@ class MainFragment : SuperFragment() {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                val current = System.currentTimeMillis()
+                if (current - lastBackPressedTime < 3000) {
+                    requireActivity().finish()
+                } else {
+                    lastBackPressedTime = current
+                    Toast.makeText(context, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                }
 //                showAdmobDialog()
             }
         }

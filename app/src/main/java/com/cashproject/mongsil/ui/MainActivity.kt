@@ -45,17 +45,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             initializeFirebaseRemoteConfig()
             setRemoteConfigListener()
         }
-//        setContent {
-//            Box(modifier = Modifier
-//                .fillMaxSize()
-//                .background(Color.Red)) {}
-//        }
     }
 
     private fun setupPushNotification() {
         lifecycleScope.launch {
             PushManager.pushNotificationEvent.collect { isEnabled ->
-//                printLog("Push Notification Settings : $isEnabled")
+                printLog("Push Notification Settings : $isEnabled")
                 pushManager.updatePushNotificationSubscription(this@MainActivity, isEnabled)
             }
         }
