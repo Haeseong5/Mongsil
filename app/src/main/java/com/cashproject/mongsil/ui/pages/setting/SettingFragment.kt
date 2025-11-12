@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
@@ -16,7 +17,7 @@ import com.cashproject.mongsil.databinding.FragmentSettingComposeBinding
 import com.cashproject.mongsil.extension.intentAction
 import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
-import com.cashproject.mongsil.network.firebase.remoteconfig.isOldVersion
+import com.cashproject.mongsil.network.firebase.remoteconfig.RemoteConfigManager
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
 import com.cashproject.mongsil.ui.theme.MongsilTheme
@@ -28,7 +29,11 @@ import com.google.android.play.core.review.ReviewManagerFactory
 class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingComposeBinding
-    private val viewModel = SettingViewModel()
+    private val viewModel: SettingViewModel by viewModels{
+        SettingViewModel.createViewModelFactory(
+            remoteConfigManager = RemoteConfigManager.getInstance()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +69,14 @@ class SettingFragment : Fragment() {
                                             }
 
                                             SettingButtonType.OTHER_APP_FROM_THE_DEVELOPER -> showMoreApps()
-                                            SettingButtonType.APP_VERSION_CHECK -> showAppVersionDialog()
+                                            SettingButtonType.APP_VERSION_CHECK -> {
+                                                if (viewModel.isOldVersion()) {
+                                                    showAppVersionDialog()
+                                                } else {
+                                                    requireContext().showToast("최신 버전입니다.")
+                                                }
+                                            }
+
                                             SettingButtonType.NONE -> {}
                                         }
 
@@ -78,23 +90,20 @@ class SettingFragment : Fragment() {
             }.root
     }
 
+
     fun showAppVersionDialog() {
-        if (isOldVersion()) {
-            CheckDialog(
-                context = requireContext(),
-                accept = { openPlayStore(context ?: return@CheckDialog) },
-                acceptText = "업데이트"
-            ).also {
-                it.start(
-                    getString(
-                        R.string.app_version,
-                        BuildConfig.VERSION_NAME,
-                        "appVersion.latestAppVersionName" // TODO 수정
-                    )
+        CheckDialog(
+            context = requireContext(),
+            accept = { openPlayStore(context ?: return@CheckDialog) },
+            acceptText = "업데이트"
+        ).also {
+            it.start(
+                getString(
+                    R.string.app_version,
+                    BuildConfig.VERSION_NAME,
+                    viewModel.remoteConfigManager.appVersion.latestAppVersionName,
                 )
-            }
-        } else {
-            requireContext().showToast("최신 버전입니다.")
+            )
         }
     }
 
