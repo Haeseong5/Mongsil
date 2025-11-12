@@ -13,6 +13,8 @@ buildscript {
         classpath(libs.androidx.navigation.safe.args.gradle.plugin)
         classpath(libs.hilt.android.gradle.plugin)
         classpath(libs.firebase.crashlytics.gradle)
+        classpath(libs.hilt.android.gradle.plugin)
+        classpath(libs.ksp.gradlePlugin)
     }
 }
 
