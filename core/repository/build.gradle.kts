@@ -1,9 +1,9 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,7 +42,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

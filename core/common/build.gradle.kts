@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")

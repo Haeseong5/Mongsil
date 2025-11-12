@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     id("kotlin-parcelize")
 }
 
@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.rxjava2)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.room.backup.restore)
     androidTestImplementation(libs.androidx.room.testing)
 

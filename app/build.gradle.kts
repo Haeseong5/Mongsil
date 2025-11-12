@@ -1,12 +1,12 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
     id("kotlin-parcelize")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -88,7 +88,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.rxjava2)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.room.backup.restore)
     androidTestImplementation(libs.androidx.room.testing)
 
@@ -131,7 +131,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     //navigation
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -153,7 +153,7 @@ dependencies {
 
     //glide
     implementation(libs.glide)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.compiler)
 
     //coil
     implementation(libs.coil.compose)

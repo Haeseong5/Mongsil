@@ -24,6 +24,10 @@ lifecycle = "2.9.4"
 # Room
 room = "2.8.3"
 
+# KSP
+# https://github.com/google/ksp/releases
+ksp = "2.3.2"
+
 # Navigation
 navigation = "2.9.6"
 
@@ -163,3 +167,4 @@ compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", versi
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 #kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
