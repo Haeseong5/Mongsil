@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version kotlinVersion
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
 }
 
@@ -38,22 +38,21 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    implementation(Dependency.KTX.CORE)
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.android.material)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.rxjava2)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.room.backup.restore)
+    androidTestImplementation(libs.androidx.room.testing)
 
 
-    //Room
-    implementation(Dependency.AndroidX.ROOM.RUNTIME)
-    implementation(Dependency.AndroidX.ROOM.KTX)
-    implementation(Dependency.AndroidX.ROOM.RXJAVA2)
-    kapt(Dependency.AndroidX.ROOM.COMPILER)
-    implementation(Dependency.AndroidX.ROOM.BACKUP_AND_RESTORE)
-    androidTestImplementation(Dependency.AndroidX.ROOM.TESTING)
-
-    implementation(kotlinxSerialization)
-//    implementation(kotlinxSerializationConverter)
+    implementation(libs.kotlinx.serialization.json)
 }

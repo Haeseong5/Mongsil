@@ -1,9 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-//    id("com.google.dagger.hilt.android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version kotlinVersion
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -38,36 +37,36 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(Dependency.KTX.CORE)
+
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.android.material)
 
     //coil
-    implementation(coil)
+    implementation(libs.coil.compose)
 
     //network & json
-    implementation(retrofit2)
-    implementation(retrofit2ConverterGson)
-    implementation(retrofit2RxJava)
-    implementation(retrofit2ConverterScarlars)
-    implementation(kotlinxSerialization)
-    implementation(kotlinxSerializationConverter)
-    implementation(platform(okhttpBom))
-    implementation(okhttp)
-    implementation(okhttpLoggingIntercepter)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.adapter.rxjava2)
+    implementation(libs.retrofit.converter.scalars)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.kotlinx.serialization.converter)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-config-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config.ktx)
 
-
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     //hilt
-    implementation(hiltAndroid)
-    kapt(hiltKapt)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
 }

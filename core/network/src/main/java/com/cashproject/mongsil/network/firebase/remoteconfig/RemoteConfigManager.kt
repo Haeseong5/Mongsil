@@ -5,9 +5,9 @@ import android.util.Log
 import com.cashproject.mongsil.common.extensions.fromJson
 import com.cashproject.mongsil.common.utils.log
 import com.cashproject.mongsil.network.R
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
 
 /**
  * https://medium.com/@orievictor123/android-in-app-updates-with-firebase-remote-config-5e6df335c491
