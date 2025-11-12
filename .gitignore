@@ -256,3 +256,9 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,windows
 /.idea/kotlinc.xml
 /authentication.gradle
+/.idea/AndroidProjectSystem.xml
+/.idea/ChatHistory_schema_v3.xml
+/.idea/deploymentTargetSelector.xml
+/gradle.properties.backup
+/.idea/migrations.xml
+/.idea/runConfigurations.xml
