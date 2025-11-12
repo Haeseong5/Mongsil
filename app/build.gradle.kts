@@ -17,7 +17,7 @@ android {
         applicationId = "com.cashproject.mongsil"
         minSdk = sdkMinVersion
         targetSdk = sdkTargetVersion
-        versionCode = 21
+        versionCode = 22
         versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
