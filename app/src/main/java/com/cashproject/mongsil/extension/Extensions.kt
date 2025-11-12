@@ -4,15 +4,12 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
+import android.os.Bundle
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.core.os.bundleOf
+import com.cashproject.mongsil.base.ScreenConfiguration
 
-fun String.log() {
-    Log.d("fastLog", this)
-}
-
-fun String.errorLog() {
-    Log.e("errorLog", this)
-}
 
 fun openPlayStore(context: Context) {
     val packageName: String = context.packageName
@@ -33,6 +30,14 @@ fun openPlayStore(context: Context) {
     }
 }
 
-fun Throwable.printErrorLog(tag: String = "###", message: String = "") {
-    Log.e(tag, message, this)
+
+fun Map<String, Any?>.toBundle(): Bundle = bundleOf(*this.toList().toTypedArray())
+
+
+@Composable
+fun isSmallWidthDevice(): Boolean {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+
+    return screenWidth <= ScreenConfiguration.SMALL_DEVICE_WIDTH
 }

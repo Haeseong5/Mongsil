@@ -50,9 +50,9 @@ import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.shareImage
 import com.cashproject.mongsil.extension.showToast
 import com.cashproject.mongsil.manager.showInterstitialAd
-import com.cashproject.mongsil.repository.model.Poster
-import com.cashproject.mongsil.repository.model.findPosition
 import com.cashproject.mongsil.ui.dialog.menu.MenuBottomSheetDialog
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.findPosition
 import com.cashproject.mongsil.ui.pages.locker.LockerViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError

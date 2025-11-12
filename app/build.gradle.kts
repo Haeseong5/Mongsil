@@ -1,28 +1,30 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
     id("kotlin-parcelize")
-    id("androidx.navigation.safeargs.kotlin")
-    kotlin("plugin.serialization") version kotlinVersion
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.ksp)
 }
 
 android {
-    compileSdk = 34
+    compileSdk = sdkCompileVersion
 
     defaultConfig {
         applicationId = "com.cashproject.mongsil"
-        minSdk = 26
-        targetSdk = 33
-        versionCode = 20
-        versionName = "1.1.6"
+        minSdk = sdkMinVersion
+        targetSdk = sdkTargetVersion
+        versionCode = 21
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }
 
     buildFeatures {
+        buildConfig = true
         dataBinding = true
         viewBinding = true
         compose = true
@@ -35,10 +37,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = compose_compiler_version
     }
 
     val SIGNED_STORE_FILE: String by rootProject.extra
@@ -60,7 +58,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             signingConfig = signingConfigs.getByName("release")
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -69,105 +67,105 @@ android {
 
 dependencies {
     //module
-    implementation(project(":tedadmobdialog"))
-
-    //kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":core:common"))
+    implementation(project(":core:repository"))
 
     //androidx
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation(androidMaterial)
-    implementation("androidx.annotation:annotation:1.7.0")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.android.material)
+    implementation(libs.androidx.annotation)
 
     //lifeCycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //Room
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    implementation("androidx.room:room-rxjava2:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("com.github.salehyarahmadi:RoomDatabaseBackupAndRestore:v1.0.1")
-
-    androidTestImplementation("androidx.room:room-testing:$room_version")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.rxjava2)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.room.backup.restore)
+    androidTestImplementation(libs.androidx.room.testing)
 
     //Compose
-    implementation(platform(compose_bom))
-    implementation(composeRuntime)
-    implementation(composeRuntimeLivedata)
-    implementation(composeUi)
-    implementation(composeFoundation)
-    implementation(composeFoundationLayout)
-    implementation(composeMaterial)
-    implementation(composeMaterial3)
-    implementation(composeUiViewBinding)
-    implementation(composeUiTooling)
-    implementation(composeUiToolingPreview)
-    implementation(activityCompose)
-    androidTestImplementation(platform(compose_bom))
-    androidTestImplementation(composeUiTest)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material.icon)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.viewbinding)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.activity.compose)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
-    implementation("com.github.GIGAMOLE:ComposeFadingEdges:1.0.4")
-    implementation("com.kizitonwose.calendar:compose:2.4.0")
+    implementation(libs.compose.fading.edges)
+    implementation(libs.compose.calendar)
 
     //Ads
-    implementation("com.google.android.gms:play-services-ads:$googleAdVersion")
-    implementation("com.google.firebase:firebase-ads:$googleAdVersion")
+    implementation(libs.google.ads)
 
     //Coroutines
-    implementation(coroutinesCore)
-    implementation(coroutinesAndroid)
-    implementation(coroutinesRx2)
-    implementation(coroutinesTest)
-    implementation(coroutinePlayServices)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.rx2)
+    implementation(libs.kotlinx.coroutines.test)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     //Rx
-    implementation(rxjava2)
-    implementation(rxjava2Android)
-    implementation(rxjava2Kotlin)
-    implementation("com.jakewharton.rxbinding3:rxbinding:3.1.0")
-    implementation("com.jakewharton.rxbinding3:rxbinding-material:3.1.0")
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.rxkotlin)
+    implementation(libs.rxbinding)
+    implementation(libs.rxbinding.material)
 
     //hilt
-    implementation(hiltAndroid)
-    kapt(hiltKapt)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     //navigation
-    implementation(navigationFragmentKtx)
-    implementation(navigationUiKtx)
-    implementation(navigationDynamicFeaturesFragment)
-    implementation(navigationCompose)
-    androidTestImplementation(navigationTesting)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.dynamic.features.fragment)
+    implementation(libs.androidx.navigation.compose)
+    androidTestImplementation(libs.androidx.navigation.testing)
 
     //network & json
-    implementation(retrofit2)
-    implementation(retrofit2ConverterGson)
-    implementation(retrofit2RxJava)
-    implementation(retrofit2ConverterScarlars)
-    implementation(kotlinxSerialization)
-    implementation(kotlinxSerializationConverter)
-    implementation(platform(okhttpBom))
-    implementation(okhttp)
-    implementation(okhttpLoggingIntercepter)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.adapter.rxjava2)
+    implementation(libs.retrofit.converter.scalars)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.kotlinx.serialization.converter)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
 
     //glide
-    implementation(glide)
-    kapt(glideCompiler)
+    implementation(libs.glide)
+    ksp(libs.glide.compiler)
 
     //coil
-    implementation(coil)
+    implementation(libs.coil.compose)
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.firebaseui:firebase-ui-storage:6.4.0")
-    implementation("com.google.firebase:firebase-config-ktx")
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.config.ktx)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics.ktx)
+
+    implementation(libs.review.ktx)
 }

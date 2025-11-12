@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/whiteOrBlack"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/btn_emoticon_close_button"
             android:layout_width="30dp"
@@ -18,39 +19,40 @@
             android:layout_gravity="end"
             android:layout_marginTop="@dimen/margin30"
             android:layout_marginEnd="@dimen/margin30"
-            android:src="@drawable/ic_baseline_close_24"/>
+            android:src="@drawable/ic_baseline_close_24" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="normal"
-            android:textSize="26sp"
-            android:textColor="@color/blackOrWhite"
             android:layout_margin="@dimen/margin30"
-            android:text="@string/emoticon_title" />
+            android:text="@string/emoticon_title"
+            android:textColor="@color/blackOrWhite"
+            android:textSize="26sp"
+            android:textStyle="normal" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_emoticon_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            tools:listitem="@layout/item_emoticon"
-
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="@dimen/margin16"
+            android:layout_weight="1"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:layout_weight="1"/>
+            tools:listitem="@layout/item_emoticon" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/btn_emoticon_select_button"-->
-<!--            android:layout_width="180dp"-->
-<!--            android:layout_height="56dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_margin="20dp"-->
-<!--            android:gravity="center"-->
-<!--            android:text="감정 선택"-->
-<!--            android:backgroundTint="@color/colorYellow"-->
-<!--            android:background="@drawable/round_button_shape"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="#6d5107"/>-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/btn_emoticon_select_button"-->
+        <!--            android:layout_width="180dp"-->
+        <!--            android:layout_height="56dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_margin="20dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="감정 선택"-->
+        <!--            android:backgroundTint="@color/colorYellow"-->
+        <!--            android:background="@drawable/round_button_shape"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textColor="#6d5107"/>-->
 
     </LinearLayout>
 </layout>

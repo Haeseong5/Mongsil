@@ -2,7 +2,7 @@ package com.cashproject.mongsil.manager
 
 import android.app.Activity
 import android.util.Log
-import com.cashproject.mongsil.extension.printErrorLog
+import com.cashproject.mongsil.common.utils.printErrorLog
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.interstitial.InterstitialAd

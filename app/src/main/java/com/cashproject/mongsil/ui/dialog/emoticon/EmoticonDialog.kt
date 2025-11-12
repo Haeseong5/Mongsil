@@ -11,7 +11,11 @@ import com.cashproject.mongsil.R
 import com.cashproject.mongsil.databinding.DialogEmoticonBinding
 import com.cashproject.mongsil.ui.model.Emoticon
 
-class EmoticonDialog : DialogFragment() {
+
+@Deprecated("Use EmoticonSelectionBottomSheetDialogFragment")
+class EmoticonDialog(
+    private val items: List<Emoticon>
+) : DialogFragment() {
     lateinit var binding: DialogEmoticonBinding
 
     private var btnListener: ((Emoticon) -> Unit)? = null
@@ -20,18 +24,20 @@ class EmoticonDialog : DialogFragment() {
         this.btnListener = listener
     }
 
-    lateinit var emoticonAdapter: EmoticonAdapter
+    private lateinit var emoticonAdapter: EmoticonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL,
-            android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        setStyle(
+            DialogFragment.STYLE_NORMAL,
+            android.R.style.Theme_Black_NoTitleBar_Fullscreen
+        );
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate<DialogEmoticonBinding>(
             inflater,
             R.layout.dialog_emoticon,
@@ -39,8 +45,7 @@ class EmoticonDialog : DialogFragment() {
             false
         )
 
-
-        emoticonAdapter = EmoticonAdapter()
+        emoticonAdapter = EmoticonAdapter(items)
 
         binding.rvEmoticonList.apply {
             layoutManager = GridLayoutManager(context, 3)
@@ -53,9 +58,6 @@ class EmoticonDialog : DialogFragment() {
         binding.btnEmoticonCloseButton.setOnClickListener {
             dismiss()
         }
-//        binding.btnEmoticonSelectButton.setOnClickListener {
-//            dismiss()
-//        }
 
         return binding.root
     }

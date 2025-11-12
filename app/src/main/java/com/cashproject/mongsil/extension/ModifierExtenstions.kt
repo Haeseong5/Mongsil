@@ -10,8 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.abs
 
 fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
     clickable(
@@ -54,3 +58,17 @@ fun Modifier.advancedShadow(
         )
     }
 }
+
+fun Modifier.verticalScrollDisabled() =
+    pointerInput(Unit) {
+        awaitPointerEventScope {
+            while (true) {
+                awaitPointerEvent(pass = PointerEventPass.Initial).changes.forEach {
+                    val offset = it.positionChange()
+                    if (abs(offset.y) > 0f) {
+                        it.consume()
+                    }
+                }
+            }
+        }
+    }

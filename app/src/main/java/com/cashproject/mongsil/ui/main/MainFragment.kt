@@ -2,23 +2,25 @@ package com.cashproject.mongsil.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
-import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.SuperFragment
+import com.cashproject.mongsil.common.extensions.toDate
 import com.cashproject.mongsil.databinding.FragmentMainBinding
+import com.cashproject.mongsil.extension.Direction
+import com.cashproject.mongsil.extension.dpToPx
 import com.cashproject.mongsil.extension.handleError
-import com.cashproject.mongsil.extension.toDate
-import gun0912.ted.tedadmobdialog.OnBackPressListener
-import gun0912.ted.tedadmobdialog.TedAdmobDialog
+import com.cashproject.mongsil.extension.startFakeDrag
+import com.cashproject.mongsil.util.PreferencesManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -33,10 +35,25 @@ class MainFragment : SuperFragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var callback: OnBackPressedCallback
-    private lateinit var nativeTedAdmobDialog: TedAdmobDialog
+//    private lateinit var nativeTedAdmobDialog: TedAdmobDialog
+
+    private var firstViewCreated: Boolean = true
 
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
+
+    private var lastBackPressedTime: Long = 0
+
+
+    private val mainPagerAdapter by lazy {
+        MainPagerAdapter(
+            fa = childFragmentManager,
+            lifecycle = lifecycle,
+            todayPoster = mainViewModel.getRandomSaying(
+                date = LocalDate.now().toDate(),
+            )
+        )
+    }
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -49,7 +66,14 @@ class MainFragment : SuperFragment() {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                showAdmobDialog()
+                val current = System.currentTimeMillis()
+                if (current - lastBackPressedTime < 3000) {
+                    requireActivity().finish()
+                } else {
+                    lastBackPressedTime = current
+                    Toast.makeText(context, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                }
+//                showAdmobDialog()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -57,7 +81,7 @@ class MainFragment : SuperFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initAdmobDialog()
+//        initAdmobDialog()
     }
 
     override fun onCreateView(
@@ -86,20 +110,42 @@ class MainFragment : SuperFragment() {
                 }
             }
         }
+
+        observePagerTutorialAnimEvent()
+    }
+
+    private fun observePagerTutorialAnimEvent() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.showPagerTutorialAnim.collect {
+                startPagerTutorialAnim()
+            }
+        }
+    }
+
+    private suspend fun startPagerTutorialAnim() {
+        if (!PreferencesManager.isTutorialAnimationViewed && firstViewCreated) {
+            delay(500)
+            binding.viewPager.startFakeDrag(
+                duration = 400L,
+                direction = Direction.START,
+                pxToMove = 50.dpToPx(),
+            )
+            delay(1000)
+            binding.viewPager.startFakeDrag(
+                duration = 400L,
+                direction = Direction.END,
+                pxToMove = 50.dpToPx(),
+            )
+            PreferencesManager.isTutorialAnimationViewed = true
+        }
     }
 
     private fun initPager() {
         binding.viewPager.apply {
-            offscreenPageLimit = 3
-            adapter = MainPagerAdapter(
-                fa = requireActivity().supportFragmentManager,
-                lifecycle = lifecycle,
-                todayPoster = mainViewModel.getRandomSaying(
-                    date = LocalDate.now().toDate(),
-                )
-            )
+            adapter = mainPagerAdapter
             registerOnPageChangeCallback(onPageChangeCallback)
             setCurrentItem(mainViewModel.currentPage.value, false)
+            binding.viewPager.offscreenPageLimit = 3
         }
     }
 
@@ -108,49 +154,50 @@ class MainFragment : SuperFragment() {
         callback.remove()
     }
 
-    private fun showAdmobDialog() {
-        nativeTedAdmobDialog.apply {
-            setCanceledOnTouchOutside(false)
-            setCancelable(true)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-        }
-        nativeTedAdmobDialog.show()
-    }
+//    private fun showAdmobDialog() {
+//        nativeTedAdmobDialog.apply {
+//            setCanceledOnTouchOutside(false)
+//            setCancelable(true)
+//            window?.setBackgroundDrawableResource(android.R.color.transparent)
+//        }
+//        nativeTedAdmobDialog.show()
+//    }
 
-    private fun initAdmobDialog() {
-        nativeTedAdmobDialog =
-            TedAdmobDialog.Builder(
-                requireActivity(),
-                TedAdmobDialog.AdType.NATIVE,
-                getString(R.string.ad_native_id)
-            )
-                .showReviewButton(true)
-                .setOnBackPressListener(object : OnBackPressListener {
-                    override fun onReviewClick() {
-                        Log.d(TAG, "onReviewClick")
-                    }
-
-                    override fun onFinish() {
-                        Log.d(TAG, "onFinish")
-                        requireActivity().finish()
-                    }
-
-                    override fun onAdShow() {
-                        Log.d(TAG, "onAdShow")
-                        nativeTedAdmobDialog.loadNative()
-                    }
-                })
-                .create()
-
-        nativeTedAdmobDialog.loadNative()
-        nativeTedAdmobDialog.apply {
-            setCanceledOnTouchOutside(true)
-            setCancelable(true)
-        }
-    }
+//    private fun initAdmobDialog() {
+//        nativeTedAdmobDialog =
+//            TedAdmobDialog.Builder(
+//                requireActivity(),
+//                TedAdmobDialog.AdType.NATIVE,
+//                getString(R.string.ad_native_id)
+//            )
+//                .showReviewButton(true)
+//                .setOnBackPressListener(object : OnBackPressListener {
+//                    override fun onReviewClick() {
+//                        Log.d(TAG, "onReviewClick")
+//                    }
+//
+//                    override fun onFinish() {
+//                        Log.d(TAG, "onFinish")
+//                        requireActivity().finish()
+//                    }
+//
+//                    override fun onAdShow() {
+//                        Log.d(TAG, "onAdShow")
+//                        nativeTedAdmobDialog.loadNative()
+//                    }
+//                })
+//                .create()
+//
+//        nativeTedAdmobDialog.loadNative()
+//        nativeTedAdmobDialog.apply {
+//            setCanceledOnTouchOutside(true)
+//            setCancelable(true)
+//        }
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        firstViewCreated = false
         binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
         binding.viewPager.adapter = null
         _binding = null

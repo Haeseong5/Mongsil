@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.diary
 
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+
 
 sealed interface DiaryUiEvent {
     data class SubmitComment(
@@ -18,4 +19,8 @@ sealed interface DiaryUiEvent {
     data class ShowMenuBottomSheetDialog(val poster: Poster) : DiaryUiEvent
 
     data object Finish : DiaryUiEvent
+
+    data object LoadedPoster : DiaryUiEvent
+
+    data object ClickTopLayoutEmoticon : DiaryUiEvent
 }

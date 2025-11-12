@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui.pages.diary
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -40,11 +41,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.drawable.toBitmapOrNull
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.cashproject.mongsil.common.utils.printErrorLog
 import com.cashproject.mongsil.extension.handleError
-import com.cashproject.mongsil.extension.printErrorLog
 import com.cashproject.mongsil.extension.saveImage
 import com.cashproject.mongsil.extension.shareImage
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.ui.pages.diary.model.DiaryUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -104,6 +106,7 @@ fun DiaryScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(imeVisible, commentUiVisibility) {
+                Log.d("++## ", "Click")
                 detectTapGestures {
                     updateCommentUiVisibility()
                 }
@@ -115,6 +118,7 @@ fun DiaryScreenContent(
                 .data(uiState.poster.image)
                 .build(),
             onSuccess = {
+                onUiEvent.invoke(DiaryUiEvent.LoadedPoster)
                 posterBitmap = it.result.drawable.toBitmapOrNull()
             },
             contentDescription = "명언 이미지",
@@ -169,6 +173,7 @@ fun DiaryScreenContent(
                         },
                     listState = listState,
                     comments = uiState.comments,
+                    emoticons = uiState.emoticons,
                     onLongClick = {
                         onUiEvent.invoke(DiaryUiEvent.ShowDeleteDialog(it))
                     }
@@ -176,7 +181,8 @@ fun DiaryScreenContent(
                 CommentInputBox(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    emoticonId = uiState.emoticonId,
+                    emoticonUrl = uiState.emoticons.find { it.id == uiState.emoticonId }?.imageUrl
+                        ?: "",
                     text = uiState.inputText,
                     onValueChange = {
                         onUiEvent.invoke(DiaryUiEvent.TextChanged(it))
@@ -205,18 +211,6 @@ private fun Preview() {
         DiaryScreenContent(
             uiState = DiaryUiState(
                 comments = listOf(
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
-                    Comment(),
                 )
             )
         )

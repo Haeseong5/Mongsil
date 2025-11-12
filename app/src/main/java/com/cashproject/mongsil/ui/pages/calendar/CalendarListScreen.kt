@@ -1,6 +1,8 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
 import com.cashproject.mongsil.ui.theme.dpToSp
 import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarListScreen(
     listState: LazyListState,

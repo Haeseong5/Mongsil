@@ -1,14 +1,21 @@
 package com.cashproject.mongsil.ui
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.BaseActivity
-import com.cashproject.mongsil.data.firebase.RemoteConfigManager
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
 import com.cashproject.mongsil.databinding.ActivityMainBinding
 import com.cashproject.mongsil.extension.getNavigationBarHeight
+import com.cashproject.mongsil.network.firebase.remoteconfig.RemoteConfigManager
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 

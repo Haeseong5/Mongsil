@@ -3,10 +3,12 @@ package com.cashproject.mongsil.ui.main
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.base.BaseViewModel
 import com.cashproject.mongsil.data.firebase.fcm.PushManager
-import com.cashproject.mongsil.repository.PosterRepository
-import com.cashproject.mongsil.repository.model.Poster
+import com.cashproject.mongsil.repository.repository.PosterRepository
 import com.cashproject.mongsil.ui.pages.calendar.CalendarScreenType
 import com.cashproject.mongsil.ui.pages.calendar.defaultCalendarScreenType
+import com.cashproject.mongsil.ui.pages.diary.model.Poster
+import com.cashproject.mongsil.ui.pages.diary.model.toDomain
+import com.cashproject.mongsil.ui.pages.diary.model.toPoster
 import com.cashproject.mongsil.util.PreferencesManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,18 +33,23 @@ class MainViewModel(
         MutableStateFlow(defaultCalendarScreenType)
     val visibleCalendarScreenType: StateFlow<CalendarScreenType> = _visibleCalendarScreenType
 
-    // 캘린더 리스트 화면에서 마지막으로 선택한 포스터의 index
-    var selectedLastPosterIndex = 0
+    val showPagerTutorialAnim: MutableSharedFlow<Unit> = MutableSharedFlow()
 
     init {
         initPushNotificationSettings()
         loadAllPosters()
     }
 
+    fun emitPagerTutorialAnimEvent() {
+        viewModelScope.launch {
+            showPagerTutorialAnim.emit(Unit)
+        }
+    }
+
     private fun loadAllPosters() {
         viewModelScope.launch {
             try {
-                _allPosters.emit(posterRepository.getAllPosters())
+                _allPosters.emit(posterRepository.getAllPosters().toPoster())
             } catch (e: Exception) {
                 error.emit(e)
             }
@@ -52,8 +59,8 @@ class MainViewModel(
     fun getRandomSaying(date: Date): Poster {
         return posterRepository.getRandomSaying(
             date = date,
-            posters = allPosters.value
-        )
+            posters = allPosters.value.toDomain()
+        ).toPoster()
     }
 
     private fun initPushNotificationSettings() {

@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.ui.pages.calendar
 
-import com.cashproject.mongsil.extension.toLocalDate
+import com.cashproject.mongsil.common.extensions.toLocalDate
 import com.cashproject.mongsil.repository.model.DailyEmoticon
 import java.time.LocalDate
 
@@ -11,7 +11,7 @@ data class CalendarUiModel(
 
 fun DailyEmoticon.toUiModel(): CalendarUiModel {
     return CalendarUiModel(
-        emotionId = emoticon.id,
+        emotionId = emoticonId,
         date = date.toLocalDate()
     )
 }

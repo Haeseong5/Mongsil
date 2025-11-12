@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.cashproject.mongsil.R
 import com.cashproject.mongsil.base.model.State
-import com.cashproject.mongsil.extension.errorLog
+import com.cashproject.mongsil.common.utils.errorLog
 import com.cashproject.mongsil.ui.MainActivity
 import com.cashproject.mongsil.util.PreferencesManager
 import com.google.firebase.firestore.DocumentReference

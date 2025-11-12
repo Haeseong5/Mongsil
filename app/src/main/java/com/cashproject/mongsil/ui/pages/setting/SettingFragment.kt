@@ -12,12 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cashproject.mongsil.BuildConfig
 import com.cashproject.mongsil.R
-import com.cashproject.mongsil.base.App
-import com.cashproject.mongsil.data.firebase.isOldVersion
 import com.cashproject.mongsil.databinding.FragmentSettingComposeBinding
 import com.cashproject.mongsil.extension.intentAction
 import com.cashproject.mongsil.extension.openPlayStore
 import com.cashproject.mongsil.extension.showToast
+import com.cashproject.mongsil.network.firebase.remoteconfig.isOldVersion
 import com.cashproject.mongsil.ui.dialog.CheckDialog
 import com.cashproject.mongsil.ui.main.IntroActivity
 import com.cashproject.mongsil.ui.theme.MongsilTheme
@@ -90,7 +89,7 @@ class SettingFragment : Fragment() {
                     getString(
                         R.string.app_version,
                         BuildConfig.VERSION_NAME,
-                        App.appVersion.latestAppVersionName
+                        "appVersion.latestAppVersionName" // TODO 수정
                     )
                 )
             }

@@ -19,15 +19,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cashproject.mongsil.extension.DateFormat
+import coil.compose.AsyncImage
+import com.cashproject.mongsil.common.extensions.DateFormat
+import com.cashproject.mongsil.common.extensions.toTextFormat
 import com.cashproject.mongsil.extension.getStatusBarHeight
 import com.cashproject.mongsil.extension.noRippleClickable
-import com.cashproject.mongsil.extension.toTextFormat
 import com.cashproject.mongsil.ui.component.HorizontalSpacer
+import com.cashproject.mongsil.ui.pages.diary.model.DiaryUiState
 import com.cashproject.mongsil.ui.theme.primaryTextStyle
 import com.cashproject.mongsil.ui.theme.textShadow
 
@@ -71,7 +73,10 @@ fun DiaryTopLayout(
         Row(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 6.dp),
+                .padding(top = 6.dp)
+                .noRippleClickable {
+                    onUiEvent.invoke(DiaryUiEvent.ClickTopLayoutEmoticon)
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             HorizontalSpacer(dp = 32.dp)
@@ -86,10 +91,10 @@ fun DiaryTopLayout(
                 )
             )
             HorizontalSpacer(dp = 8.dp)
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .size(24.dp),
-                painter = painterResource(id = uiState.dailyEmoticon.emoticon.icon),
+                model = uiState.emoticons.find { it.id == uiState.emoticonId }?.imageUrl ?: "",
                 contentDescription = ""
             )
         }
@@ -107,4 +112,10 @@ fun DiaryTopLayout(
             contentDescription = "info"
         )
     }
+}
+
+@Preview
+@Composable
+private fun Preview(){
+    DiaryTopLayout()
 }

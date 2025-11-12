@@ -42,4 +42,7 @@
     <string name="setting_other_app_from_the_developer">개발자의 다른 앱</string>
     <string name="setting_app_version_check">앱 버전 확인</string>
 
+    <!--EmoticonBottomSheetDialogFragment-->
+    <string name="emoticon_bottom_sheet_dialog_fragment_title">오늘 기분은 어때요?</string>
+
 </resources>

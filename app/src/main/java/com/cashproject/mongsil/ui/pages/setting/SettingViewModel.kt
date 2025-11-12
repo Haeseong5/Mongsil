@@ -1,9 +1,9 @@
 package com.cashproject.mongsil.ui.pages.setting
 
 import androidx.lifecycle.ViewModel
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.storage
 
 
 class SettingViewModel : ViewModel() {

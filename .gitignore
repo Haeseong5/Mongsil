@@ -55,6 +55,10 @@ captures/
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
+
+# unKnown File
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
 #*.jks
@@ -252,3 +256,9 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,windows
 /.idea/kotlinc.xml
 /authentication.gradle
+/.idea/AndroidProjectSystem.xml
+/.idea/ChatHistory_schema_v3.xml
+/.idea/deploymentTargetSelector.xml
+/gradle.properties.backup
+/.idea/migrations.xml
+/.idea/runConfigurations.xml
