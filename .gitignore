@@ -212,6 +212,8 @@ obj/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/codeStyles/
+.idea/deviceManager.xml
 
 # OS-specific files
 .DS_Store
@@ -262,3 +264,41 @@ fabric.properties
 /gradle.properties.backup
 /.idea/migrations.xml
 /.idea/runConfigurations.xml
+
+### Kotlin Multiplatform ###
+# KMP metadata and transformed libraries
+kotlin/
+.kotlin/
+*.klib
+
+# Compose Multiplatform resources
+**/generated/
+**/compose-resources/
+
+# iOS specific
+composeApp/build/xcode-frameworks/
+iosApp/build/
+iosApp/DerivedData/
+iosApp/*.xcodeproj/xcuserdata/
+iosApp/*.xcodeproj/project.xcworkspace/xcuserdata/
+iosApp/*.xcworkspace/xcuserdata/
+
+# Xcode
+xcuserdata/
+*.xcuserdatad
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Firebender
+.idea/firebender/
+
+# Configuration cache
+.gradle/configuration-cache/
