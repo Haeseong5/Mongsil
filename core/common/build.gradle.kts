@@ -70,6 +70,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //Ads
+    implementation(libs.google.ads)
+
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

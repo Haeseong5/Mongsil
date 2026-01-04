@@ -7,10 +7,10 @@
     <!--기기를 껐다가 켰을 때도 알람이 유효하도록 함-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-<!--    <uses-permission-->
-<!--        android:name="android.permission.WRITE_EXTERNAL_STORAGE"-->
-<!--        android:maxSdkVersion="28"-->
-<!--        tools:ignore="ScopedStorage" />-->
+    <!--    <uses-permission-->
+    <!--        android:name="android.permission.WRITE_EXTERNAL_STORAGE"-->
+    <!--        android:maxSdkVersion="28"-->
+    <!--        tools:ignore="ScopedStorage" />-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -44,10 +44,10 @@
             </intent-filter>
         </receiver>
 
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1939032811151400~6706129481" />
-
         <!--
             FirebaseMessagingService를 확장하는 서비스를 추가합니다.
             백그라운드에서 앱의 알림을 수신하는 것 외에 다른 방식으로 메시지를 처리하려는 경우에 필요합니다.

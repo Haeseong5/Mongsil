@@ -5,8 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +25,9 @@ import com.cashproject.mongsil.databinding.FragmentMainBinding
 import com.cashproject.mongsil.extension.Direction
 import com.cashproject.mongsil.extension.dpToPx
 import com.cashproject.mongsil.extension.handleError
+import com.cashproject.mongsil.extension.openPlayStoreForReview
 import com.cashproject.mongsil.extension.startFakeDrag
+import com.cashproject.mongsil.ui.dialog.AdMobDialog
 import com.cashproject.mongsil.util.PreferencesManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -35,15 +44,11 @@ class MainFragment : SuperFragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var callback: OnBackPressedCallback
-//    private lateinit var nativeTedAdmobDialog: TedAdmobDialog
 
     private var firstViewCreated: Boolean = true
 
     private var _binding: FragmentMainBinding? = null
     val binding get() = _binding!!
-
-    private var lastBackPressedTime: Long = 0
-
 
     private val mainPagerAdapter by lazy {
         MainPagerAdapter(
@@ -66,14 +71,7 @@ class MainFragment : SuperFragment() {
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val current = System.currentTimeMillis()
-                if (current - lastBackPressedTime < 3000) {
-                    requireActivity().finish()
-                } else {
-                    lastBackPressedTime = current
-                    Toast.makeText(context, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-                }
-//                showAdmobDialog()
+                mainViewModel.handleBackPressed()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -81,7 +79,7 @@ class MainFragment : SuperFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        initAdmobDialog()
+        mainViewModel.initAdLoader(requireContext())
     }
 
     override fun onCreateView(
@@ -90,6 +88,45 @@ class MainFragment : SuperFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+
+        val composeView = ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                var showExitDialog by remember { mutableStateOf(false) }
+                val nativeAd by mainViewModel.nativeAd.collectAsState()
+                val isAdLoading by mainViewModel.isAdLoading.collectAsState()
+
+                LaunchedEffect(Unit) {
+                    mainViewModel.showExitDialog.collect {
+                        showExitDialog = true
+                        mainViewModel.loadAdForExitDialog()
+                    }
+                }
+
+                if (showExitDialog) {
+                    AdMobDialog(
+                        nativeAd = nativeAd,
+                        isLoading = isAdLoading,
+                        onReview = {
+                            showExitDialog = false
+                            openPlayStoreForReview(requireContext())
+                        },
+                        onClose = {
+                            showExitDialog = false
+                            mainViewModel.cleanupAd()
+                            requireActivity().finish()
+
+                        },
+                        onDismissRequest = {
+                            showExitDialog = false
+                        }
+                    )
+                }
+            }
+        }
+
+        binding.root.addView(composeView, 0, 0)
+
         return binding.root
     }
 
@@ -154,52 +191,12 @@ class MainFragment : SuperFragment() {
         callback.remove()
     }
 
-//    private fun showAdmobDialog() {
-//        nativeTedAdmobDialog.apply {
-//            setCanceledOnTouchOutside(false)
-//            setCancelable(true)
-//            window?.setBackgroundDrawableResource(android.R.color.transparent)
-//        }
-//        nativeTedAdmobDialog.show()
-//    }
-
-//    private fun initAdmobDialog() {
-//        nativeTedAdmobDialog =
-//            TedAdmobDialog.Builder(
-//                requireActivity(),
-//                TedAdmobDialog.AdType.NATIVE,
-//                getString(R.string.ad_native_id)
-//            )
-//                .showReviewButton(true)
-//                .setOnBackPressListener(object : OnBackPressListener {
-//                    override fun onReviewClick() {
-//                        Log.d(TAG, "onReviewClick")
-//                    }
-//
-//                    override fun onFinish() {
-//                        Log.d(TAG, "onFinish")
-//                        requireActivity().finish()
-//                    }
-//
-//                    override fun onAdShow() {
-//                        Log.d(TAG, "onAdShow")
-//                        nativeTedAdmobDialog.loadNative()
-//                    }
-//                })
-//                .create()
-//
-//        nativeTedAdmobDialog.loadNative()
-//        nativeTedAdmobDialog.apply {
-//            setCanceledOnTouchOutside(true)
-//            setCancelable(true)
-//        }
-//    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         firstViewCreated = false
         binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
         binding.viewPager.adapter = null
+        mainViewModel.cleanupAd()
         _binding = null
     }
 }

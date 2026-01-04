@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="12dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 메인 콘텐츠 영역 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 헤더 영역 (아이콘 + 제목 + 광고주) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="0dp"
+                android:paddingEnd="90dp">
+
+                <!-- 광고 아이콘 -->
+                <ImageView
+                    android:id="@+id/ad_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@android:drawable/ic_menu_gallery"
+                    android:contentDescription="Ad Icon"
+                    android:scaleType="centerCrop" />
+
+                <!-- 제목과 광고주 정보 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!-- 광고 제목 -->
+                    <TextView
+                        android:id="@+id/ad_headline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="Ad Headline" />
+
+                    <!-- 광고주 정보 -->
+                    <TextView
+                        android:id="@+id/ad_advertiser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:background="@android:color/transparent"
+                        android:padding="2dp"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp"
+                        tools:text="Advertiser" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 미디어 뷰 (이미지/비디오) -->
+            <com.google.android.gms.ads.nativead.MediaView
+                android:id="@+id/ad_media"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/darker_gray" />
+
+            <!-- 광고 본문 -->
+            <TextView
+                android:id="@+id/ad_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                tools:text="Ad body content goes here. This is where the ad description will be displayed." />
+        </LinearLayout>
+
+        <!-- Call to Action 버튼 - 우측 상단 -->
+        <TextView
+            android:id="@+id/ad_call_to_action"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/round_button_shape"
+            android:backgroundTint="@color/colorYellow"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/floating_action_btn_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="설치" />
+
+    </FrameLayout>
+
+</com.google.android.gms.ads.nativead.NativeAdView>
