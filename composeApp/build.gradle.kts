@@ -1,19 +1,17 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.sqldelight)
     id("com.android.application")
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
         }
     }
     
@@ -30,10 +28,8 @@ kotlin {
     
     // iOS Deployment Target 설정
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().configureEach {
-        compilations.configureEach {
-            compilerOptions.configure {
-                freeCompilerArgs.add("-Xbinary=bundleId=com.cashproject.mongsil.kmp.ComposeApp")
-            }
+        binaries.all {
+            freeCompilerArgs += "-Xbinary=bundleId=com.cashproject.mongsil.kmp.ComposeApp"
         }
     }
     
@@ -42,6 +38,17 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.appcompat)
+            
+            // Koin Android
+            implementation(libs.koin.android)
+            
+            // SQLDelight Android Driver
+            implementation(libs.sqldelight.android.driver)
+        }
+        
+        iosMain.dependencies {
+            // SQLDelight Native Driver for iOS
+            implementation(libs.sqldelight.native.driver)
         }
         
         commonMain.dependencies {
@@ -58,6 +65,10 @@ kotlin {
             // Koin for KMP
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            
+            // SQLDelight
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutines.extensions)
         }
     }
 }
@@ -89,6 +100,15 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+// SQLDelight 설정
+sqldelight {
+    databases {
+        create("MongsilDatabase") {
+            packageName.set("com.cashproject.mongsil.kmp.database")
+        }
     }
 }
 

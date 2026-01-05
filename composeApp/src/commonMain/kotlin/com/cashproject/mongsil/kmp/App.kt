@@ -29,10 +29,11 @@ import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 
 @Composable
-fun App() {
+fun App(koinConfiguration: (org.koin.core.KoinApplication.() -> Unit)? = null) {
     // Koin 초기화
     KoinApplication(application = {
         modules(getKoinModules())
+        koinConfiguration?.invoke(this)
     }) {
         MaterialTheme {
             Surface(

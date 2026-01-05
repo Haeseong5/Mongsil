@@ -1,0 +1,19 @@
+-- Counter 테이블 정의
+CREATE TABLE CounterEntity (
+    id INTEGER PRIMARY KEY NOT NULL,
+    count INTEGER NOT NULL,
+    lastUpdated INTEGER NOT NULL
+);
+
+-- 카운터 값 조회
+getCounter:
+SELECT * FROM CounterEntity WHERE id = 1;
+
+-- 카운터 값 저장/업데이트
+insertOrUpdateCounter:
+INSERT OR REPLACE INTO CounterEntity (id, count, lastUpdated)
+VALUES (1, ?, ?);
+
+-- 카운터 삭제 (초기화 시 사용)
+deleteCounter:
+DELETE FROM CounterEntity WHERE id = 1;
