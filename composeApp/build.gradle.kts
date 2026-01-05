@@ -78,11 +78,11 @@ android {
     compileSdk = sdkCompileVersion
     
     defaultConfig {
-        applicationId = "com.cashproject.mongsil.kmp"
+        applicationId = "com.cashproject.mongsil"
         minSdk = sdkMinVersion
         targetSdk = sdkTargetVersion
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 24
+        versionName = "2.0.0"
     }
     
     packaging {
@@ -91,9 +91,32 @@ android {
         }
     }
     
+    // 기존 앱과 동일한 서명 키 사용 (스토어 업데이트 필수!)
+    val SIGNED_STORE_FILE: String by rootProject.extra
+    val SIGNED_STORE_PASSWORD: String by rootProject.extra
+    val SIGNED_STORE_KEY_ALIAS: String by rootProject.extra
+    val SIGNED_STORE_KEY_PASSWORD: String by rootProject.extra
+    
+    signingConfigs {
+        create("release") {
+            storeFile = file(SIGNED_STORE_FILE)
+            storePassword = SIGNED_STORE_PASSWORD
+            keyAlias = SIGNED_STORE_KEY_ALIAS
+            keyPassword = SIGNED_STORE_KEY_PASSWORD
+        }
+    }
+    
     buildTypes {
+        getByName("debug") {
+
+        }
+        
         getByName("release") {
+            // 릴리즈는 기존 앱과 동일한 ID 사용
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
+            // TODO: 배포 전 ProGuard 규칙 추가
+//             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     
