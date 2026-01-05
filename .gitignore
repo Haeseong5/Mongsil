@@ -214,6 +214,7 @@ obj/
 .idea/uiDesigner.xml
 .idea/codeStyles/
 .idea/deviceManager.xml
+.idea/xcode.xml
 
 # OS-specific files
 .DS_Store
@@ -267,7 +268,8 @@ fabric.properties
 
 ### Kotlin Multiplatform ###
 # KMP metadata and transformed libraries
-kotlin/
+# Note: Only ignore kotlin/ in build directories, not source code
+**/build/kotlin/
 .kotlin/
 *.klib
 
