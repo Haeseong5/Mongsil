@@ -54,6 +54,10 @@ kotlin {
             
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
+            
+            // Koin for KMP
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
         }
     }
 }
