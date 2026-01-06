@@ -44,11 +44,17 @@ kotlin {
             
             // SQLDelight Android Driver
             implementation(libs.sqldelight.android.driver)
+            
+            // Ktor Android Engine
+            implementation(libs.ktor.client.okhttp)
         }
         
         iosMain.dependencies {
             // SQLDelight Native Driver for iOS
             implementation(libs.sqldelight.native.driver)
+            
+            // Ktor iOS Engine
+            implementation(libs.ktor.client.darwin)
         }
         
         commonMain.dependencies {
@@ -72,6 +78,12 @@ kotlin {
             // SQLDelight
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines.extensions)
+            
+            // Ktor Client
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
         }
     }
 }

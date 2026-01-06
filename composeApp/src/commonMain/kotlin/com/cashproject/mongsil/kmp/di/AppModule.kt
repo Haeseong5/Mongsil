@@ -2,6 +2,8 @@ package com.cashproject.mongsil.kmp.di
 
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilDatabase
+import com.cashproject.mongsil.kmp.network.ApiService
+import com.cashproject.mongsil.kmp.network.HttpClientFactory
 import com.cashproject.mongsil.kmp.repository.CounterRepository
 import com.cashproject.mongsil.kmp.viewmodel.CounterViewModel
 import org.koin.core.module.Module
@@ -17,6 +19,10 @@ expect fun platformModule(): Module
  * 공통 애플리케이션 모듈
  */
 val appModule = module {
+    // Network
+    single { HttpClientFactory.create() }
+    single { ApiService(get()) }
+    
     // Database
     single {
         val driverFactory = get<DatabaseDriverFactory>()
