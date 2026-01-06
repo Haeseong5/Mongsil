@@ -13,20 +13,31 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.kmp.di.getKoinModules
+import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.viewmodel.CounterViewModel
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+
+enum class Screen {
+    COUNTER,
+    CALENDAR
+}
 
 @Composable
 fun App(koinConfiguration: (org.koin.core.KoinApplication.() -> Unit)? = null) {
@@ -40,7 +51,16 @@ fun App(koinConfiguration: (org.koin.core.KoinApplication.() -> Unit)? = null) {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                CounterScreen()
+                var currentScreen by remember { mutableStateOf(Screen.COUNTER) }
+                
+                when (currentScreen) {
+                    Screen.COUNTER -> CounterScreen(
+                        onNavigateToCalendar = { currentScreen = Screen.CALENDAR }
+                    )
+                    Screen.CALENDAR -> CalendarScreen(
+                        onNavigateBack = { currentScreen = Screen.COUNTER }
+                    )
+                }
             }
         }
     }
@@ -48,7 +68,8 @@ fun App(koinConfiguration: (org.koin.core.KoinApplication.() -> Unit)? = null) {
 
 @Composable
 fun CounterScreen(
-    viewModel: CounterViewModel = koinInject()
+    viewModel: CounterViewModel = koinInject(),
+    onNavigateToCalendar: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -147,7 +168,17 @@ fun CounterScreen(
                 Text("🔄 초기화")
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // 캘린더 이동 버튼
+            FilledTonalButton(
+                onClick = onNavigateToCalendar,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("📅 캘린더 보기")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // 플랫폼 정보
             Text(

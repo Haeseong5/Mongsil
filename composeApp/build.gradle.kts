@@ -62,6 +62,9 @@ kotlin {
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
             
+            // DateTime
+            implementation(libs.kotlinx.datetime)
+            
             // Koin for KMP
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
