@@ -53,12 +53,26 @@ fun App(koinConfiguration: (org.koin.core.KoinApplication.() -> Unit)? = null) {
             ) {
                 var currentScreen by remember { mutableStateOf(Screen.COUNTER) }
                 
+                // 샘플 데이터: 일기가 작성된 날짜들
+                val recordedDates = remember { 
+                    setOf(
+                        kotlinx.datetime.LocalDate(2026, 1, 1),
+                        kotlinx.datetime.LocalDate(2026, 1, 5),
+                        kotlinx.datetime.LocalDate(2026, 1, 6),
+                    )
+                }
+                
                 when (currentScreen) {
                     Screen.COUNTER -> CounterScreen(
                         onNavigateToCalendar = { currentScreen = Screen.CALENDAR }
                     )
                     Screen.CALENDAR -> CalendarScreen(
-                        onNavigateBack = { currentScreen = Screen.COUNTER }
+                        onNavigateBack = { currentScreen = Screen.COUNTER },
+                        recordedDates = recordedDates,
+                        onDateClick = { date ->
+                            println("날짜 클릭: $date")
+                            // TODO: 일기 작성 화면으로 이동
+                        }
                     )
                 }
             }
