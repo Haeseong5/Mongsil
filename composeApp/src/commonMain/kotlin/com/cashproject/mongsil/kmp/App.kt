@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.kmp.di.getKoinModules
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.viewmodel.CounterViewModel
+import kotlinx.datetime.LocalDate
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 
@@ -56,9 +56,9 @@ fun App(koinConfiguration: (org.koin.core.KoinApplication.() -> Unit)? = null) {
                 // 샘플 데이터: 일기가 작성된 날짜들
                 val recordedDates = remember { 
                     setOf(
-                        kotlinx.datetime.LocalDate(2026, 1, 1),
-                        kotlinx.datetime.LocalDate(2026, 1, 5),
-                        kotlinx.datetime.LocalDate(2026, 1, 6),
+                        LocalDate(2026, 1, 1),
+                        LocalDate(2026, 1, 5),
+                        LocalDate(2026, 1, 6),
                     )
                 }
                 

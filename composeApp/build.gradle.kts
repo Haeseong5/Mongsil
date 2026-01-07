@@ -39,6 +39,9 @@ kotlin {
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.appcompat)
             
+            // Navigation Compose (Android 전용)
+            implementation(libs.androidx.navigation.compose)
+            
             // Koin Android
             implementation(libs.koin.android)
             
