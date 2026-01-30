@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
     id("com.android.application")
 }
@@ -41,9 +42,6 @@ kotlin {
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.appcompat)
             
-            // Navigation Compose (Android 전용)
-            implementation(libs.androidx.navigation.compose)
-            
             // Koin Android
             implementation(libs.koin.android)
             
@@ -63,12 +61,12 @@ kotlin {
         }
         
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.runtime)
+            implementation(libs.foundation)
+            implementation(libs.material3)
+            implementation(libs.ui)
+            implementation(libs.components.resources)
+            implementation(libs.ui.tooling.preview)
             
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
@@ -76,9 +74,14 @@ kotlin {
             // DateTime
             implementation(libs.kotlinx.datetime)
             
+            // Kotlin Serialization
+            implementation(libs.kotlinx.serialization.json)
+            
             // Koin for KMP
+            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel.navigation)
             
             // SQLDelight
             implementation(libs.sqldelight.runtime)

@@ -24,14 +24,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -40,6 +35,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,15 +65,19 @@ fun CalendarScreen(
     recordedDates: Set<LocalDate> = emptySet(), // 일기가 작성된 날짜들
     onDateClick: (LocalDate) -> Unit = {} // 날짜 클릭 시 일기 작성
 ) {
+    // 오늘 날짜
     val today = remember {
-        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
     }
-    
+
+    // 상태 관리
     var selectedDate by remember { mutableStateOf<LocalDate?>(today) }
-    var currentYear by remember { mutableStateOf(today.year) }
-    var currentMonth by remember { mutableStateOf(today.monthNumber) }
-    var animationDirection by remember { mutableStateOf(1) } // 1: next, -1: previous
-    
+    var currentYear by remember { mutableIntStateOf(today.year) }
+    var currentMonth by remember { mutableIntStateOf(today.monthNumber) }
+    var animationDirection by remember { mutableIntStateOf(1) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,10 +89,7 @@ fun CalendarScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "뒤로 가기"
-                        )
+                        Box(modifier = Modifier.size(24.dp).background(Color.Red))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -132,13 +129,9 @@ fun CalendarScreen(
                             currentMonth--
                         }
                     }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                            contentDescription = "이전 달",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Box(modifier = Modifier.size(24.dp).background(Color.Red))
                     }
-                    
+
                     // 월/년도 표시 with Animation
                     AnimatedContent(
                         targetState = "${currentYear}년 ${currentMonth}월",
@@ -160,7 +153,7 @@ fun CalendarScreen(
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
-                    
+
                     IconButton(onClick = {
                         animationDirection = 1
                         if (currentMonth == 12) {
@@ -170,27 +163,23 @@ fun CalendarScreen(
                             currentMonth++
                         }
                     }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = "다음 달",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Box(modifier = Modifier.size(24.dp).background(Color.Red))
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(24.dp))
-            
+
             // 요일 헤더
             DaysOfWeekHeader()
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 캘린더 그리드
             val daysInMonth = getDaysInMonth(currentYear, currentMonth)
             val firstDayOfMonth = LocalDate(currentYear, currentMonth, 1)
             val startDayOfWeek = firstDayOfMonth.dayOfWeek.isoDayNumber % 7 // 일요일을 0으로
-            
+
             val calendarDays = buildList {
                 // 이전 달의 빈 칸
                 repeat(startDayOfWeek) {
@@ -201,7 +190,7 @@ fun CalendarScreen(
                     add(LocalDate(currentYear, currentMonth, day))
                 }
             }
-            
+
             AnimatedContent(
                 targetState = "${currentYear}-${currentMonth}",
                 transitionSpec = {
@@ -226,7 +215,7 @@ fun CalendarScreen(
                                 isSelected = selectedDate == date,
                                 isToday = today == date,
                                 hasRecord = recordedDates.contains(date),
-                                onClick = { 
+                                onClick = {
                                     selectedDate = it
                                     onDateClick(it)
                                 }
@@ -237,9 +226,9 @@ fun CalendarScreen(
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(24.dp))
-            
+
             // 선택된 날짜 정보
             if (selectedDate != null) {
                 Card(
@@ -263,11 +252,13 @@ fun CalendarScreen(
                                 Text(
                                     text = "선택된 날짜",
                                     fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(
+                                        alpha = 0.7f
+                                    )
                                 )
-                                
+
                                 Spacer(modifier = Modifier.height(8.dp))
-                                
+
                                 Text(
                                     text = "${selectedDate!!.year}년 ${selectedDate!!.monthNumber}월 ${selectedDate!!.dayOfMonth}일",
                                     fontSize = 20.sp,
@@ -275,7 +266,7 @@ fun CalendarScreen(
                                     color = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                             }
-                            
+
                             // 상태 표시
                             if (recordedDates.contains(selectedDate)) {
                                 Text(
@@ -286,7 +277,7 @@ fun CalendarScreen(
                                 )
                             }
                         }
-                        
+
                         if (selectedDate == today) {
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
@@ -299,9 +290,9 @@ fun CalendarScreen(
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // 통계 정보
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -319,8 +310,8 @@ fun CalendarScreen(
                     StatItem("전체 기록", recordedDates.size.toString())
                     StatItem(
                         "이번 달",
-                        recordedDates.count { 
-                            it.year == currentYear && it.monthNumber == currentMonth 
+                        recordedDates.count {
+                            it.year == currentYear && it.monthNumber == currentMonth
                         }.toString()
                     )
                 }
@@ -355,7 +346,7 @@ private fun StatItem(label: String, value: String) {
 @Composable
 private fun DaysOfWeekHeader() {
     val weekDayNames = listOf("일", "월", "화", "수", "목", "금", "토")
-    
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -409,8 +400,8 @@ private fun DayCell(
                 )
                 .border(
                     width = if (hasRecord && !isSelected) 2.dp else 0.dp,
-                    color = if (hasRecord && !isSelected) 
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) 
+                    color = if (hasRecord && !isSelected)
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                     else Color.Transparent,
                     shape = CircleShape
                 )
@@ -434,7 +425,7 @@ private fun DayCell(
                 }
             )
         }
-        
+
         // 오늘 표시 (작은 닷)
         if (isToday && !isSelected) {
             Box(
@@ -445,7 +436,7 @@ private fun DayCell(
                     .align(Alignment.BottomCenter)
             )
         }
-        
+
         // 기록 있음 표시 (작은 닷)
         if (hasRecord && !isSelected && !isToday) {
             Box(
