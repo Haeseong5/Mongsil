@@ -1,0 +1,115 @@
+package com.cashproject.mongsil.kmp.designsystem
+
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.Color
+
+
+@Immutable
+data class MongsilColorScheme(
+    val fillPrimary: Color,
+    val fill0: Color,
+    val fill50: Color,
+    val fill100: Color,
+    val fill200: Color,
+    val fill300: Color,
+    val fill400: Color,
+    val fill500: Color,
+    val fillDisable: Color,
+    val fillRed: Color,
+    val fillBlue: Color,
+    val fillGreen: Color,
+    val fillYellow: Color,
+    val fillOrange: Color,
+    val fillBgRed: Color,
+    val fillBgBlue: Color,
+    val fillBgGreen: Color,
+    val fillBgYellow: Color,
+    val fillBgOrange: Color,
+    val fillBgPrimary: Color,
+    val fillBadge: Color,
+    val labelPrimary: Color,
+    val labelStrong: Color,
+    val labelRegular: Color,
+    val labelWeak: Color,
+    val labelDisable: Color,
+    val primary100: Color,
+    val card: Color,
+    val background: Color,
+    val line: Color,
+    val alert: Color,
+    val toolingBackground: List<Pair<Float, Color>>
+) {
+    companion object Companion {
+        val lightColorScheme = MongsilColorScheme(
+            fillPrimary = Primary500,
+            fill0 = White,
+            fill50 = Gray50,
+            fill100 = Gray100,
+            fill200 = Gray200,
+            fill300 = Gray300,
+            fill400 = Gray400,
+            fill500 = Gray500,
+            fillDisable = Gray300,
+            fillRed = Error,
+            fillBlue = Progress,
+            fillGreen = Success,
+            fillYellow = Warning,
+            fillOrange = Warning2,
+            fillBgRed = BackgroundError,
+            fillBgBlue = BackgroundProgress,
+            fillBgGreen = BackgroundSuccess,
+            fillBgYellow = BackgroundWarning,
+            fillBgOrange = BackgroundWarning2,
+            fillBgPrimary = Primary100,
+            fillBadge = White,
+            labelPrimary = Primary500,
+            labelStrong = Default,
+            labelRegular = Gray800,
+            labelWeak = Gray600,
+            labelDisable = Gray400,
+            primary100 = Primary100,
+            card = White,
+            background = Gray100,
+            line = Gray200,
+            alert = White,
+            toolingBackground = ToolingWhiteBackground
+        )
+
+        val darkColorScheme: MongsilColorScheme =
+            MongsilColorScheme(
+                fillPrimary = Color(0xFF7C5FF3),
+                fill0 = Black100,
+                fill50 = Gray900,
+                fill100 = Gray800,
+                fill200 = Gray700,
+                fill300 = Gray600,
+                fill400 = Gray500,
+                fill500 = Gray600,
+                fillDisable = Gray700,
+                fillRed = Color(0xFFEA3434),
+                fillBlue = Color(0xFF405ED9),
+                fillGreen = Color(0xFF1CBA76),
+                fillYellow = Color(0xFFF3BE37),
+                fillOrange = Color(0xFFEA8832),
+                fillBgRed = Color(0xFFF3C6C6),
+                fillBgBlue = Color(0xFFC5CEF4),
+                fillBgGreen = Color(0xFFD2F4E4),
+                fillBgYellow = Color(0xFFF1E3C1),
+                fillBgOrange = Color(0xFFF7E1CD),
+                fillBgPrimary = Color(0xFF5D38E5),
+                fillBadge = Gray900,
+                labelPrimary = Color(0xFFAE99FF),
+                labelStrong = White,
+                labelRegular = Gray300,
+                labelWeak = Gray600,
+                labelDisable = Gray700,
+                primary100 = Color(0xFF302476),
+                card = Default,
+                background = Black100,
+                line = Gray800,
+                alert = Gray900,
+                toolingBackground = ToolingBlackBackground
+            )
+    }
+}
+

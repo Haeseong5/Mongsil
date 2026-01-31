@@ -1,59 +1,32 @@
 package com.cashproject.mongsil.kmp
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
-import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
+import androidx.compose.ui.text.font.FontFamily
+import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.screen.main.MainScreen
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.poppins_medium
+import org.jetbrains.compose.resources.Font
 import org.koin.core.KoinApplication
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 
 @Composable
-fun App() {
-    val navController = rememberNavController()
+fun App(
+    fontFamily: FontFamily = FontFamily(Font(resource = Res.font.poppins_medium)),
+    onDarkThemeChange: ((Boolean) -> Unit)? = null,
+) {
 
-    MaterialTheme {
-        NavHost(
-            navController = navController,
-            startDestination = Route.Calendar,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None }
-        ) {
-            composable<Route.Calendar> {
-                CalendarScreen(
-                    onDateClick = { date ->
-                        println("날짜 클릭: $date")
-                    }
-                )
-            }
+    // 다크모드 상태 collect 코드 추가
 
-            composable<Route.Counter> {
-                CounterScreen(
-                    onNavigateToCalendar = {
-                        // Type-safe navigation: 객체를 직접 전달
-                        navController.navigate(Route.Home)
-                    }
-                )
-            }
-
-            // 파라미터가 있는 경우 예시:
-            // composable<Route.DiaryDetail> { backStackEntry ->
-            //     val args = backStackEntry.toRoute<Route.DiaryDetail>()
-            //     DiaryDetailScreen(
-            //         diaryId = args.diaryId,
-            //         date = args.date
-            //     )
-            // }
-        }
+    MongsilTheme(
+        darkTheme = false, // TODO 추가,
+        fontFamily = fontFamily
+    ) {
+        MainScreen()
     }
+
 }
 
 internal val appModule = module {

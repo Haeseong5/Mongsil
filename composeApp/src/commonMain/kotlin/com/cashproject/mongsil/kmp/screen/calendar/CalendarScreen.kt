@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -27,6 +28,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,12 +50,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cashproject.mongsil.kmp.model.MongsilMood
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.toLocalDateTime
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.ic_trash
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * 몽실 캘린더 화면
@@ -63,7 +70,9 @@ import kotlinx.datetime.toLocalDateTime
 fun CalendarScreen(
     onNavigateBack: () -> Unit = {},
     recordedDates: Set<LocalDate> = emptySet(), // 일기가 작성된 날짜들
-    onDateClick: (LocalDate) -> Unit = {} // 날짜 클릭 시 일기 작성
+    moods: Map<LocalDate, MongsilMood> = emptyMap(), // 각 날짜별 감정 상태
+    onDateClick: (LocalDate) -> Unit = {}, // 날짜 클릭 시 일기 작성
+    onAddClick: () -> Unit = {} // FAB 클릭 시 새 일기 작성
 ) {
     // 오늘 날짜
     val today = remember {
@@ -97,228 +106,293 @@ fun CalendarScreen(
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddClick,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_trash),
+                    contentDescription = "새 일기 작성"
+                )
+            }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
-            // 월/년도 표시 및 네비게이션
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        Box(modifier = Modifier.fillMaxSize()) {
+            // 배경 장식 (눈송이)
+            SnowflakeBackground()
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 12.dp, horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = {
-                        animationDirection = -1
-                        if (currentMonth == 1) {
-                            currentMonth = 12
-                            currentYear--
-                        } else {
-                            currentMonth--
-                        }
-                    }) {
-                        Box(modifier = Modifier.size(24.dp).background(Color.Red))
-                    }
-
-                    // 월/년도 표시 with Animation
-                    AnimatedContent(
-                        targetState = "${currentYear}년 ${currentMonth}월",
-                        transitionSpec = {
-                            if (animationDirection > 0) {
-                                slideInHorizontally { width -> width } + fadeIn() togetherWith
-                                        slideOutHorizontally { width -> -width } + fadeOut()
-                            } else {
-                                slideInHorizontally { width -> -width } + fadeIn() togetherWith
-                                        slideOutHorizontally { width -> width } + fadeOut()
-                            }
-                        },
-                        label = "month_animation"
-                    ) { targetText ->
-                        Text(
-                            text = targetText,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-
-                    IconButton(onClick = {
-                        animationDirection = 1
-                        if (currentMonth == 12) {
-                            currentMonth = 1
-                            currentYear++
-                        } else {
-                            currentMonth++
-                        }
-                    }) {
-                        Box(modifier = Modifier.size(24.dp).background(Color.Red))
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // 요일 헤더
-            DaysOfWeekHeader()
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 캘린더 그리드
-            val daysInMonth = getDaysInMonth(currentYear, currentMonth)
-            val firstDayOfMonth = LocalDate(currentYear, currentMonth, 1)
-            val startDayOfWeek = firstDayOfMonth.dayOfWeek.isoDayNumber % 7 // 일요일을 0으로
-
-            val calendarDays = buildList {
-                // 이전 달의 빈 칸
-                repeat(startDayOfWeek) {
-                    add(null)
-                }
-                // 현재 달의 날짜들
-                for (day in 1..daysInMonth) {
-                    add(LocalDate(currentYear, currentMonth, day))
-                }
-            }
-
-            AnimatedContent(
-                targetState = "${currentYear}-${currentMonth}",
-                transitionSpec = {
-                    if (animationDirection > 0) {
-                        slideInHorizontally { width -> width } + fadeIn() togetherWith
-                                slideOutHorizontally { width -> -width } + fadeOut()
-                    } else {
-                        slideInHorizontally { width -> -width } + fadeIn() togetherWith
-                                slideOutHorizontally { width -> width } + fadeOut()
-                    }
-                },
-                label = "calendar_animation"
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(7),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(calendarDays) { date ->
-                        if (date != null) {
-                            DayCell(
-                                date = date,
-                                isSelected = selectedDate == date,
-                                isToday = today == date,
-                                hasRecord = recordedDates.contains(date),
-                                onClick = {
-                                    selectedDate = it
-                                    onDateClick(it)
-                                }
-                            )
-                        } else {
-                            Box(modifier = Modifier.aspectRatio(1f))
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // 선택된 날짜 정보
-            if (selectedDate != null) {
+                // 월/년도 표시 및 네비게이션
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        containerColor = MaterialTheme.colorScheme.surface
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
-                    Column(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column {
-                                Text(
-                                    text = "선택된 날짜",
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(
-                                        alpha = 0.7f
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                Text(
-                                    text = "${selectedDate!!.year}년 ${selectedDate!!.monthNumber}월 ${selectedDate!!.dayOfMonth}일",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
+                        IconButton(onClick = {
+                            animationDirection = -1
+                            if (currentMonth == 1) {
+                                currentMonth = 12
+                                currentYear--
+                            } else {
+                                currentMonth--
                             }
-
-                            // 상태 표시
-                            if (recordedDates.contains(selectedDate)) {
-                                Text(
-                                    text = "📝 기록됨",
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
+                        }) {
+                            Box(modifier = Modifier.size(24.dp).background(Color.Red))
                         }
 
-                        if (selectedDate == today) {
-                            Spacer(modifier = Modifier.height(8.dp))
+                        // 월/년도 표시 with Animation
+                        AnimatedContent(
+                            targetState = "${currentYear}년 ${currentMonth}월",
+                            transitionSpec = {
+                                if (animationDirection > 0) {
+                                    slideInHorizontally { width -> width } + fadeIn() togetherWith
+                                            slideOutHorizontally { width -> -width } + fadeOut()
+                                } else {
+                                    slideInHorizontally { width -> -width } + fadeIn() togetherWith
+                                            slideOutHorizontally { width -> width } + fadeOut()
+                                }
+                            },
+                            label = "month_animation"
+                        ) { targetText ->
                             Text(
-                                text = "오늘 📌",
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Medium
+                                text = targetText,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
                             )
+                        }
+
+                        IconButton(onClick = {
+                            animationDirection = 1
+                            if (currentMonth == 12) {
+                                currentMonth = 1
+                                currentYear++
+                            } else {
+                                currentMonth++
+                            }
+                        }) {
+                            Box(modifier = Modifier.size(24.dp).background(Color.Red))
                         }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            // 통계 정보
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                // 요일 헤더
+                DaysOfWeekHeader()
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // 캘린더 그리드
+                val daysInMonth = getDaysInMonth(currentYear, currentMonth)
+                val firstDayOfMonth = LocalDate(currentYear, currentMonth, 1)
+                val startDayOfWeek = firstDayOfMonth.dayOfWeek.isoDayNumber % 7 // 일요일을 0으로
+
+                val calendarDays = buildList {
+                    // 이전 달의 빈 칸
+                    repeat(startDayOfWeek) {
+                        add(null)
+                    }
+                    // 현재 달의 날짜들
+                    for (day in 1..daysInMonth) {
+                        add(LocalDate(currentYear, currentMonth, day))
+                    }
+                }
+
+                AnimatedContent(
+                    targetState = "${currentYear}-${currentMonth}",
+                    transitionSpec = {
+                        if (animationDirection > 0) {
+                            slideInHorizontally { width -> width } + fadeIn() togetherWith
+                                    slideOutHorizontally { width -> -width } + fadeOut()
+                        } else {
+                            slideInHorizontally { width -> -width } + fadeIn() togetherWith
+                                    slideOutHorizontally { width -> width } + fadeOut()
+                        }
+                    },
+                    label = "calendar_animation"
                 ) {
-                    StatItem("전체 기록", recordedDates.size.toString())
-                    StatItem(
-                        "이번 달",
-                        recordedDates.count {
-                            it.year == currentYear && it.monthNumber == currentMonth
-                        }.toString()
-                    )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(7),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(calendarDays) { date ->
+                            if (date != null) {
+                                DayCell(
+                                    date = date,
+                                    isSelected = selectedDate == date,
+                                    isToday = today == date,
+                                    hasRecord = recordedDates.contains(date),
+                                    mood = moods[date],
+                                    onClick = {
+                                        selectedDate = it
+                                        onDateClick(it)
+                                    }
+                                )
+                            } else {
+                                Box(modifier = Modifier.aspectRatio(1f))
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // 선택된 날짜 정보
+                if (selectedDate != null) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text(
+                                        text = "선택된 날짜",
+                                        fontSize = 14.sp,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(
+                                            alpha = 0.7f
+                                        )
+                                    )
+
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    Text(
+                                        text = "${selectedDate!!.year}년 ${selectedDate!!.monthNumber}월 ${selectedDate!!.dayOfMonth}일",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                }
+
+                                // 상태 표시
+                                if (recordedDates.contains(selectedDate)) {
+                                    Text(
+                                        text = "📝 기록됨",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+
+                            if (selectedDate == today) {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "오늘 📌",
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // 통계 정보
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        StatItem("전체 기록", recordedDates.size.toString())
+                        StatItem(
+                            "이번 달",
+                            recordedDates.count {
+                                it.year == currentYear && it.monthNumber == currentMonth
+                            }.toString()
+                        )
+                    }
                 }
             }
         }
     }
 }
+
+/**
+ * 눈송이 배경 장식
+ */
+@Composable
+private fun SnowflakeBackground() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        // 여러 개의 눈송이를 랜덤한 위치에 배치
+        val snowflakes = remember {
+            listOf(
+                SnowflakeData("❄️", 0.2f, 0.15f, 0.3f, 32.sp),
+                SnowflakeData("❄️", 0.7f, 0.1f, 0.2f, 24.sp),
+                SnowflakeData("❄️", 0.15f, 0.35f, 0.15f, 20.sp),
+                SnowflakeData("❄️", 0.85f, 0.4f, 0.25f, 28.sp),
+                SnowflakeData("❄️", 0.5f, 0.65f, 0.2f, 36.sp),
+                SnowflakeData("❄️", 0.1f, 0.8f, 0.15f, 24.sp),
+                SnowflakeData("❄️", 0.9f, 0.75f, 0.2f, 20.sp),
+                SnowflakeData("❄️", 0.3f, 0.9f, 0.1f, 16.sp),
+                SnowflakeData("❄️", 0.75f, 0.95f, 0.15f, 32.sp)
+            )
+        }
+
+        snowflakes.forEach { snowflake ->
+            Text(
+                text = snowflake.emoji,
+                fontSize = snowflake.size,
+                color = Color(0xFFB3E5FC).copy(alpha = snowflake.alpha),
+                modifier = Modifier
+                    .offset(
+                        x = (snowflake.xPosition * 400).dp,
+                        y = (snowflake.yPosition * 800).dp
+                    )
+            )
+        }
+    }
+}
+
+/**
+ * 눈송이 데이터 클래스
+ */
+private data class SnowflakeData(
+    val emoji: String,
+    val xPosition: Float, // 0.0 ~ 1.0
+    val yPosition: Float, // 0.0 ~ 1.0
+    val alpha: Float,
+    val size: androidx.compose.ui.unit.TextUnit
+)
 
 /**
  * 통계 아이템
@@ -371,7 +445,7 @@ private fun DaysOfWeekHeader() {
 }
 
 /**
- * 날짜 셀 (개선된 버전)
+ * 날짜 셀 (감정 이모티콘 표시)
  */
 @Composable
 private fun DayCell(
@@ -379,73 +453,79 @@ private fun DayCell(
     isSelected: Boolean,
     isToday: Boolean,
     hasRecord: Boolean,
+    mood: MongsilMood?,
     onClick: (LocalDate) -> Unit
 ) {
     Box(
         modifier = Modifier
             .aspectRatio(1f)
-            .padding(2.dp),
+            .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(
-                    when {
-                        isSelected -> MaterialTheme.colorScheme.primary
-                        isToday -> MaterialTheme.colorScheme.primaryContainer
-                        else -> Color.Transparent
-                    }
-                )
-                .border(
-                    width = if (hasRecord && !isSelected) 2.dp else 0.dp,
-                    color = if (hasRecord && !isSelected)
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                    else Color.Transparent,
-                    shape = CircleShape
-                )
-                .clickable { onClick(date) },
-            contentAlignment = Alignment.Center
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.clickable { onClick(date) }
         ) {
-            // 날짜 텍스트
-            Text(
-                text = date.dayOfMonth.toString(),
-                color = when {
-                    isSelected -> MaterialTheme.colorScheme.onPrimary
-                    isToday -> MaterialTheme.colorScheme.primary
-                    date.dayOfWeek == DayOfWeek.SUNDAY -> Color(0xFFE57373)
-                    date.dayOfWeek == DayOfWeek.SATURDAY -> Color(0xFF64B5F6)
-                    else -> MaterialTheme.colorScheme.onSurface
-                },
-                fontSize = 14.sp,
-                fontWeight = when {
-                    isSelected || isToday || hasRecord -> FontWeight.Bold
-                    else -> FontWeight.Normal
+            // 감정 이모티콘 표시 (있는 경우)
+            if (mood != null) {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(mood.backgroundColor)
+                        .border(
+                            width = if (isSelected) 2.dp else 0.dp,
+                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = mood.emoji,
+                        fontSize = 28.sp
+                    )
                 }
-            )
-        }
-
-        // 오늘 표시 (작은 닷)
-        if (isToday && !isSelected) {
-            Box(
-                modifier = Modifier
-                    .size(4.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
-                    .align(Alignment.BottomCenter)
-            )
-        }
-
-        // 기록 있음 표시 (작은 닷)
-        if (hasRecord && !isSelected && !isToday) {
-            Box(
-                modifier = Modifier
-                    .size(4.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f))
-                    .align(Alignment.BottomCenter)
-            )
+            } else {
+                // 감정 이모티콘이 없는 경우
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(
+                            when {
+                                isSelected -> MaterialTheme.colorScheme.primary
+                                isToday -> MaterialTheme.colorScheme.primaryContainer
+                                else -> Color.Transparent
+                            }
+                        )
+                        .border(
+                            width = if (isToday && !isSelected) 1.dp else 0.dp,
+                            color = if (isToday && !isSelected)
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                            else Color.Transparent,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    // 날짜 텍스트
+                    Text(
+                        text = date.dayOfMonth.toString(),
+                        color = when {
+                            isSelected -> MaterialTheme.colorScheme.onPrimary
+                            isToday -> MaterialTheme.colorScheme.primary
+                            date.dayOfWeek == DayOfWeek.SUNDAY -> Color(0xFFE57373)
+                            date.dayOfWeek == DayOfWeek.SATURDAY -> Color(0xFF64B5F6)
+                            else -> MaterialTheme.colorScheme.onSurface
+                        },
+                        fontSize = 14.sp,
+                        fontWeight = when {
+                            isSelected || isToday -> FontWeight.Bold
+                            else -> FontWeight.Normal
+                        }
+                    )
+                }
+            }
         }
     }
 }
