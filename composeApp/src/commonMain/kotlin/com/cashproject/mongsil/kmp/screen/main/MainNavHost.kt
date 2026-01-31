@@ -27,14 +27,7 @@ internal fun MainNavHost(
         popExitTransition = { ExitTransition.None }
     ) {
         composable<Route.Calendar> {
-            CalendarScreen(
-                onDateClick = { date ->
-
-                },
-                onAddClick = {
-                    navigator.navigateTo(Route.Test)
-                }
-            )
+            CalendarScreen()
         }
 
         composable<Route.Counter> {

@@ -1,42 +1,31 @@
 package com.cashproject.mongsil.kmp.di
 
-import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
-import com.cashproject.mongsil.kmp.database.MongsilDatabase
-import com.cashproject.mongsil.kmp.network.ApiService
-import com.cashproject.mongsil.kmp.network.HttpClientFactory
-import com.cashproject.mongsil.kmp.repository.CounterRepository
-import com.cashproject.mongsil.kmp.screen.counter.CounterViewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 /**
- * 플랫폼별 의존성을 제공하는 모듈
- * Android와 iOS에서 각각 구현됩니다.
+ * 플랫폼별 모듈 (expect/actual)
+ * Android: DatabaseDriverFactory, 기타 Android 의존성
+ * iOS: DatabaseDriverFactory, 기타 iOS 의존성
  */
 expect fun platformModule(): Module
 
 /**
- * 공통 애플리케이션 모듈
+ * Repository 전용 모듈
  */
-val appModule = module {
-    // Network
-    single { HttpClientFactory.create() }
-    single { ApiService(get()) }
-    
-    // Database
-    single {
-        val driverFactory = get<DatabaseDriverFactory>()
-        MongsilDatabase(driverFactory.createDriver())
-    }
-    
-    // Repository
-    single { CounterRepository(get()) }
-    
-    // ViewModel
-    single { CounterViewModel(get()) }
+internal val repositoryModule = module {
+    // Repository들 등록
+    // single<CheckInRepository> { CheckInRepositoryImpl(get(), get()) }
 }
 
 /**
- * 전체 Koin 모듈 리스트
+ * 앱 전체 모듈 통합
+ * 각 Feature별 모듈을 여기에 포함시킵니다
  */
-fun getKoinModules() = listOf(platformModule(), appModule)
+val appModules: List<Module> = listOf(
+    platformModule(),    // 플랫폼별 의존성
+    repositoryModule,
+    calendarModule,
+    counterModule,
+    // 새로운 feature 모듈을 여기에 추가
+)

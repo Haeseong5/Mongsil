@@ -28,7 +28,8 @@ import org.koin.compose.koinInject
 
 
 @Composable
-fun CounterScreen(
+fun
+        CounterScreen(
     onNavigateToCalendar: () -> Unit = {},
     viewModel: CounterViewModel = koinInject()
 ) {

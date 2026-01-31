@@ -1,539 +1,408 @@
 package com.cashproject.mongsil.kmp.screen.calendar
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cashproject.mongsil.kmp.model.MongsilMood
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.toLocalDateTime
 import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.koinInject
+import kotlin.time.ExperimentalTime
 
-/**
- * 몽실 캘린더 화면
- * 기존 Android 앱의 디자인을 참고하여 KMP로 구현
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreen(
-    onNavigateBack: () -> Unit = {},
-    recordedDates: Set<LocalDate> = emptySet(), // 일기가 작성된 날짜들
-    moods: Map<LocalDate, MongsilMood> = emptyMap(), // 각 날짜별 감정 상태
-    onDateClick: (LocalDate) -> Unit = {}, // 날짜 클릭 시 일기 작성
-    onAddClick: () -> Unit = {} // FAB 클릭 시 새 일기 작성,
+    modifier: Modifier = Modifier,
+    viewModel: CalendarViewModel = koinInject()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    CalendarScreenContent(
+        uiState = uiState,
+        onDateClick = { date ->
+            println("Selected date: ${date.year}년 ${date.monthNumber}월 ${date.dayOfMonth}일")
+        },
+        onYearMonthChange = viewModel::updateYearMonth
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalTime::class)
+@Composable
+fun CalendarScreenContent(
+    uiState: CalendarUiState,
+    onDateClick: (LocalDate) -> Unit = {},
+    onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> }
 ) {
     // 오늘 날짜
-    val today = remember {
-        Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault())
-            .date
+    val today: LocalDate = remember {
+        val now = Clock.System.now()
+        now.toLocalDateTime(TimeZone.currentSystemDefault()).date
     }
 
-    // 상태 관리
-    var selectedDate by remember { mutableStateOf<LocalDate?>(today) }
-    var currentYear by remember { mutableIntStateOf(today.year) }
-    var currentMonth by remember { mutableIntStateOf(today.monthNumber) }
-    var animationDirection by remember { mutableIntStateOf(1) }
+    // 현재 월을 기준으로 초기 페이지 설정 (충분히 큰 범위)
+    val currentMonth = remember { today }
+    val initialPage = 1200 // 중앙 페이지
+    val totalPages = 2400 // 전후 100년 정도
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "📅 몽실 캘린더",
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Box(modifier = Modifier.size(24.dp).background(Color.Red))
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        pageCount = { totalPages }
+    )
+    val coroutineScope = rememberCoroutineScope()
+
+    // 현재 보이는 월 계산
+    val visibleYearMonth by remember {
+        derivedStateOf {
+            val offset = pagerState.currentPage - initialPage
+            calculateYearMonth(currentMonth.year, currentMonth.monthNumber, offset)
+        }
+    }
+
+    // 페이지 변경 시 UiState 업데이트
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            val offset = page - initialPage
+            val (year, month) = calculateYearMonth(
+                currentMonth.year,
+                currentMonth.monthNumber,
+                offset
+            )
+            onYearMonthChange(year, month)
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // 월/년도 표시 및 네비게이션
+            SimpleCalendarTitle(
+                modifier = Modifier
+                    .padding(bottom = 48.dp, top = 48.dp)
+                    .align(Alignment.CenterHorizontally),
+                year = visibleYearMonth.first,
+                month = visibleYearMonth.second,
+                goToPrevious = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                goToNext = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                }
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_trash),
-                    contentDescription = "새 일기 작성"
+
+            // HorizontalPager로 캘린더 구현
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) { page ->
+                val offset = page - initialPage
+                val (pageYear, pageMonth) = calculateYearMonth(
+                    currentMonth.year,
+                    currentMonth.monthNumber,
+                    offset
+                )
+
+                CalendarMonthContent(
+                    year = pageYear,
+                    month = pageMonth,
+                    today = today,
+                    uiState = uiState,
+                    onDateClick = onDateClick
                 )
             }
         }
-    ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            // 배경 장식 (눈송이)
-            SnowflakeBackground()
+    }
+}
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp)
-            ) {
-                // 월/년도 표시 및 네비게이션
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(onClick = {
-                            animationDirection = -1
-                            if (currentMonth == 1) {
-                                currentMonth = 12
-                                currentYear--
-                            } else {
-                                currentMonth--
-                            }
-                        }) {
-                            Box(modifier = Modifier.size(24.dp).background(Color.Red))
-                        }
+@Composable
+private fun CalendarMonthContent(
+    year: Int,
+    month: Int,
+    today: LocalDate,
+    uiState: CalendarUiState,
+    onDateClick: (LocalDate) -> Unit
+) {
+    Column {
+        // 요일 헤더
+        DaysOfWeekTitle()
 
-                        // 월/년도 표시 with Animation
-                        AnimatedContent(
-                            targetState = "${currentYear}년 ${currentMonth}월",
-                            transitionSpec = {
-                                if (animationDirection > 0) {
-                                    slideInHorizontally { width -> width } + fadeIn() togetherWith
-                                            slideOutHorizontally { width -> -width } + fadeOut()
-                                } else {
-                                    slideInHorizontally { width -> -width } + fadeIn() togetherWith
-                                            slideOutHorizontally { width -> width } + fadeOut()
-                                }
-                            },
-                            label = "month_animation"
-                        ) { targetText ->
-                            Text(
-                                text = targetText,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
+        // 캘린더 그리드
+        val daysInMonth = getDaysInMonth(year, month)
+        val firstDayOfMonth = LocalDate(year, month, 1)
+        val startDayOfWeek = getStartDayOfWeek(firstDayOfMonth)
+
+        val calendarDays = buildList {
+            // 이전 달의 빈 칸
+            repeat(startDayOfWeek) {
+                add(null)
+            }
+            // 현재 달의 날짜들
+            for (day in 1..daysInMonth) {
+                add(LocalDate(year, month, day))
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(7),
+            modifier = Modifier.fillMaxWidth(),
+            userScrollEnabled = false
+        ) {
+            items(calendarDays.size) { index ->
+                val date = calendarDays[index]
+                if (date != null) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Day(
+                            date = date,
+                            isToday = date == today,
+                            isRecord = uiState.calendarRecords.any { it.date == date },
+                            emoticonImageUrl = uiState.emoticons
+                                .find { emoticon ->
+                                    uiState.calendarRecords
+                                        .lastOrNull { it.date == date }
+                                        ?.emotionId == emoticon.id
+                                }?.imageUrl ?: "",
+                            onClick = { onDateClick(date) }
+                        )
+
+                        if (date == today) {
+                            NotificationBadge(
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(1.dp)
                             )
                         }
-
-                        IconButton(onClick = {
-                            animationDirection = 1
-                            if (currentMonth == 12) {
-                                currentMonth = 1
-                                currentYear++
-                            } else {
-                                currentMonth++
-                            }
-                        }) {
-                            Box(modifier = Modifier.size(24.dp).background(Color.Red))
-                        }
                     }
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // 요일 헤더
-                DaysOfWeekHeader()
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // 캘린더 그리드
-                val daysInMonth = getDaysInMonth(currentYear, currentMonth)
-                val firstDayOfMonth = LocalDate(currentYear, currentMonth, 1)
-                val startDayOfWeek = firstDayOfMonth.dayOfWeek.isoDayNumber % 7 // 일요일을 0으로
-
-                val calendarDays = buildList {
-                    // 이전 달의 빈 칸
-                    repeat(startDayOfWeek) {
-                        add(null)
-                    }
-                    // 현재 달의 날짜들
-                    for (day in 1..daysInMonth) {
-                        add(LocalDate(currentYear, currentMonth, day))
-                    }
-                }
-
-                AnimatedContent(
-                    targetState = "${currentYear}-${currentMonth}",
-                    transitionSpec = {
-                        if (animationDirection > 0) {
-                            slideInHorizontally { width -> width } + fadeIn() togetherWith
-                                    slideOutHorizontally { width -> -width } + fadeOut()
-                        } else {
-                            slideInHorizontally { width -> -width } + fadeIn() togetherWith
-                                    slideOutHorizontally { width -> width } + fadeOut()
-                        }
-                    },
-                    label = "calendar_animation"
-                ) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(7),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(calendarDays) { date ->
-                            if (date != null) {
-                                DayCell(
-                                    date = date,
-                                    isSelected = selectedDate == date,
-                                    isToday = today == date,
-                                    hasRecord = recordedDates.contains(date),
-                                    mood = moods[date],
-                                    onClick = {
-                                        selectedDate = it
-                                        onDateClick(it)
-                                    }
-                                )
-                            } else {
-                                Box(modifier = Modifier.aspectRatio(1f))
-                            }
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // 선택된 날짜 정보
-                if (selectedDate != null) {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer
-                        ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column {
-                                    Text(
-                                        text = "선택된 날짜",
-                                        fontSize = 14.sp,
-                                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(
-                                            alpha = 0.7f
-                                        )
-                                    )
-
-                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                    Text(
-                                        text = "${selectedDate!!.year}년 ${selectedDate!!.monthNumber}월 ${selectedDate!!.dayOfMonth}일",
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                                    )
-                                }
-
-                                // 상태 표시
-                                if (recordedDates.contains(selectedDate)) {
-                                    Text(
-                                        text = "📝 기록됨",
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                }
-                            }
-
-                            if (selectedDate == today) {
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "오늘 📌",
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // 통계 정보
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        StatItem("전체 기록", recordedDates.size.toString())
-                        StatItem(
-                            "이번 달",
-                            recordedDates.count {
-                                it.year == currentYear && it.monthNumber == currentMonth
-                            }.toString()
-                        )
-                    }
+                } else {
+                    Box(modifier = Modifier.aspectRatio(1f))
                 }
             }
         }
     }
 }
 
-/**
- * 눈송이 배경 장식
- */
 @Composable
-private fun SnowflakeBackground() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        // 여러 개의 눈송이를 랜덤한 위치에 배치
-        val snowflakes = remember {
-            listOf(
-                SnowflakeData("❄️", 0.2f, 0.15f, 0.3f, 32.sp),
-                SnowflakeData("❄️", 0.7f, 0.1f, 0.2f, 24.sp),
-                SnowflakeData("❄️", 0.15f, 0.35f, 0.15f, 20.sp),
-                SnowflakeData("❄️", 0.85f, 0.4f, 0.25f, 28.sp),
-                SnowflakeData("❄️", 0.5f, 0.65f, 0.2f, 36.sp),
-                SnowflakeData("❄️", 0.1f, 0.8f, 0.15f, 24.sp),
-                SnowflakeData("❄️", 0.9f, 0.75f, 0.2f, 20.sp),
-                SnowflakeData("❄️", 0.3f, 0.9f, 0.1f, 16.sp),
-                SnowflakeData("❄️", 0.75f, 0.95f, 0.15f, 32.sp)
-            )
-        }
-
-        snowflakes.forEach { snowflake ->
-            Text(
-                text = snowflake.emoji,
-                fontSize = snowflake.size,
-                color = Color(0xFFB3E5FC).copy(alpha = snowflake.alpha),
-                modifier = Modifier
-                    .offset(
-                        x = (snowflake.xPosition * 400).dp,
-                        y = (snowflake.yPosition * 800).dp
-                    )
-            )
-        }
-    }
-}
-
-/**
- * 눈송이 데이터 클래스
- */
-private data class SnowflakeData(
-    val emoji: String,
-    val xPosition: Float, // 0.0 ~ 1.0
-    val yPosition: Float, // 0.0 ~ 1.0
-    val alpha: Float,
-    val size: androidx.compose.ui.unit.TextUnit
-)
-
-/**
- * 통계 아이템
- */
-@Composable
-private fun StatItem(label: String, value: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun SimpleCalendarTitle(
+    modifier: Modifier = Modifier,
+    year: Int,
+    month: Int,
+    goToPrevious: () -> Unit = {},
+    goToNext: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 이전 달 버튼
         Text(
-            text = value,
-            fontSize = 24.sp,
+            modifier = Modifier
+                .size(20.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    goToPrevious()
+                },
+            text = "<",
+            fontSize = 20.sp,
+            color = Color.Black,
+            textAlign = TextAlign.Center
+        )
+
+        Text(
+            modifier = Modifier.padding(horizontal = 30.dp),
+            text = "${year}년 ${month}월",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onTertiaryContainer
+            color = Color.Black
         )
+
+        // 다음 달 버튼
         Text(
-            text = label,
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
+            modifier = Modifier
+                .size(20.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    goToNext()
+                },
+            text = ">",
+            fontSize = 20.sp,
+            color = Color.Black,
+            textAlign = TextAlign.Center
         )
     }
 }
 
-/**
- * 요일 헤더 (일, 월, 화, 수, 목, 금, 토)
- */
 @Composable
-private fun DaysOfWeekHeader() {
-    val weekDayNames = listOf("일", "월", "화", "수", "목", "금", "토")
+private fun DaysOfWeekTitle() {
+    val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        weekDayNames.forEachIndexed { index, name ->
+        daysOfWeek.forEachIndexed { index, day ->
             Text(
-                text = name,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
+                text = day,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
                 color = when (index) {
-                    0 -> Color(0xFFE57373) // 일요일 - 밝은 빨강
-                    6 -> Color(0xFF64B5F6) // 토요일 - 밝은 파랑
-                    else -> MaterialTheme.colorScheme.onSurface
+                    0 -> Color(0xFFE57373) // 일요일
+                    6 -> Color(0xFF64B5F6) // 토요일
+                    else -> Color.Black
                 }
             )
         }
     }
 }
 
-/**
- * 날짜 셀 (감정 이모티콘 표시)
- */
 @Composable
-private fun DayCell(
+private fun BoxScope.Day(
     date: LocalDate,
-    isSelected: Boolean,
     isToday: Boolean,
-    hasRecord: Boolean,
-    mood: MongsilMood?,
-    onClick: (LocalDate) -> Unit
+    isRecord: Boolean,
+    emoticonImageUrl: String,
+    onClick: () -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Box(
         modifier = Modifier
+            .padding(vertical = 6.dp)
+            .size(36.dp)
+            .clip(shape = CircleShape)
             .aspectRatio(1f)
-            .padding(4.dp),
+            .align(Alignment.Center)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) {
+                onClick()
+            },
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.clickable { onClick(date) }
-        ) {
-            // 감정 이모티콘 표시 (있는 경우)
-            if (mood != null) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(mood.backgroundColor)
-                        .border(
-                            width = if (isSelected) 2.dp else 0.dp,
-                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = mood.emoji,
-                        fontSize = 28.sp
-                    )
+        // 날짜 텍스트
+        if (!isRecord) {
+            Text(
+                text = date.dayOfMonth.toString(),
+                fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
+                fontSize = 14.sp,
+                color = when (date.dayOfWeek) {
+                    DayOfWeek.SUNDAY -> Color(0xFFE57373)
+                    DayOfWeek.SATURDAY -> Color(0xFF64B5F6)
+                    else -> Color.Black
                 }
-            } else {
-                // 감정 이모티콘이 없는 경우
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(
-                            when {
-                                isSelected -> MaterialTheme.colorScheme.primary
-                                isToday -> MaterialTheme.colorScheme.primaryContainer
-                                else -> Color.Transparent
-                            }
-                        )
-                        .border(
-                            width = if (isToday && !isSelected) 1.dp else 0.dp,
-                            color = if (isToday && !isSelected)
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                            else Color.Transparent,
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // 날짜 텍스트
-                    Text(
-                        text = date.dayOfMonth.toString(),
-                        color = when {
-                            isSelected -> MaterialTheme.colorScheme.onPrimary
-                            isToday -> MaterialTheme.colorScheme.primary
-                            date.dayOfWeek == DayOfWeek.SUNDAY -> Color(0xFFE57373)
-                            date.dayOfWeek == DayOfWeek.SATURDAY -> Color(0xFF64B5F6)
-                            else -> MaterialTheme.colorScheme.onSurface
-                        },
-                        fontSize = 14.sp,
-                        fontWeight = when {
-                            isSelected || isToday -> FontWeight.Bold
-                            else -> FontWeight.Normal
-                        }
-                    )
-                }
+            )
+        }
+
+        // 감정 이모티콘 이미지 (향후 Coil 등의 이미지 로더 추가 필요)
+        if (emoticonImageUrl.isNotEmpty()) {
+            // TODO: AsyncImage로 이모티콘 이미지 표시
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(Color(0xFFFFEB3B), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "😊",
+                    fontSize = 20.sp
+                )
             }
         }
     }
 }
 
-/**
- * 해당 월의 일 수 계산
- */
+@Composable
+private fun NotificationBadge(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .shadow(
+                elevation = 1.5.dp,
+                shape = CircleShape
+            )
+            .clip(shape = CircleShape)
+            .size(9.dp)
+            .background(color = Color.Red)
+    )
+}
+
+// 유틸리티 함수들
+
+private fun calculateYearMonth(baseYear: Int, baseMonth: Int, offset: Int): Pair<Int, Int> {
+    var year = baseYear
+    var month = baseMonth + offset
+
+    while (month > 12) {
+        month -= 12
+        year++
+    }
+    while (month < 1) {
+        month += 12
+        year--
+    }
+
+    return Pair(year, month)
+}
+
 private fun getDaysInMonth(year: Int, month: Int): Int {
     return when (month) {
         1, 3, 5, 7, 8, 10, 12 -> 31
@@ -543,9 +412,20 @@ private fun getDaysInMonth(year: Int, month: Int): Int {
     }
 }
 
-/**
- * 윤년 체크
- */
 private fun isLeapYear(year: Int): Boolean {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+}
+
+private fun getStartDayOfWeek(date: LocalDate): Int {
+    // 일요일을 0으로 시작
+    return when (date.dayOfWeek) {
+        DayOfWeek.SUNDAY -> 0
+        DayOfWeek.MONDAY -> 1
+        DayOfWeek.TUESDAY -> 2
+        DayOfWeek.WEDNESDAY -> 3
+        DayOfWeek.THURSDAY -> 4
+        DayOfWeek.FRIDAY -> 5
+        DayOfWeek.SATURDAY -> 6
+        else -> 0
+    }
 }
