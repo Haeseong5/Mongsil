@@ -23,14 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.kmp.getPlatformName
-import com.cashproject.mongsil.kmp.viewmodel.CounterViewModel
+import com.cashproject.mongsil.kmp.screen.counter.CounterViewModel
 import org.koin.compose.koinInject
 
 
 @Composable
 fun CounterScreen(
-    viewModel: CounterViewModel = koinInject(),
-    onNavigateToCalendar: () -> Unit = {}
+    onNavigateToCalendar: () -> Unit = {},
+    viewModel: CounterViewModel = koinInject()
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),

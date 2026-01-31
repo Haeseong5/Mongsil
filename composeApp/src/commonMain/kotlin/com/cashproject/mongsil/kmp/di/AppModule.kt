@@ -5,7 +5,7 @@ import com.cashproject.mongsil.kmp.database.MongsilDatabase
 import com.cashproject.mongsil.kmp.network.ApiService
 import com.cashproject.mongsil.kmp.network.HttpClientFactory
 import com.cashproject.mongsil.kmp.repository.CounterRepository
-import com.cashproject.mongsil.kmp.viewmodel.CounterViewModel
+import com.cashproject.mongsil.kmp.screen.counter.CounterViewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

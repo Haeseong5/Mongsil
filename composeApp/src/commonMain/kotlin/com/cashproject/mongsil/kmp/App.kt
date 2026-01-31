@@ -3,11 +3,14 @@ package com.cashproject.mongsil.kmp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.repository.CounterRepository
+import com.cashproject.mongsil.kmp.screen.counter.CounterViewModel
 import com.cashproject.mongsil.kmp.screen.main.MainScreen
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.poppins_medium
 import org.jetbrains.compose.resources.Font
 import org.koin.core.KoinApplication
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
@@ -18,7 +21,7 @@ fun App(
     onDarkThemeChange: ((Boolean) -> Unit)? = null,
 ) {
 
-    // 다크모드 상태 collect 코드 추가
+    // TODO 다크모드 상태 collect 코드 추가
 
     MongsilTheme(
         darkTheme = false, // TODO 추가,
@@ -36,10 +39,10 @@ internal val appModule = module {
 //
 //    // Repository들 등록
 //    single<CheckInRepository> { CheckInRepositoryImpl(get(), get()) }
-//    single<AuthRepository> { AuthRepositoryImpl(get()) }
+    single<CounterRepository> { CounterRepository(get()) }
 //
 //    // ViewModel들 등록
-//    viewModelOf(::CheckInViewModel)
+    viewModelOf(::CounterViewModel)
 //    viewModelOf(::HistoryViewModel)
 //    viewModelOf(::AppViewModel)
 //    viewModelOf(::AuthViewModel)

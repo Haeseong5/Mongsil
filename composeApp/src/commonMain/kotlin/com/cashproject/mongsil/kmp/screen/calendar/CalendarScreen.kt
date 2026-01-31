@@ -72,7 +72,8 @@ fun CalendarScreen(
     recordedDates: Set<LocalDate> = emptySet(), // 일기가 작성된 날짜들
     moods: Map<LocalDate, MongsilMood> = emptyMap(), // 각 날짜별 감정 상태
     onDateClick: (LocalDate) -> Unit = {}, // 날짜 클릭 시 일기 작성
-    onAddClick: () -> Unit = {} // FAB 클릭 시 새 일기 작성
+    onAddClick: () -> Unit = {} // FAB 클릭 시 새 일기 작성,
+
 ) {
     // 오늘 날짜
     val today = remember {

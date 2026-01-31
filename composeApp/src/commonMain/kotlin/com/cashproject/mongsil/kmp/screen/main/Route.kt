@@ -1,11 +1,11 @@
-package com.cashproject.mongsil.kmp
+package com.cashproject.mongsil.kmp.screen.main
 
 import kotlinx.serialization.Serializable
 
 /**
  * 앱의 모든 네비게이션 경로를 정의하는 sealed interface
  * @Serializable로 type-safe한 navigation을 구현
- * 
+ *
  * 장점:
  * 1. Type-safe: 컴파일 타임에 route 검증
  * 2. 자동 직렬화: argument 전달이 자동으로 처리됨
@@ -30,10 +30,13 @@ sealed interface Route {
     @Serializable
     data object Counter : Route
 
+    @Serializable
+    data object Test : Route
+
     // 파라미터가 필요한 화면의 예시:
     // @Serializable
     // data class DiaryDetail(val diaryId: Long, val date: String) : Route
-    
+
     // 선택적 파라미터 예시:
     // @Serializable
     // data class Settings(val section: String? = null) : Route
