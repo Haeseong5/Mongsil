@@ -1,0 +1,49 @@
+-- Diary 테이블 정의
+CREATE TABLE DiaryEntity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    year INTEGER NOT NULL,
+    month INTEGER NOT NULL,
+    day INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL
+);
+
+-- 특정 날짜의 일기 조회
+getDiaryByDate:
+SELECT * FROM DiaryEntity 
+WHERE year = ? AND month = ? AND day = ?
+ORDER BY updatedAt DESC
+LIMIT 1;
+
+-- 특정 년월의 모든 일기 조회 (캘린더 표시용)
+getDiariesByYearMonth:
+SELECT * FROM DiaryEntity 
+WHERE year = ? AND month = ?
+ORDER BY day ASC;
+
+-- 모든 일기 조회
+getAllDiaries:
+SELECT * FROM DiaryEntity 
+ORDER BY year DESC, month DESC, day DESC;
+
+-- 일기 저장
+insertDiary:
+INSERT INTO DiaryEntity (year, month, day, content, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?);
+
+-- 일기 업데이트
+updateDiary:
+UPDATE DiaryEntity 
+SET content = ?, updatedAt = ?
+WHERE year = ? AND month = ? AND day = ?;
+
+-- 일기 삭제
+deleteDiary:
+DELETE FROM DiaryEntity 
+WHERE year = ? AND month = ? AND day = ?;
+
+-- 특정 날짜에 일기가 있는지 확인
+hasDiaryForDate:
+SELECT COUNT(*) > 0 FROM DiaryEntity 
+WHERE year = ? AND month = ? AND day = ?;

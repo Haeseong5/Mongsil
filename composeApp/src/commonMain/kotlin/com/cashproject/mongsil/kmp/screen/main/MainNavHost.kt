@@ -8,9 +8,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
+import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteScreen
+import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteViewModel
 import com.cashproject.mongsil.kmp.screen.test.TestScreen
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 
 @Composable
@@ -27,7 +32,29 @@ internal fun MainNavHost(
         popExitTransition = { ExitTransition.None }
     ) {
         composable<Route.Calendar> {
-            CalendarScreen()
+            CalendarScreen(
+                onNavigateToDiaryWrite = { year, month, day ->
+                    navigator.navigateTo(Route.DiaryWrite(year, month, day))
+                }
+            )
+        }
+
+        composable<Route.DiaryWrite> { backStackEntry ->
+            val route = backStackEntry.toRoute<Route.DiaryWrite>()
+            val viewModel: DiaryWriteViewModel = koinViewModel { 
+                parametersOf(route.year, route.month, route.day)
+            }
+            
+            DiaryWriteScreen(
+                viewModel = viewModel,
+                onNavigateToCalendar = {
+                    navigator.navigateWithPopUpTo(
+                        route = Route.Calendar,
+                        popUpTo = Route.DiaryWrite(route.year, route.month, route.day),
+                        inclusive = true
+                    )
+                }
+            )
         }
 
         composable<Route.Counter> {

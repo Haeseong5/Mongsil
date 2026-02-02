@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.di
 
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarViewModel
-import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 /**
@@ -10,11 +10,5 @@ import org.koin.dsl.module
  */
 internal val calendarModule = module {
     // ViewModel
-    viewModelOf(::CalendarViewModel)
-    
-    // Repository (필요시)
-    // single<CalendarRepository> { CalendarRepositoryImpl(get()) }
-    
-    // UseCase (필요시)
-    // single { GetCalendarDataUseCase(get()) }
+    viewModel { CalendarViewModel(get()) }
 }

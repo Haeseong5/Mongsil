@@ -14,13 +14,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +31,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -40,6 +39,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
+import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
+import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
+import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitle
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -48,6 +52,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
@@ -55,14 +60,16 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun CalendarScreen(
     modifier: Modifier = Modifier,
-    viewModel: CalendarViewModel = koinInject()
+    viewModel: CalendarViewModel = koinInject(),
+    onNavigateToDiaryWrite: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     CalendarScreenContent(
+        modifier = modifier,
         uiState = uiState,
         onDateClick = { date ->
-            println("Selected date: ${date.year}년 ${date.monthNumber}월 ${date.dayOfMonth}일")
+            onNavigateToDiaryWrite(date.year, date.monthNumber, date.dayOfMonth)
         },
         onYearMonthChange = viewModel::updateYearMonth
     )
@@ -71,6 +78,7 @@ fun CalendarScreen(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalTime::class)
 @Composable
 fun CalendarScreenContent(
+    modifier: Modifier = Modifier,
     uiState: CalendarUiState,
     onDateClick: (LocalDate) -> Unit = {},
     onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> }
@@ -114,19 +122,20 @@ fun CalendarScreenContent(
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .background(color = Color.White),
-        contentAlignment = Alignment.Center
+            .background(color = Color.White)
     ) {
+        CalendarToolbar()
+
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
         ) {
             // 월/년도 표시 및 네비게이션
             SimpleCalendarTitle(
-                modifier = Modifier
-                    .padding(bottom = 48.dp, top = 48.dp)
-                    .align(Alignment.CenterHorizontally),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 year = visibleYearMonth.first,
                 month = visibleYearMonth.second,
                 goToPrevious = {
@@ -140,8 +149,9 @@ fun CalendarScreenContent(
                     }
                 }
             )
+            VerticalSpacer(16.dp)
 
-            // HorizontalPager로 캘린더 구현
+            // HorizontalPager로 캘린더 구현 (고정된 높이로 위치 안정화)
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
@@ -166,6 +176,8 @@ fun CalendarScreenContent(
         }
     }
 }
+
+
 
 @Composable
 private fun CalendarMonthContent(
@@ -192,6 +204,11 @@ private fun CalendarMonthContent(
             // 현재 달의 날짜들
             for (day in 1..daysInMonth) {
                 add(LocalDate(year, month, day))
+            }
+            // 항상 6주(42칸)를 유지하기 위해 남은 칸 채우기
+            val remainingCells = 42 - size
+            repeat(remainingCells) {
+                add(null)
             }
         }
 
@@ -233,63 +250,10 @@ private fun CalendarMonthContent(
     }
 }
 
-@Composable
-private fun SimpleCalendarTitle(
-    modifier: Modifier = Modifier,
-    year: Int,
-    month: Int,
-    goToPrevious: () -> Unit = {},
-    goToNext: () -> Unit = {}
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 이전 달 버튼
-        Text(
-            modifier = Modifier
-                .size(20.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    goToPrevious()
-                },
-            text = "<",
-            fontSize = 20.sp,
-            color = Color.Black,
-            textAlign = TextAlign.Center
-        )
-
-        Text(
-            modifier = Modifier.padding(horizontal = 30.dp),
-            text = "${year}년 ${month}월",
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-
-        // 다음 달 버튼
-        Text(
-            modifier = Modifier
-                .size(20.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    goToNext()
-                },
-            text = ">",
-            fontSize = 20.sp,
-            color = Color.Black,
-            textAlign = TextAlign.Center
-        )
-    }
-}
 
 @Composable
 private fun DaysOfWeekTitle() {
+    // TODO 다국어 지원
     val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
 
     Row(
@@ -303,7 +267,7 @@ private fun DaysOfWeekTitle() {
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 text = day,
-                fontSize = 14.sp,
+                style = MongsilTheme.typography.body2Normal,
                 color = when (index) {
                     0 -> Color(0xFFE57373) // 일요일
                     6 -> Color(0xFF64B5F6) // 토요일

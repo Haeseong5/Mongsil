@@ -33,11 +33,16 @@ sealed interface Route {
     @Serializable
     data object Test : Route
 
-    // 파라미터가 필요한 화면의 예시:
-    // @Serializable
-    // data class DiaryDetail(val diaryId: Long, val date: String) : Route
-
-    // 선택적 파라미터 예시:
-    // @Serializable
-    // data class Settings(val section: String? = null) : Route
+    /**
+     * 일기 작성 화면
+     * @param year 선택된 년도
+     * @param month 선택된 월
+     * @param day 선택된 일
+     */
+    @Serializable
+    data class DiaryWrite(
+        val year: Int,
+        val month: Int,
+        val day: Int
+    ) : Route
 }
