@@ -70,6 +70,7 @@ okhttpBom = "5.3.0"
 # Image Loading
 glide = "5.0.5"
 coil = "2.7.0"
+coilKmp = "3.3.0"
 ui = "1.10.0"
 uiToolingPreview = "1.10.0"
 
@@ -168,6 +169,10 @@ okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-i
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+# Coil KMP (Multiplatform)
+coil-compose-kmp = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilKmp" }
+coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coilKmp" }
 
 # Google Services
 google-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "googleAds" }
