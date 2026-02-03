@@ -49,11 +49,11 @@ fun BoxScope.CalendarToolbar() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun CalendarToolbarPreview() {
     MongsilTheme {
-        Box() {
+        Box {
             CalendarToolbar()
         }
     }

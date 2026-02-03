@@ -38,6 +38,11 @@ class CalendarViewModel(
             emoticonRepository.getEmoticons()
                 .onSuccess { emoticons ->
                     println("++## 이모티콘 로드 성공: ${emoticons.size}개")
+                    _uiState.update {
+                        it.copy(
+                            emoticons = emoticons
+                        )
+                    }
                     // TODO: UiState에 이모티콘 저장
                 }
                 .onFailure { error ->
