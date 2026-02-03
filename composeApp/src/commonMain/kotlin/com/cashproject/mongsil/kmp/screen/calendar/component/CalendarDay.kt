@@ -79,7 +79,10 @@ fun BoxScope.CalendarDay(
             AsyncImage(
                 model = emoticonImageUrl,
                 contentDescription = "감정 이모티콘",
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(36.dp),
+                onError = { error ->
+                    println("이미지 로딩 실패: ${error.result.throwable.message}")
+                }
             )
         }
     }

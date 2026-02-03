@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.kmp.repository
 
 import com.cashproject.mongsil.kmp.database.MongsilDatabase
+import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.network.api.EmoticonApi
 import com.cashproject.mongsil.kmp.network.model.EmoticonResponse
 import kotlinx.coroutines.Dispatchers
@@ -28,18 +29,19 @@ class EmoticonRepository(
     /**
      * 모든 이모티콘 목록 조회
      * API 호출이 실패하면 Mock 데이터를 반환합니다.
+     * Network 모델을 도메인 모델(Emoticon)로 변환하여 반환합니다.
      * @return 이모티콘 목록 또는 에러 결과
      */
-    suspend fun getEmoticons(): Result<List<EmoticonResponse>> = 
+    suspend fun getEmoticons(): Result<List<Emoticon>> = 
         withContext(Dispatchers.Default) {
             val result = emoticonApi.getEmoticons()
             
             // 실패 시 Mock 데이터 반환
             if (result.isFailure) {
                 println("API 호출 실패, Mock 데이터 사용: ${result.exceptionOrNull()?.message}")
-                Result.success(getMockEmoticons())
+                Result.success(getMockEmoticons().map { it.toEmoticon() })
             } else {
-                result
+                Result.success(result.getOrNull()!!.map { it.toEmoticon() })
             }
         }
     
@@ -157,3 +159,15 @@ class EmoticonRepository(
         )
     }
 }
+
+/**
+ * EmoticonResponse를 도메인 모델(Emoticon)로 변환
+ * Network layer의 모델을 UI/비즈니스 로직에서 사용할 수 있는 형태로 변환합니다.
+ */
+private fun EmoticonResponse.toEmoticon() = Emoticon(
+    id = id,
+    title = title,
+    imageUrl = imageUrl,
+    textColor = textColor,
+    backgroundColor = backgroundColor
+)

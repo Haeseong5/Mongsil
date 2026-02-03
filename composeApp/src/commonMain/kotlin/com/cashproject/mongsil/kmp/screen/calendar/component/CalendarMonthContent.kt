@@ -10,12 +10,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
-import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
-import com.cashproject.mongsil.kmp.screen.calendar.model.EmoticonData
 import com.cashproject.mongsil.kmp.screen.calendar.utils.getDaysInMonth
 import com.cashproject.mongsil.kmp.screen.calendar.utils.getStartDayOfWeek
 import kotlinx.datetime.LocalDate
@@ -23,7 +19,7 @@ import kotlinx.datetime.LocalDate
 /**
  * 특정 월의 캘린더 컨텐츠
  * 요일 헤더와 날짜 그리드를 포함합니다.
- * 
+ *
  * @param year 연도
  * @param month 월
  * @param today 오늘 날짜
@@ -102,61 +98,5 @@ fun CalendarMonthContent(
                 }
             }
         }
-    }
-}
-
-// ========== Preview ==========
-
-@Preview(showBackground = true)
-@Composable
-internal fun CalendarMonthContentPreview() {
-    MongsilTheme {
-        CalendarMonthContent(
-            year = 2026,
-            month = 2,
-            today = LocalDate(2026, 2, 3),
-            uiState = CalendarUiState(
-                currentYear = 2026,
-                currentMonth = 2,
-                calendarRecords = listOf(
-                    CalendarRecord(
-                        date = LocalDate(2026, 2, 1),
-                        emotionId = 1
-                    ),
-                    CalendarRecord(
-                        date = LocalDate(2026, 2, 14),
-                        emotionId = 2
-                    ),
-                    CalendarRecord(
-                        date = LocalDate(2026, 2, 20),
-                        emotionId = 3
-                    )
-                ),
-                emoticons = listOf(
-                    EmoticonData(
-                        id = 1,
-                        title = "기쁨",
-                        imageUrl = "https://example.com/happy.png",
-                        textColor = "#000000",
-                        backgroundColor = "#FFEB3B"
-                    ),
-                    EmoticonData(
-                        id = 2,
-                        title = "사랑",
-                        imageUrl = "https://example.com/love.png",
-                        textColor = "#FFFFFF",
-                        backgroundColor = "#E91E63"
-                    ),
-                    EmoticonData(
-                        id = 3,
-                        title = "평온",
-                        imageUrl = "https://example.com/calm.png",
-                        textColor = "#000000",
-                        backgroundColor = "#4CAF50"
-                    )
-                )
-            ),
-            onDateClick = {}
-        )
     }
 }

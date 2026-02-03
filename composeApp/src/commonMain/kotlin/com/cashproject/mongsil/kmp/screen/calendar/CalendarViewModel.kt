@@ -37,7 +37,7 @@ class CalendarViewModel(
         viewModelScope.launch {
             emoticonRepository.getEmoticons()
                 .onSuccess { emoticons ->
-                    println("++## 이모티콘 로드 성공: ${emoticons.size}개")
+                    println("++## 이모티콘 로드 성공: ${emoticons}개")
                     _uiState.update {
                         it.copy(
                             emoticons = emoticons
