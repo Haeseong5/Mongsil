@@ -38,7 +38,8 @@ internal val repositoryModule = module {
 val appModules: List<Module> = listOf(
     platformModule(),    // 플랫폼별 의존성 (DatabaseDriverFactory)
     databaseModule,      // Database 인스턴스 생성
-    repositoryModule,    // Repositories
+    networkModule,       // Network (Ktor, API, Remote Repositories)
+    repositoryModule,    // Local Repositories
     calendarModule,
     counterModule,
     diaryModule,

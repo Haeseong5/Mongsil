@@ -3,6 +3,7 @@ package com.cashproject.mongsil.kmp.screen.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.repository.DiaryRepository
+import com.cashproject.mongsil.kmp.repository.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 class CalendarViewModel(
-    private val diaryRepository: DiaryRepository
+    private val diaryRepository: DiaryRepository,
+    private val emoticonRepository: EmoticonRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
@@ -28,6 +30,20 @@ class CalendarViewModel(
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         _uiState.update { it.copy(currentYear = now.year, currentMonth = now.monthNumber) }
         loadDiariesForCurrentMonth()
+        loadEmoticons()
+    }
+
+    private fun loadEmoticons() {
+        viewModelScope.launch {
+            emoticonRepository.getEmoticons()
+                .onSuccess { emoticons ->
+                    println("++## 이모티콘 로드 성공: ${emoticons.size}개")
+                    // TODO: UiState에 이모티콘 저장
+                }
+                .onFailure { error ->
+                    println("++## 이모티콘 로드 실패: ${error.message}")
+                }
+        }
     }
 
     fun updateYearMonth(year: Int, month: Int) {
@@ -43,7 +59,7 @@ class CalendarViewModel(
     private fun loadDiariesForMonth(year: Int, month: Int) {
         viewModelScope.launch {
             val diaries = diaryRepository.getDiariesByYearMonth(year, month)
-            
+
             val calendarRecords = diaries.map { diary ->
                 CalendarRecord(
                     date = LocalDate(
@@ -54,7 +70,7 @@ class CalendarViewModel(
                     emotionId = 0 // 현재는 감정 ID를 사용하지 않음
                 )
             }
-            
+
             _uiState.update { it.copy(calendarRecords = calendarRecords) }
         }
     }

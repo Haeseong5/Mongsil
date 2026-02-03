@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.kmp.di
 
+import com.cashproject.mongsil.kmp.repository.DiaryRepository
+import com.cashproject.mongsil.kmp.repository.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -9,6 +11,11 @@ import org.koin.dsl.module
  * 캘린더 관련 ViewModel, Repository, UseCase 등록
  */
 internal val calendarModule = module {
-    // ViewModel
-    viewModel { CalendarViewModel(get()) }
+    // ViewModel - 명시적으로 타입 지정
+    viewModel { 
+        CalendarViewModel(
+            diaryRepository = get<DiaryRepository>(),
+            emoticonRepository = get<EmoticonRepository>()
+        )
+    }
 }
