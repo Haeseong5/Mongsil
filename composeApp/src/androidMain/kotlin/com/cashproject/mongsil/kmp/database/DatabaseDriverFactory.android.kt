@@ -19,7 +19,7 @@ actual class DatabaseDriverFactory(private val context: Context) {
         return AndroidSqliteDriver(
             schema = schema,
             context = context,
-            name = "mongsil.db",
+            name = "mongsil2.db",
             callback = object : AndroidSqliteDriver.Callback(schema) {
                 override fun onOpen(db: SupportSQLiteDatabase) {
                     super.onOpen(db)
@@ -35,7 +35,7 @@ actual class DatabaseDriverFactory(private val context: Context) {
      */
     private fun createSchema(): SqlSchema<QueryResult.Value<Unit>> {
         return object : SqlSchema<QueryResult.Value<Unit>> by MongsilDatabase.Schema {
-            override val version: Long = 2
+            override val version: Long = 3
             
             override fun migrate(
                 driver: SqlDriver,

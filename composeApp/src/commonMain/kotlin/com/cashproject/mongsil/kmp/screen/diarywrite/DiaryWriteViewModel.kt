@@ -3,6 +3,7 @@ package com.cashproject.mongsil.kmp.screen.diarywrite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.repository.DiaryRepository
+import com.cashproject.mongsil.kmp.repository.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
  */
 class DiaryWriteViewModel(
     private val diaryRepository: DiaryRepository,
+    private val emoticonRepository: EmoticonRepository,
     year: Int,
     month: Int,
     day: Int
@@ -41,7 +43,7 @@ class DiaryWriteViewModel(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
-        loadExistingDiary()
+        // 이모티콘을 먼저 로드한 후 기존 일기를 로드해야 이모티콘 매핑이 가능
         loadEmoticons()
     }
 
@@ -56,9 +58,19 @@ class DiaryWriteViewModel(
                 day = _uiState.value.day
             )
             
-            existingDiary?.let {
+            existingDiary?.let { diary ->
+                // 이모티콘 ID가 있으면 해당 이모티콘을 찾아서 설정
+                val selectedEmoticon = if (diary.emoticonId != null) {
+                    _uiState.value.emoticons.find { it.id == diary.emoticonId.toInt() }
+                } else {
+                    null
+                }
+                
                 _uiState.update { state ->
-                    state.copy(content = it.content)
+                    state.copy(
+                        content = diary.content,
+                        selectedEmoticon = selectedEmoticon
+                    )
                 }
             }
         }
@@ -69,8 +81,17 @@ class DiaryWriteViewModel(
      */
     private fun loadEmoticons() {
         viewModelScope.launch {
-            val emoticons = diaryRepository.getEmoticons()
-            _uiState.update { it.copy(emoticons = emoticons) }
+            emoticonRepository.getEmoticons()
+                .onSuccess { emoticons ->
+                    println("++## DiaryWrite 이모티콘 로드 성공: ${emoticons.size}개")
+                    _uiState.update { it.copy(emoticons = emoticons) }
+                    // 이모티콘 로드 후 기존 일기의 이모티콘도 복원
+                    loadExistingDiary()
+                }
+                .onFailure { error ->
+                    println("++## DiaryWrite 이모티콘 로드 실패: ${error.message}")
+                    _uiState.update { it.copy(emoticons = emptyList()) }
+                }
         }
     }
 

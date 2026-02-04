@@ -96,6 +96,7 @@ class DiaryRepository(private val database: MongsilDatabase) {
                 // 업데이트
                 database.diaryQueries.updateDiary(
                     content = content,
+                    emoticonId = emoticonId,
                     updatedAt = currentTimeMillis,
                     year = year.toLong(),
                     month = month.toLong(),
@@ -108,6 +109,7 @@ class DiaryRepository(private val database: MongsilDatabase) {
                     month = month.toLong(),
                     day = day.toLong(),
                     content = content,
+                    emoticonId = emoticonId,
                     createdAt = currentTimeMillis,
                     updatedAt = currentTimeMillis
                 )

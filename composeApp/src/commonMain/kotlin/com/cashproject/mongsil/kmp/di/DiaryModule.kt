@@ -13,6 +13,7 @@ internal val diaryModule = module {
     viewModel { (year: Int, month: Int, day: Int) ->
         DiaryWriteViewModel(
             diaryRepository = get(),
+            emoticonRepository = get(),
             year = year,
             month = month,
             day = day

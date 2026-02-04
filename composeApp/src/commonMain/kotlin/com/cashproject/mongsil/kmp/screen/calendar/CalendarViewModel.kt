@@ -98,7 +98,7 @@ class CalendarViewModel(
                         monthNumber = diary.month.toInt(),
                         dayOfMonth = diary.day.toInt()
                     ),
-                    emotionId = 0 // 현재는 감정 ID를 사용하지 않음
+                    emotionId = diary.emoticonId?.toInt() ?: 0
                 )
             }
 

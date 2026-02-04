@@ -31,6 +31,20 @@ object DatabaseMigrations {
     }
     
     /**
+     * 버전 2에서 3으로 마이그레이션
+     * DiaryEntity 테이블에 emoticonId 컬럼 추가
+     */
+    fun migrateV2ToV3(driver: SqlDriver) {
+        driver.execute(
+            null,
+            """
+            ALTER TABLE DiaryEntity ADD COLUMN emoticonId INTEGER
+            """.trimIndent(),
+            0
+        )
+    }
+    
+    /**
      * 전체 마이그레이션 실행
      * oldVersion에서 newVersion까지 순차적으로 마이그레이션합니다.
      */
@@ -40,9 +54,9 @@ object DatabaseMigrations {
             migrateV1ToV2(driver)
         }
         
-        // 향후 버전 추가 예시:
-        // if (oldVersion < 3 && newVersion >= 3) {
-        //     migrateV2ToV3(driver)
-        // }
+        // 버전 2 -> 3
+        if (oldVersion < 3 && newVersion >= 3) {
+            migrateV2ToV3(driver)
+        }
     }
 }
