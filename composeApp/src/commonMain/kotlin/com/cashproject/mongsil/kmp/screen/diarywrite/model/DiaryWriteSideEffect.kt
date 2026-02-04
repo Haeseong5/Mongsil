@@ -6,22 +6,8 @@ package com.cashproject.mongsil.kmp.screen.diarywrite.model
  */
 sealed interface DiaryWriteSideEffect {
     /**
-     * 저장 성공 후 캘린더 화면으로 이동
+     * 저장 성공
      */
-    data object NavigateToCalendar : DiaryWriteSideEffect
-    
-    /**
-     * 저장 없이 캘린더 화면으로 이동
-     */
-    data object NavigateBack : DiaryWriteSideEffect
-    
-    /**
-     * 저장 실패 메시지 표시
-     */
-    data class ShowError(val message: String) : DiaryWriteSideEffect
-    
-    /**
-     * 저장 성공 메시지 표시
-     */
-    data object ShowSaveSuccess : DiaryWriteSideEffect
+    data object SaveSuccess : DiaryWriteSideEffect
+    data object OnBack : DiaryWriteSideEffect
 }

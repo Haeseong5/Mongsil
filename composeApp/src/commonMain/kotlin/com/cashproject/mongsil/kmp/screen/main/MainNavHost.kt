@@ -2,6 +2,7 @@ package com.cashproject.mongsil.kmp.screen.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -21,6 +22,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 internal fun MainNavHost(
     navigator: NavHostController,
+    padding: PaddingValues,
     startDestination: Route = Route.Calendar
 ) {
     NavHost(
@@ -33,6 +35,7 @@ internal fun MainNavHost(
     ) {
         composable<Route.Calendar> {
             CalendarScreen(
+                padding = padding,
                 onNavigateToDiaryWrite = { year, month, day ->
                     navigator.navigateTo(Route.DiaryWrite(year, month, day))
                 }
@@ -41,13 +44,21 @@ internal fun MainNavHost(
 
         composable<Route.DiaryWrite> { backStackEntry ->
             val route = backStackEntry.toRoute<Route.DiaryWrite>()
-            val viewModel: DiaryWriteViewModel = koinViewModel { 
+            val viewModel: DiaryWriteViewModel = koinViewModel {
                 parametersOf(route.year, route.month, route.day)
             }
-            
+
             DiaryWriteScreen(
+                padding = padding,
                 viewModel = viewModel,
-                onNavigateToCalendar = {
+                onSaveSuccess = {
+                    navigator.navigateWithPopUpTo(
+                        route = Route.Calendar,
+                        popUpTo = Route.DiaryWrite(route.year, route.month, route.day),
+                        inclusive = true
+                    )
+                },
+                onBack = {
                     navigator.navigateWithPopUpTo(
                         route = Route.Calendar,
                         popUpTo = Route.DiaryWrite(route.year, route.month, route.day),

@@ -42,6 +42,7 @@ class DiaryWriteViewModel(
 
     init {
         loadExistingDiary()
+        loadEmoticons()
     }
 
     /**
@@ -64,11 +65,24 @@ class DiaryWriteViewModel(
     }
 
     /**
+     * 이모티콘 목록을 불러옵니다.
+     */
+    private fun loadEmoticons() {
+        viewModelScope.launch {
+            val emoticons = diaryRepository.getEmoticons()
+            _uiState.update { it.copy(emoticons = emoticons) }
+        }
+    }
+
+    /**
      * 사용자 이벤트를 처리합니다.
      */
     fun onEvent(event: DiaryWriteEvent) {
         when (event) {
             is DiaryWriteEvent.OnContentChange -> handleContentChange(event.content)
+            is DiaryWriteEvent.OnEmoticonButtonClick -> handleEmoticonButtonClick()
+            is DiaryWriteEvent.OnEmoticonSelected -> handleEmoticonSelected(event.emoticon)
+            is DiaryWriteEvent.OnEmoticonBottomSheetDismiss -> handleEmoticonBottomSheetDismiss()
             is DiaryWriteEvent.OnSaveClick -> handleSaveClick()
             is DiaryWriteEvent.OnBackClick -> handleBackClick()
             is DiaryWriteEvent.OnBackPressed -> handleBackPressed()
@@ -81,16 +95,28 @@ class DiaryWriteViewModel(
         _uiState.update { it.copy(content = content) }
     }
 
+    private fun handleEmoticonButtonClick() {
+        _uiState.update { it.copy(showEmoticonBottomSheet = true) }
+    }
+
+    private fun handleEmoticonSelected(emoticon: com.cashproject.mongsil.kmp.model.Emoticon) {
+        _uiState.update { 
+            it.copy(
+                selectedEmoticon = emoticon,
+                showEmoticonBottomSheet = false
+            )
+        }
+    }
+
+    private fun handleEmoticonBottomSheetDismiss() {
+        _uiState.update { it.copy(showEmoticonBottomSheet = false) }
+    }
+
     private fun handleSaveClick() {
         val currentState = _uiState.value
         
         // 빈 내용은 저장하지 않음
         if (currentState.content.isBlank()) {
-            viewModelScope.launch {
-                _sideEffect.send(
-                    DiaryWriteSideEffect.ShowError("일기 내용을 입력해주세요.")
-                )
-            }
             return
         }
 
@@ -101,22 +127,18 @@ class DiaryWriteViewModel(
                 year = currentState.year,
                 month = currentState.month,
                 day = currentState.day,
-                content = currentState.content
+                content = currentState.content,
+                emoticonId = currentState.selectedEmoticon?.id?.toLong()
             )
 
             _uiState.update { it.copy(isLoading = false) }
 
             result.fold(
                 onSuccess = {
-                    _sideEffect.send(DiaryWriteSideEffect.ShowSaveSuccess)
-                    _sideEffect.send(DiaryWriteSideEffect.NavigateToCalendar)
+                    _sideEffect.send(DiaryWriteSideEffect.SaveSuccess)
                 },
                 onFailure = { error ->
-                    _sideEffect.send(
-                        DiaryWriteSideEffect.ShowError(
-                            error.message ?: "저장에 실패했습니다."
-                        )
-                    )
+                    // TODO: 에러 처리를 외부에서 하거나 별도 방식으로 처리
                 }
             )
         }
@@ -125,27 +147,19 @@ class DiaryWriteViewModel(
     private fun handleBackClick() {
         if (_uiState.value.hasContent) {
             _uiState.update { it.copy(showExitDialog = true) }
-        } else {
-            viewModelScope.launch {
-                _sideEffect.send(DiaryWriteSideEffect.NavigateBack)
-            }
         }
     }
 
     private fun handleBackPressed() {
         if (_uiState.value.hasContent) {
             _uiState.update { it.copy(showExitDialog = true) }
-        } else {
-            viewModelScope.launch {
-                _sideEffect.send(DiaryWriteSideEffect.NavigateBack)
-            }
         }
     }
 
     private fun handleExitConfirm() {
-        _uiState.update { it.copy(showExitDialog = false) }
         viewModelScope.launch {
-            _sideEffect.send(DiaryWriteSideEffect.NavigateBack)
+            _uiState.update { it.copy(showExitDialog = false) }
+            _sideEffect.send(DiaryWriteSideEffect.OnBack)
         }
     }
 

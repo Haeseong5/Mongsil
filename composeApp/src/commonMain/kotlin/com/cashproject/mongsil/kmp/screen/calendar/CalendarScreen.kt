@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,13 +42,14 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun CalendarScreen(
     modifier: Modifier = Modifier,
+    padding: PaddingValues,
     viewModel: CalendarViewModel = koinInject(),
     onNavigateToDiaryWrite: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> }
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     CalendarScreenContent(
-        modifier = modifier,
+        modifier = modifier.padding(padding),
         uiState = uiState,
         onDateClick = { date ->
             onNavigateToDiaryWrite(date.year, date.monthNumber, date.dayOfMonth)

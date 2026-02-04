@@ -5,6 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.cashproject.mongsil.kmp.database.DiaryEntity
 import com.cashproject.mongsil.kmp.database.MongsilDatabase
+import com.cashproject.mongsil.kmp.model.Emoticon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -84,7 +85,8 @@ class DiaryRepository(private val database: MongsilDatabase) {
         year: Int,
         month: Int,
         day: Int,
-        content: String
+        content: String,
+        emoticonId: Long? = null
     ): Result<Unit> = withContext(Dispatchers.Default) {
         try {
             val currentTimeMillis = Clock.System.now().toEpochMilliseconds()
@@ -114,6 +116,20 @@ class DiaryRepository(private val database: MongsilDatabase) {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+    
+    /**
+     * 이모티콘 목록을 조회합니다.
+     */
+    suspend fun getEmoticons(): List<Emoticon> = withContext(Dispatchers.Default) {
+        // TODO: 실제 이모티콘 데이터는 API나 데이터베이스에서 가져와야 합니다.
+        // 지금은 임시 데이터를 반환합니다.
+        listOf(
+            Emoticon(1, "행복", "https://example.com/happy.png", "#333333", "#FFE5E5"),
+            Emoticon(2, "슬픔", "https://example.com/sad.png", "#333333", "#E5F0FF"),
+            Emoticon(3, "화남", "https://example.com/angry.png", "#333333", "#FFE5CC"),
+            Emoticon(4, "평온", "https://example.com/calm.png", "#333333", "#E5FFE5")
+        )
     }
     
     /**
