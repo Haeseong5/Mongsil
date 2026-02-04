@@ -41,6 +41,7 @@ import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ExitConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
+import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_menu
@@ -81,55 +82,26 @@ fun DiaryWriteScreen(
         }
     }
 
-    // 시스템 뒤로가기 처리 (플랫폼별로 처리 필요)
-    BackPressHandler {
-        viewModel.onEvent(DiaryWriteEvent.OnBackPressed)
-    }
-
     DiaryWriteScreenContent(
         modifier = modifier.padding(padding),
-        year = uiState.year,
-        month = uiState.month,
-        day = uiState.day,
-        content = uiState.content,
-        selectedEmoticon = uiState.selectedEmoticon,
-        emoticons = uiState.emoticons,
-        showEmoticonBottomSheet = uiState.showEmoticonBottomSheet,
-        isLoading = uiState.isLoading,
-        showExitDialog = uiState.showExitDialog,
-        onContentChange = { viewModel.onEvent(DiaryWriteEvent.OnContentChange(it)) },
-        onEmoticonButtonClick = { viewModel.onEvent(DiaryWriteEvent.OnEmoticonButtonClick) },
-        onEmoticonSelected = { viewModel.onEvent(DiaryWriteEvent.OnEmoticonSelected(it)) },
-        onEmoticonBottomSheetDismiss = { viewModel.onEvent(DiaryWriteEvent.OnEmoticonBottomSheetDismiss) },
-        onSaveClick = { viewModel.onEvent(DiaryWriteEvent.OnSaveClick) },
-        onBackClick = { viewModel.onEvent(DiaryWriteEvent.OnBackClick) },
-        onExitConfirm = { viewModel.onEvent(DiaryWriteEvent.OnExitConfirm) },
-        onExitCancel = { viewModel.onEvent(DiaryWriteEvent.OnExitCancel) }
+        uiState = uiState,
+        onEvent = viewModel::onEvent
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DiaryWriteScreenContent(
-    year: Int,
-    month: Int,
-    day: Int,
-    content: String,
-    selectedEmoticon: Emoticon?,
-    emoticons: List<Emoticon>,
-    showEmoticonBottomSheet: Boolean,
-    isLoading: Boolean,
-    showExitDialog: Boolean,
-    onContentChange: (String) -> Unit,
-    onEmoticonButtonClick: () -> Unit,
-    onEmoticonSelected: (Emoticon) -> Unit,
-    onEmoticonBottomSheetDismiss: () -> Unit,
-    onSaveClick: () -> Unit,
-    onBackClick: () -> Unit,
-    onExitConfirm: () -> Unit,
-    onExitCancel: () -> Unit,
+    uiState: DiaryWriteUiState,
+    onEvent: (DiaryWriteEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
+    BackPressHandler(enabled = !uiState.showEmoticonBottomSheet && !uiState.showExitDialog) {
+        println("DiaryWriteScreen BackPressHandler called")
+        onEvent(DiaryWriteEvent.OnBackPressed)
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -143,7 +115,7 @@ private fun DiaryWriteScreenContent(
         ) {
             // 상단 툴바
             TopBar(
-                onBackClick = onBackClick,
+                onBackClick = { onEvent(DiaryWriteEvent.OnBackClick) },
                 onMoreClick = { /* TODO: 더보기 메뉴 */ }
             )
 
@@ -158,26 +130,26 @@ private fun DiaryWriteScreenContent(
 
                 // 이모티콘 버튼
                 EmoticonButton(
-                    selectedEmoticon = selectedEmoticon,
-                    onClick = onEmoticonButtonClick
+                    selectedEmoticon = uiState.selectedEmoticon,
+                    onClick = { onEvent(DiaryWriteEvent.OnEmoticonButtonClick) }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 // 날짜 표시
                 DateText(
-                    year = year,
-                    month = month,
-                    day = day
+                    year = uiState.year,
+                    month = uiState.month,
+                    day = uiState.day
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // 일기 내용 입력
                 DiaryTextField(
-                    content = content,
-                    onContentChange = onContentChange,
-                    enabled = !isLoading,
+                    content = uiState.content,
+                    onContentChange = { onEvent(DiaryWriteEvent.OnContentChange(it)) },
+                    enabled = !uiState.isLoading,
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
@@ -186,26 +158,26 @@ private fun DiaryWriteScreenContent(
 
             // 하단 툴바
             BottomToolbar(
-                onSaveClick = onSaveClick,
-                canSave = content.isNotBlank(),
-                isLoading = isLoading
+                onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
+                canSave = uiState.hasContent,
+                isLoading = uiState.isLoading
             )
         }
 
         // 이모티콘 바텀시트
-        if (showEmoticonBottomSheet) {
+        if (uiState.showEmoticonBottomSheet) {
             EmoticonBottomSheet(
-                emoticons = emoticons,
-                onDismiss = onEmoticonBottomSheetDismiss,
-                onEmoticonSelected = onEmoticonSelected
+                emoticons = uiState.emoticons,
+                onDismiss = { onEvent(DiaryWriteEvent.OnEmoticonBottomSheetDismiss) },
+                onEmoticonSelected = { onEvent(DiaryWriteEvent.OnEmoticonSelected(it)) }
             )
         }
 
         // 종료 확인 다이얼로그
-        if (showExitDialog) {
+        if (uiState.showExitDialog) {
             ExitConfirmDialog(
-                onConfirm = onExitConfirm,
-                onDismiss = onExitCancel
+                onConfirm = { onEvent(DiaryWriteEvent.OnExitConfirm) },
+                onDismiss = { onEvent(DiaryWriteEvent.OnExitCancel) }
             )
         }
     }
@@ -445,23 +417,18 @@ private fun getDayOfWeekText(year: Int, month: Int, day: Int): String {
 private fun DiaryWriteScreenContentPreview() {
     MongsilTheme {
         DiaryWriteScreenContent(
-            year = 2026,
-            month = 2,
-            day = 4,
-            content = "오늘은 날씨가 정말 좋았다.\n아침부터 햇살이 따스하게 비춰서 기분이 좋았다.",
-            selectedEmoticon = null,
-            emoticons = emptyList(),
-            showEmoticonBottomSheet = false,
-            isLoading = false,
-            showExitDialog = false,
-            onContentChange = {},
-            onEmoticonButtonClick = {},
-            onEmoticonSelected = {},
-            onEmoticonBottomSheetDismiss = {},
-            onSaveClick = {},
-            onBackClick = {},
-            onExitConfirm = {},
-            onExitCancel = {}
+            uiState = DiaryWriteUiState(
+                year = 2026,
+                month = 2,
+                day = 4,
+                content = "오늘은 날씨가 정말 좋았다.\n아침부터 햇살이 따스하게 비춰서 기분이 좋았다.",
+                selectedEmoticon = null,
+                emoticons = emptyList(),
+                showEmoticonBottomSheet = false,
+                isLoading = false,
+                showExitDialog = false
+            ),
+            onEvent = {}
         )
     }
 }
@@ -471,23 +438,18 @@ private fun DiaryWriteScreenContentPreview() {
 private fun DiaryWriteScreenContentEmptyPreview() {
     MongsilTheme {
         DiaryWriteScreenContent(
-            year = 2026,
-            month = 2,
-            day = 4,
-            content = "",
-            selectedEmoticon = null,
-            emoticons = emptyList(),
-            showEmoticonBottomSheet = false,
-            isLoading = false,
-            showExitDialog = false,
-            onContentChange = {},
-            onEmoticonButtonClick = {},
-            onEmoticonSelected = {},
-            onEmoticonBottomSheetDismiss = {},
-            onSaveClick = {},
-            onBackClick = {},
-            onExitConfirm = {},
-            onExitCancel = {}
+            uiState = DiaryWriteUiState(
+                year = 2026,
+                month = 2,
+                day = 4,
+                content = "",
+                selectedEmoticon = null,
+                emoticons = emptyList(),
+                showEmoticonBottomSheet = false,
+                isLoading = false,
+                showExitDialog = false
+            ),
+            onEvent = {}
         )
     }
 }
@@ -497,29 +459,24 @@ private fun DiaryWriteScreenContentEmptyPreview() {
 private fun DiaryWriteScreenContentWithEmoticonPreview() {
     MongsilTheme {
         DiaryWriteScreenContent(
-            year = 2026,
-            month = 2,
-            day = 4,
-            content = "",
-            selectedEmoticon = Emoticon(
-                id = 1,
-                title = "행복",
-                imageUrl = "https://example.com/happy.png",
-                textColor = "#333333",
-                backgroundColor = "#FFE5E5"
+            uiState = DiaryWriteUiState(
+                year = 2026,
+                month = 2,
+                day = 4,
+                content = "",
+                selectedEmoticon = Emoticon(
+                    id = 1,
+                    title = "행복",
+                    imageUrl = "https://example.com/happy.png",
+                    textColor = "#333333",
+                    backgroundColor = "#FFE5E5"
+                ),
+                emoticons = emptyList(),
+                showEmoticonBottomSheet = false,
+                isLoading = false,
+                showExitDialog = false
             ),
-            emoticons = emptyList(),
-            showEmoticonBottomSheet = false,
-            isLoading = false,
-            showExitDialog = false,
-            onContentChange = {},
-            onEmoticonButtonClick = {},
-            onEmoticonSelected = {},
-            onEmoticonBottomSheetDismiss = {},
-            onSaveClick = {},
-            onBackClick = {},
-            onExitConfirm = {},
-            onExitCancel = {}
+            onEvent = {}
         )
     }
 }

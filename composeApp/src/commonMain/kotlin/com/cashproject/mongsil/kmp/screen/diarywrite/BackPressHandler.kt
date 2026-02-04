@@ -8,4 +8,4 @@ import androidx.compose.runtime.Composable
  * iOS: 네비게이션 스택 관리
  */
 @Composable
-expect fun BackPressHandler(onBack: () -> Unit)
+expect fun BackPressHandler(enabled: Boolean = true, onBack: () -> Unit)

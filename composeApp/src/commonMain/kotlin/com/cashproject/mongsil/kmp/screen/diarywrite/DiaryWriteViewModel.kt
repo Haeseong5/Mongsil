@@ -145,14 +145,22 @@ class DiaryWriteViewModel(
     }
 
     private fun handleBackClick() {
-        if (_uiState.value.hasContent) {
+        if (uiState.value.hasContent) {
             _uiState.update { it.copy(showExitDialog = true) }
+        } else {
+            viewModelScope.launch {
+                _sideEffect.send(DiaryWriteSideEffect.OnBack)
+            }
         }
     }
 
     private fun handleBackPressed() {
         if (_uiState.value.hasContent) {
             _uiState.update { it.copy(showExitDialog = true) }
+        } else {
+            viewModelScope.launch {
+                _sideEffect.send(DiaryWriteSideEffect.OnBack)
+            }
         }
     }
 
