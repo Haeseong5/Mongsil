@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.repository.DiaryRepository
 import com.cashproject.mongsil.kmp.repository.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
+import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,13 @@ class CalendarViewModel(
     init {
         // 현재 년월로 초기화
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        _uiState.update { it.copy(currentYear = now.year, currentMonth = now.monthNumber) }
+        _uiState.update { 
+            it.copy(
+                today = now.date,
+                currentYear = now.year, 
+                currentMonth = now.monthNumber
+            ) 
+        }
         loadDiariesForCurrentMonth()
         loadEmoticons()
     }
@@ -49,6 +56,25 @@ class CalendarViewModel(
                     println("++## 이모티콘 로드 실패: ${error.message}")
                 }
         }
+    }
+
+    fun onEvent(event: CalendarUiEvent) {
+        when (event) {
+            is CalendarUiEvent.ShowAndHideYearMonthPicker -> {
+                _uiState.update { it.copy(isShownYearMonthPicker = event.isShow) }
+            }
+
+            is CalendarUiEvent.OnYearMonthPickerSelected -> {
+                _uiState.update {
+                    it.copy(
+                        isShownYearMonthPicker = false,
+                        currentYear = event.year,
+                        currentMonth = event.month
+                    )
+                }
+            }
+        }
+
     }
 
     fun updateYearMonth(year: Int, month: Int) {

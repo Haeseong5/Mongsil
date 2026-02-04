@@ -9,16 +9,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.gamja_flower_regular
+import org.jetbrains.compose.resources.Font
 
 val LocalDarkTheme = compositionLocalOf { true }
 
 
 @Composable
 fun MongsilTheme(
-    fontFamily: FontFamily = FontFamily.Default,
+    fontFamily: FontFamily = FontFamily(Font(resource = Res.font.gamja_flower_regular)),
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

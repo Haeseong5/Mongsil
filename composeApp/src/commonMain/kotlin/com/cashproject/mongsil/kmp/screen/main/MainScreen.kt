@@ -29,23 +29,21 @@ fun MainScreen(
     val snackbarController = remember(snackbarHostState, coroutineScope) {
         SnackbarController(snackbarHostState, coroutineScope)
     }
-
-    MongsilTheme {
-        CompositionLocalProvider(LocalSnackbarController provides snackbarController) {
-            Scaffold(
-                modifier = modifier.fillMaxSize(),
-                containerColor = MongsilTheme.colorScheme.background,
-                snackbarHost = {
-                    SnackbarHost(hostState = snackbarHostState)
-                }
-            ) { paddingValues ->
-                Box(modifier = Modifier.fillMaxSize()) {
-                    MainNavHost(
-                        navigator = navigator,
-                        padding = paddingValues
-                    )
-                }
+    CompositionLocalProvider(LocalSnackbarController provides snackbarController) {
+        Scaffold(
+            modifier = modifier.fillMaxSize(),
+            containerColor = MongsilTheme.colorScheme.background,
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            }
+        ) { paddingValues ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                MainNavHost(
+                    navigator = navigator,
+                    padding = paddingValues
+                )
             }
         }
     }
+
 }

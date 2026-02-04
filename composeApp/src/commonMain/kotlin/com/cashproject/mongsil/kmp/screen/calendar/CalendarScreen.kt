@@ -25,14 +25,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarMonthContent
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
-import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitle
+import com.cashproject.mongsil.kmp.screen.calendar.component.DayPickerDialog
+import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitleV2
+import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
 import com.cashproject.mongsil.kmp.screen.calendar.utils.calculateYearMonth
-import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
 
@@ -51,11 +49,31 @@ fun CalendarScreen(
     CalendarScreenContent(
         modifier = modifier.padding(padding),
         uiState = uiState,
+        uiEvent = viewModel::onEvent,
         onDateClick = { date ->
             onNavigateToDiaryWrite(date.year, date.monthNumber, date.dayOfMonth)
         },
-        onYearMonthChange = viewModel::updateYearMonth
+        onYearMonthChange = viewModel::updateYearMonth,
+        onYearMonthPickerSelected = { year, month ->
+            viewModel.onEvent(
+                CalendarUiEvent.OnYearMonthPickerSelected(year = year, month = month)
+            )
+        }
     )
+
+    if (uiState.isShownYearMonthPicker) {
+        DayPickerDialog(
+            initialYear = uiState.currentYear,
+            onDismissRequest = {
+                viewModel.onEvent(CalendarUiEvent.ShowAndHideYearMonthPicker(false))
+            },
+            onMonthSelected = { year, month ->
+                viewModel.onEvent(
+                    CalendarUiEvent.OnYearMonthPickerSelected(year = year, month = month)
+                )
+            }
+        )
+    }
 }
 
 /**
@@ -66,17 +84,13 @@ fun CalendarScreen(
 fun CalendarScreenContent(
     modifier: Modifier = Modifier,
     uiState: CalendarUiState,
+    uiEvent: (CalendarUiEvent) -> Unit = {},
     onDateClick: (LocalDate) -> Unit = {},
-    onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> }
+    onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> },
+    onYearMonthPickerSelected: (year: Int, month: Int) -> Unit = { _, _ -> }
 ) {
-    // 오늘 날짜
-    val today: LocalDate = remember {
-        val now = Clock.System.now()
-        now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-    }
-
-    // 현재 월을 기준으로 초기 페이지 설정 (충분히 큰 범위)
-    val currentMonth = remember { today }
+    val today = uiState.today
+    val initialMonth = remember { today }
     val initialPage = 1200 // 중앙 페이지
     val totalPages = 2400 // 전후 100년 정도
 
@@ -86,11 +100,11 @@ fun CalendarScreenContent(
     )
     val coroutineScope = rememberCoroutineScope()
 
-    // ���재 보이는 월 계산
+    // 현재 보이는 월 계산
     val visibleYearMonth by remember {
         derivedStateOf {
             val offset = pagerState.currentPage - initialPage
-            calculateYearMonth(currentMonth.year, currentMonth.monthNumber, offset)
+            calculateYearMonth(initialMonth.year, initialMonth.monthNumber, offset)
         }
     }
 
@@ -99,11 +113,26 @@ fun CalendarScreenContent(
         snapshotFlow { pagerState.currentPage }.collect { page ->
             val offset = page - initialPage
             val (year, month) = calculateYearMonth(
-                currentMonth.year,
-                currentMonth.monthNumber,
+                initialMonth.year,
+                initialMonth.monthNumber,
                 offset
             )
             onYearMonthChange(year, month)
+        }
+    }
+
+    // DayPickerDialog에서 년월 선택 시 pager 이동
+    LaunchedEffect(uiState.currentYear, uiState.currentMonth) {
+        // 초기 로딩이 아닌 경우에만 pager 이동
+        if (uiState.currentYear != initialMonth.year || uiState.currentMonth != initialMonth.monthNumber) {
+            val yearDiff = uiState.currentYear - initialMonth.year
+            val monthDiff = uiState.currentMonth - initialMonth.monthNumber
+            val targetOffset = yearDiff * 12 + monthDiff
+            val targetPage = initialPage + targetOffset
+            
+            if (targetPage in 0 until totalPages) {
+                pagerState.animateScrollToPage(targetPage)
+            }
         }
     }
 
@@ -119,20 +148,12 @@ fun CalendarScreenContent(
                 .fillMaxWidth()
                 .align(Alignment.Center)
         ) {
-            // 월/년도 표시 및 네비게이션
-            SimpleCalendarTitle(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+            SimpleCalendarTitleV2(
+                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
                 year = visibleYearMonth.first,
                 month = visibleYearMonth.second,
-                goToPrevious = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                    }
-                },
-                goToNext = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                    }
+                onClick = {
+                    uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
                 }
             )
             VerticalSpacer(16.dp)
@@ -146,8 +167,8 @@ fun CalendarScreenContent(
             ) { page ->
                 val offset = page - initialPage
                 val (pageYear, pageMonth) = calculateYearMonth(
-                    currentMonth.year,
-                    currentMonth.monthNumber,
+                    initialMonth.year,
+                    initialMonth.monthNumber,
                     offset
                 )
 

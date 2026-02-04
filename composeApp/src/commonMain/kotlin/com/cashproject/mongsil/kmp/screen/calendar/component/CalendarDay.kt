@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import kotlinx.datetime.DayOfWeek
@@ -27,7 +26,7 @@ import kotlinx.datetime.LocalDate
 
 /**
  * 캘린더 개별 날짜 셀
- * 
+ *
  * @param date 날짜
  * @param isToday 오늘 날짜 여부
  * @param isRecord 일기 기록 여부
@@ -65,7 +64,7 @@ fun BoxScope.CalendarDay(
             Text(
                 text = date.dayOfMonth.toString(),
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
-                fontSize = 14.sp,
+                style = MongsilTheme.typography.default,
                 color = when (date.dayOfWeek) {
                     DayOfWeek.SUNDAY -> Color(0xFFE57373)
                     DayOfWeek.SATURDAY -> Color(0xFF64B5F6)
