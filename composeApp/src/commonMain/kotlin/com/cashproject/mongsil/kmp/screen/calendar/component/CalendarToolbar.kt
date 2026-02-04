@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.ic_shopping_bag
 import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
 
@@ -25,7 +26,7 @@ fun BoxScope.CalendarToolbar() {
         leftContent = {
             Icon(
                 modifier = Modifier.size(20.dp),
-                painter = painterResource(Res.drawable.ic_trash),
+                painter = painterResource(Res.drawable.ic_shopping_bag),
                 contentDescription = ""
             )
             Icon(

@@ -48,7 +48,7 @@ fun IconToolbar(
     ) {
         // 왼쪽 아이콘 영역
         Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             leftContent()
@@ -56,7 +56,7 @@ fun IconToolbar(
 
         // 오른쪽 아이콘 영역
         Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             rightContent()
