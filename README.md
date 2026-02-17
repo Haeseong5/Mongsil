@@ -126,9 +126,13 @@ Firebase
 ### 📊 프로젝트 특징
 
 •	Jetpack Compose 기반 UI 전면 적용
+
 •	상태 기반 UI(State-driven UI) 설계
+
 •	ViewModel 중심 단방향 데이터 흐름
+
 •	감정 데이터 구조 설계 및 모델링
+
 •	실제 서비스 배포를 고려한 앱 구조 구성
 
 ---
