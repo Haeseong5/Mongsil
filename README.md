@@ -125,7 +125,7 @@ Firebase
 
 ### 📊 프로젝트 특징
 
-•	Jetpack Compose 기반 UI 전면 적용
+• Jetpack Compose 기반 UI 전면 적용
 
 •	상태 기반 UI(State-driven UI) 설계
 
