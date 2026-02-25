@@ -39,6 +39,7 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.model.Emoticon
+import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ExitConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
@@ -314,83 +315,6 @@ private fun DiaryTextField(
     )
 }
 
-@Composable
-private fun BottomToolbar(
-    onSaveClick: () -> Unit,
-    canSave: Boolean,
-    isLoading: Boolean,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 왼쪽 아이콘들
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { /* TODO: 이미지 추가 */ },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "🖼",
-                    style = TextStyle(fontSize = 20.sp)
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { /* TODO: 목록 */ },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "☰",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        color = Color.Gray
-                    )
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { /* TODO: 시간 */ },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "🕐",
-                    style = TextStyle(fontSize = 20.sp)
-                )
-            }
-        }
-
-        // 저장 버튼
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clickable(enabled = canSave && !isLoading, onClick = onSaveClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "✓",
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    color = if (canSave && !isLoading) Color.Black else Color.Gray
-                )
-            )
-        }
-    }
-}
 
 // 요일 텍스트 반환
 private fun getDayOfWeekText(year: Int, month: Int, day: Int): String {
