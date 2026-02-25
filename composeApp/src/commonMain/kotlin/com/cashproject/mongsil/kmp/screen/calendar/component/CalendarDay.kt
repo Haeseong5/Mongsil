@@ -60,7 +60,7 @@ fun BoxScope.CalendarDay(
         contentAlignment = Alignment.Center
     ) {
         // 날짜 텍스트 (기록이 없을 때만 표시)
-        if (!isRecord) {
+        if (!isRecord || emoticonImageUrl.isEmpty()) {
             Text(
                 text = date.dayOfMonth.toString(),
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarMonthContent
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
@@ -142,7 +143,7 @@ fun CalendarScreenContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = Color.White)
+            .background(color = MongsilTheme.colorScheme.background)
     ) {
         CalendarToolbar(
             onNavigateToSetting = onNavigateToSetting
