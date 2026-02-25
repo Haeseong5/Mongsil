@@ -118,6 +118,7 @@ internal fun MainNavHost(
 
         composable<Route.ThemeSetting> {
             ThemeSettingScreen(
+                padding = padding,
                 onBack = { navigator.popBackStack() }
             )
         }

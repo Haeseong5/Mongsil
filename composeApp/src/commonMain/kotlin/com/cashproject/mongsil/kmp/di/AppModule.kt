@@ -62,4 +62,5 @@ val appModules: List<Module> = listOf(
 
     // App-level
     appViewModelModule,
+    settingModule,
 )

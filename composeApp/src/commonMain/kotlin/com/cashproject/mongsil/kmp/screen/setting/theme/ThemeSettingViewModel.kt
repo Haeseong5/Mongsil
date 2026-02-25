@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.kmp
+package com.cashproject.mongsil.kmp.screen.setting.theme
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,17 +7,24 @@ import com.cashproject.mongsil.kmp.model.ThemeMode
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class AppViewModel(
-    settingRepository: SettingRepository,
+class ThemeSettingViewModel(
+    private val settingRepository: SettingRepository,
 ) : ViewModel() {
 
-    val uiState = settingRepository
+    val selectedMode = settingRepository
         .themeMode()
-        .map { AppUiState(themeMode = it) }
+        .map { it }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
-            AppUiState(themeMode = ThemeMode.SYSTEM)
+            ThemeMode.SYSTEM
         )
+
+    fun updateThemeMode(mode: ThemeMode) {
+        viewModelScope.launch {
+            settingRepository.updateThemeMode(mode)
+        }
+    }
 }
