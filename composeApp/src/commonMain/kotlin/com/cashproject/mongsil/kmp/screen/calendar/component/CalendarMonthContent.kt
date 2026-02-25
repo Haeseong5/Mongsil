@@ -2,9 +2,10 @@ package com.cashproject.mongsil.kmp.screen.calendar.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -61,9 +62,13 @@ fun CalendarMonthContent(
         }
 
         // 캘린더 그리드
+        // 항상 6행 × 48dp(size 36dp + vertical padding 12dp) = 288dp 고정 높이 유지
+        // → 어떤 달이든 Column 높이가 일정해 헤더가 움직이지 않음
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(288.dp),
             userScrollEnabled = false
         ) {
             items(calendarDays.size) { index ->
@@ -93,8 +98,12 @@ fun CalendarMonthContent(
                         }
                     }
                 } else {
-                    // 빈 셀
-                    Box(modifier = Modifier.aspectRatio(1f))
+                    // 빈 셀 – 실제 날짜 셀과 동일한 높이를 유지해 행 높이를 통일
+                    Box(
+                        modifier = Modifier
+                            .padding(vertical = 6.dp)
+                            .size(36.dp)
+                    )
                 }
             }
         }

@@ -13,8 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.ic_article
+import mongsil.composeapp.generated.resources.ic_bar_chart
+import mongsil.composeapp.generated.resources.ic_more
+import mongsil.composeapp.generated.resources.ic_search
 import mongsil.composeapp.generated.resources.ic_shopping_bag
-import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -27,26 +30,31 @@ fun BoxScope.CalendarToolbar(
         leftContent = {
             Icon(
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(24.dp)
                     .clickable { onNavigateToSetting() },
-                painter = painterResource(Res.drawable.ic_shopping_bag),
+                painter = painterResource(Res.drawable.ic_more),
                 contentDescription = "설정"
             )
             Icon(
-                modifier = Modifier.size(20.dp),
-                painter = painterResource(Res.drawable.ic_trash),
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(Res.drawable.ic_shopping_bag),
                 contentDescription = ""
             )
         },
         rightContent = {
             Icon(
-                modifier = Modifier.size(20.dp),
-                painter = painterResource(Res.drawable.ic_trash),
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(Res.drawable.ic_search),
                 contentDescription = ""
             )
             Icon(
-                modifier = Modifier.size(20.dp),
-                painter = painterResource(Res.drawable.ic_trash),
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(Res.drawable.ic_bar_chart),
+                contentDescription = ""
+            )
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(Res.drawable.ic_article),
                 contentDescription = ""
             )
         }

@@ -41,14 +41,14 @@ fun IconToolbar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(44.dp)
-            .padding(horizontal = 20.dp, vertical = 10.dp),
+            .height(56.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // 왼쪽 아이콘 영역
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             leftContent()
@@ -56,7 +56,7 @@ fun IconToolbar(
 
         // 오른쪽 아이콘 영역
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             rightContent()
