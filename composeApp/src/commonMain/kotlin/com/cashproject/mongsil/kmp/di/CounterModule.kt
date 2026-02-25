@@ -1,6 +1,6 @@
 package com.cashproject.mongsil.kmp.di
 
-import com.cashproject.mongsil.kmp.repository.CounterRepository
+import com.cashproject.mongsil.kmp.core.data.CounterRepository
 import com.cashproject.mongsil.kmp.screen.counter.CounterViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

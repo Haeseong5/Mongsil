@@ -2,8 +2,8 @@ package com.cashproject.mongsil.kmp.screen.diarywrite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cashproject.mongsil.kmp.repository.DiaryRepository
-import com.cashproject.mongsil.kmp.repository.EmoticonRepository
+import com.cashproject.mongsil.kmp.core.data.DiaryRepository
+import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState

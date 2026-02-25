@@ -96,6 +96,9 @@ kotlin {
             // Coil - Image Loading (KMP)
             implementation(libs.coil.compose.kmp)
             implementation(libs.coil.network.ktor)
+
+            implementation(libs.androidx.datastore.core)
+            implementation(libs.androidx.datastore.core.okio)
         }
     }
 }

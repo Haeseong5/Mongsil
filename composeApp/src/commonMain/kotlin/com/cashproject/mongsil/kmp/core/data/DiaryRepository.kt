@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.kmp.repository
+package com.cashproject.mongsil.kmp.core.data
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList

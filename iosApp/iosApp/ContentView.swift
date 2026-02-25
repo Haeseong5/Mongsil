@@ -2,17 +2,23 @@ import SwiftUI
 import ComposeApp
 
 struct ContentView: View {
+    @State private var isDark: Bool = false
+
     var body: some View {
-        ComposeView()
+        ComposeView(onDarkThemeChange: { isDark = $0 })
             .ignoresSafeArea(.all)
+            .preferredColorScheme(isDark ? .dark : .light)
     }
 }
 
 struct ComposeView: UIViewControllerRepresentable {
+    let onDarkThemeChange: (Bool) -> Void
+
     func makeUIViewController(context: Context) -> UIViewController {
-        return MainViewControllerKt.MainViewController()
+        return MainViewControllerKt.MainViewController(onDarkThemeChange: { isDark in
+            onDarkThemeChange(isDark)
+        })
     }
-    
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }

@@ -2,7 +2,7 @@ package com.cashproject.mongsil.kmp.di
 
 import com.cashproject.mongsil.kmp.network.HttpClientFactory
 import com.cashproject.mongsil.kmp.network.api.EmoticonApi
-import com.cashproject.mongsil.kmp.repository.EmoticonRepository
+import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import org.koin.dsl.module
 
 /**

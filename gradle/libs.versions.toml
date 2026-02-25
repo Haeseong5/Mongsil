@@ -34,6 +34,8 @@ lifecycle = "2.9.4"
 
 # Room
 room = "2.8.3"
+# datastore
+androidx-datastore = "1.2.0"
 
 # KSP
 # https://github.com/google/ksp/releases
@@ -94,6 +96,8 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "androidx-datastore" }
+androidx-datastore-core-okio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "androidx-datastore" }
 
 # Lifecycle
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }

@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.kmp.di
 
+import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
+import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -9,4 +11,7 @@ import org.koin.dsl.module
  */
 actual fun platformModule(): Module = module {
     single { DatabaseDriverFactory() }
+    factory<LocalPreferences> { params ->
+        LocalPreferencesImpl(name = params.get())
+    }
 }

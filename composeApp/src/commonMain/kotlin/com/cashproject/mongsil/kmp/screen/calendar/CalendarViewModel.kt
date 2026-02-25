@@ -2,8 +2,8 @@ package com.cashproject.mongsil.kmp.screen.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cashproject.mongsil.kmp.repository.DiaryRepository
-import com.cashproject.mongsil.kmp.repository.EmoticonRepository
+import com.cashproject.mongsil.kmp.core.data.DiaryRepository
+import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState

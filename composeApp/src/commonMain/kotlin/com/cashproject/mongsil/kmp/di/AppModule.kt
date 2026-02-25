@@ -1,5 +1,10 @@
 package com.cashproject.mongsil.kmp.di
 
+import com.cashproject.mongsil.kmp.AppViewModel
+import com.cashproject.mongsil.kmp.core.data.DiaryRepository
+import org.koin.core.module.dsl.viewModel
+import com.cashproject.mongsil.kmp.core.data.di.coreDataSettingModule
+import com.cashproject.mongsil.kmp.core.datastore.di.datastoreSettingsModule
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilDatabase
 import org.koin.core.module.Module
@@ -28,7 +33,14 @@ internal val databaseModule = module {
  */
 internal val repositoryModule = module {
     // Repository들 등록
-    single { com.cashproject.mongsil.kmp.repository.DiaryRepository(get()) }
+    single { DiaryRepository(get()) }
+}
+
+/**
+ * App-level ViewModel 모듈
+ */
+internal val appViewModelModule = module {
+    viewModel { AppViewModel(get()) }
 }
 
 /**
@@ -36,12 +48,18 @@ internal val repositoryModule = module {
  * 각 Feature별 모듈을 여기에 포함시킵니다
  */
 val appModules: List<Module> = listOf(
-    platformModule(),    // 플랫폼별 의존성 (DatabaseDriverFactory)
-    databaseModule,      // Database 인스턴스 생성
-    networkModule,       // Network (Ktor, API, Remote Repositories)
-    repositoryModule,    // Local Repositories
+    platformModule(),       // 플랫폼별 의존성 (DatabaseDriverFactory)
+    databaseModule,         // Database 인스턴스 생성
+    networkModule,          // Network (Ktor, API, Remote Repositories)
+    repositoryModule,       // Local Repositories
     calendarModule,
     counterModule,
     diaryModule,
-    // 새로운 feature 모듈을 여기에 추가
+    datastoreSettingsModule,
+
+    // :core:data
+    coreDataSettingModule,
+
+    // App-level
+    appViewModelModule,
 )

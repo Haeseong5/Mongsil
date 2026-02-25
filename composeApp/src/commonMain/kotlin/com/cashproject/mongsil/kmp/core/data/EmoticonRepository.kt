@@ -1,4 +1,4 @@
-package com.cashproject.mongsil.kmp.repository
+package com.cashproject.mongsil.kmp.core.data
 
 import com.cashproject.mongsil.kmp.database.MongsilDatabase
 import com.cashproject.mongsil.kmp.model.Emoticon
@@ -6,7 +6,6 @@ import com.cashproject.mongsil.kmp.network.api.EmoticonApi
 import com.cashproject.mongsil.kmp.network.model.EmoticonResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 
 /**
  * 감정 이모티콘 데이터를 관리하는 Repository
