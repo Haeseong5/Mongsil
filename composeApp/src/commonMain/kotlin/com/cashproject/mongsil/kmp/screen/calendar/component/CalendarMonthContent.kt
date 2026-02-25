@@ -85,6 +85,7 @@ fun CalendarMonthContent(
                                         .lastOrNull { it.date == date }
                                         ?.emotionId == emoticon.id
                                 }?.imageUrl ?: "",
+                            isFuture = date > today,
                             onClick = { onDateClick(date) }
                         )
 

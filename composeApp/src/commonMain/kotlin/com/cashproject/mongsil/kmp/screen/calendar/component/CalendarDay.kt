@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ fun BoxScope.CalendarDay(
     isToday: Boolean,
     isRecord: Boolean,
     emoticonImageUrl: String,
+    isFuture: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,7 +53,9 @@ fun BoxScope.CalendarDay(
             .clip(shape = CircleShape)
             .aspectRatio(1f)
             .align(Alignment.Center)
+            .alpha(if (isFuture) 0.3f else 1f)
             .clickable(
+                enabled = !isFuture,
                 interactionSource = interactionSource,
                 indication = null
             ) {
@@ -103,6 +107,7 @@ internal fun CalendarDayPreview() {
                 date = LocalDate(2025, 2, 3),
                 isToday = false,
                 isRecord = false,
+                isFuture = false,
                 emoticonImageUrl = "",
                 onClick = {}
             )
@@ -124,6 +129,7 @@ internal fun CalendarDayTodayPreview() {
                 date = LocalDate(2025, 2, 3),
                 isToday = true,
                 isRecord = false,
+                isFuture = false,
                 emoticonImageUrl = "",
                 onClick = {}
             )
@@ -145,6 +151,7 @@ internal fun CalendarDaySundayPreview() {
                 date = LocalDate(2025, 2, 2), // 일요일
                 isToday = false,
                 isRecord = false,
+                isFuture = false,
                 emoticonImageUrl = "",
                 onClick = {}
             )
@@ -166,7 +173,30 @@ internal fun CalendarDayWithEmoticonPreview() {
                 date = LocalDate(2025, 2, 3),
                 isToday = false,
                 isRecord = true,
+                isFuture = false,
                 emoticonImageUrl = "https://firebasestorage.googleapis.com/v0/b/mongsil-8dc44.appspot.com/o/emoticons%2Femoticon_01.png?alt=media&token=a58f5622-6568-49a4-9484-90d5cce02316",
+                onClick = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun CalendarDayFuturePreview() {
+    MongsilTheme {
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .background(Color.White),
+            contentAlignment = Alignment.Center
+        ) {
+            CalendarDay(
+                date = LocalDate(2099, 12, 25),
+                isToday = false,
+                isRecord = false,
+                isFuture = true,
+                emoticonImageUrl = "",
                 onClick = {}
             )
         }
