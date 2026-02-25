@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.calendar.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
@@ -17,15 +18,19 @@ import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun BoxScope.CalendarToolbar() {
+fun BoxScope.CalendarToolbar(
+    onNavigateToSetting: () -> Unit = {}
+) {
     IconToolbar(
         modifier = Modifier
             .align(Alignment.TopCenter),
         leftContent = {
             Icon(
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable { onNavigateToSetting() },
                 painter = painterResource(Res.drawable.ic_shopping_bag),
-                contentDescription = ""
+                contentDescription = "설정"
             )
             Icon(
                 modifier = Modifier.size(20.dp),

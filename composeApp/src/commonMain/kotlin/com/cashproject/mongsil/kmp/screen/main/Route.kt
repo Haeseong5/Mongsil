@@ -45,4 +45,58 @@ sealed interface Route {
         val month: Int,
         val day: Int
     ) : Route
+
+    /**
+     * 설정 화면
+     */
+    @Serializable
+    data object Setting : Route
+
+    /**
+     * 몽실 스토어 화면
+     */
+    @Serializable
+    data object MongsilStore : Route
+
+    /**
+     * 테마 설정 화면
+     */
+    @Serializable
+    data object ThemeSetting : Route
+
+    /**
+     * 글자 스타일 화면
+     */
+    @Serializable
+    data object FontStyle : Route
+
+    /**
+     * 화면 잠금 화면
+     */
+    @Serializable
+    data object ScreenLock : Route
+
+    /**
+     * 백업/복원 화면
+     */
+    @Serializable
+    data object BackupRestore : Route
+
+    /**
+     * PDF 내보내기 화면
+     */
+    @Serializable
+    data object PdfExport : Route
+
+    /**
+     * 언어 설정 화면
+     */
+    @Serializable
+    data object LanguageSetting : Route
+
+    /**
+     * 앱 평가하기 화면
+     */
+    @Serializable
+    data object AppReview : Route
 }

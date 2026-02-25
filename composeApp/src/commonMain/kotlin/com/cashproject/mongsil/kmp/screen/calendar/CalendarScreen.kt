@@ -42,7 +42,8 @@ fun CalendarScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
     viewModel: CalendarViewModel = koinInject(),
-    onNavigateToDiaryWrite: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> }
+    onNavigateToDiaryWrite: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> },
+    onNavigateToSetting: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -58,7 +59,8 @@ fun CalendarScreen(
             viewModel.onEvent(
                 CalendarUiEvent.OnYearMonthPickerSelected(year = year, month = month)
             )
-        }
+        },
+        onNavigateToSetting = onNavigateToSetting
     )
 
     if (uiState.isShownYearMonthPicker) {
@@ -87,7 +89,8 @@ fun CalendarScreenContent(
     uiEvent: (CalendarUiEvent) -> Unit = {},
     onDateClick: (LocalDate) -> Unit = {},
     onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> },
-    onYearMonthPickerSelected: (year: Int, month: Int) -> Unit = { _, _ -> }
+    onYearMonthPickerSelected: (year: Int, month: Int) -> Unit = { _, _ -> },
+    onNavigateToSetting: () -> Unit = {}
 ) {
     val today = uiState.today
     val initialMonth = remember { today }
@@ -141,7 +144,9 @@ fun CalendarScreenContent(
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        CalendarToolbar()
+        CalendarToolbar(
+            onNavigateToSetting = onNavigateToSetting
+        )
 
         Column(
             modifier = Modifier

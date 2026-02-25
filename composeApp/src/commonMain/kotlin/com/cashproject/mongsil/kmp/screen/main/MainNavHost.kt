@@ -14,6 +14,15 @@ import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteViewModel
+import com.cashproject.mongsil.kmp.screen.setting.SettingScreen
+import com.cashproject.mongsil.kmp.screen.setting.appreview.AppReviewScreen
+import com.cashproject.mongsil.kmp.screen.setting.backup.BackupRestoreScreen
+import com.cashproject.mongsil.kmp.screen.setting.fontstyle.FontStyleScreen
+import com.cashproject.mongsil.kmp.screen.setting.language.LanguageSettingScreen
+import com.cashproject.mongsil.kmp.screen.setting.pdfexport.PdfExportScreen
+import com.cashproject.mongsil.kmp.screen.setting.screenlock.ScreenLockScreen
+import com.cashproject.mongsil.kmp.screen.setting.store.MongsilStoreScreen
+import com.cashproject.mongsil.kmp.screen.setting.theme.ThemeSettingScreen
 import com.cashproject.mongsil.kmp.screen.test.TestScreen
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -38,6 +47,9 @@ internal fun MainNavHost(
                 padding = padding,
                 onNavigateToDiaryWrite = { year, month, day ->
                     navigator.navigateTo(Route.DiaryWrite(year, month, day))
+                },
+                onNavigateToSetting = {
+                    navigator.navigateTo(Route.Setting)
                 }
             )
         }
@@ -81,6 +93,68 @@ internal fun MainNavHost(
                 onClick = {
                     navigator.navigateAndClearStack(Route.Calendar)
                 }
+            )
+        }
+
+        composable<Route.Setting> {
+            SettingScreen(
+                onBack = { navigator.popBackStack() },
+                onNavigateToMongsilStore = { navigator.navigateTo(Route.MongsilStore) },
+                onNavigateToThemeSetting = { navigator.navigateTo(Route.ThemeSetting) },
+                onNavigateToFontStyle = { navigator.navigateTo(Route.FontStyle) },
+                onNavigateToScreenLock = { navigator.navigateTo(Route.ScreenLock) },
+                onNavigateToBackupRestore = { navigator.navigateTo(Route.BackupRestore) },
+                onNavigateToPdfExport = { navigator.navigateTo(Route.PdfExport) },
+                onNavigateToLanguageSetting = { navigator.navigateTo(Route.LanguageSetting) },
+                onNavigateToAppReview = { navigator.navigateTo(Route.AppReview) }
+            )
+        }
+
+        composable<Route.MongsilStore> {
+            MongsilStoreScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.ThemeSetting> {
+            ThemeSettingScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.FontStyle> {
+            FontStyleScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.ScreenLock> {
+            ScreenLockScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.BackupRestore> {
+            BackupRestoreScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.PdfExport> {
+            PdfExportScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.LanguageSetting> {
+            LanguageSettingScreen(
+                onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.AppReview> {
+            AppReviewScreen(
+                onBack = { navigator.popBackStack() }
             )
         }
     }
