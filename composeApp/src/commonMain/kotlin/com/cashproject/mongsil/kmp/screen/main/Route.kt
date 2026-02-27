@@ -114,4 +114,13 @@ sealed interface Route {
         val year: Int,
         val month: Int
     ) : Route
+
+    /**
+     * 월별 일기 모아보기 화면
+     */
+    @Serializable
+    data class DiaryMonthly(
+        val year: Int,
+        val month: Int
+    ) : Route
 }

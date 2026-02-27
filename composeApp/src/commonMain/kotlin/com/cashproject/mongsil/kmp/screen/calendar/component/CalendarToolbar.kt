@@ -25,6 +25,7 @@ fun BoxScope.CalendarToolbar(
     onNavigateToSetting: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToChart: () -> Unit = {},
+    onNavigateToMonthly: () -> Unit = {},
 ) {
     IconToolbar(
         modifier = Modifier
@@ -59,9 +60,11 @@ fun BoxScope.CalendarToolbar(
                 contentDescription = "차트"
             )
             Icon(
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onNavigateToMonthly() },
                 painter = painterResource(Res.drawable.ic_article),
-                contentDescription = ""
+                contentDescription = "모아보기"
             )
         }
     )

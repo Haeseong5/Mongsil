@@ -47,6 +47,7 @@ fun CalendarScreen(
     onNavigateToSetting: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToChart: (year: Int, month: Int) -> Unit = { _, _ -> },
+    onNavigateToMonthly: (year: Int, month: Int) -> Unit = { _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -67,6 +68,9 @@ fun CalendarScreen(
         onNavigateToSearch = onNavigateToSearch,
         onNavigateToChart = {
             onNavigateToChart(uiState.currentYear, uiState.currentMonth)
+        },
+        onNavigateToMonthly = {
+            onNavigateToMonthly(uiState.currentYear, uiState.currentMonth)
         }
     )
 
@@ -100,6 +104,7 @@ fun CalendarScreenContent(
     onNavigateToSetting: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToChart: () -> Unit = {},
+    onNavigateToMonthly: () -> Unit = {},
 ) {
     val today = uiState.today
     val initialMonth = remember { today }
@@ -156,7 +161,8 @@ fun CalendarScreenContent(
         CalendarToolbar(
             onNavigateToSetting = onNavigateToSetting,
             onNavigateToSearch = onNavigateToSearch,
-            onNavigateToChart = onNavigateToChart
+            onNavigateToChart = onNavigateToChart,
+            onNavigateToMonthly = onNavigateToMonthly
         )
 
         Column(
