@@ -24,6 +24,7 @@ import org.jetbrains.compose.resources.painterResource
 fun BoxScope.CalendarToolbar(
     onNavigateToSetting: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
+    onNavigateToChart: () -> Unit = {},
 ) {
     IconToolbar(
         modifier = Modifier
@@ -51,9 +52,11 @@ fun BoxScope.CalendarToolbar(
                 contentDescription = "검색"
             )
             Icon(
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onNavigateToChart() },
                 painter = painterResource(Res.drawable.ic_bar_chart),
-                contentDescription = ""
+                contentDescription = "차트"
             )
             Icon(
                 modifier = Modifier.size(24.dp),

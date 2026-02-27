@@ -105,4 +105,13 @@ sealed interface Route {
      */
     @Serializable
     data object DiarySearch : Route
+
+    /**
+     * 월별 이모티콘 사용 통계 화면
+     */
+    @Serializable
+    data class DiaryChart(
+        val year: Int,
+        val month: Int
+    ) : Route
 }

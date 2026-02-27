@@ -3,6 +3,7 @@ package com.cashproject.mongsil.kmp.di
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarViewModel
+import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartViewModel
 import com.cashproject.mongsil.kmp.screen.diarysearch.DiarySearchViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -24,6 +25,15 @@ internal val calendarModule = module {
         DiarySearchViewModel(
             diaryRepository = get<DiaryRepository>(),
             emoticonRepository = get<EmoticonRepository>()
+        )
+    }
+
+    viewModel { (year: Int, month: Int) ->
+        DiaryChartViewModel(
+            diaryRepository = get<DiaryRepository>(),
+            emoticonRepository = get<EmoticonRepository>(),
+            initialYear = year,
+            initialMonth = month
         )
     }
 }

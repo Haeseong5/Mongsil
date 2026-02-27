@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
+import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartScreen
+import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartViewModel
 import com.cashproject.mongsil.kmp.screen.diarysearch.DiarySearchScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteViewModel
@@ -55,6 +57,9 @@ internal fun MainNavHost(
                 onNavigateToSearch = {
                     navigator.navigateTo(Route.DiarySearch)
                 },
+                onNavigateToChart = { year, month ->
+                    navigator.navigateTo(Route.DiaryChart(year, month))
+                }
             )
         }
 
@@ -171,6 +176,19 @@ internal fun MainNavHost(
                 onDiaryClick = { year, month, day ->
                     navigator.navigateTo(Route.DiaryWrite(year, month, day))
                 }
+            )
+        }
+
+        composable<Route.DiaryChart> { backStackEntry ->
+            val route = backStackEntry.toRoute<Route.DiaryChart>()
+            val viewModel: DiaryChartViewModel = koinViewModel {
+                parametersOf(route.year, route.month)
+            }
+
+            DiaryChartScreen(
+                viewModel = viewModel,
+                padding = padding,
+                onClose = { navigator.popBackStack() }
             )
         }
     }
