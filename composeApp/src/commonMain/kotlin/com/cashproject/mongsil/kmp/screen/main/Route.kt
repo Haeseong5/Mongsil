@@ -99,4 +99,10 @@ sealed interface Route {
      */
     @Serializable
     data object AppReview : Route
+
+    /**
+     * 일기 검색 화면
+     */
+    @Serializable
+    data object DiarySearch : Route
 }

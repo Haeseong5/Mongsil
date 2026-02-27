@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
+import com.cashproject.mongsil.kmp.screen.diarysearch.DiarySearchScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteViewModel
 import com.cashproject.mongsil.kmp.screen.setting.SettingScreen
@@ -50,7 +51,10 @@ internal fun MainNavHost(
                 },
                 onNavigateToSetting = {
                     navigator.navigateTo(Route.Setting)
-                }
+                },
+                onNavigateToSearch = {
+                    navigator.navigateTo(Route.DiarySearch)
+                },
             )
         }
 
@@ -157,6 +161,16 @@ internal fun MainNavHost(
         composable<Route.AppReview> {
             AppReviewScreen(
                 onBack = { navigator.popBackStack() }
+            )
+        }
+
+        composable<Route.DiarySearch> {
+            DiarySearchScreen(
+                padding = padding,
+                onBack = { navigator.popBackStack() },
+                onDiaryClick = { year, month, day ->
+                    navigator.navigateTo(Route.DiaryWrite(year, month, day))
+                }
             )
         }
     }

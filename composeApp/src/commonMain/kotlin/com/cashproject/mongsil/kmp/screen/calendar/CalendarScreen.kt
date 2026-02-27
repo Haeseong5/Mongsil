@@ -44,7 +44,8 @@ fun CalendarScreen(
     padding: PaddingValues,
     viewModel: CalendarViewModel = koinInject(),
     onNavigateToDiaryWrite: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> },
-    onNavigateToSetting: () -> Unit = {}
+    onNavigateToSetting: () -> Unit = {},
+    onNavigateToSearch: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -61,7 +62,8 @@ fun CalendarScreen(
                 CalendarUiEvent.OnYearMonthPickerSelected(year = year, month = month)
             )
         },
-        onNavigateToSetting = onNavigateToSetting
+        onNavigateToSetting = onNavigateToSetting,
+        onNavigateToSearch = onNavigateToSearch
     )
 
     if (uiState.isShownYearMonthPicker) {
@@ -91,7 +93,8 @@ fun CalendarScreenContent(
     onDateClick: (LocalDate) -> Unit = {},
     onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> },
     onYearMonthPickerSelected: (year: Int, month: Int) -> Unit = { _, _ -> },
-    onNavigateToSetting: () -> Unit = {}
+    onNavigateToSetting: () -> Unit = {},
+    onNavigateToSearch: () -> Unit = {},
 ) {
     val today = uiState.today
     val initialMonth = remember { today }
@@ -146,7 +149,8 @@ fun CalendarScreenContent(
             .background(color = MongsilTheme.colorScheme.background)
     ) {
         CalendarToolbar(
-            onNavigateToSetting = onNavigateToSetting
+            onNavigateToSetting = onNavigateToSetting,
+            onNavigateToSearch = onNavigateToSearch
         )
 
         Column(
