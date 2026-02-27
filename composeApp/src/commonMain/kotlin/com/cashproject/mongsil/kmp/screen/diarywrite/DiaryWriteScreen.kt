@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -27,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,6 +70,9 @@ fun DiaryWriteScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarController = rememberSnackbarController()
+    val openImagePicker = rememberImagePickerLauncher { imagePaths ->
+        viewModel.onEvent(DiaryWriteEvent.OnPhotosSelected(imagePaths))
+    }
 
     // SideEffect 처리
     LaunchedEffect(Unit) {
@@ -89,7 +97,8 @@ fun DiaryWriteScreen(
     DiaryWriteScreenContent(
         modifier = modifier.padding(padding).consumeWindowInsets(padding),
         uiState = uiState,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        openImagePicker = openImagePicker
     )
 }
 
@@ -98,6 +107,7 @@ fun DiaryWriteScreen(
 private fun DiaryWriteScreenContent(
     uiState: DiaryWriteUiState,
     onEvent: (DiaryWriteEvent) -> Unit,
+    openImagePicker: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
@@ -173,6 +183,20 @@ private fun DiaryWriteScreenContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
+                if (uiState.photoUris.isNotEmpty()) {
+                    SelectedPhotos(
+                        photoUris = uiState.photoUris,
+                        onRemove = { index ->
+                            onEvent(DiaryWriteEvent.OnPhotoRemoved(index))
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
                 // 일기 내용 입력
                 DiaryTextField(
                     content = uiState.content,
@@ -188,6 +212,7 @@ private fun DiaryWriteScreenContent(
             BottomToolbar(
                 modifier = Modifier.background(MongsilTheme.colorScheme.card),
                 onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
+                openImagePicker = openImagePicker,
                 canSave = uiState.hasContent,
                 isLoading = uiState.isLoading
             )
@@ -216,6 +241,73 @@ private fun DiaryWriteScreenContent(
                 onConfirm = { onEvent(DiaryWriteEvent.OnDeleteConfirm) },
                 onDismiss = { onEvent(DiaryWriteEvent.OnDeleteCancel) }
             )
+        }
+    }
+}
+
+@Composable
+private fun SelectedPhotos(
+    photoUris: List<String>,
+    onRemove: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val pagerState = rememberPagerState(pageCount = { photoUris.size })
+
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Box {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+            ) { page ->
+                AsyncImage(
+                    model = photoUris[page],
+                    contentDescription = "첨부 이미지",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(14.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+                    .clip(CircleShape)
+                    .background(Color(0x99000000))
+                    .clickable { onRemove(pagerState.currentPage) }
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "삭제",
+                    style = MongsilTheme.typography.caption1,
+                    color = Color.White
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier.padding(top = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            repeat(photoUris.size) { index ->
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 3.dp)
+                        .size(6.dp)
+                        .clip(CircleShape)
+                        .background(
+                            if (pagerState.currentPage == index) {
+                                MongsilTheme.colorScheme.labelStrong
+                            } else {
+                                MongsilTheme.colorScheme.labelDisable
+                            }
+                        )
+                )
+            }
         }
     }
 }
@@ -335,7 +427,8 @@ private fun DiaryWriteScreenContentPreview() {
                 isLoading = false,
                 showExitDialog = false
             ),
-            onEvent = {}
+            onEvent = {},
+            openImagePicker = {}
         )
     }
 }
@@ -356,7 +449,8 @@ private fun DiaryWriteScreenContentEmptyPreview() {
                 isLoading = false,
                 showExitDialog = false
             ),
-            onEvent = {}
+            onEvent = {},
+            openImagePicker = {}
         )
     }
 }
@@ -383,8 +477,8 @@ private fun DiaryWriteScreenContentWithEmoticonPreview() {
                 isLoading = false,
                 showExitDialog = false
             ),
-            onEvent = {}
+            onEvent = {},
+            openImagePicker = {}
         )
     }
 }
-

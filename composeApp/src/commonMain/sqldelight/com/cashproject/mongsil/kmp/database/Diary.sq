@@ -6,6 +6,7 @@ CREATE TABLE DiaryEntity (
     day INTEGER NOT NULL,
     content TEXT NOT NULL,
     emoticonId INTEGER,
+    photoUri TEXT,
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL
 );
@@ -30,13 +31,13 @@ ORDER BY year DESC, month DESC, day DESC;
 
 -- 일기 저장
 insertDiary:
-INSERT INTO DiaryEntity (year, month, day, content, emoticonId, createdAt, updatedAt)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT INTO DiaryEntity (year, month, day, content, emoticonId, photoUri, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 -- 일기 업데이트
 updateDiary:
 UPDATE DiaryEntity 
-SET content = ?, emoticonId = ?, updatedAt = ?
+SET content = ?, emoticonId = ?, photoUri = ?, updatedAt = ?
 WHERE year = ? AND month = ? AND day = ?;
 
 -- 일기 삭제

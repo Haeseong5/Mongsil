@@ -69,6 +69,7 @@ class DiaryWriteViewModel(
                 _uiState.update { state ->
                     state.copy(
                         content = diary.content,
+                        photoUris = parsePhotoUris(diary.photoUri),
                         selectedEmoticon = selectedEmoticon,
                         isExistingDiary = true
                     )
@@ -105,6 +106,8 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnEmoticonButtonClick -> handleEmoticonButtonClick()
             is DiaryWriteEvent.OnEmoticonSelected -> handleEmoticonSelected(event.emoticon)
             is DiaryWriteEvent.OnEmoticonBottomSheetDismiss -> handleEmoticonBottomSheetDismiss()
+            is DiaryWriteEvent.OnPhotosSelected -> handlePhotosSelected(event.photoUris)
+            is DiaryWriteEvent.OnPhotoRemoved -> handlePhotoRemoved(event.index)
             is DiaryWriteEvent.OnSaveClick -> handleSaveClick()
             is DiaryWriteEvent.OnBackClick -> handleBackClick()
             is DiaryWriteEvent.OnBackPressed -> handleBackPressed()
@@ -137,11 +140,27 @@ class DiaryWriteViewModel(
         _uiState.update { it.copy(showEmoticonBottomSheet = false) }
     }
 
+    private fun handlePhotosSelected(photoUris: List<String>) {
+        if (photoUris.isEmpty()) return
+        _uiState.update { state ->
+            state.copy(photoUris = state.photoUris + photoUris)
+        }
+    }
+
+    private fun handlePhotoRemoved(index: Int) {
+        _uiState.update { state ->
+            if (index !in state.photoUris.indices) return@update state
+            state.copy(
+                photoUris = state.photoUris.filterIndexed { i, _ -> i != index }
+            )
+        }
+    }
+
     private fun handleSaveClick() {
         val currentState = _uiState.value
         
         // 빈 내용은 저장하지 않음
-        if (currentState.content.isBlank()) {
+        if (currentState.content.isBlank() && currentState.photoUris.isEmpty()) {
             return
         }
 
@@ -153,7 +172,8 @@ class DiaryWriteViewModel(
                 month = currentState.month,
                 day = currentState.day,
                 content = currentState.content,
-                emoticonId = currentState.selectedEmoticon?.id?.toLong()
+                emoticonId = currentState.selectedEmoticon?.id?.toLong(),
+                photoUri = serializePhotoUris(currentState.photoUris)
             )
 
             _uiState.update { it.copy(isLoading = false) }
@@ -222,5 +242,23 @@ class DiaryWriteViewModel(
 
     private fun handleDeleteCancel() {
         _uiState.update { it.copy(showDeleteDialog = false) }
+    }
+
+    private fun serializePhotoUris(photoUris: List<String>): String? {
+        if (photoUris.isEmpty()) return null
+        return photoUris.joinToString(SEPARATOR)
+    }
+
+    private fun parsePhotoUris(value: String?): List<String> {
+        if (value.isNullOrBlank()) return emptyList()
+        return if (value.contains(SEPARATOR)) {
+            value.split(SEPARATOR).filter { it.isNotBlank() }
+        } else {
+            listOf(value)
+        }
+    }
+
+    private companion object {
+        const val SEPARATOR = "||"
     }
 }

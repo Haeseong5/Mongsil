@@ -21,6 +21,7 @@ data class DiaryWriteUiState(
     val day: Int = 1,
     val content: String = "",
     val selectedEmoticon: Emoticon? = null,
+    val photoUris: List<String> = emptyList(),
     val emoticons: List<Emoticon> = emptyList(),
     val showEmoticonBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
@@ -32,5 +33,5 @@ data class DiaryWriteUiState(
      * 작성 중인 내용이 있는지 확인합니다.
      */
     val hasContent: Boolean
-        get() = content.isNotBlank()
+        get() = content.isNotBlank() || photoUris.isNotEmpty()
 }

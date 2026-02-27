@@ -86,7 +86,8 @@ class DiaryRepository(private val database: MongsilDatabase) {
         month: Int,
         day: Int,
         content: String,
-        emoticonId: Long? = null
+        emoticonId: Long? = null,
+        photoUri: String? = null
     ): Result<Unit> = withContext(Dispatchers.Default) {
         try {
             val currentTimeMillis = Clock.System.now().toEpochMilliseconds()
@@ -97,6 +98,7 @@ class DiaryRepository(private val database: MongsilDatabase) {
                 database.diaryQueries.updateDiary(
                     content = content,
                     emoticonId = emoticonId,
+                    photoUri = photoUri,
                     updatedAt = currentTimeMillis,
                     year = year.toLong(),
                     month = month.toLong(),
@@ -110,6 +112,7 @@ class DiaryRepository(private val database: MongsilDatabase) {
                     day = day.toLong(),
                     content = content,
                     emoticonId = emoticonId,
+                    photoUri = photoUri,
                     createdAt = currentTimeMillis,
                     updatedAt = currentTimeMillis
                 )

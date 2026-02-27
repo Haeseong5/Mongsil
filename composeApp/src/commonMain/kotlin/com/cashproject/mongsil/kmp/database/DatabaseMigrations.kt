@@ -43,6 +43,20 @@ object DatabaseMigrations {
             0
         )
     }
+
+    /**
+     * 버전 3에서 4로 마이그레이션
+     * DiaryEntity 테이블에 photoUri 컬럼 추가
+     */
+    fun migrateV3ToV4(driver: SqlDriver) {
+        driver.execute(
+            null,
+            """
+            ALTER TABLE DiaryEntity ADD COLUMN photoUri TEXT
+            """.trimIndent(),
+            0
+        )
+    }
     
     /**
      * 전체 마이그레이션 실행
@@ -57,6 +71,11 @@ object DatabaseMigrations {
         // 버전 2 -> 3
         if (oldVersion < 3 && newVersion >= 3) {
             migrateV2ToV3(driver)
+        }
+
+        // 버전 3 -> 4
+        if (oldVersion < 4 && newVersion >= 4) {
+            migrateV3ToV4(driver)
         }
     }
 }

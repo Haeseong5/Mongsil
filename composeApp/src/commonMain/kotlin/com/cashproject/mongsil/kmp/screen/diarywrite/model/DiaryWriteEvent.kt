@@ -20,6 +20,16 @@ sealed interface DiaryWriteEvent {
      * 이모티콘을 선택했을 때
      */
     data class OnEmoticonSelected(val emoticon: Emoticon) : DiaryWriteEvent
+
+    /**
+     * 사진이 선택되었을 때
+     */
+    data class OnPhotosSelected(val photoUris: List<String>) : DiaryWriteEvent
+
+    /**
+     * 첨부한 사진 삭제
+     */
+    data class OnPhotoRemoved(val index: Int) : DiaryWriteEvent
     
     /**
      * 이모티콘 바텀시트를 닫았을 때
