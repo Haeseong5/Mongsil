@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.di.appModules
+import com.cashproject.mongsil.kmp.model.FontStyleOption
 import com.cashproject.mongsil.kmp.model.ThemeMode
 import com.cashproject.mongsil.kmp.screen.main.MainScreen
 import mongsil.composeapp.generated.resources.Res
@@ -19,7 +20,6 @@ import org.koin.dsl.KoinAppDeclaration
 
 @Composable
 fun App(
-    fontFamily: FontFamily = FontFamily(Font(resource = Res.font.gamja_flower_regular)),
     onDarkThemeChange: ((Boolean) -> Unit)? = null,
     appViewModel: AppViewModel = koinViewModel(),
 ) {
@@ -38,10 +38,16 @@ fun App(
 
     MongsilTheme(
         darkTheme = isDark,
-        fontFamily = fontFamily
+        fontFamily = resolveFontFamily(appUiState.fontStyleOption),
+        fontScale = appUiState.fontScale
     ) {
         MainScreen()
     }
+}
+
+@Composable
+private fun resolveFontFamily(option: FontStyleOption): FontFamily = when (option) {
+    FontStyleOption.GAMJA_FLOWER -> FontFamily(Font(resource = Res.font.gamja_flower_regular))
 }
 
 internal fun mongsilAppDeclaration(

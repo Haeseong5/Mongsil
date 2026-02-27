@@ -5,6 +5,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 
 
@@ -145,15 +146,47 @@ data class MongsilTypography(
          */
         fun with(
             fontFamily: FontFamily = FontFamily.Default,
-            fontWeight: FontWeight = FontWeight.Normal
+            fontWeight: FontWeight = FontWeight.Normal,
+            fontScale: Float = 1f
         ) = MongsilTypography(
             default = TextStyle(
                 fontFamily = fontFamily,
                 fontWeight = fontWeight
             )
-        )
+        ).scaled(fontScale.coerceIn(0.8f, 1.4f))
     }
 }
+
+private fun MongsilTypography.scaled(scale: Float): MongsilTypography = copy(
+    default = default.scaled(scale),
+    display1 = display1.scaled(scale),
+    display2 = display2.scaled(scale),
+    title1 = title1.scaled(scale),
+    title2 = title2.scaled(scale),
+    title3 = title3.scaled(scale),
+    heading1 = heading1.scaled(scale),
+    heading2 = heading2.scaled(scale),
+    headline1 = headline1.scaled(scale),
+    headline2 = headline2.scaled(scale),
+    body1Normal = body1Normal.scaled(scale),
+    body1Medium = body1Medium.scaled(scale),
+    body1Bold = body1Bold.scaled(scale),
+    body1Reading = body1Reading.scaled(scale),
+    body2Normal = body2Normal.scaled(scale),
+    body2Medium = body2Medium.scaled(scale),
+    body2Bold = body2Bold.scaled(scale),
+    body2Reading = body2Reading.scaled(scale),
+    label1 = label1.scaled(scale),
+    label2 = label2.scaled(scale),
+    caption1 = caption1.scaled(scale),
+    caption2 = caption2.scaled(scale),
+)
+
+private fun TextStyle.scaled(scale: Float): TextStyle = copy(
+    fontSize = if (fontSize.isSpecified) fontSize * scale else fontSize,
+    lineHeight = if (lineHeight.isSpecified) lineHeight * scale else lineHeight,
+    letterSpacing = if (letterSpacing.isSpecified) letterSpacing * scale else letterSpacing,
+)
 
 internal val LocalTypography = staticCompositionLocalOf<MongsilTypography> {
     error("MongsilTypograph를 provide 해야합니다.")

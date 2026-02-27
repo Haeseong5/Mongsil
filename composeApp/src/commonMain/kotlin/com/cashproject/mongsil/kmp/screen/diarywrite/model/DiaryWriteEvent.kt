@@ -50,4 +50,19 @@ sealed interface DiaryWriteEvent {
      * 종료 확인 다이얼로그에서 취소 버튼을 눌렀을 때
      */
     data object OnExitCancel : DiaryWriteEvent
+
+    /**
+     * 삭제 버튼을 눌렀을 때
+     */
+    data object OnDeleteClick : DiaryWriteEvent
+
+    /**
+     * 삭제 확인 다이얼로그에서 확인 버튼을 눌렀을 때
+     */
+    data object OnDeleteConfirm : DiaryWriteEvent
+
+    /**
+     * 삭제 확인 다이얼로그에서 취소 버튼을 눌렀을 때
+     */
+    data object OnDeleteCancel : DiaryWriteEvent
 }

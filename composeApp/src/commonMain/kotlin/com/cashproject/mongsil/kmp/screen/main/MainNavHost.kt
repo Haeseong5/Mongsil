@@ -125,6 +125,7 @@ internal fun MainNavHost(
 
         composable<Route.FontStyle> {
             FontStyleScreen(
+                padding = padding,
                 onBack = { navigator.popBackStack() }
             )
         }

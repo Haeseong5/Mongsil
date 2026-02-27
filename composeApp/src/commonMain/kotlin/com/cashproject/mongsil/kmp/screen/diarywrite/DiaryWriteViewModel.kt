@@ -69,7 +69,8 @@ class DiaryWriteViewModel(
                 _uiState.update { state ->
                     state.copy(
                         content = diary.content,
-                        selectedEmoticon = selectedEmoticon
+                        selectedEmoticon = selectedEmoticon,
+                        isExistingDiary = true
                     )
                 }
             }
@@ -109,6 +110,9 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnBackPressed -> handleBackPressed()
             is DiaryWriteEvent.OnExitConfirm -> handleExitConfirm()
             is DiaryWriteEvent.OnExitCancel -> handleExitCancel()
+            is DiaryWriteEvent.OnDeleteClick -> handleDeleteClick()
+            is DiaryWriteEvent.OnDeleteConfirm -> handleDeleteConfirm()
+            is DiaryWriteEvent.OnDeleteCancel -> handleDeleteCancel()
         }
     }
 
@@ -194,5 +198,29 @@ class DiaryWriteViewModel(
 
     private fun handleExitCancel() {
         _uiState.update { it.copy(showExitDialog = false) }
+    }
+
+    private fun handleDeleteClick() {
+        _uiState.update { it.copy(showDeleteDialog = true) }
+    }
+
+    private fun handleDeleteConfirm() {
+        val state = _uiState.value
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, showDeleteDialog = false) }
+            diaryRepository.deleteDiary(state.year, state.month, state.day)
+                .fold(
+                    onSuccess = {
+                        _sideEffect.send(DiaryWriteSideEffect.DeleteSuccess)
+                    },
+                    onFailure = {
+                        _uiState.update { it.copy(isLoading = false) }
+                    }
+                )
+        }
+    }
+
+    private fun handleDeleteCancel() {
+        _uiState.update { it.copy(showDeleteDialog = false) }
     }
 }

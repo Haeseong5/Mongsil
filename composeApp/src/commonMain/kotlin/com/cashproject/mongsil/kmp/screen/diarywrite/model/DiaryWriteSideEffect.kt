@@ -9,5 +9,6 @@ sealed interface DiaryWriteSideEffect {
      * 저장 성공
      */
     data object SaveSuccess : DiaryWriteSideEffect
+    data object DeleteSuccess : DiaryWriteSideEffect
     data object OnBack : DiaryWriteSideEffect
 }

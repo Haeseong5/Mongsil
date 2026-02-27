@@ -24,7 +24,9 @@ data class DiaryWriteUiState(
     val emoticons: List<Emoticon> = emptyList(),
     val showEmoticonBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
-    val showExitDialog: Boolean = false
+    val showExitDialog: Boolean = false,
+    val showDeleteDialog: Boolean = false,
+    val isExistingDiary: Boolean = false,
 ) {
     /**
      * 작성 중인 내용이 있는지 확인합니다.

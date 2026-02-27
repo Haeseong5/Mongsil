@@ -2,11 +2,9 @@ package com.cashproject.mongsil.kmp.screen.diarywrite
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,25 +27,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
+import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
+import com.cashproject.mongsil.kmp.screen.diarywrite.component.DeleteConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ExitConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
-import mongsil.composeapp.generated.resources.ic_menu
 import mongsil.composeapp.generated.resources.ic_plus
+import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -77,6 +75,10 @@ fun DiaryWriteScreen(
                     onSaveSuccess()
                 }
 
+                DiaryWriteSideEffect.DeleteSuccess -> {
+                    onBack.invoke()
+                }
+
                 DiaryWriteSideEffect.OnBack -> {
                     onBack.invoke()
                 }
@@ -99,15 +101,18 @@ private fun DiaryWriteScreenContent(
     modifier: Modifier = Modifier
 ) {
     // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
-    BackPressHandler(enabled = !uiState.showEmoticonBottomSheet && !uiState.showExitDialog) {
-        println("DiaryWriteScreen BackPressHandler called")
+    BackPressHandler(
+        enabled = !uiState.showEmoticonBottomSheet
+            && !uiState.showExitDialog
+            && !uiState.showDeleteDialog
+    ) {
         onEvent(DiaryWriteEvent.OnBackPressed)
     }
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MongsilTheme.colorScheme.background)
             .statusBarsPadding()
             .imePadding()
     ) {
@@ -116,9 +121,30 @@ private fun DiaryWriteScreenContent(
                 .fillMaxSize()
         ) {
             // 상단 툴바
-            TopBar(
-                onBackClick = { onEvent(DiaryWriteEvent.OnBackClick) },
-                onMoreClick = { /* TODO: 더보기 메뉴 */ }
+            IconToolbar(
+                modifier = Modifier.background(MongsilTheme.colorScheme.background),
+                leftContent = {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
+                        contentDescription = "뒤로 가기",
+                        tint = MongsilTheme.colorScheme.labelStrong,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onEvent(DiaryWriteEvent.OnBackClick) }
+                    )
+                },
+                rightContent = {
+                    if (uiState.isExistingDiary) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_trash),
+                            contentDescription = "삭제",
+                            tint = Color(0xFFE53935),
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
+                        )
+                    }
+                }
             )
 
             // 메인 콘텐츠
@@ -160,6 +186,7 @@ private fun DiaryWriteScreenContent(
 
             // 하단 툴바
             BottomToolbar(
+                modifier = Modifier.background(MongsilTheme.colorScheme.card),
                 onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
                 canSave = uiState.hasContent,
                 isLoading = uiState.isLoading
@@ -182,46 +209,12 @@ private fun DiaryWriteScreenContent(
                 onDismiss = { onEvent(DiaryWriteEvent.OnExitCancel) }
             )
         }
-    }
-}
 
-@Composable
-private fun TopBar(
-    onBackClick: () -> Unit,
-    onMoreClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clickable(onClick = onBackClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-                contentDescription = "back button",
-                modifier = Modifier.size(24.dp)
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clickable(onClick = onMoreClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(Res.drawable.ic_menu), // TODO 아이콘 변경
-                contentDescription = "back button",
-                modifier = Modifier.size(24.dp)
+        // 삭제 확인 다이얼로그
+        if (uiState.showDeleteDialog) {
+            DeleteConfirmDialog(
+                onConfirm = { onEvent(DiaryWriteEvent.OnDeleteConfirm) },
+                onDismiss = { onEvent(DiaryWriteEvent.OnDeleteCancel) }
             )
         }
     }
@@ -237,7 +230,7 @@ private fun EmoticonButton(
         modifier = modifier
             .size(60.dp)
             .clip(CircleShape)
-            .background(Color(0xFFF5F5F5))
+            .background(Color.White)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
@@ -270,10 +263,7 @@ private fun DateText(
 
     Text(
         text = dateText,
-        style = TextStyle(
-            fontSize = 14.sp,
-            color = Color.Gray
-        ),
+        style = MongsilTheme.typography.default,
         modifier = modifier
     )
 }
@@ -288,25 +278,17 @@ private fun DiaryTextField(
     BasicTextField(
         value = content,
         onValueChange = onContentChange,
-        modifier = modifier
-            .padding(horizontal = 20.dp),
+        modifier = modifier.padding(horizontal = 20.dp),
         enabled = enabled,
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
-            color = Color.Black
-        ),
-        cursorBrush = SolidColor(Color.Black),
+        textStyle = MongsilTheme.typography.body1Medium,
+        cursorBrush = SolidColor(MongsilTheme.colorScheme.labelWeak),
         decorationBox = { innerTextField ->
             Box {
                 if (content.isEmpty()) {
                     Text(
                         text = "오늘 하루를 기록해보세요",
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 24.sp,
-                            color = Color.Gray.copy(alpha = 0.5f)
-                        )
+                        style = MongsilTheme.typography.default,
+                        color = MongsilTheme.colorScheme.labelWeak
                     )
                 }
                 innerTextField()

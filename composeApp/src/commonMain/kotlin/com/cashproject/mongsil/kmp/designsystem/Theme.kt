@@ -20,6 +20,7 @@ val LocalDarkTheme = compositionLocalOf { true }
 @Composable
 fun MongsilTheme(
     fontFamily: FontFamily = FontFamily(Font(resource = Res.font.gamja_flower_regular)),
+    fontScale: Float = 1f,
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -31,7 +32,10 @@ fun MongsilTheme(
             MongsilColorScheme.lightColorScheme
         },
         LocalIndication provides ripple(),
-        LocalTypography provides MongsilTypography.with(fontFamily),
+        LocalTypography provides MongsilTypography.with(
+            fontFamily = fontFamily,
+            fontScale = fontScale
+        ),
 //        LocalAsyncImagePreviewHandler provides AsyncImagePreviewHandler {
 //            ColorImage(Color.Red.toArgb())
 //        }, TODO coil 라이브러리 사용 시
