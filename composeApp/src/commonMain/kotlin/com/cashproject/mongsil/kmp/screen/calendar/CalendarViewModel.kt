@@ -78,19 +78,22 @@ class CalendarViewModel(
 
     fun updateYearMonth(year: Int, month: Int) {
         _uiState.update { it.copy(currentYear = year, currentMonth = month) }
+        // 현재 월 + 인접 월(이전/다음)을 미리 로드하여 스와이프 시 즉시 표시
         loadDiariesForMonth(year, month)
+        loadDiariesForMonth(prevYear(year, month), prevMonth(year, month))
+        loadDiariesForMonth(nextYear(year, month), nextMonth(year, month))
     }
 
     private fun loadDiariesForCurrentMonth() {
         val currentState = _uiState.value
-        loadDiariesForMonth(currentState.currentYear, currentState.currentMonth)
+        updateYearMonth(currentState.currentYear, currentState.currentMonth)
     }
 
     private fun loadDiariesForMonth(year: Int, month: Int) {
         viewModelScope.launch {
             val diaries = diaryRepository.getDiariesByYearMonth(year, month)
 
-            val calendarRecords = diaries.map { diary ->
+            val newRecords = diaries.map { diary ->
                 CalendarRecord(
                     date = LocalDate(
                         year = diary.year.toInt(),
@@ -101,7 +104,18 @@ class CalendarViewModel(
                 )
             }
 
-            _uiState.update { it.copy(calendarRecords = calendarRecords) }
+            _uiState.update { state ->
+                // 해당 월 기존 데이터를 제거 후 새 데이터로 교체 (누적)
+                val merged = state.calendarRecords
+                    .filterNot { it.date.year == year && it.date.monthNumber == month }
+                    .plus(newRecords)
+                state.copy(calendarRecords = merged)
+            }
         }
     }
+
+    private fun prevYear(year: Int, month: Int) = if (month == 1) year - 1 else year
+    private fun prevMonth(year: Int, month: Int) = if (month == 1) 12 else month - 1
+    private fun nextYear(year: Int, month: Int) = if (month == 12) year + 1 else year
+    private fun nextMonth(year: Int, month: Int) = if (month == 12) 1 else month + 1
 }
