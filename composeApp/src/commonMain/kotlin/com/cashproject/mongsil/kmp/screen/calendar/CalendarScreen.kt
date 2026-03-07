@@ -166,7 +166,7 @@ fun CalendarScreenContent(
                 .align(Alignment.Center)
         ) {
             SimpleCalendarTitleV2(
-                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
+                modifier = Modifier.padding(bottom = 12.dp),
                 year = visibleYearMonth.year,
                 month = visibleYearMonth.month.number,
                 onClick = {
@@ -178,13 +178,15 @@ fun CalendarScreenContent(
             HorizontalCalendar(
                 state = calendarState,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .fillMaxWidth(),
                 monthHeader = { DaysOfWeekTitle() },
                 dayContent = { day: KCalendarDay ->
                     if (day.position == DayPosition.MonthDate) {
                         val record = recordMap[day.date]
-                        Box(contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
                             CalendarDay(
                                 date = day.date,
                                 isToday = day.date == today,

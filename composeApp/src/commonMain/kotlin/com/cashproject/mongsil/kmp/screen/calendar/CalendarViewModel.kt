@@ -7,6 +7,8 @@ import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -78,39 +80,47 @@ class CalendarViewModel(
 
     fun updateYearMonth(year: Int, month: Int) {
         _uiState.update { it.copy(currentYear = year, currentMonth = month) }
-        // 현재 월 + 인접 월(이전/다음)을 미리 로드하여 스와이프 시 즉시 표시
-        loadDiariesForMonth(year, month)
-        loadDiariesForMonth(prevYear(year, month), prevMonth(year, month))
-        loadDiariesForMonth(nextYear(year, month), nextMonth(year, month))
+        // 현재/이전/다음 월을 병렬 로드 후 state를 한 번에 업데이트 (리컴포지션 1회)
+        viewModelScope.launch {
+            val monthsToLoad = listOf(
+                YearMonth(year, month),
+                YearMonth(prevYear(year, month), prevMonth(year, month)),
+                YearMonth(nextYear(year, month), nextMonth(year, month)),
+            )
+            val results = monthsToLoad
+                .map { ym -> async { MonthRecords(ym, loadRecords(ym.year, ym.month)) } }
+                .awaitAll()
+
+            _uiState.update { state ->
+                var merged = state.calendarRecords
+                results.forEach { (ym, newRecords) ->
+                    merged = merged
+                        .filterNot { it.date.year == ym.year && it.date.monthNumber == ym.month }
+                        .plus(newRecords)
+                }
+                state.copy(calendarRecords = merged)
+            }
+        }
     }
+
+    private data class YearMonth(val year: Int, val month: Int)
+    private data class MonthRecords(val yearMonth: YearMonth, val records: List<CalendarRecord>)
 
     private fun loadDiariesForCurrentMonth() {
         val currentState = _uiState.value
         updateYearMonth(currentState.currentYear, currentState.currentMonth)
     }
 
-    private fun loadDiariesForMonth(year: Int, month: Int) {
-        viewModelScope.launch {
-            val diaries = diaryRepository.getDiariesByYearMonth(year, month)
-
-            val newRecords = diaries.map { diary ->
-                CalendarRecord(
-                    date = LocalDate(
-                        year = diary.year.toInt(),
-                        monthNumber = diary.month.toInt(),
-                        dayOfMonth = diary.day.toInt()
-                    ),
-                    emotionId = diary.emoticonId?.toInt() ?: 0
-                )
-            }
-
-            _uiState.update { state ->
-                // 해당 월 기존 데이터를 제거 후 새 데이터로 교체 (누적)
-                val merged = state.calendarRecords
-                    .filterNot { it.date.year == year && it.date.monthNumber == month }
-                    .plus(newRecords)
-                state.copy(calendarRecords = merged)
-            }
+    private suspend fun loadRecords(year: Int, month: Int): List<CalendarRecord> {
+        return diaryRepository.getDiariesByYearMonth(year, month).map { diary ->
+            CalendarRecord(
+                date = LocalDate(
+                    year = diary.year.toInt(),
+                    monthNumber = diary.month.toInt(),
+                    dayOfMonth = diary.day.toInt()
+                ),
+                emotionId = diary.emoticonId?.toInt() ?: 0
+            )
         }
     }
 

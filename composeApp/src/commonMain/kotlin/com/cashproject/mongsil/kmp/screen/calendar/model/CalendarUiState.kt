@@ -9,11 +9,10 @@ data class CalendarUiState(
     val currentMonth: Int = 1,
     val calendarRecords: List<CalendarRecord> = emptyList(),
     val emoticons: List<Emoticon> = emptyList(),
-    val isShownYearMonthPicker: Boolean = false
+    val isShownYearMonthPicker: Boolean = false,
 )
 
 data class CalendarRecord(
     val date: LocalDate,
     val emotionId: Int
 )
-
