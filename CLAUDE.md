@@ -12,6 +12,8 @@
 - Screen Composable은 ViewModel에 직접 의존 금지
   → 상태(UiState)와 이벤트 콜백(onEvent)만 파라미터로 받기
 - Preview는 반드시 작성, UiState 목업 데이터 사용
+- 슬롯 파라미터로 전달되는 람다 Composable은 반드시 별도 함수로 분리
+- Composable 중첩 depth는 깊어지지 않게 3단계 초과 시, 별도 컴포저블로 분리
 
 ## 테스트 규칙
 
