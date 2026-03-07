@@ -19,7 +19,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
@@ -140,16 +139,15 @@ fun CalendarScreenContent(
 
     // DayPickerDialog에서 년월 선택 시 pager 이동
     LaunchedEffect(uiState.currentYear, uiState.currentMonth) {
-        // 초기 로딩이 아닌 경우에만 pager 이동
-        if (uiState.currentYear != initialMonth.year || uiState.currentMonth != initialMonth.monthNumber) {
-            val yearDiff = uiState.currentYear - initialMonth.year
-            val monthDiff = uiState.currentMonth - initialMonth.monthNumber
-            val targetOffset = yearDiff * 12 + monthDiff
-            val targetPage = initialPage + targetOffset
-            
-            if (targetPage in 0 until totalPages) {
-                pagerState.animateScrollToPage(targetPage)
-            }
+        val yearDiff = uiState.currentYear - initialMonth.year
+        val monthDiff = uiState.currentMonth - initialMonth.monthNumber
+        val targetPage = initialPage + yearDiff * 12 + monthDiff
+
+        // 이미 해당 페이지에 있으면 animateScrollToPage 호출하지 않음
+        // (스와이프로 이동한 경우 snapshotFlow → onYearMonthChange로 uiState가 갱신되므로
+        //  이 LaunchedEffect가 재실행되지만, targetPage == currentPage라 skip됨)
+        if (targetPage != pagerState.currentPage && targetPage in 0 until totalPages) {
+            pagerState.animateScrollToPage(targetPage)
         }
     }
 
