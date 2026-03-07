@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,14 @@ fun CalendarMonthContent(
     onDateClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // calendarRecords를 Map으로 변환 — O(n²) → O(1) 탐색
+    val recordMap = remember(uiState.calendarRecords) {
+        uiState.calendarRecords.associateBy { it.date }
+    }
+    val emoticonMap = remember(uiState.emoticons) {
+        uiState.emoticons.associateBy { it.id }
+    }
+
     Column(modifier = modifier) {
         // 요일 헤더
         DaysOfWeekTitle()
@@ -45,19 +54,21 @@ fun CalendarMonthContent(
         val firstDayOfMonth = LocalDate(year, month, 1)
         val startDayOfWeek = getStartDayOfWeek(firstDayOfMonth)
 
-        val calendarDays = buildList {
-            // 이전 달의 빈 칸
-            repeat(startDayOfWeek) {
-                add(null)
-            }
-            // 현재 달의 날짜들
-            for (day in 1..daysInMonth) {
-                add(LocalDate(year, month, day))
-            }
-            // 항상 6주(42칸)를 유지하기 위해 남은 칸 채우기
-            val remainingCells = 42 - size
-            repeat(remainingCells) {
-                add(null)
+        val calendarDays = remember(year, month) {
+            buildList {
+                // 이전 달의 빈 칸
+                repeat(startDayOfWeek) {
+                    add(null)
+                }
+                // 현재 달의 날짜들
+                for (day in 1..daysInMonth) {
+                    add(LocalDate(year, month, day))
+                }
+                // 항상 6주(42칸)를 유지하기 위해 남은 칸 채우기
+                val remainingCells = 42 - size
+                repeat(remainingCells) {
+                    add(null)
+                }
             }
         }
 
@@ -74,17 +85,13 @@ fun CalendarMonthContent(
             items(calendarDays.size) { index ->
                 val date = calendarDays[index]
                 if (date != null) {
+                    val record = recordMap[date]
                     Box(contentAlignment = Alignment.Center) {
                         CalendarDay(
                             date = date,
                             isToday = date == today,
-                            isRecord = uiState.calendarRecords.any { it.date == date },
-                            emoticonImageUrl = uiState.emoticons
-                                .find { emoticon ->
-                                    uiState.calendarRecords
-                                        .lastOrNull { it.date == date }
-                                        ?.emotionId == emoticon.id
-                                }?.imageUrl ?: "",
+                            isRecord = record != null,
+                            emoticonImageUrl = emoticonMap[record?.emotionId]?.imageUrl ?: "",
                             isFuture = date > today,
                             onClick = { onDateClick(date) }
                         )

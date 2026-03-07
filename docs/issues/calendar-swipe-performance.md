@@ -1,7 +1,7 @@
 # [Issue] 캘린더 스와이프 버벅임 (CalendarScreen)
 
 - **발견일**: 2026-03-08
-- **상태**: 미수정
+- **상태**: 수정중 (문제 1 완료)
 - **심각도**: Medium
 - **관련 파일**
     - `composeApp/src/commonMain/.../screen/calendar/CalendarScreen.kt`
