@@ -115,7 +115,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     implementation(libs.compose.fading.edges)
-    implementation(libs.compose.calendar)
 
     //Ads
     implementation(libs.google.ads)

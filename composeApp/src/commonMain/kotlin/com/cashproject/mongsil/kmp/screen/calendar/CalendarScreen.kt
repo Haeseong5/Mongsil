@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.kmp.screen.calendar
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,14 +7,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,16 +20,28 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
-import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarMonthContent
+import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
 import com.cashproject.mongsil.kmp.screen.calendar.component.DayPickerDialog
+import com.cashproject.mongsil.kmp.screen.calendar.component.DaysOfWeekTitle
+import com.cashproject.mongsil.kmp.screen.calendar.component.NotificationBadge
 import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitleV2
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
-import com.cashproject.mongsil.kmp.screen.calendar.utils.calculateYearMonth
+import com.kizitonwose.calendar.compose.HorizontalCalendar
+import com.kizitonwose.calendar.compose.rememberCalendarState
+import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.core.OutDateStyle
+import com.kizitonwose.calendar.core.minusMonths
+import com.kizitonwose.calendar.core.plusMonths
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.YearMonth
+import kotlinx.datetime.number
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
+import com.kizitonwose.calendar.core.CalendarDay as KCalendarDay
 
 /**
  * 캘린더 메인 화면
@@ -58,11 +67,6 @@ fun CalendarScreen(
             onNavigateToDiaryWrite(date.year, date.monthNumber, date.dayOfMonth)
         },
         onYearMonthChange = viewModel::updateYearMonth,
-        onYearMonthPickerSelected = { year, month ->
-            viewModel.onEvent(
-                CalendarUiEvent.OnYearMonthPickerSelected(year = year, month = month)
-            )
-        },
         onNavigateToSetting = onNavigateToSetting,
         onNavigateToSearch = onNavigateToSearch,
         onNavigateToChart = {
@@ -91,7 +95,7 @@ fun CalendarScreen(
 /**
  * 캘린더 화면 컨텐츠
  */
-@OptIn(ExperimentalFoundationApi::class, ExperimentalTime::class)
+@OptIn(ExperimentalTime::class)
 @Composable
 fun CalendarScreenContent(
     modifier: Modifier = Modifier,
@@ -99,55 +103,48 @@ fun CalendarScreenContent(
     uiEvent: (CalendarUiEvent) -> Unit = {},
     onDateClick: (LocalDate) -> Unit = {},
     onYearMonthChange: (year: Int, month: Int) -> Unit = { _, _ -> },
-    onYearMonthPickerSelected: (year: Int, month: Int) -> Unit = { _, _ -> },
     onNavigateToSetting: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToChart: () -> Unit = {},
     onNavigateToMonthly: () -> Unit = {},
 ) {
     val today = uiState.today
-    val initialMonth = remember { today }
-    val initialPage = 1200 // 중앙 페이지
-    val totalPages = 2400 // 전후 100년 정도
 
-    val pagerState = rememberPagerState(
-        initialPage = initialPage,
-        pageCount = { totalPages }
+    val currentMonth = remember { YearMonth(today.year, today.month) }
+    val startMonth = remember { currentMonth.minusMonths(1200) }
+    val endMonth = remember { currentMonth.plusMonths(1200) }
+
+    val calendarState = rememberCalendarState(
+        startMonth = startMonth,
+        endMonth = endMonth,
+        firstVisibleMonth = currentMonth,
+        firstDayOfWeek = DayOfWeek.SUNDAY,
+        outDateStyle = OutDateStyle.EndOfGrid,
     )
-    val coroutineScope = rememberCoroutineScope()
 
-    // 현재 보이는 월 계산
+    val recordMap = remember(uiState.calendarRecords) {
+        uiState.calendarRecords.associateBy { it.date }
+    }
+    val emoticonMap = remember(uiState.emoticons) {
+        uiState.emoticons.associateBy { it.id }
+    }
+
     val visibleYearMonth by remember {
-        derivedStateOf {
-            val offset = pagerState.currentPage - initialPage
-            calculateYearMonth(initialMonth.year, initialMonth.monthNumber, offset)
+        derivedStateOf { calendarState.firstVisibleMonth.yearMonth }
+    }
+
+    // 월 변경 감지 → ViewModel 업데이트 (일기 데이터 로드)
+    LaunchedEffect(calendarState) {
+        snapshotFlow { calendarState.firstVisibleMonth.yearMonth }.collect { yearMonth ->
+            onYearMonthChange(yearMonth.year, yearMonth.month.number)
         }
     }
 
-    // 페이지 변경 시 UiState 업데이트
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            val offset = page - initialPage
-            val (year, month) = calculateYearMonth(
-                initialMonth.year,
-                initialMonth.monthNumber,
-                offset
-            )
-            onYearMonthChange(year, month)
-        }
-    }
-
-    // DayPickerDialog에서 년월 선택 시 pager 이동
+    // DayPickerDialog에서 년월 선택 시 캘린더 이동
     LaunchedEffect(uiState.currentYear, uiState.currentMonth) {
-        val yearDiff = uiState.currentYear - initialMonth.year
-        val monthDiff = uiState.currentMonth - initialMonth.monthNumber
-        val targetPage = initialPage + yearDiff * 12 + monthDiff
-
-        // 이미 해당 페이지에 있으면 animateScrollToPage 호출하지 않음
-        // (스와이프로 이동한 경우 snapshotFlow → onYearMonthChange로 uiState가 갱신되므로
-        //  이 LaunchedEffect가 재실행되지만, targetPage == currentPage라 skip됨)
-        if (targetPage != pagerState.currentPage && targetPage in 0 until totalPages) {
-            pagerState.animateScrollToPage(targetPage)
+        val targetMonth = YearMonth(uiState.currentYear, Month.entries[uiState.currentMonth - 1])
+        if (targetMonth != calendarState.firstVisibleMonth.yearMonth) {
+            calendarState.animateScrollToMonth(targetMonth)
         }
     }
 
@@ -170,36 +167,50 @@ fun CalendarScreenContent(
         ) {
             SimpleCalendarTitleV2(
                 modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
-                year = visibleYearMonth.first,
-                month = visibleYearMonth.second,
+                year = visibleYearMonth.year,
+                month = visibleYearMonth.month.number,
                 onClick = {
                     uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
                 }
             )
             VerticalSpacer(16.dp)
 
-            // HorizontalPager로 캘린더 구현
-            HorizontalPager(
-                state = pagerState,
+            HorizontalCalendar(
+                state = calendarState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) { page ->
-                val offset = page - initialPage
-                val (pageYear, pageMonth) = calculateYearMonth(
-                    initialMonth.year,
-                    initialMonth.monthNumber,
-                    offset
-                )
-
-                CalendarMonthContent(
-                    year = pageYear,
-                    month = pageMonth,
-                    today = today,
-                    uiState = uiState,
-                    onDateClick = onDateClick
-                )
-            }
+                    .padding(horizontal = 16.dp),
+                monthHeader = { DaysOfWeekTitle() },
+                dayContent = { day: KCalendarDay ->
+                    if (day.position == DayPosition.MonthDate) {
+                        val record = recordMap[day.date]
+                        Box(contentAlignment = Alignment.Center) {
+                            CalendarDay(
+                                date = day.date,
+                                isToday = day.date == today,
+                                isRecord = record != null,
+                                emoticonImageUrl = emoticonMap[record?.emotionId]?.imageUrl ?: "",
+                                isFuture = day.date > today,
+                                onClick = { onDateClick(day.date) }
+                            )
+                            if (day.date == today) {
+                                NotificationBadge(
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(1.dp)
+                                )
+                            }
+                        }
+                    } else {
+                        // InDate / OutDate: 빈 셀 (OutDateStyle.EndOfGrid로 항상 6행 유지)
+                        Box(
+                            modifier = Modifier
+                                .padding(vertical = 6.dp)
+                                .size(36.dp)
+                        )
+                    }
+                }
+            )
         }
     }
 }

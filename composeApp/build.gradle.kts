@@ -97,6 +97,9 @@ kotlin {
             implementation(libs.coil.compose.kmp)
             implementation(libs.coil.network.ktor)
 
+            // Calendar
+            implementation("com.kizitonwose.calendar:compose-multiplatform:2.10.0")
+
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.core.okio)
         }

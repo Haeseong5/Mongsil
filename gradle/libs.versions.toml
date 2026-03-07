@@ -190,7 +190,6 @@ firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analy
 
 # Third-party
 compose-fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version = "1.0.4" }
-compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", version = "2.9.0" }
 
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 

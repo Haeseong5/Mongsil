@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
 
 class DiaryChartViewModel(
     private val diaryRepository: DiaryRepository,
@@ -21,7 +21,9 @@ class DiaryChartViewModel(
     initialMonth: Int,
 ) : ViewModel() {
 
-    private val currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    @OptIn(ExperimentalTime::class)
+    private val currentDateTime =
+        kotlin.time.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     private val currentYear = currentDateTime.year
     private val currentMonth = currentDateTime.monthNumber
 

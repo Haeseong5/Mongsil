@@ -9,7 +9,7 @@ import com.cashproject.mongsil.kmp.model.Emoticon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * 일기 데이터를 관리하는 Repository
@@ -81,6 +81,7 @@ class DiaryRepository(private val database: MongsilDatabase) {
     /**
      * 일기를 저장하거나 업데이트합니다.
      */
+    @OptIn(ExperimentalTime::class)
     suspend fun saveDiary(
         year: Int,
         month: Int,
@@ -90,7 +91,7 @@ class DiaryRepository(private val database: MongsilDatabase) {
         photoUri: String? = null
     ): Result<Unit> = withContext(Dispatchers.Default) {
         try {
-            val currentTimeMillis = Clock.System.now().toEpochMilliseconds()
+            val currentTimeMillis = kotlin.time.Clock.System.now().toEpochMilliseconds()
             val existingDiary = getDiaryByDate(year, month, day)
             
             if (existingDiary != null) {

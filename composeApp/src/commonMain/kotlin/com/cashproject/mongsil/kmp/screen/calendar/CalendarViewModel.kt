@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -28,7 +27,7 @@ class CalendarViewModel(
 
     init {
         // 현재 년월로 초기화
-        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        val now = kotlin.time.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         _uiState.update { 
             it.copy(
                 today = now.date,
