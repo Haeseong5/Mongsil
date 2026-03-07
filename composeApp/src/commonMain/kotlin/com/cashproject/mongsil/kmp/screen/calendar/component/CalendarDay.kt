@@ -36,13 +36,13 @@ import kotlinx.datetime.LocalDate
  */
 @Composable
 fun BoxScope.CalendarDay(
+    modifier: Modifier = Modifier,
     date: LocalDate,
     isToday: Boolean,
     isRecord: Boolean,
     emoticonImageUrl: String,
     isFuture: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 

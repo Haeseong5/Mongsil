@@ -16,16 +16,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
+import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
 import com.cashproject.mongsil.kmp.screen.calendar.component.DayPickerDialog
 import com.cashproject.mongsil.kmp.screen.calendar.component.DaysOfWeekTitle
 import com.cashproject.mongsil.kmp.screen.calendar.component.NotificationBadge
 import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitleV2
+import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
 import com.kizitonwose.calendar.compose.HorizontalCalendar
@@ -166,7 +169,7 @@ fun CalendarScreenContent(
                 .align(Alignment.Center)
         ) {
             SimpleCalendarTitleV2(
-                modifier = Modifier.padding(bottom = 12.dp),
+                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
                 year = visibleYearMonth.year,
                 month = visibleYearMonth.month.number,
                 onClick = {
@@ -184,7 +187,7 @@ fun CalendarScreenContent(
                     if (day.position == DayPosition.MonthDate) {
                         val record = recordMap[day.date]
                         Box(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.align(alignment = Alignment.Center),
                             contentAlignment = Alignment.Center
                         ) {
                             CalendarDay(
@@ -214,5 +217,60 @@ fun CalendarScreenContent(
                 }
             )
         }
+    }
+}
+
+// ========== Previews ==========
+
+private val previewUiStateEmpty = CalendarUiState(
+    today = LocalDate(2026, 3, 8),
+    currentYear = 2026,
+    currentMonth = 3,
+    calendarRecords = emptyList(),
+    emoticons = emptyList(),
+)
+
+private val previewEmoticons = listOf(
+    Emoticon(
+        id = 1,
+        title = "행복",
+        imageUrl = "",
+        textColor = "#000000",
+        backgroundColor = "#FFFFFF"
+    ),
+    Emoticon(
+        id = 2,
+        title = "슬픔",
+        imageUrl = "",
+        textColor = "#000000",
+        backgroundColor = "#FFFFFF"
+    ),
+)
+
+private val previewUiStateWithRecords = CalendarUiState(
+    today = LocalDate(2026, 3, 8),
+    currentYear = 2026,
+    currentMonth = 3,
+    calendarRecords = listOf(
+        CalendarRecord(date = LocalDate(2026, 3, 1), emotionId = 1),
+        CalendarRecord(date = LocalDate(2026, 3, 5), emotionId = 2),
+        CalendarRecord(date = LocalDate(2026, 3, 8), emotionId = 1),
+    ),
+    emoticons = previewEmoticons,
+)
+
+@Preview(showBackground = true)
+@Composable
+internal fun CalendarScreenContentEmptyPreview() {
+    MongsilTheme {
+        CalendarScreenContent(uiState = previewUiStateEmpty)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun CalendarScreenContentWithRecordsPreview() {
+    MongsilTheme {
+        CalendarScreenContent(uiState = previewUiStateWithRecords)
     }
 }
