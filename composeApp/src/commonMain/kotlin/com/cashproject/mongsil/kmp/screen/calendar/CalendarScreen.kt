@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.calendar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -144,11 +145,17 @@ fun CalendarScreenContent(
     }
 
     // DayPickerDialog에서 년월 선택 시 캘린더 이동
-    LaunchedEffect(uiState.currentYear, uiState.currentMonth) {
-        val targetMonth = YearMonth(uiState.currentYear, Month.entries[uiState.currentMonth - 1])
-        if (targetMonth != calendarState.firstVisibleMonth.yearMonth) {
-            calendarState.animateScrollToMonth(targetMonth)
+    LaunchedEffect(uiState.scrollTarget) {
+        val target = uiState.scrollTarget ?: return@LaunchedEffect
+        val targetYearMonth = YearMonth(target.year, Month.entries[target.month - 1])
+        val current = calendarState.firstVisibleMonth.yearMonth
+        val isAdjacent = target.year == current.year && kotlin.math.abs(target.month - current.month.number) == 1
+        if (isAdjacent) {
+            calendarState.animateScrollToMonth(targetYearMonth)
+        } else {
+            calendarState.scrollToMonth(targetYearMonth)
         }
+        uiEvent(CalendarUiEvent.ClearScrollTarget)
     }
 
     Box(
@@ -169,12 +176,11 @@ fun CalendarScreenContent(
                 .align(Alignment.Center)
         ) {
             SimpleCalendarTitleV2(
-                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
+                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp).clickable {
+                    uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
+                },
                 year = visibleYearMonth.year,
                 month = visibleYearMonth.month.number,
-                onClick = {
-                    uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
-                }
             )
             VerticalSpacer(16.dp)
 

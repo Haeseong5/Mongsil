@@ -10,7 +10,10 @@ data class CalendarUiState(
     val calendarRecords: List<CalendarRecord> = emptyList(),
     val emoticons: List<Emoticon> = emptyList(),
     val isShownYearMonthPicker: Boolean = false,
+    val scrollTarget: ScrollTarget? = null,
 )
+
+data class ScrollTarget(val year: Int, val month: Int)
 
 data class CalendarRecord(
     val date: LocalDate,

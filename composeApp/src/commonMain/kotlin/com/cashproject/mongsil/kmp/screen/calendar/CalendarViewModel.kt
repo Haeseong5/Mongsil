@@ -7,6 +7,7 @@ import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
+import com.cashproject.mongsil.kmp.screen.calendar.model.ScrollTarget
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,10 +70,13 @@ class CalendarViewModel(
                 _uiState.update {
                     it.copy(
                         isShownYearMonthPicker = false,
-                        currentYear = event.year,
-                        currentMonth = event.month
+                        scrollTarget = ScrollTarget(event.year, event.month)
                     )
                 }
+            }
+
+            is CalendarUiEvent.ClearScrollTarget -> {
+                _uiState.update { it.copy(scrollTarget = null) }
             }
         }
 

@@ -26,14 +26,13 @@ fun SimpleCalendarTitleV2(
     modifier: Modifier = Modifier,
     year: Int,
     month: Int,
-    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.width(100.dp), // TODO 최적의 width 지정 필요
+            modifier = Modifier,
             text = "${year}년 ${month}월",
             textAlign = TextAlign.Center,
             style = MongsilTheme.typography.title3,
@@ -41,18 +40,11 @@ fun SimpleCalendarTitleV2(
         HorizontalSpacer(8.dp)
         Icon(
             modifier = Modifier
-                .size(14.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onClick.invoke()
-                },
+                .size(14.dp),
             painter = painterResource(Res.drawable.ic_baseline_arrow_forward_ios_24),
             contentDescription = "forward",
             tint = Gray600
         )
-
     }
 }
 
@@ -63,7 +55,6 @@ fun SimpleCalendarTitleV2Preview() {
         SimpleCalendarTitleV2(
             year = 2026,
             month = 2,
-            onClick = {}
         )
     }
 }
