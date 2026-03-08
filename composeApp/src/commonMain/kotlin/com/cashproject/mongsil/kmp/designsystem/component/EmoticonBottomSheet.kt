@@ -35,8 +35,11 @@ import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.model.Emoticon
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_bottom_sheet_subtitle
+import mongsil.composeapp.generated.resources.emoticon_bottom_sheet_title
 import mongsil.composeapp.generated.resources.ic_lock
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,12 +100,26 @@ fun EmoticonSelectionBottomSheetContent(
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier.padding(
-                vertical = 12.dp,
-                horizontal = if (isSmallDevice) 20.dp else 24.dp
+                top = 12.dp,
+                bottom = 4.dp,
+                start = if (isSmallDevice) 20.dp else 24.dp,
+                end = if (isSmallDevice) 20.dp else 24.dp
             ),
-            text = "오늘의 기분을 선택해주세요",
+            text = stringResource(Res.string.emoticon_bottom_sheet_title),
             style = MongsilTheme.typography.heading1,
             color = MongsilTheme.colorScheme.labelStrong
+        )
+
+        Text(
+            modifier = Modifier.padding(
+                top = 8.dp,
+                bottom = 8.dp,
+                start = if (isSmallDevice) 20.dp else 24.dp,
+                end = if (isSmallDevice) 20.dp else 24.dp
+            ),
+            text = stringResource(Res.string.emoticon_bottom_sheet_subtitle),
+            style = MongsilTheme.typography.body2Normal,
+            color = MongsilTheme.colorScheme.fill500
         )
 
         LazyVerticalGrid(
@@ -194,7 +211,7 @@ private fun parseHexColor(hex: String): Color {
     return try {
         val cleanHex = hex.removePrefix("#")
         val colorInt = cleanHex.toLong(16)
-        
+
         if (cleanHex.length == 6) {
             // RGB 형식: 알파값 FF 추가
             Color(0xFF000000 or colorInt)
