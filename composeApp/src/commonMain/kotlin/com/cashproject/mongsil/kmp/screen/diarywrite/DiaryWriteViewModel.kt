@@ -66,8 +66,10 @@ class DiaryWriteViewModel(
             val emoticons = emoticonsDeferred.await()
             val diary = diaryDeferred.await()
 
-            val selectedEmoticon = diary?.emoticonId?.let { id ->
-                emoticons.find { it.id == id.toInt() }
+            val selectedEmoticon = if (diary != null) {
+                diary.emoticonId?.let { id -> emoticons.find { it.id == id.toInt() } }
+            } else {
+                emoticons.take(4).randomOrNull()
             }
 
             _uiState.update { state ->
