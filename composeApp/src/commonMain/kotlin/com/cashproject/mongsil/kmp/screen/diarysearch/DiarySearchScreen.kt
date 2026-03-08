@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarysearch
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -161,7 +160,7 @@ private fun SearchTopBar(
                 .size(34.dp)
                 .clip(CircleShape)
                 .background(Color(0xFFC4C4C4))
-                .clickable(enabled = query.isNotEmpty()) { onClear() },
+                .circularRippleClickable(enabled = query.isNotEmpty()) { onClear() },
             contentAlignment = Alignment.Center
         ) {
             Text(
