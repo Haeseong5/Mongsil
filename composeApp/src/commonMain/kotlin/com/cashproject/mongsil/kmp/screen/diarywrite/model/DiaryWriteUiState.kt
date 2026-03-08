@@ -29,10 +29,18 @@ data class DiaryWriteUiState(
     val showExitDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val isExistingDiary: Boolean = false,
+    val savedContent: String = "",
+    val savedPhotoUris: List<String> = emptyList(),
+    val savedEmoticonId: Int? = null,
 ) {
-    /**
-     * 작성 중인 내용이 있는지 확인합니다.
-     */
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()
+
+    /**
+     * 저장된 상태와 비교하여 수정사항이 있는지 확인합니다.
+     */
+    val hasUnsavedChanges: Boolean
+        get() = content != savedContent
+                || photoUris != savedPhotoUris
+                || selectedEmoticon?.id != savedEmoticonId
 }

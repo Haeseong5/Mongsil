@@ -72,14 +72,20 @@ class DiaryWriteViewModel(
                 emoticons.take(4).randomOrNull()
             }
 
+            val loadedContent = diary?.content ?: ""
+            val loadedPhotoUris = parsePhotoUris(diary?.photoUri)
+
             _uiState.update { state ->
                 state.copy(
                     emoticons = emoticons,
-                    content = diary?.content ?: state.content,
-                    photoUris = parsePhotoUris(diary?.photoUri),
+                    content = loadedContent,
+                    photoUris = loadedPhotoUris,
                     selectedEmoticon = selectedEmoticon,
                     isExistingDiary = diary != null,
                     isInitializing = false,
+                    savedContent = loadedContent,
+                    savedPhotoUris = loadedPhotoUris,
+                    savedEmoticonId = selectedEmoticon?.id,
                 )
             }
         }
@@ -178,7 +184,7 @@ class DiaryWriteViewModel(
     }
 
     private fun handleBackClick() {
-        if (uiState.value.hasContent) {
+        if (uiState.value.hasUnsavedChanges) {
             _uiState.update { it.copy(showExitDialog = true) }
         } else {
             viewModelScope.launch {
@@ -188,7 +194,7 @@ class DiaryWriteViewModel(
     }
 
     private fun handleBackPressed() {
-        if (_uiState.value.hasContent) {
+        if (_uiState.value.hasUnsavedChanges) {
             _uiState.update { it.copy(showExitDialog = true) }
         } else {
             viewModelScope.launch {
