@@ -302,5 +302,8 @@ Podfile.lock
 # Firebender
 .idea/firebender/
 
+# Claude Code
+.claude/settings.local.json
+
 # Configuration cache
 .gradle/configuration-cache/

@@ -12,11 +12,8 @@ plugins {
 kotlin {
     androidTarget()
 
-    @Suppress("OPT_IN_USAGE")
-    compilerOptions {
-        jvmToolchain(17)
-    }
-    
+    jvm("desktop")
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -27,14 +24,19 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     // iOS Deployment Target 설정
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().configureEach {
         binaries.all {
             freeCompilerArgs += "-Xbinary=bundleId=com.cashproject.mongsil.kmp.ComposeApp"
         }
     }
-    
+
+    @Suppress("OPT_IN_USAGE")
+    compilerOptions {
+        jvmToolchain(17)
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
@@ -62,6 +64,24 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
 
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+
+                // Coroutines Swing — provides Dispatchers.Main for Desktop (JVM)
+                implementation(libs.kotlinx.coroutines.swing)
+
+                // SQLDelight JDBC Driver for Desktop
+                implementation(libs.sqldelight.sqlite.driver)
+
+                // SQLite Bundled Driver for Desktop (Room KMP)
+                implementation(libs.androidx.sqlite.bundled)
+
+                // Ktor Desktop Engine
+                implementation(libs.ktor.client.cio)
+            }
+        }
+
         commonMain.dependencies {
             implementation(libs.runtime)
             implementation(libs.foundation)
@@ -78,6 +98,9 @@ kotlin {
 
             // Kotlin Serialization
             implementation(libs.kotlinx.serialization.json)
+
+            // Lifecycle
+            implementation(libs.androidx.lifecycle.runtime.compose)
 
             // Koin for KMP
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -114,7 +137,7 @@ kotlin {
 android {
     namespace = "com.cashproject.mongsil.kmp"
     compileSdk = sdkCompileVersion
-    
+
     defaultConfig {
         applicationId = "com.cashproject.mongsil"
         minSdk = sdkMinVersion
@@ -122,19 +145,18 @@ android {
         versionCode = 24
         versionName = "2.0.0"
     }
-    
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    
-    // 기존 앱과 동일한 서명 키 사용 (스토어 업데이트 필수!)
+
     val SIGNED_STORE_FILE: String by rootProject.extra
     val SIGNED_STORE_PASSWORD: String by rootProject.extra
     val SIGNED_STORE_KEY_ALIAS: String by rootProject.extra
     val SIGNED_STORE_KEY_PASSWORD: String by rootProject.extra
-    
+
     signingConfigs {
         create("release") {
             storeFile = file(SIGNED_STORE_FILE)
@@ -143,24 +165,42 @@ android {
             keyPassword = SIGNED_STORE_KEY_PASSWORD
         }
     }
-    
-    buildTypes {
-        getByName("debug") {
 
-        }
-        
+    buildTypes {
+        getByName("debug") {}
+
         getByName("release") {
-            // 릴리즈는 기존 앱과 동일한 ID 사용
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
-            // TODO: 배포 전 ProGuard 규칙 추가
-//             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+// Compose Desktop 설정
+compose.desktop {
+    application {
+        mainClass = "com.cashproject.mongsil.kmp.MainKt"
+
+        nativeDistributions {
+            targetFormats(
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Dmg,   // macOS
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi,   // Windows
+                org.jetbrains.compose.desktop.application.dsl.TargetFormat.Deb,   // Linux
+            )
+            packageName = "Mongsil"
+            packageVersion = "2.0.0"
+            description = "몽실 — 일기 앱"
+            copyright = "© 2024 Mongsil"
+
+            macOS { bundleID = "com.cashproject.mongsil" }
+            windows { menuGroup = "Mongsil" }
+            linux { packageName = "mongsil" }
+        }
     }
 }
 
@@ -184,5 +224,6 @@ dependencies {
     add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspDesktop", libs.androidx.room.compiler)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
