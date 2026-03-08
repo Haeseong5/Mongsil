@@ -75,4 +75,19 @@ sealed interface DiaryWriteEvent {
      * 삭제 확인 다이얼로그에서 취소 버튼을 눌렀을 때
      */
     data object OnDeleteCancel : DiaryWriteEvent
+
+    /**
+     * 잠긴 프리미엄 이모티콘을 클릭했을 때
+     */
+    data class OnPremiumEmoticonClick(val emoticon: Emoticon) : DiaryWriteEvent
+
+    /**
+     * 광고 시청 완료 후 보상 지급
+     */
+    data class OnAdRewardEarned(val emoticonId: Int) : DiaryWriteEvent
+
+    /**
+     * 광고가 닫혔을 때 (보상 없이)
+     */
+    data object OnAdDismissed : DiaryWriteEvent
 }

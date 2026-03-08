@@ -15,5 +15,6 @@ data class Emoticon(
     val title: String,
     val imageUrl: String,
     val textColor: String,
-    val backgroundColor: String
+    val backgroundColor: String,
+    val isPremium: Boolean = false,
 )

@@ -2,6 +2,7 @@ package com.cashproject.mongsil.kmp.di
 
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 /**
@@ -14,6 +15,7 @@ internal val diaryModule = module {
         DiaryWriteViewModel(
             diaryRepository = get(),
             emoticonRepository = get(),
+            localPreferences = get { parametersOf("diary_write_prefs") },
             year = year,
             month = month,
             day = day

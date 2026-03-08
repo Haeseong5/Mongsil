@@ -1,5 +1,9 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,10 +24,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.core.tween
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,6 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +52,7 @@ import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.DeleteConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ExitConfirmDialog
+import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
@@ -78,6 +82,7 @@ fun DiaryWriteScreen(
     val openImagePicker = rememberImagePickerLauncher { imagePaths ->
         viewModel.onEvent(DiaryWriteEvent.OnPhotosSelected(imagePaths))
     }
+    var rewardAdEmoticonId by remember { mutableStateOf<Int?>(null) }
 
     // SideEffect 처리
     LaunchedEffect(Unit) {
@@ -95,8 +100,26 @@ fun DiaryWriteScreen(
                 DiaryWriteSideEffect.OnBack -> {
                     onBack.invoke()
                 }
+
+                is DiaryWriteSideEffect.ShowRewardedAd -> {
+                    rewardAdEmoticonId = effect.emoticonId
+                }
             }
         }
+    }
+
+    // 영상 광고 — rewardAdEmoticonId 가 있을 때만 컴포지션에 진입
+    rewardAdEmoticonId?.let { emoticonId ->
+        ShowRewardedAd(
+            onRewarded = {
+                viewModel.onEvent(DiaryWriteEvent.OnAdRewardEarned(emoticonId))
+                rewardAdEmoticonId = null
+            },
+            onDismissed = {
+                viewModel.onEvent(DiaryWriteEvent.OnAdDismissed)
+                rewardAdEmoticonId = null
+            },
+        )
     }
 
     DiaryWriteScreenContent(
@@ -249,8 +272,10 @@ private fun DiaryWriteScreenContent(
         if (uiState.showEmoticonBottomSheet) {
             EmoticonBottomSheet(
                 emoticons = uiState.emoticons,
+                unlockedPremiumIds = uiState.unlockedPremiumIds,
                 onDismiss = { onEvent(DiaryWriteEvent.OnEmoticonBottomSheetDismiss) },
-                onEmoticonSelected = { onEvent(DiaryWriteEvent.OnEmoticonSelected(it)) }
+                onEmoticonSelected = { onEvent(DiaryWriteEvent.OnEmoticonSelected(it)) },
+                onPremiumLocked = { onEvent(DiaryWriteEvent.OnPremiumEmoticonClick(it)) },
             )
         }
 

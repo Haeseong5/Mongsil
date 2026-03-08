@@ -157,6 +157,9 @@ class EmoticonRepository(
     }
 }
 
+/** 프리미엄 이모티콘 ID 목록 — 영상 광고 시청 후 잠금 해제 */
+val PREMIUM_EMOTICON_IDS: Set<Int> = setOf(9, 12, 14)
+
 /**
  * EmoticonResponse를 도메인 모델(Emoticon)로 변환
  * Network layer의 모델을 UI/비즈니스 로직에서 사용할 수 있는 형태로 변환합니다.
@@ -166,5 +169,6 @@ private fun EmoticonResponse.toEmoticon() = Emoticon(
     title = title,
     imageUrl = imageUrl,
     textColor = textColor,
-    backgroundColor = backgroundColor
+    backgroundColor = backgroundColor,
+    isPremium = id in PREMIUM_EMOTICON_IDS,
 )

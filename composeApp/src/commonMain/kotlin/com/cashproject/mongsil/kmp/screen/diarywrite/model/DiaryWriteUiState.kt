@@ -32,6 +32,7 @@ data class DiaryWriteUiState(
     val savedContent: String = "",
     val savedPhotoUris: List<String> = emptyList(),
     val savedEmoticonId: Int? = null,
+    val unlockedPremiumIds: Set<Int> = emptySet(),
 ) {
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()

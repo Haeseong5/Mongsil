@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -32,14 +34,19 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.model.Emoticon
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.ic_lock
+import org.jetbrains.compose.resources.painterResource
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmoticonBottomSheet(
     emoticons: List<Emoticon>,
+    unlockedPremiumIds: Set<Int>,
     onDismiss: () -> Unit,
     onEmoticonSelected: (Emoticon) -> Unit,
+    onPremiumLocked: (Emoticon) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -53,7 +60,9 @@ fun EmoticonBottomSheet(
     ) {
         EmoticonSelectionBottomSheetContent(
             emoticons = emoticons,
-            onClick = onEmoticonSelected
+            unlockedPremiumIds = unlockedPremiumIds,
+            onEmoticonSelected = onEmoticonSelected,
+            onPremiumLocked = onPremiumLocked,
         )
     }
 }
@@ -78,15 +87,14 @@ private fun Header() {
 @Composable
 fun EmoticonSelectionBottomSheetContent(
     emoticons: List<Emoticon>,
+    unlockedPremiumIds: Set<Int> = emptySet(),
     listState: LazyGridState = rememberLazyGridState(),
-    onClick: (Emoticon) -> Unit = {}
+    onEmoticonSelected: (Emoticon) -> Unit = {},
+    onPremiumLocked: (Emoticon) -> Unit = {},
 ) {
     val isSmallDevice = true
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier.padding(
                 vertical = 12.dp,
@@ -107,20 +115,20 @@ fun EmoticonSelectionBottomSheetContent(
             verticalArrangement = Arrangement.spacedBy(if (isSmallDevice) 12.dp else 16.dp),
             horizontalArrangement = Arrangement.spacedBy(if (isSmallDevice) 12.dp else 16.dp),
             content = {
-                items(
-                    items = emoticons,
-                    key = { emoticon ->
-                        emoticon.id
-                    }
-                ) {
+                items(items = emoticons, key = { it.id }) { emoticon ->
+                    val isLocked = emoticon.isPremium && emoticon.id !in unlockedPremiumIds
                     EmoticonItem(
-                        emoticon = it,
-                        onClick = { onClick.invoke(it) },
+                        emoticon = emoticon,
+                        isLocked = isLocked,
+                        onClick = {
+                            if (isLocked) onPremiumLocked(emoticon)
+                            else onEmoticonSelected(emoticon)
+                        },
                     )
                 }
             }
         )
-        
+
         VerticalSpacer(16.dp)
     }
 }
@@ -129,6 +137,7 @@ fun EmoticonSelectionBottomSheetContent(
 fun EmoticonItem(
     modifier: Modifier = Modifier,
     emoticon: Emoticon,
+    isLocked: Boolean = false,
     onClick: () -> Unit,
 ) {
     Box(
@@ -155,6 +164,24 @@ fun EmoticonItem(
                 textAlign = TextAlign.Center,
                 style = MongsilTheme.typography.body2Normal
             )
+        }
+
+        // 프리미엄 잠금 오버레이
+        if (isLocked) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color.Black.copy(alpha = 0.45f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_lock),
+                    contentDescription = "프리미엄 잠금",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp),
+                )
+            }
         }
     }
 }

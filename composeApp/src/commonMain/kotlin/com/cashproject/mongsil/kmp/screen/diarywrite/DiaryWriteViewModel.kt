@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
+import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
@@ -11,6 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,6 +28,7 @@ import kotlinx.coroutines.launch
 class DiaryWriteViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
+    private val localPreferences: LocalPreferences,
     year: Int,
     month: Int,
     day: Int
@@ -48,7 +51,7 @@ class DiaryWriteViewModel(
     }
 
     /**
-     * 이모티콘과 기존 일기를 병렬로 로드하여 초기화 시간을 단축합니다.
+     * 이모티콘·일기·잠금해제 목록을 병렬로 로드하여 초기화 시간을 단축합니다.
      */
     private fun loadInitialData() {
         viewModelScope.launch {
@@ -62,14 +65,22 @@ class DiaryWriteViewModel(
                     day = _uiState.value.day
                 )
             }
+            val unlockedDeferred = async {
+                localPreferences.getStringSet(KEY_UNLOCKED_PREMIUMS)
+                    .firstOrNull()
+                    ?.mapNotNull { it.toIntOrNull() }
+                    ?.toSet()
+                    ?: emptySet()
+            }
 
             val emoticons = emoticonsDeferred.await()
             val diary = diaryDeferred.await()
+            val unlockedIds = unlockedDeferred.await()
 
             val selectedEmoticon = if (diary != null) {
                 diary.emoticonId?.let { id -> emoticons.find { it.id == id.toInt() } }
             } else {
-                emoticons.take(4).randomOrNull()
+                emoticons.filter { !it.isPremium }.take(4).randomOrNull()
             }
 
             val loadedContent = diary?.content ?: ""
@@ -86,6 +97,7 @@ class DiaryWriteViewModel(
                     savedContent = loadedContent,
                     savedPhotoUris = loadedPhotoUris,
                     savedEmoticonId = selectedEmoticon?.id,
+                    unlockedPremiumIds = unlockedIds,
                 )
             }
         }
@@ -110,6 +122,9 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnDeleteClick -> handleDeleteClick()
             is DiaryWriteEvent.OnDeleteConfirm -> handleDeleteConfirm()
             is DiaryWriteEvent.OnDeleteCancel -> handleDeleteCancel()
+            is DiaryWriteEvent.OnPremiumEmoticonClick -> handlePremiumEmoticonClick(event.emoticon)
+            is DiaryWriteEvent.OnAdRewardEarned -> handleAdRewardEarned(event.emoticonId)
+            is DiaryWriteEvent.OnAdDismissed -> Unit
         }
     }
 
@@ -238,6 +253,30 @@ class DiaryWriteViewModel(
         _uiState.update { it.copy(showDeleteDialog = false) }
     }
 
+    private fun handlePremiumEmoticonClick(emoticon: com.cashproject.mongsil.kmp.model.Emoticon) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(showEmoticonBottomSheet = false) }
+            _sideEffect.send(DiaryWriteSideEffect.ShowRewardedAd(emoticon.id))
+        }
+    }
+
+    private fun handleAdRewardEarned(emoticonId: Int) {
+        viewModelScope.launch {
+            val newUnlocked = _uiState.value.unlockedPremiumIds + emoticonId
+            localPreferences.setStringSet(
+                key = KEY_UNLOCKED_PREMIUMS,
+                value = newUnlocked.map { it.toString() }.toSet(),
+            )
+            val unlockedEmoticon = _uiState.value.emoticons.find { it.id == emoticonId }
+            _uiState.update { state ->
+                state.copy(
+                    unlockedPremiumIds = newUnlocked,
+                    selectedEmoticon = unlockedEmoticon ?: state.selectedEmoticon,
+                )
+            }
+        }
+    }
+
     private fun serializePhotoUris(photoUris: List<String>): String? {
         if (photoUris.isEmpty()) return null
         return photoUris.joinToString(SEPARATOR)
@@ -254,5 +293,6 @@ class DiaryWriteViewModel(
 
     private companion object {
         const val SEPARATOR = "||"
+        const val KEY_UNLOCKED_PREMIUMS = "unlocked_premium_emoticon_ids"
     }
 }
