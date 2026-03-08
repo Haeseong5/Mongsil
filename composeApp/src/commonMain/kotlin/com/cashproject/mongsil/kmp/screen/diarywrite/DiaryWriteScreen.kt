@@ -15,11 +15,16 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.tween
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -113,8 +118,8 @@ private fun DiaryWriteScreenContent(
     // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
     BackPressHandler(
         enabled = !uiState.showEmoticonBottomSheet
-            && !uiState.showExitDialog
-            && !uiState.showDeleteDialog
+                && !uiState.showExitDialog
+                && !uiState.showDeleteDialog
     ) {
         onEvent(DiaryWriteEvent.OnBackPressed)
     }
@@ -126,96 +131,118 @@ private fun DiaryWriteScreenContent(
             .statusBarsPadding()
             .imePadding()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
+        AnimatedVisibility(
+            visible = !uiState.isInitializing,
+            enter = fadeIn(animationSpec = tween(durationMillis = 300)),
         ) {
-            // 상단 툴바
-            IconToolbar(
-                modifier = Modifier.background(MongsilTheme.colorScheme.background),
-                leftContent = {
-                    Icon(
-                        painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-                        contentDescription = "뒤로 가기",
-                        tint = MongsilTheme.colorScheme.labelStrong,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { onEvent(DiaryWriteEvent.OnBackClick) }
-                    )
-                },
-                rightContent = {
-                    if (uiState.isExistingDiary) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_trash),
-                            contentDescription = "삭제",
-                            tint = Color(0xFFE53935),
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
-                        )
-                    }
-                }
-            )
-
-            // 메인 콘텐츠
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxSize()
             ) {
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // 이모티콘 버튼
-                EmoticonButton(
-                    selectedEmoticon = uiState.selectedEmoticon,
-                    onClick = { onEvent(DiaryWriteEvent.OnEmoticonButtonClick) }
+                // 상단 툴바
+                IconToolbar(
+                    modifier = Modifier.background(MongsilTheme.colorScheme.background),
+                    leftContent = {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
+                            contentDescription = "뒤로 가기",
+                            tint = MongsilTheme.colorScheme.labelStrong,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable { onEvent(DiaryWriteEvent.OnBackClick) }
+                        )
+                    },
+                    rightContent = {
+                        if (uiState.isExistingDiary) {
+                            Icon(
+                                painter = painterResource(Res.drawable.ic_trash),
+                                contentDescription = "삭제",
+                                tint = Color(0xFFE53935),
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
+                            )
+                        }
+                    }
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                // 메인 콘텐츠
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(24.dp))
 
-                // 날짜 표시
-                DateText(
-                    year = uiState.year,
-                    month = uiState.month,
-                    day = uiState.day
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                if (uiState.photoUris.isNotEmpty()) {
-                    SelectedPhotos(
-                        photoUris = uiState.photoUris,
-                        onRemove = { index ->
-                            onEvent(DiaryWriteEvent.OnPhotoRemoved(index))
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
+                    // 이모티콘 버튼
+                    EmoticonButton(
+                        selectedEmoticon = uiState.selectedEmoticon,
+                        onClick = { onEvent(DiaryWriteEvent.OnEmoticonButtonClick) }
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
+
+                    // 날짜 표시
+                    DateText(
+                        year = uiState.year,
+                        month = uiState.month,
+                        day = uiState.day
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    if (uiState.photoUris.isNotEmpty()) {
+                        SelectedPhotos(
+                            photoUris = uiState.photoUris,
+                            onRemove = { index ->
+                                onEvent(DiaryWriteEvent.OnPhotoRemoved(index))
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+
+                    // 일기 내용 입력
+                    DiaryTextField(
+                        content = uiState.content,
+                        onContentChange = { onEvent(DiaryWriteEvent.OnContentChange(it)) },
+                        enabled = !uiState.isLoading,
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                    )
                 }
 
-                // 일기 내용 입력
-                DiaryTextField(
-                    content = uiState.content,
-                    onContentChange = { onEvent(DiaryWriteEvent.OnContentChange(it)) },
-                    enabled = !uiState.isLoading,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
+                // 하단 툴바
+                BottomToolbar(
+                    modifier = Modifier.background(MongsilTheme.colorScheme.card),
+                    onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
+                    openImagePicker = openImagePicker,
+                    canSave = uiState.hasContent,
+                    isLoading = uiState.isLoading
                 )
             }
+        } // AnimatedVisibility
 
-            // 하단 툴바
-            BottomToolbar(
-                modifier = Modifier.background(MongsilTheme.colorScheme.card),
-                onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
-                openImagePicker = openImagePicker,
-                canSave = uiState.hasContent,
-                isLoading = uiState.isLoading
-            )
+        // 초기 로딩 오버레이
+        AnimatedVisibility(
+            visible = uiState.isInitializing,
+            exit = fadeOut(animationSpec = tween(durationMillis = 300)),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MongsilTheme.colorScheme.background),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = Color.LightGray.copy(alpha = 0.5f)
+                )
+            }
         }
 
         // 이모티콘 바텀시트
@@ -425,6 +452,7 @@ private fun DiaryWriteScreenContentPreview() {
                 emoticons = emptyList(),
                 showEmoticonBottomSheet = false,
                 isLoading = false,
+                isInitializing = false,
                 showExitDialog = false
             ),
             onEvent = {},
@@ -447,6 +475,7 @@ private fun DiaryWriteScreenContentEmptyPreview() {
                 emoticons = emptyList(),
                 showEmoticonBottomSheet = false,
                 isLoading = false,
+                isInitializing = false,
                 showExitDialog = false
             ),
             onEvent = {},
@@ -475,6 +504,7 @@ private fun DiaryWriteScreenContentWithEmoticonPreview() {
                 emoticons = emptyList(),
                 showEmoticonBottomSheet = false,
                 isLoading = false,
+                isInitializing = false,
                 showExitDialog = false
             ),
             onEvent = {},

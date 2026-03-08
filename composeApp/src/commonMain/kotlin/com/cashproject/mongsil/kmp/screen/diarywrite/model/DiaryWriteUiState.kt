@@ -25,6 +25,7 @@ data class DiaryWriteUiState(
     val emoticons: List<Emoticon> = emptyList(),
     val showEmoticonBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
+    val isInitializing: Boolean = true,
     val showExitDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val isExistingDiary: Boolean = false,

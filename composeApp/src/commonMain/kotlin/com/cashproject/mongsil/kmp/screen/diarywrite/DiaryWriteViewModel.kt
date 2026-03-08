@@ -7,6 +7,7 @@ import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,57 +44,42 @@ class DiaryWriteViewModel(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
-        // 이모티콘을 먼저 로드한 후 기존 일기를 로드해야 이모티콘 매핑이 가능
-        loadEmoticons()
+        loadInitialData()
     }
 
     /**
-     * 기존 일기가 있다면 불러옵니다.
+     * 이모티콘과 기존 일기를 병렬로 로드하여 초기화 시간을 단축합니다.
      */
-    private fun loadExistingDiary() {
+    private fun loadInitialData() {
         viewModelScope.launch {
-            val existingDiary = diaryRepository.getDiaryByDate(
-                year = _uiState.value.year,
-                month = _uiState.value.month,
-                day = _uiState.value.day
-            )
-            
-            existingDiary?.let { diary ->
-                // 이모티콘 ID가 있으면 해당 이모티콘을 찾아서 설정
-                val selectedEmoticon = if (diary.emoticonId != null) {
-                    _uiState.value.emoticons.find { it.id == diary.emoticonId.toInt() }
-                } else {
-                    null
-                }
-                
-                _uiState.update { state ->
-                    state.copy(
-                        content = diary.content,
-                        photoUris = parsePhotoUris(diary.photoUri),
-                        selectedEmoticon = selectedEmoticon,
-                        isExistingDiary = true
-                    )
-                }
+            val emoticonsDeferred = async {
+                emoticonRepository.getEmoticons().getOrElse { emptyList() }
             }
-        }
-    }
+            val diaryDeferred = async {
+                diaryRepository.getDiaryByDate(
+                    year = _uiState.value.year,
+                    month = _uiState.value.month,
+                    day = _uiState.value.day
+                )
+            }
 
-    /**
-     * 이모티콘 목록을 불러옵니다.
-     */
-    private fun loadEmoticons() {
-        viewModelScope.launch {
-            emoticonRepository.getEmoticons()
-                .onSuccess { emoticons ->
-                    println("++## DiaryWrite 이모티콘 로드 성공: ${emoticons.size}개")
-                    _uiState.update { it.copy(emoticons = emoticons) }
-                    // 이모티콘 로드 후 기존 일기의 이모티콘도 복원
-                    loadExistingDiary()
-                }
-                .onFailure { error ->
-                    println("++## DiaryWrite 이모티콘 로드 실패: ${error.message}")
-                    _uiState.update { it.copy(emoticons = emptyList()) }
-                }
+            val emoticons = emoticonsDeferred.await()
+            val diary = diaryDeferred.await()
+
+            val selectedEmoticon = diary?.emoticonId?.let { id ->
+                emoticons.find { it.id == id.toInt() }
+            }
+
+            _uiState.update { state ->
+                state.copy(
+                    emoticons = emoticons,
+                    content = diary?.content ?: state.content,
+                    photoUris = parsePhotoUris(diary?.photoUri),
+                    selectedEmoticon = selectedEmoticon,
+                    isExistingDiary = diary != null,
+                    isInitializing = false,
+                )
+            }
         }
     }
 
