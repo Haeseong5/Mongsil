@@ -31,7 +31,7 @@ fun SimpleCalendarTitleV2(
             modifier = Modifier,
             text = "${year}년 ${month}월",
             textAlign = TextAlign.Center,
-            style = MongsilTheme.typography.title2,
+            style = MongsilTheme.typography.title3,
         )
         HorizontalSpacer(8.dp)
         Icon(

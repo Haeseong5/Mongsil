@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,12 +54,21 @@ fun DiaryMonthlyScreen(
             .background(MongsilTheme.colorScheme.background)
             .padding(padding)
     ) {
+        Icon(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .size(24.dp)
+                .clickable { onBack() },
+            painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
+            contentDescription = "뒤로 가기",
+            tint = MongsilTheme.colorScheme.labelStrong
+        )
+
         TopBar(
             year = uiState.year,
             month = uiState.month,
             sortOrder = uiState.sortOrder,
             canMoveNextMonth = uiState.canMoveNextMonth,
-            onBack = onBack,
             onMovePrevMonth = viewModel::moveToPreviousMonth,
             onMoveNextMonth = viewModel::moveToNextMonth,
             onToggleSort = viewModel::toggleSortOrder
@@ -94,7 +102,6 @@ private fun TopBar(
     month: Int,
     sortOrder: DiarySortOrder,
     canMoveNextMonth: Boolean,
-    onBack: () -> Unit,
     onMovePrevMonth: () -> Unit,
     onMoveNextMonth: () -> Unit,
     onToggleSort: () -> Unit,
@@ -106,16 +113,6 @@ private fun TopBar(
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            modifier = Modifier
-                .size(24.dp)
-                .clickable { onBack() },
-            painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-            contentDescription = "뒤로 가기",
-            tint = MongsilTheme.colorScheme.labelStrong
-        )
-
-        Spacer(modifier = Modifier.width(10.dp))
 
         Icon(
             modifier = Modifier
