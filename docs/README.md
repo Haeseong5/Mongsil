@@ -8,10 +8,7 @@
 docs/
 ├── README.md          # 이 파일 (문서 목록)
 ├── issues/            # 버그 및 성능 이슈
-└── (추후 추가 예정)
-    ├── architecture/  # 아키텍처 설계 문서
-    ├── decisions/     # 기술 선택 근거 (ADR)
-    └── guides/        # 개발 가이드
+└── features/          # 기능 아이디어 및 기획
 ```
 
 ## 문서 목록
@@ -21,6 +18,13 @@ docs/
 | 파일                                                                    | 제목           | 상태  | 날짜         |
 |-----------------------------------------------------------------------|--------------|-----|------------|
 | [calendar-swipe-performance.md](issues/calendar-swipe-performance.md) | 캘린더 스와이프 버벅임 | 미수정 | 2026-03-08 |
+
+### Features
+
+| 파일                                                                | 제목                | 날짜         |
+|-------------------------------------------------------------------|-------------------|------------|
+| [motivation-reward-ideas.md](features/motivation-reward-ideas.md) | 동기부여 & 보상 기능 아이디어 | 2026-03-08 |
+| [monetization-ideas.md](features/monetization-ideas.md)           | 수익화 아이디어          | 2026-03-08 |
 
 ---
 
