@@ -42,6 +42,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
@@ -83,6 +85,7 @@ fun DiaryWriteScreen(
         viewModel.onEvent(DiaryWriteEvent.OnPhotosSelected(imagePaths))
     }
     var rewardAdEmoticonId by remember { mutableStateOf<Int?>(null) }
+    var isAdLoading by remember { mutableStateOf(false) }
 
     // SideEffect 처리
     LaunchedEffect(Unit) {
@@ -103,19 +106,27 @@ fun DiaryWriteScreen(
 
                 is DiaryWriteSideEffect.ShowRewardedAd -> {
                     rewardAdEmoticonId = effect.emoticonId
+                    isAdLoading = true
                 }
             }
         }
+    }
+
+    // 광고 로딩 중 다이얼로그
+    if (isAdLoading) {
+        AdLoadingDialog()
     }
 
     // 영상 광고 — rewardAdEmoticonId 가 있을 때만 컴포지션에 진입
     rewardAdEmoticonId?.let { emoticonId ->
         ShowRewardedAd(
             onRewarded = {
+                isAdLoading = false
                 viewModel.onEvent(DiaryWriteEvent.OnAdRewardEarned(emoticonId))
                 rewardAdEmoticonId = null
             },
             onDismissed = {
+                isAdLoading = false
                 viewModel.onEvent(DiaryWriteEvent.OnAdDismissed)
                 rewardAdEmoticonId = null
             },
@@ -441,6 +452,37 @@ private fun DiaryTextField(
     )
 }
 
+
+@Composable
+private fun AdLoadingDialog() {
+    Dialog(
+        onDismissRequest = {},
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(MongsilTheme.colorScheme.card),
+            contentAlignment = Alignment.Center,
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                CircularProgressIndicator(
+                    color = MongsilTheme.colorScheme.labelStrong,
+                    modifier = Modifier.size(36.dp),
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "광고 로딩 중",
+                    style = MongsilTheme.typography.caption1,
+                    color = MongsilTheme.colorScheme.labelWeak,
+                )
+            }
+        }
+    }
+}
 
 // 요일 텍스트 반환
 private fun getDayOfWeekText(year: Int, month: Int, day: Int): String {
