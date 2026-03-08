@@ -88,11 +88,7 @@ internal fun MainNavHost(
                     )
                 },
                 onBack = {
-                    navigator.navigateWithPopUpTo(
-                        route = Route.Calendar,
-                        popUpTo = Route.DiaryWrite(route.year, route.month, route.day),
-                        inclusive = true
-                    )
+                    navigator.popBackStack()
                 }
             )
         }

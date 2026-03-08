@@ -15,9 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,15 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
-import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyItem
+import com.cashproject.mongsil.kmp.designsystem.component.DiaryCard
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiarySortOrder
-import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.LocalDate
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
@@ -87,7 +80,9 @@ fun DiaryMonthlyScreen(
                     key = { it.id }
                 ) { item ->
                     DiaryCard(
-                        item = item,
+                        emoticonUrl = item.emoticonImageUrl,
+                        content = item.content,
+                        date = item.date,
                         onClick = { onDiaryClick(item.year, item.month, item.day) }
                     )
                 }
@@ -165,56 +160,6 @@ private fun TopBar(
 }
 
 @Composable
-private fun DiaryCard(
-    item: DiaryMonthlyItem,
-    onClick: () -> Unit,
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MongsilTheme.colorScheme.card
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (item.emoticonImageUrl.isNotEmpty()) {
-                AsyncImage(
-                    model = item.emoticonImageUrl,
-                    contentDescription = "감정 이모티콘",
-                    modifier = Modifier.size(100.dp)
-                )
-            }
-
-            Text(
-                modifier = Modifier.padding(top = 10.dp),
-                text = formatDate(item.year, item.month, item.day),
-                style = MongsilTheme.typography.body1Normal,
-                color = MongsilTheme.colorScheme.labelWeak
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 14.dp),
-                text = item.content,
-                style = MongsilTheme.typography.body1Bold,
-                color = MongsilTheme.colorScheme.labelStrong,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
-
-@Composable
 private fun EmptyMessage() {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -226,19 +171,4 @@ private fun EmptyMessage() {
             color = Color(0xFFBFBFBF)
         )
     }
-}
-
-private fun formatDate(year: Int, month: Int, day: Int): String {
-    val date = LocalDate(year, month, day)
-    val dayOfWeek = when (date.dayOfWeek) {
-        DayOfWeek.MONDAY -> "월요일"
-        DayOfWeek.TUESDAY -> "화요일"
-        DayOfWeek.WEDNESDAY -> "수요일"
-        DayOfWeek.THURSDAY -> "목요일"
-        DayOfWeek.FRIDAY -> "금요일"
-        DayOfWeek.SATURDAY -> "토요일"
-        DayOfWeek.SUNDAY -> "일요일"
-    }
-
-    return "${year}.${month.toString().padStart(2, '0')}.${day.toString().padStart(2, '0')} $dayOfWeek"
 }

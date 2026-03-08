@@ -15,8 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -27,11 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.DiaryCard
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchItem
 import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchUiState
 import kotlinx.datetime.DayOfWeek
@@ -98,8 +97,10 @@ private fun DiarySearchScreenContent(
                         items = uiState.results,
                         key = { it.id }
                     ) { diary ->
-                        DiarySearchCard(
-                            item = diary,
+                        DiaryCard(
+                            emoticonUrl = diary.emoticonImageUrl,
+                            content = diary.content,
+                            date = diary.date,
                             onClick = {
                                 onDiaryClick(diary.year, diary.month, diary.day)
                             }
@@ -128,7 +129,7 @@ private fun SearchTopBar(
         Icon(
             modifier = Modifier
                 .size(24.dp)
-                .clickable { onBack() },
+                .circularRippleClickable(onClick = onBack),
             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
             contentDescription = "뒤로 가기",
             tint = MongsilTheme.colorScheme.labelStrong
@@ -173,56 +174,6 @@ private fun SearchTopBar(
 }
 
 @Composable
-private fun DiarySearchCard(
-    item: DiarySearchItem,
-    onClick: () -> Unit,
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MongsilTheme.colorScheme.card
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (item.emoticonImageUrl.isNotEmpty()) {
-                AsyncImage(
-                    model = item.emoticonImageUrl,
-                    contentDescription = "감정 이모티콘",
-                    modifier = Modifier.size(96.dp)
-                )
-            }
-
-            Text(
-                modifier = Modifier.padding(top = 10.dp),
-                text = formatDate(item.year, item.month, item.day),
-                style = MongsilTheme.typography.body1Normal,
-                color = MongsilTheme.colorScheme.labelWeak
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 14.dp),
-                text = item.content,
-                style = MongsilTheme.typography.body1Bold,
-                color = MongsilTheme.colorScheme.labelStrong,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
-
-@Composable
 private fun SearchGuideMessage(message: String) {
     Box(
         modifier = Modifier
@@ -234,6 +185,65 @@ private fun SearchGuideMessage(message: String) {
             text = message,
             style = MongsilTheme.typography.body1Normal,
             color = MongsilTheme.colorScheme.labelWeak
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiarySearchScreenContentEmptyQueryPreview() {
+    MongsilTheme {
+        DiarySearchScreenContent(
+            uiState = DiarySearchUiState(query = "", results = emptyList()),
+            onBack = {},
+            onQueryChange = {},
+            onDiaryClick = { _, _, _ -> }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiarySearchScreenContentNoResultPreview() {
+    MongsilTheme {
+        DiarySearchScreenContent(
+            uiState = DiarySearchUiState(query = "행복", results = emptyList()),
+            onBack = {},
+            onQueryChange = {},
+            onDiaryClick = { _, _, _ -> }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiarySearchScreenContentWithResultsPreview() {
+    MongsilTheme {
+        DiarySearchScreenContent(
+            uiState = DiarySearchUiState(
+                query = "행복",
+                results = listOf(
+                    DiarySearchItem(
+                        id = 1L,
+                        year = 2025,
+                        month = 3,
+                        day = 9,
+                        content = "오늘은 정말 행복한 하루였다. 친구들과 맛있는 밥을 먹고 즐거운 시간을 보냈다.",
+                        emoticonImageUrl = ""
+                    ),
+                    DiarySearchItem(
+                        id = 2L,
+                        year = 2025,
+                        month = 2,
+                        day = 14,
+                        content = "행복한 발렌타인데이. 소소한 일상이 행복임을 느꼈다.",
+                        emoticonImageUrl = ""
+                    ),
+                )
+            ),
+            onBack = {},
+            onQueryChange = {},
+            onDiaryClick = { _, _, _ -> }
         )
     }
 }
@@ -250,5 +260,7 @@ private fun formatDate(year: Int, month: Int, day: Int): String {
         DayOfWeek.SUNDAY -> "일요일"
     }
 
-    return "${year}.${month.toString().padStart(2, '0')}.${day.toString().padStart(2, '0')} $dayOfWeek"
+    return "${year}.${month.toString().padStart(2, '0')}.${
+        day.toString().padStart(2, '0')
+    } $dayOfWeek"
 }

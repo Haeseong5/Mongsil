@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.diarymonthly.model
 
+import com.cashproject.mongsil.kmp.core.data.Date
+
 data class DiaryMonthlyUiState(
     val year: Int,
     val month: Int,
@@ -15,7 +17,9 @@ data class DiaryMonthlyItem(
     val day: Int,
     val content: String,
     val emoticonImageUrl: String,
-)
+) {
+    val date: Date = Date(year, month, day)
+}
 
 enum class DiarySortOrder {
     LATEST,
