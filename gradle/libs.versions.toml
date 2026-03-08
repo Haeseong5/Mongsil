@@ -34,6 +34,7 @@ lifecycle = "2.9.4"
 
 # Room
 room = "2.8.3"
+androidx-sqlite = "2.5.1"
 # datastore
 androidx-datastore = "1.2.0"
 
@@ -112,6 +113,7 @@ androidx-room-rxjava2 = { group = "androidx.room", name = "room-rxjava2", versio
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 room-backup-restore = { group = "com.github.salehyarahmadi", name = "RoomDatabaseBackupAndRestore", version = "v1.0.1" }
+androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqlite" }
 
 # Navigation
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
@@ -226,3 +228,4 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+room = { id = "androidx.room", version.ref = "room" }

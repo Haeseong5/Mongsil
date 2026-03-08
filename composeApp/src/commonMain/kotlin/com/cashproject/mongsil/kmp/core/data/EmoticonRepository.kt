@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.kmp.core.data
 
-import com.cashproject.mongsil.kmp.database.MongsilDatabase
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.network.api.EmoticonApi
 import com.cashproject.mongsil.kmp.network.model.EmoticonResponse
@@ -17,7 +16,6 @@ import kotlinx.coroutines.withContext
  */
 class EmoticonRepository(
     private val emoticonApi: EmoticonApi,
-    private val database: MongsilDatabase
 ) {
     
     companion object {

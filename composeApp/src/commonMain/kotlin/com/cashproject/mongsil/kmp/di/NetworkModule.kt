@@ -16,6 +16,6 @@ internal val networkModule = module {
     // API 클라이언트
     single { EmoticonApi(get()) }
     
-    // Repository (DB 캐싱 지원)
-    single { EmoticonRepository(emoticonApi = get(), database = get()) }
+    // Repository
+    single { EmoticonRepository(emoticonApi = get()) }
 }

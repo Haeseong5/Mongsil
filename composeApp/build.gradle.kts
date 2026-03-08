@@ -3,17 +3,18 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
     alias(libs.plugins.sqldelight)
     id("com.android.application")
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
-        }
+    androidTarget()
+
+    @Suppress("OPT_IN_USAGE")
+    compilerOptions {
+        jvmToolchain(17)
     }
     
     listOf(
@@ -24,8 +25,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-            // SQLite 링커 옵션 추가
-            linkerOpts("-lsqlite3")
         }
     }
     
@@ -41,25 +40,28 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.appcompat)
-            
+
             // Koin Android
             implementation(libs.koin.android)
-            
+
             // SQLDelight Android Driver
             implementation(libs.sqldelight.android.driver)
-            
+
             // Ktor Android Engine
             implementation(libs.ktor.client.okhttp)
         }
-        
+
         iosMain.dependencies {
             // SQLDelight Native Driver for iOS
             implementation(libs.sqldelight.native.driver)
-            
+
+            // SQLite Bundled Driver for iOS (Room KMP)
+            implementation(libs.androidx.sqlite.bundled)
+
             // Ktor iOS Engine
             implementation(libs.ktor.client.darwin)
         }
-        
+
         commonMain.dependencies {
             implementation(libs.runtime)
             implementation(libs.foundation)
@@ -67,32 +69,35 @@ kotlin {
             implementation(libs.ui)
             implementation(libs.components.resources)
             implementation(libs.ui.tooling.preview)
-            
+
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
-            
+
             // DateTime
             implementation(libs.kotlinx.datetime)
-            
+
             // Kotlin Serialization
             implementation(libs.kotlinx.serialization.json)
-            
+
             // Koin for KMP
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel.navigation)
-            
+
+            // Room KMP
+            implementation(libs.androidx.room.runtime)
+
             // SQLDelight
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines.extensions)
-            
+
             // Ktor Client
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
-            
+
             // Coil - Image Loading (KMP)
             implementation(libs.coil.compose.kmp)
             implementation(libs.coil.network.ktor)
@@ -159,6 +164,11 @@ android {
     }
 }
 
+// Room KMP 스키마 디렉토리 설정
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 // SQLDelight 설정
 sqldelight {
     databases {
@@ -168,6 +178,11 @@ sqldelight {
     }
 }
 
+// Room KSP - 각 플랫폼 타겟에 개별 등록 필요
 dependencies {
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
