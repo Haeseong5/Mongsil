@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.calendar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
@@ -150,7 +150,8 @@ fun CalendarScreenContent(
         val target = uiState.scrollTarget ?: return@LaunchedEffect
         val targetYearMonth = YearMonth(target.year, Month.entries[target.month - 1])
         val current = calendarState.firstVisibleMonth.yearMonth
-        val isAdjacent = target.year == current.year && kotlin.math.abs(target.month - current.month.number) == 1
+        val isAdjacent =
+            target.year == current.year && kotlin.math.abs(target.month - current.month.number) == 1
         if (isAdjacent) {
             calendarState.animateScrollToMonth(targetYearMonth)
         } else {
@@ -178,9 +179,13 @@ fun CalendarScreenContent(
                     .align(Alignment.Center)
             ) {
                 SimpleCalendarTitleV2(
-                    modifier = Modifier.padding(start = 20.dp, bottom = 12.dp).clickable {
-                        uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
-                    },
+                    modifier = Modifier
+                        .padding(start = 20.dp, bottom = 12.dp)
+                        .circularRippleClickable(
+                            radius = 36.dp
+                        ) {
+                            uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
+                        },
                     year = visibleYearMonth.year,
                     month = visibleYearMonth.month.number,
                 )

@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.kmp.screen.calendar.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
@@ -12,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_article
 import mongsil.composeapp.generated.resources.ic_bar_chart
@@ -34,7 +34,7 @@ fun BoxScope.CalendarToolbar(
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable { onNavigateToSetting() },
+                    .circularRippleClickable { onNavigateToSetting() },
                 painter = painterResource(Res.drawable.ic_more),
                 contentDescription = "설정"
             )
@@ -48,21 +48,21 @@ fun BoxScope.CalendarToolbar(
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable { onNavigateToSearch() },
+                    .circularRippleClickable { onNavigateToSearch() },
                 painter = painterResource(Res.drawable.ic_search),
                 contentDescription = "검색"
             )
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable { onNavigateToChart() },
+                    .circularRippleClickable { onNavigateToChart() },
                 painter = painterResource(Res.drawable.ic_bar_chart),
                 contentDescription = "차트"
             )
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .clickable { onNavigateToMonthly() },
+                    .circularRippleClickable { onNavigateToMonthly() },
                 painter = painterResource(Res.drawable.ic_article),
                 contentDescription = "모아보기"
             )
