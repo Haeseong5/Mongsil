@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
@@ -158,70 +159,74 @@ fun CalendarScreenContent(
         uiEvent(CalendarUiEvent.ClearScrollTarget)
     }
 
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = MongsilTheme.colorScheme.background)
     ) {
-        CalendarToolbar(
-            onNavigateToSetting = onNavigateToSetting,
-            onNavigateToSearch = onNavigateToSearch,
-            onNavigateToChart = onNavigateToChart,
-            onNavigateToMonthly = onNavigateToMonthly
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center)
-        ) {
-            SimpleCalendarTitleV2(
-                modifier = Modifier.padding(start = 20.dp, bottom = 12.dp).clickable {
-                    uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
-                },
-                year = visibleYearMonth.year,
-                month = visibleYearMonth.month.number,
+        Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+            CalendarToolbar(
+                onNavigateToSetting = onNavigateToSetting,
+                onNavigateToSearch = onNavigateToSearch,
+                onNavigateToChart = onNavigateToChart,
+                onNavigateToMonthly = onNavigateToMonthly
             )
-            VerticalSpacer(16.dp)
 
-            HorizontalCalendar(
-                state = calendarState,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                monthHeader = { DaysOfWeekTitle() },
-                dayContent = { day: KCalendarDay ->
-                    if (day.position == DayPosition.MonthDate) {
-                        val record = recordMap[day.date]
-                        Box(
-                            modifier = Modifier.align(alignment = Alignment.Center),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CalendarDay(
-                                date = day.date,
-                                isToday = day.date == today,
-                                isRecord = record != null,
-                                emoticonImageUrl = emoticonMap[record?.emotionId]?.imageUrl ?: "",
-                                isFuture = day.date > today,
-                                onClick = { onDateClick(day.date) }
-                            )
-                            if (day.date == today) {
-                                NotificationBadge(
-                                    modifier = Modifier
-                                        .align(Alignment.TopEnd)
-                                        .padding(1.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+            ) {
+                SimpleCalendarTitleV2(
+                    modifier = Modifier.padding(start = 20.dp, bottom = 12.dp).clickable {
+                        uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
+                    },
+                    year = visibleYearMonth.year,
+                    month = visibleYearMonth.month.number,
+                )
+                VerticalSpacer(16.dp)
+
+                HorizontalCalendar(
+                    state = calendarState,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    monthHeader = { DaysOfWeekTitle() },
+                    dayContent = { day: KCalendarDay ->
+                        if (day.position == DayPosition.MonthDate) {
+                            val record = recordMap[day.date]
+                            Box(
+                                modifier = Modifier.align(alignment = Alignment.Center),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CalendarDay(
+                                    date = day.date,
+                                    isToday = day.date == today,
+                                    isRecord = record != null,
+                                    emoticonImageUrl = emoticonMap[record?.emotionId]?.imageUrl
+                                        ?: "",
+                                    isFuture = day.date > today,
+                                    onClick = { onDateClick(day.date) }
                                 )
+                                if (day.date == today) {
+                                    NotificationBadge(
+                                        modifier = Modifier
+                                            .align(Alignment.TopEnd)
+                                            .padding(1.dp)
+                                    )
+                                }
                             }
+                        } else {
+                            // InDate / OutDate: 빈 셀 (OutDateStyle.EndOfGrid로 항상 6행 유지)
+                            Box(
+                                modifier = Modifier
+                                    .padding(vertical = 6.dp)
+                                    .size(36.dp)
+                            )
                         }
-                    } else {
-                        // InDate / OutDate: 빈 셀 (OutDateStyle.EndOfGrid로 항상 6행 유지)
-                        Box(
-                            modifier = Modifier
-                                .padding(vertical = 6.dp)
-                                .size(36.dp)
-                        )
                     }
-                }
-            )
+                )
+            }
+            BannerAdView(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter))
         }
     }
 }

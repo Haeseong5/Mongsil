@@ -51,6 +51,9 @@ kotlin {
 
             // Ktor Android Engine
             implementation(libs.ktor.client.okhttp)
+
+            // AdMob
+            implementation(libs.google.ads)
         }
 
         iosMain.dependencies {
