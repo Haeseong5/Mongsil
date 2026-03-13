@@ -3,8 +3,11 @@ package com.cashproject.mongsil.kmp.screen.main
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -13,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.cashproject.mongsil.kmp.AppPlatform
+import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.getAppPlatform
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
@@ -55,6 +59,9 @@ internal fun MainNavHost(
     NavHost(
         navController = navigator,
         startDestination = startDestination,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MongsilTheme.colorScheme.background),
         enterTransition = { fadeIn(tween(NAV_ANIM_DURATION)) }, // 앞으로 이동 시, 들어오는 화면
         exitTransition = { fadeOut(tween(NAV_ANIM_DURATION)) }, //새 화면으로 이동할 때 현재 화면이 사라지는 애니메이션
         popEnterTransition = { fadeIn(tween(NAV_ANIM_DURATION)) }, //뒤로가기 시, 들어오는 화면

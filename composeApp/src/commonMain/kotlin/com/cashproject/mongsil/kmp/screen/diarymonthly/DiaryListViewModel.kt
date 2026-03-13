@@ -50,8 +50,9 @@ class DiaryListViewModel(
             DiaryViewMode.MONTHLY -> DiaryViewMode.ALL
             DiaryViewMode.ALL -> DiaryViewMode.MONTHLY
         }
-        _uiState.update { it.copy(viewMode = newMode) }
-        if (newMode == DiaryViewMode.ALL && _uiState.value.allDiaries.isEmpty()) {
+        val needsLoad = newMode == DiaryViewMode.ALL && _uiState.value.allDiaries.isEmpty()
+        _uiState.update { it.copy(viewMode = newMode, isLoadingAll = needsLoad) }
+        if (needsLoad) {
             loadAllDiaries()
         }
     }
