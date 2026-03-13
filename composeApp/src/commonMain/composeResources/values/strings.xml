@@ -9,4 +9,10 @@
     <string name="custom_color_picker_cancel">취소</string>
     <string name="custom_color_selected_label">선택된 색상</string>
     <string name="custom_color_circle_desc">커스텀 색상 선택</string>
+    <string name="view_mode_monthly">월별</string>
+    <string name="view_mode_all">전체</string>
+    <string name="diary_all_title">전체 일기</string>
+    <string name="load_more">더 보기</string>
+    <string name="sort_latest">최신순</string>
+    <string name="sort_oldest">오래된순</string>
 </resources>

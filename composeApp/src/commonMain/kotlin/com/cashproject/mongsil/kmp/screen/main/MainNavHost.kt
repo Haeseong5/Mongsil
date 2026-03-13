@@ -19,8 +19,8 @@ import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartScreen
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartViewModel
-import com.cashproject.mongsil.kmp.screen.diarymonthly.DiaryMonthlyScreen
-import com.cashproject.mongsil.kmp.screen.diarymonthly.DiaryMonthlyViewModel
+import com.cashproject.mongsil.kmp.screen.diarymonthly.DiaryListScreen
+import com.cashproject.mongsil.kmp.screen.diarymonthly.DiaryListViewModel
 import com.cashproject.mongsil.kmp.screen.diarysearch.DiarySearchScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.DiaryWriteViewModel
@@ -209,11 +209,11 @@ internal fun MainNavHost(
 
         composable<Route.DiaryMonthly> { backStackEntry ->
             val route = backStackEntry.toRoute<Route.DiaryMonthly>()
-            val viewModel: DiaryMonthlyViewModel = koinViewModel {
+            val viewModel: DiaryListViewModel = koinViewModel {
                 parametersOf(route.year, route.month)
             }
 
-            DiaryMonthlyScreen(
+            DiaryListScreen(
                 viewModel = viewModel,
                 padding = padding,
                 onBack = { navigator.popBackStack() },
