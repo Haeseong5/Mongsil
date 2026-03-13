@@ -43,7 +43,16 @@ iosApp/
 
 - **Framework 이름**: `ComposeApp`
 - **빌드 위치**: `../composeApp/build/xcode-frameworks/`
-- **자동 빌드**: Xcode Build Phase에서 Gradle 태스크 실행
+- **자동 빌드**: Xcode Build Phase에서 `:composeApp:embedAndSignAppleFrameworkForXcode` 실행
+- **인덱싱용 고정 경로**: `../composeApp/build/xcode-frameworks/<Configuration>/<Platform>/ComposeApp.framework`
+
+## 현재 포함된 Xcode 설정
+
+- `iosApp/iosApp.xcodeproj` 포함
+- shared scheme `iosApp` 포함
+- SwiftUI 앱 타깃 1개 포함
+- `Configuration/Config.xcconfig`를 통해 Bundle ID / Team ID / App Name 관리
+- Xcode 빌드 시 Gradle이 Compose framework를 자동 생성 및 임베드
 
 ## ⚙️ 설정 변경
 
@@ -65,6 +74,11 @@ APP_NAME=몽실
 cd ..
 ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
 ```
+
+빌드 후에도 `import ComposeApp`가 빨간 줄로 남아 있으면:
+- Xcode에서 `Product > Clean Build Folder` 실행
+- `iosApp.xcodeproj`를 다시 열기
+- `composeApp/build/xcode-frameworks/Debug/iphonesimulator/ComposeApp.framework` 또는 `composeApp/build/xcode-frameworks/Debug/iphoneos/ComposeApp.framework` 생성 여부 확인
 
 ### 시뮬레이터 빌드 실패
 - Xcode 버전 확인 (최소 15.0 권장)

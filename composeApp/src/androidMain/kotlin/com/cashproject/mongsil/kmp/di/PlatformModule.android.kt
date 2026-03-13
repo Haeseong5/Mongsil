@@ -10,6 +10,13 @@ import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
+import com.cashproject.mongsil.kmp.screen.setting.AndroidDiaryReminderScheduler
+import com.cashproject.mongsil.kmp.screen.setting.DiaryReminderScheduler
+import com.cashproject.mongsil.kmp.screen.setting.pdfexport.AndroidPdfExportService
+import com.cashproject.mongsil.kmp.screen.setting.pdfexport.PdfExportService
+import com.cashproject.mongsil.kmp.screen.setting.screenlock.AndroidNativeScreenLockAuthenticator
+import com.cashproject.mongsil.kmp.screen.setting.screenlock.CurrentActivityHolder
+import com.cashproject.mongsil.kmp.screen.setting.screenlock.NativeScreenLockAuthenticator
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -42,4 +49,9 @@ actual fun platformModule(): Module = module {
     factory<LocalPreferences> { params ->
         LocalPreferencesImpl(name = params.get())
     }
+
+    single<DiaryReminderScheduler> { AndroidDiaryReminderScheduler(get()) }
+    single<PdfExportService> { AndroidPdfExportService(get()) }
+    single { CurrentActivityHolder() }
+    single<NativeScreenLockAuthenticator> { AndroidNativeScreenLockAuthenticator(get()) }
 }

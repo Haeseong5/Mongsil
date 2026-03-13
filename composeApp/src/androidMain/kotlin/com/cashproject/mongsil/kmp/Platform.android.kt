@@ -6,3 +6,5 @@ import androidx.compose.runtime.Composable
 actual fun getPlatformName(): String {
     return "Running on Android 🤖"
 }
+
+actual fun getAppPlatform(): AppPlatform = AppPlatform.ANDROID

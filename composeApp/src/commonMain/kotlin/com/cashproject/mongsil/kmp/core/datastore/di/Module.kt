@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.core.datastore.di
 
+import com.cashproject.mongsil.kmp.core.datastore.SETTINGS_PREFERENCES_NAME
 import com.cashproject.mongsil.kmp.core.datastore.SettingsPreferenceDataSource
 import com.cashproject.mongsil.kmp.core.datastore.impl.DefaultSettingsPreferenceDataSource
 import org.koin.core.parameter.parameterSetOf
@@ -14,5 +15,3 @@ val datastoreSettingsModule = module {
     }
 
 }
-
-private const val SETTINGS_PREFERENCES_NAME = "SETTINGS_PREFERENCES.preferences_pb"

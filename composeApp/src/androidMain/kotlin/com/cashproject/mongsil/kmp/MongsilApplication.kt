@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.kmp
 
 import android.app.Application
-import com.cashproject.mongsil.kmp.di.platformModule
 import com.google.android.gms.ads.MobileAds
 import io.ktor.client.HttpClient
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +18,6 @@ class MongsilApplication : Application() {
         startKoin(
             mongsilAppDeclaration {
                 androidContext(this@MongsilApplication)
-                modules(platformModule())
             }
         )
     }

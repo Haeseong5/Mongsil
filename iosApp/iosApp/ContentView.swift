@@ -16,7 +16,7 @@ struct ComposeView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIViewController {
         return MainViewControllerKt.MainViewController(onDarkThemeChange: { isDark in
-            onDarkThemeChange(isDark)
+            onDarkThemeChange(isDark.boolValue)
         })
     }
 

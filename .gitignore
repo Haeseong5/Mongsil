@@ -162,6 +162,7 @@ $RECYCLE.BIN/
 
 # Gradle files
 .gradle
+.gradle-xcode/
 
 # Signing files
 .signing/
@@ -222,6 +223,10 @@ obj/
 ._*
 .Spotlight-V100
 .Trashes
+
+# Local Xcode build caches
+.derivedData/
+DerivedData/
 
 # Legacy Eclipse project files
 .classpath

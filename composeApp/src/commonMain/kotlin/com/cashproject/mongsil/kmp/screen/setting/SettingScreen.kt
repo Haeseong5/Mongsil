@@ -20,14 +20,12 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_archive
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
@@ -39,6 +37,7 @@ import mongsil.composeapp.generated.resources.ic_shopping_bag
 import mongsil.composeapp.generated.resources.ic_upload
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SettingScreen(
@@ -51,8 +50,14 @@ fun SettingScreen(
     onNavigateToPdfExport: () -> Unit = {},
     onNavigateToLanguageSetting: () -> Unit = {},
     onNavigateToAppReview: () -> Unit = {},
+    viewModel: SettingViewModel = koinViewModel(),
 ) {
-    var isDiaryAlarmEnabled by remember { mutableStateOf(false) }
+    val isDiaryAlarmEnabled by viewModel.isDiaryReminderEnabled.collectAsStateWithLifecycle()
+    val permissionRequester = rememberDiaryReminderPermissionRequester(
+        onPermissionResult = { granted ->
+            viewModel.updateDiaryReminder(granted)
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -85,7 +90,9 @@ fun SettingScreen(
                 icon = Res.drawable.ic_notifications,
                 label = "일기 알림",
                 checked = isDiaryAlarmEnabled,
-                onCheckedChange = { isDiaryAlarmEnabled = it }
+                onCheckedChange = { enabled ->
+                    if (enabled) permissionRequester() else viewModel.updateDiaryReminder(false)
+                }
             )
 
             SettingItem(

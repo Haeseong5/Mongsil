@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.sqldelight)
     id("com.android.application")
 }
-
 kotlin {
     androidTarget()
 
@@ -42,6 +41,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.appcompat)
+            implementation(libs.androidx.biometric)
+            implementation(libs.google.billing)
 
             // Koin Android
             implementation(libs.koin.android)
@@ -219,6 +220,16 @@ sqldelight {
             packageName.set("com.cashproject.mongsil.kmp.database")
         }
     }
+}
+
+val syncXcodeFrameworkForIndexing by tasks.registering(XcodeFrameworkIndexTask::class) {
+    configuration.set(providers.environmentVariable("CONFIGURATION"))
+    sdkName.set(providers.environmentVariable("SDK_NAME"))
+    xcodeFrameworksDir.set(layout.buildDirectory.dir("xcode-frameworks"))
+}
+
+tasks.matching { it.name == "embedAndSignAppleFrameworkForXcode" }.configureEach {
+    finalizedBy(syncXcodeFrameworkForIndexing)
 }
 
 // Room KSP - 각 플랫폼 타겟에 개별 등록 필요

@@ -29,5 +29,12 @@ Packages/
 Package.pins
 Package.resolved
 *.xcodeproj
+!iosApp.xcodeproj/
+!iosApp.xcodeproj/project.pbxproj
+!iosApp.xcodeproj/project.xcworkspace/
+!iosApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+!iosApp.xcodeproj/xcshareddata/
+!iosApp.xcodeproj/xcshareddata/xcschemes/
+!iosApp.xcodeproj/xcshareddata/xcschemes/*.xcscheme
 
 .swiftpm/

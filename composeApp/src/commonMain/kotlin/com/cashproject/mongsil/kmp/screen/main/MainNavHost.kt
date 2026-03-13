@@ -5,12 +5,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.cashproject.mongsil.kmp.AppPlatform
+import com.cashproject.mongsil.kmp.getAppPlatform
+import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartScreen
@@ -35,6 +39,8 @@ import org.koin.core.parameter.parametersOf
 
 
 private const val NAV_ANIM_DURATION = 800
+private const val ANDROID_PLAY_STORE_URL =
+    "https://play.google.com/store/apps/details?id=com.cashproject.mongsil"
 
 @Composable
 internal fun MainNavHost(
@@ -42,6 +48,10 @@ internal fun MainNavHost(
     padding: PaddingValues,
     startDestination: Route = Route.Calendar
 ) {
+    val uriHandler = LocalUriHandler.current
+    val snackbarController = rememberSnackbarController()
+    val platform = getAppPlatform()
+
     NavHost(
         navController = navigator,
         startDestination = startDestination,
@@ -119,7 +129,14 @@ internal fun MainNavHost(
                 onNavigateToBackupRestore = { navigator.navigateTo(Route.BackupRestore) },
                 onNavigateToPdfExport = { navigator.navigateTo(Route.PdfExport) },
                 onNavigateToLanguageSetting = { navigator.navigateTo(Route.LanguageSetting) },
-                onNavigateToAppReview = { navigator.navigateTo(Route.AppReview) }
+                onNavigateToAppReview = {
+                    when (platform) {
+                        AppPlatform.ANDROID -> uriHandler.openUri(ANDROID_PLAY_STORE_URL)
+                        AppPlatform.IOS, AppPlatform.DESKTOP -> {
+                            snackbarController.showSnackbar("준비중입니다")
+                        }
+                    }
+                }
             )
         }
 
@@ -157,6 +174,7 @@ internal fun MainNavHost(
 
         composable<Route.PdfExport> {
             PdfExportScreen(
+                padding = padding,
                 onBack = { navigator.popBackStack() }
             )
         }

@@ -18,7 +18,7 @@ navigationVersion ="2.9.6"
 
 # KMP
 composeMultiplatform = "1.10.0"
-ktor = "3.0.3"
+ktor = "3.1.0"
 koin = "4.2.0-beta4"
 runtime = "1.10.0"
 sqldelight = "2.0.2"
@@ -28,6 +28,7 @@ androidxCore = "1.17.0"
 androidMaterial = "1.13.0"
 appcompat = "1.7.1"
 annotation = "1.9.1"
+biometric = "1.1.0"
 
 # Lifecycle
 lifecycle = "2.9.4"
@@ -55,6 +56,7 @@ activityCompose = "1.11.0"
 
 # Google Services
 googleAds = "24.7.0"
+googleBilling = "7.1.1"
 firebaseBom = "34.5.0"
 googleServicesVersion = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.6"
@@ -97,6 +99,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "androidMaterial" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "androidx-datastore" }
 androidx-datastore-core-okio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "androidx-datastore" }
 
@@ -184,6 +187,7 @@ coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", v
 
 # Google Services
 google-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "googleAds" }
+google-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "googleBilling" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore" }
