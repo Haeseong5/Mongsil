@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarysearch
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -22,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -119,7 +123,7 @@ private fun SearchTopBar(
         leftContent = { MongsilTopBarBackButton(onClick = onBack) },
         centerContent = {
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.padding(4.dp).fillMaxWidth(),
                 value = query,
                 onValueChange = onQueryChange,
                 singleLine = true,
@@ -142,16 +146,17 @@ private fun SearchTopBar(
         rightContent = {
             Box(
                 modifier = Modifier
-                    .size(34.dp)
+                    .size(24.dp)
                     .clip(CircleShape)
                     .background(Color(0xFFC4C4C4))
                     .circularRippleClickable(enabled = query.isNotEmpty()) { onClear() },
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    text = "x",
-                    style = MongsilTheme.typography.body1Bold,
-                    color = Color.White,
+                Image(
+                    modifier = Modifier.size(16.dp),
+                    imageVector = Icons.Default.Close,
+                    colorFilter = ColorFilter.tint(Color.White),
+                    contentDescription = "",
                 )
             }
         },

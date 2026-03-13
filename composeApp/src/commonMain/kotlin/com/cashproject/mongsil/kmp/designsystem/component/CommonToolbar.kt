@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
@@ -110,6 +111,48 @@ fun MongsilTopBarBackButton(onClick: () -> Unit) {
         contentDescription = "뒤로 가기",
         tint = MongsilTheme.colorScheme.labelStrong,
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MongsilTopBarTitleOnlyPreview() {
+    MongsilTheme {
+        MongsilTopBar(
+            leftContent = { MongsilTopBarBackButton(onClick = {}) },
+            centerContent = {
+                Text(
+                    text = "제목",
+                    style = MongsilTheme.typography.body1Medium,
+                    color = MongsilTheme.colorScheme.labelStrong,
+                )
+            },
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MongsilTopBarWithRightButtonPreview() {
+    MongsilTheme {
+        MongsilTopBar(
+            leftContent = { MongsilTopBarBackButton(onClick = {}) },
+            centerContent = {
+                Text(
+                    text = "제목",
+                    style = MongsilTheme.typography.body1Medium,
+                    color = MongsilTheme.colorScheme.labelStrong,
+                )
+            },
+            rightContent = {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
+                    contentDescription = null,
+                    tint = MongsilTheme.colorScheme.labelStrong,
+                )
+            },
+        )
+    }
 }
 
 /**

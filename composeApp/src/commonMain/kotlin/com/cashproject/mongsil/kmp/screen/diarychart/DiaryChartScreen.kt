@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,10 +29,15 @@ import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
+import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.chart_empty_emoticon
+import mongsil.composeapp.generated.resources.chart_section_emoticon_stats
+import mongsil.composeapp.generated.resources.chart_section_emoticon_top
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DiaryChartScreen(
@@ -41,7 +46,6 @@ fun DiaryChartScreen(
     onClose: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val maxCount = uiState.items.maxOfOrNull { it.count } ?: 0
 
     Column(
         modifier = Modifier
@@ -50,25 +54,70 @@ fun DiaryChartScreen(
             .padding(padding)
     ) {
         CloseBar(onClose = onClose)
-
-        MonthHeader(
-            year = uiState.year,
-            month = uiState.month,
-            canMoveNext = uiState.canMoveNextMonth,
+        DiaryReportContent(
+            uiState = uiState,
             onMovePrev = viewModel::moveToPreviousMonth,
-            onMoveNext = viewModel::moveToNextMonth
+            onMoveNext = viewModel::moveToNextMonth,
         )
+    }
+}
 
-        if (uiState.items.isEmpty()) {
-            EmptyMessage()
-        } else {
-            TopEmoticons(items = uiState.items.take(3))
-            EmoticonCountList(
-                items = uiState.items,
-                maxCount = maxCount
+@Composable
+private fun DiaryReportContent(
+    uiState: DiaryChartUiState,
+    onMovePrev: () -> Unit,
+    onMoveNext: () -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 40.dp),
+    ) {
+        item {
+            MonthHeader(
+                year = uiState.year,
+                month = uiState.month,
+                canMoveNext = uiState.canMoveNextMonth,
+                onMovePrev = onMovePrev,
+                onMoveNext = onMoveNext,
             )
         }
+        emoticonStatSection(items = uiState.items)
     }
+}
+
+// 이모티콘 감정 통계 섹션
+private fun LazyListScope.emoticonStatSection(items: List<DiaryChartItem>) {
+    item {
+        StatSectionHeader(
+            title = stringResource(Res.string.chart_section_emoticon_top),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 28.dp, bottom = 16.dp),
+        )
+    }
+    if (items.isEmpty()) {
+        item { EmptyMessage() }
+        return
+    }
+    item { TopEmoticons(items = items.take(3)) }
+    item {
+        StatSectionHeader(
+            title = stringResource(Res.string.chart_section_emoticon_stats),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 0.dp),
+        )
+    }
+    item { EmoticonCountList(items = items) }
+}
+
+@Composable
+private fun StatSectionHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier = modifier.fillMaxWidth(),
+        text = title,
+        style = MongsilTheme.typography.heading1,
+        color = MongsilTheme.colorScheme.labelStrong,
+    )
 }
 
 @Composable
@@ -104,11 +153,7 @@ private fun MonthHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        IconArrow(
-            enabled = true,
-            isBack = true,
-            onClick = onMovePrev
-        )
+        IconArrow(enabled = true, isBack = true, onClick = onMovePrev)
 
         Column(
             modifier = Modifier.width(180.dp),
@@ -126,11 +171,7 @@ private fun MonthHeader(
             )
         }
 
-        IconArrow(
-            enabled = canMoveNext,
-            isBack = false,
-            onClick = onMoveNext
-        )
+        IconArrow(enabled = canMoveNext, isBack = false, onClick = onMoveNext)
     }
 }
 
@@ -167,7 +208,7 @@ private fun TopEmoticons(items: List<DiaryChartItem>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 28.dp),
+            .padding(top = 8.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEach { item ->
@@ -183,27 +224,22 @@ private fun TopEmoticons(items: List<DiaryChartItem>) {
 }
 
 @Composable
-private fun EmoticonCountList(
-    items: List<DiaryChartItem>,
-    maxCount: Int,
-) {
+private fun EmoticonCountList(items: List<DiaryChartItem>) {
+    val maxCount = items.maxOfOrNull { it.count } ?: 0
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 24.dp)
+            .fillMaxWidth()
+            .padding(top = 16.dp)
             .background(
                 color = MongsilTheme.colorScheme.fill50,
                 shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
             )
+            .padding(horizontal = 20.dp, vertical = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(22.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(22.dp)
-        ) {
-            items(items = items, key = { it.emoticonId }) { item ->
-                EmoticonCountRow(item = item, maxCount = maxCount)
-            }
+        items.forEach { item ->
+            EmoticonCountRow(item = item, maxCount = maxCount)
         }
     }
 }
@@ -253,11 +289,13 @@ private fun EmoticonCountRow(
 @Composable
 private fun EmptyMessage() {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "추가한 스티커가 없어요",
+            text = stringResource(Res.string.chart_empty_emoticon),
             style = MongsilTheme.typography.heading2,
             color = MongsilTheme.colorScheme.labelDisable
         )
