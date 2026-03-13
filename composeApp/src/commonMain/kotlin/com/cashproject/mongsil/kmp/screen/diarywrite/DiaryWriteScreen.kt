@@ -50,11 +50,9 @@ import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
-import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.DeleteConfirmDialog
-import com.cashproject.mongsil.kmp.screen.diarywrite.component.ExitConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
@@ -70,18 +68,15 @@ import org.koin.compose.koinInject
  * 일기 작성 화면
  *
  * @param viewModel 일기 작성 ViewModel
- * @param onSaveSuccess 저장 성공 콜백
  */
 @Composable
 fun DiaryWriteScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
-    onSaveSuccess: () -> Unit,
     onBack: () -> Unit,
     viewModel: DiaryWriteViewModel = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val snackbarController = rememberSnackbarController()
     val openImagePicker = rememberImagePickerLauncher { imagePaths ->
         viewModel.onEvent(DiaryWriteEvent.OnPhotosSelected(imagePaths))
     }
@@ -92,19 +87,8 @@ fun DiaryWriteScreen(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
-                is DiaryWriteSideEffect.SaveSuccess -> {
-                    snackbarController.showSnackbar("일기가 저장되었습니다.")
-                    onSaveSuccess()
-                }
-
-                DiaryWriteSideEffect.DeleteSuccess -> {
-                    onBack.invoke()
-                }
-
-                DiaryWriteSideEffect.OnBack -> {
-                    onBack.invoke()
-                }
-
+                DiaryWriteSideEffect.DeleteSuccess -> onBack()
+                DiaryWriteSideEffect.OnBack -> onBack()
                 is DiaryWriteSideEffect.ShowRewardedAd -> {
                     rewardAdEmoticonId = effect.emoticonId
                     isAdLoading = true
@@ -152,9 +136,7 @@ private fun DiaryWriteScreenContent(
 ) {
     // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
     BackPressHandler(
-        enabled = !uiState.showEmoticonBottomSheet
-                && !uiState.showExitDialog
-                && !uiState.showDeleteDialog
+        enabled = !uiState.showEmoticonBottomSheet && !uiState.showDeleteDialog
     ) {
         onEvent(DiaryWriteEvent.OnBackPressed)
     }
@@ -256,11 +238,9 @@ private fun DiaryWriteScreenContent(
                 // 하단 툴바
                 BottomToolbar(
                     modifier = Modifier.background(MongsilTheme.colorScheme.card),
-                    onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
-                    openImagePicker = openImagePicker,
-                    canSave = uiState.hasContent,
-                    isLoading = uiState.isLoading,
+                    isSaving = uiState.isSaving,
                     textAlign = uiState.textAlign,
+                    openImagePicker = openImagePicker,
                     onTextAlignToggle = { onEvent(DiaryWriteEvent.OnTextAlignToggle) }
                 )
             }
@@ -291,14 +271,6 @@ private fun DiaryWriteScreenContent(
                 onDismiss = { onEvent(DiaryWriteEvent.OnEmoticonBottomSheetDismiss) },
                 onEmoticonSelected = { onEvent(DiaryWriteEvent.OnEmoticonSelected(it)) },
                 onPremiumLocked = { onEvent(DiaryWriteEvent.OnPremiumEmoticonClick(it)) },
-            )
-        }
-
-        // 종료 확인 다이얼로그
-        if (uiState.showExitDialog) {
-            ExitConfirmDialog(
-                onConfirm = { onEvent(DiaryWriteEvent.OnExitConfirm) },
-                onDismiss = { onEvent(DiaryWriteEvent.OnExitCancel) }
             )
         }
 
@@ -527,8 +499,7 @@ private fun DiaryWriteScreenContentPreview() {
                 emoticons = emptyList(),
                 showEmoticonBottomSheet = false,
                 isLoading = false,
-                isInitializing = false,
-                showExitDialog = false
+                isInitializing = false
             ),
             onEvent = {},
             openImagePicker = {}
@@ -550,8 +521,7 @@ private fun DiaryWriteScreenContentEmptyPreview() {
                 emoticons = emptyList(),
                 showEmoticonBottomSheet = false,
                 isLoading = false,
-                isInitializing = false,
-                showExitDialog = false
+                isInitializing = false
             ),
             onEvent = {},
             openImagePicker = {}
@@ -579,8 +549,7 @@ private fun DiaryWriteScreenContentWithEmoticonPreview() {
                 emoticons = emptyList(),
                 showEmoticonBottomSheet = false,
                 isLoading = false,
-                isInitializing = false,
-                showExitDialog = false
+                isInitializing = false
             ),
             onEvent = {},
             openImagePicker = {}

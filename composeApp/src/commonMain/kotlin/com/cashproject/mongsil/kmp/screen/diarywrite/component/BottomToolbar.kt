@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,8 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.ic_check
 import mongsil.composeapp.generated.resources.ic_format_align_center
 import mongsil.composeapp.generated.resources.ic_format_align_left
 import mongsil.composeapp.generated.resources.ic_format_align_right
@@ -33,10 +34,8 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun BottomToolbar(
     modifier: Modifier = Modifier,
-    canSave: Boolean,
-    isLoading: Boolean,
+    isSaving: Boolean = false,
     textAlign: TextAlign = TextAlign.Start,
-    onSaveClick: () -> Unit = {},
     openImagePicker: () -> Unit = {},
     onClickTime: () -> Unit = {},
     onTextAlignToggle: () -> Unit = {}
@@ -59,7 +58,7 @@ fun BottomToolbar(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(iconBoxSize)
-                    .clickable { openImagePicker.invoke() },
+                    .circularRippleClickable { openImagePicker() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -72,7 +71,7 @@ fun BottomToolbar(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(iconBoxSize)
-                    .clickable { onClickTime.invoke() },
+                    .circularRippleClickable { onClickTime() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -85,7 +84,7 @@ fun BottomToolbar(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(iconBoxSize)
-                    .clickable { onTextAlignToggle() },
+                    .circularRippleClickable { onTextAlignToggle() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -95,17 +94,12 @@ fun BottomToolbar(
             }
         }
 
-        // 저장 버튼
-        Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(iconBoxSize)
-                .clickable(enabled = canSave && !isLoading, onClick = onSaveClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(Res.drawable.ic_check),
-                contentDescription = "current time"
+        // 자동 저장 인디케이터
+        if (isSaving) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(18.dp),
+                strokeWidth = 2.dp,
+                color = MongsilTheme.colorScheme.labelWeak
             )
         }
     }
@@ -119,38 +113,16 @@ private fun textAlignIcon(textAlign: TextAlign) = when (textAlign) {
 
 @Preview(showBackground = true)
 @Composable
-private fun BottomToolbarCanSavePreview() {
+private fun BottomToolbarIdlePreview() {
     MongsilTheme {
-        BottomToolbar(
-            onSaveClick = {},
-            canSave = true,
-            isLoading = false
-        )
+        BottomToolbar(isSaving = false)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun BottomToolbarCannotSavePreview() {
+private fun BottomToolbarSavingPreview() {
     MongsilTheme {
-        BottomToolbar(
-            onSaveClick = {},
-            canSave = false,
-            isLoading = false
-        )
+        BottomToolbar(isSaving = true)
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun BottomToolbarLoadingPreview() {
-    MongsilTheme {
-        BottomToolbar(
-            onSaveClick = {},
-            canSave = true,
-            isLoading = true
-        )
-    }
-}
-
-// endregion

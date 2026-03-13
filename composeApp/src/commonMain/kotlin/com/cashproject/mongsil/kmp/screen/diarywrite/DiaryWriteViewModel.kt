@@ -9,8 +9,10 @@ import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -46,6 +48,8 @@ class DiaryWriteViewModel(
 
     private val _sideEffect = Channel<DiaryWriteSideEffect>(Channel.BUFFERED)
     val sideEffect = _sideEffect.receiveAsFlow()
+
+    private var autoSaveJob: Job? = null
 
     init {
         loadInitialData()
@@ -118,11 +122,8 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnEmoticonBottomSheetDismiss -> handleEmoticonBottomSheetDismiss()
             is DiaryWriteEvent.OnPhotosSelected -> handlePhotosSelected(event.photoUris)
             is DiaryWriteEvent.OnPhotoRemoved -> handlePhotoRemoved(event.index)
-            is DiaryWriteEvent.OnSaveClick -> handleSaveClick()
             is DiaryWriteEvent.OnBackClick -> handleBackClick()
             is DiaryWriteEvent.OnBackPressed -> handleBackPressed()
-            is DiaryWriteEvent.OnExitConfirm -> handleExitConfirm()
-            is DiaryWriteEvent.OnExitCancel -> handleExitCancel()
             is DiaryWriteEvent.OnDeleteClick -> handleDeleteClick()
             is DiaryWriteEvent.OnDeleteConfirm -> handleDeleteConfirm()
             is DiaryWriteEvent.OnDeleteCancel -> handleDeleteCancel()
@@ -135,6 +136,7 @@ class DiaryWriteViewModel(
 
     private fun handleContentChange(content: String) {
         _uiState.update { it.copy(content = content) }
+        scheduleAutoSave()
     }
 
     private fun handleEmoticonButtonClick() {
@@ -142,12 +144,13 @@ class DiaryWriteViewModel(
     }
 
     private fun handleEmoticonSelected(emoticon: com.cashproject.mongsil.kmp.model.Emoticon) {
-        _uiState.update { 
+        _uiState.update {
             it.copy(
                 selectedEmoticon = emoticon,
                 showEmoticonBottomSheet = false
             )
         }
+        scheduleAutoSave()
     }
 
     private fun handleEmoticonBottomSheetDismiss() {
@@ -156,84 +159,48 @@ class DiaryWriteViewModel(
 
     private fun handlePhotosSelected(photoUris: List<String>) {
         if (photoUris.isEmpty()) return
-        _uiState.update { state ->
-            state.copy(photoUris = state.photoUris + photoUris)
-        }
+        _uiState.update { state -> state.copy(photoUris = state.photoUris + photoUris) }
+        scheduleAutoSave()
     }
 
     private fun handlePhotoRemoved(index: Int) {
         _uiState.update { state ->
             if (index !in state.photoUris.indices) return@update state
-            state.copy(
-                photoUris = state.photoUris.filterIndexed { i, _ -> i != index }
-            )
+            state.copy(photoUris = state.photoUris.filterIndexed { i, _ -> i != index })
         }
+        scheduleAutoSave()
     }
 
-    private fun handleSaveClick() {
-        val currentState = _uiState.value
-        
-        // 빈 내용은 저장하지 않음
-        if (currentState.content.isBlank() && currentState.photoUris.isEmpty()) {
-            return
+    private fun handleTextAlignToggle() {
+        _uiState.update { state ->
+            val nextAlign = when (state.textAlign) {
+                TextAlign.Start -> TextAlign.Center
+                TextAlign.Center -> TextAlign.End
+                else -> TextAlign.Start
+            }
+            state.copy(textAlign = nextAlign)
         }
-
-        _uiState.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            val result = diaryRepository.saveDiary(
-                year = currentState.year,
-                month = currentState.month,
-                day = currentState.day,
-                content = currentState.content,
-                emoticonId = currentState.selectedEmoticon?.id?.toLong(),
-                photoUri = serializePhotoUris(currentState.photoUris),
-                textAlign = currentState.textAlign.toDbString(),
-            )
-
-            _uiState.update { it.copy(isLoading = false) }
-
-            result.fold(
-                onSuccess = {
-                    _uiState.update { it.copy(savedTextAlign = it.textAlign) }
-                    _sideEffect.send(DiaryWriteSideEffect.SaveSuccess)
-                },
-                onFailure = { error ->
-                    // TODO: 에러 처리를 외부에서 하거나 별도 방식으로 처리
-                }
-            )
-        }
+        scheduleAutoSave()
     }
 
     private fun handleBackClick() {
-        if (uiState.value.hasUnsavedChanges) {
-            _uiState.update { it.copy(showExitDialog = true) }
-        } else {
-            viewModelScope.launch {
-                _sideEffect.send(DiaryWriteSideEffect.OnBack)
-            }
-        }
-    }
-
-    private fun handleBackPressed() {
-        if (_uiState.value.hasUnsavedChanges) {
-            _uiState.update { it.copy(showExitDialog = true) }
-        } else {
-            viewModelScope.launch {
-                _sideEffect.send(DiaryWriteSideEffect.OnBack)
-            }
-        }
-    }
-
-    private fun handleExitConfirm() {
+        autoSaveJob?.cancel()
         viewModelScope.launch {
-            _uiState.update { it.copy(showExitDialog = false) }
+            if (_uiState.value.hasUnsavedChanges && _uiState.value.hasContent) {
+                performSave()
+            }
             _sideEffect.send(DiaryWriteSideEffect.OnBack)
         }
     }
 
-    private fun handleExitCancel() {
-        _uiState.update { it.copy(showExitDialog = false) }
+    private fun handleBackPressed() {
+        autoSaveJob?.cancel()
+        viewModelScope.launch {
+            if (_uiState.value.hasUnsavedChanges && _uiState.value.hasContent) {
+                performSave()
+            }
+            _sideEffect.send(DiaryWriteSideEffect.OnBack)
+        }
     }
 
     private fun handleDeleteClick() {
@@ -242,6 +209,7 @@ class DiaryWriteViewModel(
 
     private fun handleDeleteConfirm() {
         val state = _uiState.value
+        autoSaveJob?.cancel()
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, showDeleteDialog = false) }
             diaryRepository.deleteDiary(state.year, state.month, state.day)
@@ -284,15 +252,48 @@ class DiaryWriteViewModel(
         }
     }
 
-    private fun handleTextAlignToggle() {
-        _uiState.update { state ->
-            val nextAlign = when (state.textAlign) {
-                TextAlign.Start -> TextAlign.Center
-                TextAlign.Center -> TextAlign.End
-                else -> TextAlign.Start
-            }
-            state.copy(textAlign = nextAlign)
+    private fun scheduleAutoSave() {
+        if (!_uiState.value.hasContent) return
+        autoSaveJob?.cancel()
+        autoSaveJob = viewModelScope.launch {
+            delay(AUTO_SAVE_DELAY_MS)
+            performSave()
         }
+    }
+
+    private suspend fun performSave() {
+        val state = _uiState.value
+        if (!state.hasContent || !state.hasUnsavedChanges) return
+
+        _uiState.update { it.copy(isSaving = true) }
+
+        val result = diaryRepository.saveDiary(
+            year = state.year,
+            month = state.month,
+            day = state.day,
+            content = state.content,
+            emoticonId = state.selectedEmoticon?.id?.toLong(),
+            photoUri = serializePhotoUris(state.photoUris),
+            textAlign = state.textAlign.toDbString(),
+        )
+
+        result.fold(
+            onSuccess = {
+                _uiState.update { s ->
+                    s.copy(
+                        isSaving = false,
+                        isExistingDiary = true,
+                        savedContent = s.content,
+                        savedPhotoUris = s.photoUris,
+                        savedEmoticonId = s.selectedEmoticon?.id,
+                        savedTextAlign = s.textAlign,
+                    )
+                }
+            },
+            onFailure = {
+                _uiState.update { it.copy(isSaving = false) }
+            }
+        )
     }
 
     private fun TextAlign.toDbString(): String = when (this) {
@@ -324,5 +325,6 @@ class DiaryWriteViewModel(
     private companion object {
         const val SEPARATOR = "||"
         const val KEY_UNLOCKED_PREMIUMS = "unlocked_premium_emoticon_ids"
+        const val AUTO_SAVE_DELAY_MS = 1500L
     }
 }

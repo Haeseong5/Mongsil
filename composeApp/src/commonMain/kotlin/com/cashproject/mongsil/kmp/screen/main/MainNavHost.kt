@@ -90,13 +90,6 @@ internal fun MainNavHost(
             DiaryWriteScreen(
                 padding = padding,
                 viewModel = viewModel,
-                onSaveSuccess = {
-                    navigator.navigateWithPopUpTo(
-                        route = Route.Calendar,
-                        popUpTo = Route.DiaryWrite(route.year, route.month, route.day),
-                        inclusive = true
-                    )
-                },
                 onBack = {
                     navigator.popBackStack()
                 }

@@ -13,8 +13,8 @@ import com.cashproject.mongsil.kmp.model.Emoticon
  * @property selectedEmoticon 선택된 이모티콘
  * @property emoticons 이모티콘 목록
  * @property showEmoticonBottomSheet 이모티콘 바텀시트 표시 여부
- * @property isLoading 저장 중 여부
- * @property showExitDialog 종료 확인 다이얼로그 표시 여부
+ * @property isLoading 삭제 처리 중 여부
+ * @property isSaving 자동 저장 중 여부
  */
 data class DiaryWriteUiState(
     val year: Int = 2025,
@@ -26,8 +26,8 @@ data class DiaryWriteUiState(
     val emoticons: List<Emoticon> = emptyList(),
     val showEmoticonBottomSheet: Boolean = false,
     val isLoading: Boolean = false,
+    val isSaving: Boolean = false,
     val isInitializing: Boolean = true,
-    val showExitDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val isExistingDiary: Boolean = false,
     val savedContent: String = "",
@@ -40,9 +40,6 @@ data class DiaryWriteUiState(
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()
 
-    /**
-     * 저장된 상태와 비교하여 수정사항이 있는지 확인합니다.
-     */
     val hasUnsavedChanges: Boolean
         get() = content != savedContent
                 || photoUris != savedPhotoUris
