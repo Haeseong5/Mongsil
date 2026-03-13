@@ -15,4 +15,7 @@
     <string name="load_more">더 보기</string>
     <string name="sort_latest">최신순</string>
     <string name="sort_oldest">오래된순</string>
+    <string name="chart_section_emoticon_top">이달의 감정 Top 3</string>
+    <string name="chart_section_emoticon_stats">감정 통계</string>
+    <string name="chart_empty_emoticon">추가한 스티커가 없어요</string>
 </resources>

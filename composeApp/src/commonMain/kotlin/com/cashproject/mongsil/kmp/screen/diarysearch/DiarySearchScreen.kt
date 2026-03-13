@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -29,14 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.DiaryCard
+import com.cashproject.mongsil.kmp.designsystem.component.MongsilTopBar
+import com.cashproject.mongsil.kmp.designsystem.component.MongsilTopBarBackButton
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchItem
 import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchUiState
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
-import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
-import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -118,58 +115,47 @@ private fun SearchTopBar(
     onBack: () -> Unit,
     onClear: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Icon(
-            modifier = Modifier
-                .size(24.dp)
-                .circularRippleClickable(onClick = onBack),
-            painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-            contentDescription = "뒤로 가기",
-            tint = MongsilTheme.colorScheme.labelStrong
-        )
-
-        OutlinedTextField(
-            modifier = Modifier.weight(1f),
-            value = query,
-            onValueChange = onQueryChange,
-            singleLine = true,
-            placeholder = {
+    MongsilTopBar(
+        leftContent = { MongsilTopBarBackButton(onClick = onBack) },
+        centerContent = {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = query,
+                onValueChange = onQueryChange,
+                singleLine = true,
+                placeholder = {
+                    Text(
+                        text = "일기 검색",
+                        style = MongsilTheme.typography.body1Normal,
+                        color = MongsilTheme.colorScheme.labelWeak,
+                    )
+                },
+                shape = RoundedCornerShape(14.dp),
+                textStyle = MongsilTheme.typography.body1Normal,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MongsilTheme.colorScheme.line,
+                    unfocusedBorderColor = MongsilTheme.colorScheme.line,
+                    cursorColor = MongsilTheme.colorScheme.labelStrong,
+                ),
+            )
+        },
+        rightContent = {
+            Box(
+                modifier = Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFC4C4C4))
+                    .circularRippleClickable(enabled = query.isNotEmpty()) { onClear() },
+                contentAlignment = Alignment.Center,
+            ) {
                 Text(
-                    text = "일기 검색",
-                    style = MongsilTheme.typography.body1Normal,
-                    color = MongsilTheme.colorScheme.labelWeak
+                    text = "x",
+                    style = MongsilTheme.typography.body1Bold,
+                    color = Color.White,
                 )
-            },
-            shape = RoundedCornerShape(14.dp),
-            textStyle = MongsilTheme.typography.body1Normal,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MongsilTheme.colorScheme.line,
-                unfocusedBorderColor = MongsilTheme.colorScheme.line,
-                cursorColor = MongsilTheme.colorScheme.labelStrong
-            )
-        )
-
-        Box(
-            modifier = Modifier
-                .size(34.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFC4C4C4))
-                .circularRippleClickable(enabled = query.isNotEmpty()) { onClear() },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "x",
-                style = MongsilTheme.typography.body1Bold,
-                color = Color.White
-            )
-        }
-    }
+            }
+        },
+    )
 }
 
 @Composable

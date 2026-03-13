@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import org.jetbrains.compose.resources.painterResource
@@ -53,6 +55,61 @@ fun CommonToolbar(
             color = MongsilTheme.colorScheme.labelStrong
         )
     }
+}
+
+/**
+ * 왼쪽/오른쪽 슬롯과 중앙 정렬 슬롯을 지원하는 범용 상단 네비게이션 바
+ *
+ * @param leftContent 왼쪽 영역 - 기본적으로 [MongsilTopBarBackButton] 삽입 가능
+ * @param centerContent 가운데 영역 - 수평 중앙 정렬
+ * @param rightContent 오른쪽 영역
+ */
+@Composable
+fun MongsilTopBar(
+    modifier: Modifier = Modifier,
+    leftContent: @Composable () -> Unit = {},
+    centerContent: @Composable () -> Unit = {},
+    rightContent: @Composable () -> Unit = {},
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            leftContent()
+            rightContent()
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 56.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            centerContent()
+        }
+    }
+}
+
+/**
+ * [MongsilTopBar]의 왼쪽 슬롯에 쉽게 삽입할 수 있는 뒤로 가기 버튼
+ */
+@Composable
+fun MongsilTopBarBackButton(onClick: () -> Unit) {
+    Icon(
+        modifier = Modifier
+            .size(24.dp)
+            .circularRippleClickable(onClick = onClick),
+        painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
+        contentDescription = "뒤로 가기",
+        tint = MongsilTheme.colorScheme.labelStrong,
+    )
 }
 
 /**
