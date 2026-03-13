@@ -13,8 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.cashproject.mongsil.kmp.AppPlatform
-import com.cashproject.mongsil.kmp.getAppPlatform
 import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
+import com.cashproject.mongsil.kmp.getAppPlatform
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
 import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartScreen
@@ -38,7 +38,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 
-private const val NAV_ANIM_DURATION = 800
+private const val NAV_ANIM_DURATION = 500
 private const val ANDROID_PLAY_STORE_URL =
     "https://play.google.com/store/apps/details?id=com.cashproject.mongsil"
 
