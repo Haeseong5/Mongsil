@@ -9,18 +9,18 @@ data class DiaryMonthlyUiState(
     val sortOrder: DiarySortOrder = DiarySortOrder.LATEST,
     val monthlyDiaries: List<DiaryMonthlyItem> = emptyList(),
     val allDiaries: List<DiaryMonthlyItem> = emptyList(),
-    val displayCount: Int = PAGE_SIZE,
+    val allDiariesTotalCount: Int = 0,
     val isLoadingAll: Boolean = false,
     val canMoveNextMonth: Boolean = true,
 ) {
     val displayedDiaries: List<DiaryMonthlyItem>
         get() = when (viewMode) {
             DiaryViewMode.MONTHLY -> monthlyDiaries
-            DiaryViewMode.ALL -> allDiaries.take(displayCount)
+            DiaryViewMode.ALL -> allDiaries
         }
 
     val hasMorePages: Boolean
-        get() = viewMode == DiaryViewMode.ALL && displayCount < allDiaries.size
+        get() = viewMode == DiaryViewMode.ALL && allDiaries.size < allDiariesTotalCount
 
     companion object {
         const val PAGE_SIZE = 20

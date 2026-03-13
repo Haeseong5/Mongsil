@@ -50,6 +50,25 @@ class DiaryLocalDataSourceSQLDelight(private val database: MongsilDatabase) : Di
             database.diaryQueries.getAllDiaries().executeAsList().map { it.toCommon() }
         }
 
+    override suspend fun getAllDiariesPaged(
+        offset: Int,
+        limit: Int,
+        ascending: Boolean
+    ): List<DiaryEntity> =
+        withContext(Dispatchers.Default) {
+            val query = if (ascending) {
+                database.diaryQueries.getAllDiariesPagedAsc(limit.toLong(), offset.toLong())
+            } else {
+                database.diaryQueries.getAllDiariesPagedDesc(limit.toLong(), offset.toLong())
+            }
+            query.executeAsList().map { it.toCommon() }
+        }
+
+    override suspend fun getAllDiariesCount(): Int =
+        withContext(Dispatchers.Default) {
+            database.diaryQueries.getAllDiariesCount().executeAsOne().toInt()
+        }
+
     @OptIn(ExperimentalTime::class)
     override suspend fun saveDiary(
         year: Int,

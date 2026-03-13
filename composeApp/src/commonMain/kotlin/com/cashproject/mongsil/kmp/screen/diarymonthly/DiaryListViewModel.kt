@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
+import com.cashproject.mongsil.kmp.database.entity.DiaryEntity
+import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyItem
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyUiState
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyUiState.Companion.PAGE_SIZE
@@ -48,31 +50,34 @@ class DiaryListViewModel(
             DiaryViewMode.MONTHLY -> DiaryViewMode.ALL
             DiaryViewMode.ALL -> DiaryViewMode.MONTHLY
         }
-        _uiState.update { it.copy(viewMode = newMode, displayCount = PAGE_SIZE) }
+        _uiState.update { it.copy(viewMode = newMode) }
         if (newMode == DiaryViewMode.ALL && _uiState.value.allDiaries.isEmpty()) {
             loadAllDiaries()
         }
     }
 
     fun loadMoreDiaries() {
-        _uiState.update { state ->
-            if (!state.hasMorePages) return@update state
-            state.copy(displayCount = state.displayCount + PAGE_SIZE)
-        }
+        if (!_uiState.value.hasMorePages) return
+        loadAllDiariesPage(offset = _uiState.value.allDiaries.size)
     }
 
     fun toggleSortOrder() {
+        val newOrder = if (_uiState.value.sortOrder == DiarySortOrder.LATEST) {
+            DiarySortOrder.OLDEST
+        } else {
+            DiarySortOrder.LATEST
+        }
         _uiState.update { state ->
             state.copy(
-                sortOrder = if (state.sortOrder == DiarySortOrder.LATEST) {
-                    DiarySortOrder.OLDEST
-                } else {
-                    DiarySortOrder.LATEST
-                },
-                displayCount = PAGE_SIZE,
+                sortOrder = newOrder,
+                monthlyDiaries = sortItems(state.monthlyDiaries, newOrder),
+                allDiaries = emptyList(),
+                allDiariesTotalCount = 0,
             )
         }
-        applySorting()
+        if (_uiState.value.viewMode == DiaryViewMode.ALL) {
+            loadAllDiaries()
+        }
     }
 
     fun moveToPreviousMonth() {
@@ -101,27 +106,10 @@ class DiaryListViewModel(
 
     private fun loadMonthDiaries(year: Int, month: Int) {
         viewModelScope.launch {
-            val emoticonMap = emoticonRepository
-                .getEmoticons()
-                .getOrElse { emptyList() }
-                .associateBy { it.id }
-
+            val emoticonMap = fetchEmoticonMap()
             val items = diaryRepository
                 .getDiariesByYearMonth(year, month)
-                .map { diary ->
-                    DiaryMonthlyItem(
-                        id = diary.id,
-                        year = diary.year.toInt(),
-                        month = diary.month.toInt(),
-                        day = diary.day.toInt(),
-                        content = diary.content,
-                        emoticonImageUrl = diary.emoticonId
-                            ?.toInt()
-                            ?.let { emoticonMap[it]?.imageUrl }
-                            .orEmpty(),
-                    )
-                }
-
+                .map { mapToItem(it, emoticonMap) }
             _uiState.update { state ->
                 state.copy(monthlyDiaries = sortItems(items, state.sortOrder))
             }
@@ -130,45 +118,27 @@ class DiaryListViewModel(
 
     private fun loadAllDiaries() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoadingAll = true) }
-
-            val emoticonMap = emoticonRepository
-                .getEmoticons()
-                .getOrElse { emptyList() }
-                .associateBy { it.id }
-
-            val items = diaryRepository
-                .getAllDiaries()
-                .map { diary ->
-                    DiaryMonthlyItem(
-                        id = diary.id,
-                        year = diary.year.toInt(),
-                        month = diary.month.toInt(),
-                        day = diary.day.toInt(),
-                        content = diary.content,
-                        emoticonImageUrl = diary.emoticonId
-                            ?.toInt()
-                            ?.let { emoticonMap[it]?.imageUrl }
-                            .orEmpty(),
-                    )
-                }
-
-            _uiState.update { state ->
-                state.copy(
-                    allDiaries = sortItems(items, state.sortOrder),
-                    isLoadingAll = false,
-                )
-            }
+            _uiState.update { it.copy(isLoadingAll = true, allDiaries = emptyList()) }
+            val totalCount = diaryRepository.getAllDiariesCount()
+            _uiState.update { it.copy(allDiariesTotalCount = totalCount) }
+            loadAllDiariesPageInternal(offset = 0)
+            _uiState.update { it.copy(isLoadingAll = false) }
         }
     }
 
-    private fun applySorting() {
-        _uiState.update { state ->
-            state.copy(
-                monthlyDiaries = sortItems(state.monthlyDiaries, state.sortOrder),
-                allDiaries = sortItems(state.allDiaries, state.sortOrder),
-            )
+    private fun loadAllDiariesPage(offset: Int) {
+        viewModelScope.launch {
+            loadAllDiariesPageInternal(offset)
         }
+    }
+
+    private suspend fun loadAllDiariesPageInternal(offset: Int) {
+        val ascending = _uiState.value.sortOrder == DiarySortOrder.OLDEST
+        val emoticonMap = fetchEmoticonMap()
+        val newItems = diaryRepository
+            .getAllDiariesPaged(offset, PAGE_SIZE, ascending)
+            .map { mapToItem(it, emoticonMap) }
+        _uiState.update { it.copy(allDiaries = it.allDiaries + newItems) }
     }
 
     private fun sortItems(
@@ -180,13 +150,30 @@ class DiaryListViewModel(
                 .thenByDescending { it.month }
                 .thenByDescending { it.day },
         )
-
         DiarySortOrder.OLDEST -> items.sortedWith(
             compareBy<DiaryMonthlyItem> { it.year }
                 .thenBy { it.month }
                 .thenBy { it.day },
         )
     }
+
+    private suspend fun fetchEmoticonMap(): Map<Int, Emoticon> =
+        emoticonRepository.getEmoticons()
+            .getOrElse { emptyList() }
+            .associateBy { it.id }
+
+    private fun mapToItem(diary: DiaryEntity, emoticonMap: Map<Int, Emoticon>): DiaryMonthlyItem =
+        DiaryMonthlyItem(
+            id = diary.id,
+            year = diary.year,
+            month = diary.month,
+            day = diary.day,
+            content = diary.content,
+            emoticonImageUrl = diary.emoticonId
+                ?.toInt()
+                ?.let { emoticonMap[it]?.imageUrl }
+                .orEmpty(),
+        )
 
     private fun canMoveNextMonth(year: Int, month: Int): Boolean =
         year < currentYear || (year == currentYear && month < currentMonth)

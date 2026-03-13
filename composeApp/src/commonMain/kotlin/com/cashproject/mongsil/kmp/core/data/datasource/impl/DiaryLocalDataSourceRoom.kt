@@ -23,6 +23,17 @@ class DiaryLocalDataSourceRoom(private val diaryDao: DiaryDao) : DiaryLocalDataS
     override suspend fun getAllDiaries(): List<DiaryEntity> =
         diaryDao.getAllDiaries()
 
+    override suspend fun getAllDiariesPaged(
+        offset: Int,
+        limit: Int,
+        ascending: Boolean
+    ): List<DiaryEntity> =
+        if (ascending) diaryDao.getAllDiariesPagedAsc(limit, offset)
+        else diaryDao.getAllDiariesPagedDesc(limit, offset)
+
+    override suspend fun getAllDiariesCount(): Int =
+        diaryDao.getAllDiariesCount()
+
     @OptIn(ExperimentalTime::class)
     override suspend fun saveDiary(
         year: Int,

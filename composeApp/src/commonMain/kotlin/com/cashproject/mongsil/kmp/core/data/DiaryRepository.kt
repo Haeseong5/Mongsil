@@ -22,6 +22,12 @@ class DiaryRepository(private val localDataSource: DiaryLocalDataSource) {
     suspend fun getAllDiaries(): List<DiaryEntity> =
         localDataSource.getAllDiaries()
 
+    suspend fun getAllDiariesPaged(offset: Int, limit: Int, ascending: Boolean): List<DiaryEntity> =
+        localDataSource.getAllDiariesPaged(offset, limit, ascending)
+
+    suspend fun getAllDiariesCount(): Int =
+        localDataSource.getAllDiariesCount()
+
     suspend fun saveDiary(
         year: Int,
         month: Int,

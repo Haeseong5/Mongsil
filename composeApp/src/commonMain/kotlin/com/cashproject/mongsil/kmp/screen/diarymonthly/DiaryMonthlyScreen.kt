@@ -26,11 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.DiaryCard
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyItem
+import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyUiState
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiarySortOrder
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryViewMode
 import mongsil.composeapp.generated.resources.Res
@@ -55,11 +58,35 @@ fun DiaryListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    DiaryListScreenContent(
+        uiState = uiState,
+        onBack = onBack,
+        onMovePrevMonth = viewModel::moveToPreviousMonth,
+        onMoveNextMonth = viewModel::moveToNextMonth,
+        onToggleSort = viewModel::toggleSortOrder,
+        onSwitchViewMode = viewModel::switchViewMode,
+        onDiaryClick = onDiaryClick,
+        onLoadMore = viewModel::loadMoreDiaries,
+        modifier = Modifier.padding(padding),
+    )
+}
+
+@Composable
+private fun DiaryListScreenContent(
+    uiState: DiaryMonthlyUiState,
+    onBack: () -> Unit,
+    onMovePrevMonth: () -> Unit,
+    onMoveNextMonth: () -> Unit,
+    onToggleSort: () -> Unit,
+    onSwitchViewMode: () -> Unit,
+    onDiaryClick: (year: Int, month: Int, day: Int) -> Unit,
+    onLoadMore: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MongsilTheme.colorScheme.background)
-            .padding(padding)
     ) {
         Icon(
             modifier = Modifier
@@ -77,10 +104,10 @@ fun DiaryListScreen(
             viewMode = uiState.viewMode,
             sortOrder = uiState.sortOrder,
             canMoveNextMonth = uiState.canMoveNextMonth,
-            onMovePrevMonth = viewModel::moveToPreviousMonth,
-            onMoveNextMonth = viewModel::moveToNextMonth,
-            onToggleSort = viewModel::toggleSortOrder,
-            onSwitchViewMode = viewModel::switchViewMode,
+            onMovePrevMonth = onMovePrevMonth,
+            onMoveNextMonth = onMoveNextMonth,
+            onToggleSort = onToggleSort,
+            onSwitchViewMode = onSwitchViewMode,
         )
 
         when {
@@ -90,7 +117,7 @@ fun DiaryListScreen(
                 diaries = uiState.displayedDiaries,
                 hasMorePages = uiState.hasMorePages,
                 onDiaryClick = onDiaryClick,
-                onLoadMore = viewModel::loadMoreDiaries,
+                onLoadMore = onLoadMore,
             )
         }
     }
@@ -285,6 +312,220 @@ private fun EmptyMessage() {
             text = "작성된 일기가 없어요",
             style = MongsilTheme.typography.heading2,
             color = Color(0xFFBFBFBF),
+        )
+    }
+}
+
+private val previewDiaries = listOf(
+    DiaryMonthlyItem(
+        id = 1L,
+        year = 2026,
+        month = 3,
+        day = 14,
+        content = "오늘은 날씨가 맑고 기분이 좋았다. 오랜만에 공원을 산책하며 봄 기운을 느꼈다.",
+        emoticonImageUrl = ""
+    ),
+    DiaryMonthlyItem(
+        id = 2L,
+        year = 2026,
+        month = 3,
+        day = 10,
+        content = "바쁜 하루였지만 저녁에 따뜻한 차 한 잔으로 마무리했다.",
+        emoticonImageUrl = ""
+    ),
+    DiaryMonthlyItem(
+        id = 3L,
+        year = 2026,
+        month = 3,
+        day = 5,
+        content = "친구와 오랜만에 만나서 맛있는 밥을 먹었다. 행복한 시간이었다.",
+        emoticonImageUrl = ""
+    ),
+)
+
+@Preview(showBackground = true, name = "월별 - 일기 있음")
+@Composable
+private fun DiaryListMonthlyWithDiariesPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.MONTHLY,
+                sortOrder = DiarySortOrder.LATEST,
+                monthlyDiaries = previewDiaries,
+                canMoveNextMonth = false,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "월별 - 비어있음")
+@Composable
+private fun DiaryListMonthlyEmptyPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.MONTHLY,
+                monthlyDiaries = emptyList(),
+                canMoveNextMonth = false,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "월별 - 다음달 이동 가능")
+@Composable
+private fun DiaryListMonthlyCanMoveNextPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 2,
+                viewMode = DiaryViewMode.MONTHLY,
+                monthlyDiaries = previewDiaries,
+                canMoveNextMonth = true,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "월별 - 오래된 순 정렬")
+@Composable
+private fun DiaryListMonthlyOldestSortPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.MONTHLY,
+                sortOrder = DiarySortOrder.OLDEST,
+                monthlyDiaries = previewDiaries,
+                canMoveNextMonth = false,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "전체 - 일기 있음")
+@Composable
+private fun DiaryListAllWithDiariesPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.ALL,
+                sortOrder = DiarySortOrder.LATEST,
+                allDiaries = previewDiaries,
+                allDiariesTotalCount = 3,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "전체 - 더 불러오기 버튼")
+@Composable
+private fun DiaryListAllWithLoadMorePreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.ALL,
+                sortOrder = DiarySortOrder.LATEST,
+                allDiaries = previewDiaries,
+                allDiariesTotalCount = 30,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "전체 - 비어있음")
+@Composable
+private fun DiaryListAllEmptyPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.ALL,
+                allDiaries = emptyList(),
+                allDiariesTotalCount = 0,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "로딩 중")
+@Composable
+private fun DiaryListLoadingPreview() {
+    MongsilTheme {
+        DiaryListScreenContent(
+            uiState = DiaryMonthlyUiState(
+                year = 2026,
+                month = 3,
+                viewMode = DiaryViewMode.ALL,
+                isLoadingAll = true,
+            ),
+            onBack = {},
+            onMovePrevMonth = {},
+            onMoveNextMonth = {},
+            onToggleSort = {},
+            onSwitchViewMode = {},
+            onDiaryClick = { _, _, _ -> },
+            onLoadMore = {},
         )
     }
 }

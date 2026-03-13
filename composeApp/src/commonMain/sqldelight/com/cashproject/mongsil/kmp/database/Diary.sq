@@ -27,6 +27,19 @@ getAllDiaries:
 SELECT * FROM DiaryEntity
 ORDER BY year DESC, month DESC, day DESC;
 
+getAllDiariesPagedDesc:
+SELECT * FROM DiaryEntity
+ORDER BY year DESC, month DESC, day DESC
+LIMIT ? OFFSET ?;
+
+getAllDiariesPagedAsc:
+SELECT * FROM DiaryEntity
+ORDER BY year ASC, month ASC, day ASC
+LIMIT ? OFFSET ?;
+
+getAllDiariesCount:
+SELECT COUNT(*) FROM DiaryEntity;
+
 insertDiary:
 INSERT INTO DiaryEntity (year, month, day, content, emoticonId, photoUri, textAlign, textColor, createdAt, updatedAt)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);

@@ -25,6 +25,15 @@ interface DiaryDao {
     @Query("SELECT * FROM DiaryEntity ORDER BY year DESC, month DESC, day DESC")
     suspend fun getAllDiaries(): List<DiaryEntity>
 
+    @Query("SELECT * FROM DiaryEntity ORDER BY year DESC, month DESC, day DESC LIMIT :limit OFFSET :offset")
+    suspend fun getAllDiariesPagedDesc(limit: Int, offset: Int): List<DiaryEntity>
+
+    @Query("SELECT * FROM DiaryEntity ORDER BY year ASC, month ASC, day ASC LIMIT :limit OFFSET :offset")
+    suspend fun getAllDiariesPagedAsc(limit: Int, offset: Int): List<DiaryEntity>
+
+    @Query("SELECT COUNT(*) FROM DiaryEntity")
+    suspend fun getAllDiariesCount(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(diary: DiaryEntity)
 

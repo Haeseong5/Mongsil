@@ -9,6 +9,8 @@ interface DiaryLocalDataSource {
     suspend fun getDiariesByYearMonth(year: Int, month: Int): List<DiaryEntity>
     fun getDiariesByYearMonthFlow(year: Int, month: Int): Flow<List<DiaryEntity>>
     suspend fun getAllDiaries(): List<DiaryEntity>
+    suspend fun getAllDiariesPaged(offset: Int, limit: Int, ascending: Boolean): List<DiaryEntity>
+    suspend fun getAllDiariesCount(): Int
     suspend fun saveDiary(
         year: Int,
         month: Int,
