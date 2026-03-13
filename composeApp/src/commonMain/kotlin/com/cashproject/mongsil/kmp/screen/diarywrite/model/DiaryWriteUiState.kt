@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite.model
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.cashproject.mongsil.kmp.model.Emoticon
 
@@ -36,6 +37,9 @@ data class DiaryWriteUiState(
     val unlockedPremiumIds: Set<Int> = emptySet(),
     val textAlign: TextAlign = TextAlign.Start,
     val savedTextAlign: TextAlign = TextAlign.Start,
+    val textColor: Color = Color.Black,
+    val savedTextColor: Color = Color.Black,
+    val showColorPalette: Boolean = false,
 ) {
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()
@@ -45,4 +49,5 @@ data class DiaryWriteUiState(
                 || photoUris != savedPhotoUris
                 || selectedEmoticon?.id != savedEmoticonId
                 || textAlign != savedTextAlign
+                || textColor != savedTextColor
 }

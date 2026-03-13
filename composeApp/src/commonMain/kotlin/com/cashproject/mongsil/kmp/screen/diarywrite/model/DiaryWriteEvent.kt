@@ -80,4 +80,14 @@ sealed interface DiaryWriteEvent {
      * 텍스트 정렬 토글 버튼을 눌렀을 때
      */
     data object OnTextAlignToggle : DiaryWriteEvent
+
+    /**
+     * 텍스트 색상 팔레트 표시/숨김 토글
+     */
+    data object OnColorPickerToggle : DiaryWriteEvent
+
+    /**
+     * 텍스트 색상을 선택했을 때
+     */
+    data class OnTextColorSelected(val color: androidx.compose.ui.graphics.Color) : DiaryWriteEvent
 }

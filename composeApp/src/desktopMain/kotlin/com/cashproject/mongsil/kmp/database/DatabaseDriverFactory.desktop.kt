@@ -18,7 +18,7 @@ actual class DatabaseDriverFactory {
 
     private fun createSchema(): SqlSchema<QueryResult.Value<Unit>> {
         return object : SqlSchema<QueryResult.Value<Unit>> by MongsilDatabase.Schema {
-            override val version: Long = 5
+            override val version: Long = 6
 
             override fun migrate(
                 driver: SqlDriver,

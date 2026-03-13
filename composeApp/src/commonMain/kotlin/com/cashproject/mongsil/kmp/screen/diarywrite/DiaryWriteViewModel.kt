@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -91,6 +93,7 @@ class DiaryWriteViewModel(
             val loadedContent = diary?.content ?: ""
             val loadedPhotoUris = parsePhotoUris(diary?.photoUri)
             val loadedTextAlign = diary?.textAlign?.toTextAlign() ?: TextAlign.Start
+            val loadedTextColor = diary?.textColor?.hexToColor() ?: Color.Black
 
             _uiState.update { state ->
                 state.copy(
@@ -106,6 +109,8 @@ class DiaryWriteViewModel(
                     unlockedPremiumIds = unlockedIds,
                     textAlign = loadedTextAlign,
                     savedTextAlign = loadedTextAlign,
+                    textColor = loadedTextColor,
+                    savedTextColor = loadedTextColor,
                 )
             }
         }
@@ -131,6 +136,8 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnAdRewardEarned -> handleAdRewardEarned(event.emoticonId)
             is DiaryWriteEvent.OnAdDismissed -> Unit
             is DiaryWriteEvent.OnTextAlignToggle -> handleTextAlignToggle()
+            is DiaryWriteEvent.OnColorPickerToggle -> handleColorPickerToggle()
+            is DiaryWriteEvent.OnTextColorSelected -> handleTextColorSelected(event.color)
         }
     }
 
@@ -180,6 +187,15 @@ class DiaryWriteViewModel(
             }
             state.copy(textAlign = nextAlign)
         }
+        scheduleAutoSave()
+    }
+
+    private fun handleColorPickerToggle() {
+        _uiState.update { it.copy(showColorPalette = !it.showColorPalette) }
+    }
+
+    private fun handleTextColorSelected(color: Color) {
+        _uiState.update { it.copy(textColor = color) }
         scheduleAutoSave()
     }
 
@@ -275,6 +291,7 @@ class DiaryWriteViewModel(
             emoticonId = state.selectedEmoticon?.id?.toLong(),
             photoUri = serializePhotoUris(state.photoUris),
             textAlign = state.textAlign.toDbString(),
+            textColor = state.textColor.toHexString(),
         )
 
         result.fold(
@@ -287,6 +304,7 @@ class DiaryWriteViewModel(
                         savedPhotoUris = s.photoUris,
                         savedEmoticonId = s.selectedEmoticon?.id,
                         savedTextAlign = s.textAlign,
+                        savedTextColor = s.textColor,
                     )
                 }
             },
@@ -306,6 +324,21 @@ class DiaryWriteViewModel(
         "center" -> TextAlign.Center
         "end" -> TextAlign.End
         else -> TextAlign.Start
+    }
+
+    private fun Color.toHexString(): String {
+        val argb = toArgb()
+        return buildString {
+            for (shift in 24 downTo 0 step 8) {
+                append(((argb ushr shift) and 0xFF).toString(16).padStart(2, '0'))
+            }
+        }.uppercase()
+    }
+
+    private fun String.hexToColor(): Color = try {
+        Color(toLong(16).toInt())
+    } catch (e: NumberFormatException) {
+        Color.Black
     }
 
     private fun serializePhotoUris(photoUris: List<String>): String? {

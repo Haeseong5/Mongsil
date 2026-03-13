@@ -59,6 +59,7 @@ class DiaryLocalDataSourceSQLDelight(private val database: MongsilDatabase) : Di
         emoticonId: Long?,
         photoUri: String?,
         textAlign: String,
+        textColor: String,
     ) = withContext(Dispatchers.Default) {
         val now = kotlin.time.Clock.System.now().toEpochMilliseconds()
         val existing = getDiaryByDate(year, month, day)
@@ -68,6 +69,7 @@ class DiaryLocalDataSourceSQLDelight(private val database: MongsilDatabase) : Di
                 emoticonId = emoticonId,
                 photoUri = photoUri,
                 textAlign = textAlign,
+                textColor = textColor,
                 updatedAt = now,
                 year = year.toLong(),
                 month = month.toLong(),
@@ -82,6 +84,7 @@ class DiaryLocalDataSourceSQLDelight(private val database: MongsilDatabase) : Di
                 emoticonId = emoticonId,
                 photoUri = photoUri,
                 textAlign = textAlign,
+                textColor = textColor,
                 createdAt = now,
                 updatedAt = now,
             )
@@ -110,6 +113,7 @@ private fun SQLDelightDiaryEntity.toCommon() = DiaryEntity(
     emoticonId = emoticonId,
     photoUri = photoUri,
     textAlign = textAlign,
+    textColor = textColor,
     createdAt = createdAt,
     updatedAt = updatedAt,
 )

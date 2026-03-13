@@ -30,8 +30,9 @@ class DiaryRepository(private val localDataSource: DiaryLocalDataSource) {
         emoticonId: Long? = null,
         photoUri: String? = null,
         textAlign: String = "start",
+        textColor: String = "FF000000",
     ): Result<Unit> = runCatching {
-        localDataSource.saveDiary(year, month, day, content, emoticonId, photoUri, textAlign)
+        localDataSource.saveDiary(year, month, day, content, emoticonId, photoUri, textAlign, textColor)
     }
 
     suspend fun deleteDiary(year: Int, month: Int, day: Int): Result<Unit> = runCatching {

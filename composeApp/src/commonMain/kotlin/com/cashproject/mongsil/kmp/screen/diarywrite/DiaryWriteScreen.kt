@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -52,6 +54,7 @@ import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
+import com.cashproject.mongsil.kmp.screen.diarywrite.component.ColorPalette
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.DeleteConfirmDialog
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
@@ -229,9 +232,23 @@ private fun DiaryWriteScreenContent(
                         onContentChange = { onEvent(DiaryWriteEvent.OnContentChange(it)) },
                         enabled = !uiState.isLoading,
                         textAlign = uiState.textAlign,
+                        textColor = uiState.textColor,
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
+                    )
+                }
+
+                // 색상 팔레트
+                AnimatedVisibility(
+                    visible = uiState.showColorPalette,
+                    enter = slideInVertically { it } + fadeIn(),
+                    exit = slideOutVertically { it } + fadeOut()
+                ) {
+                    ColorPalette(
+                        selectedColor = uiState.textColor,
+                        onColorSelected = { onEvent(DiaryWriteEvent.OnTextColorSelected(it)) },
+                        modifier = Modifier.background(MongsilTheme.colorScheme.card)
                     )
                 }
 
@@ -240,8 +257,11 @@ private fun DiaryWriteScreenContent(
                     modifier = Modifier.background(MongsilTheme.colorScheme.card),
                     isSaving = uiState.isSaving,
                     textAlign = uiState.textAlign,
+                    textColor = uiState.textColor,
+                    showColorPalette = uiState.showColorPalette,
                     openImagePicker = openImagePicker,
-                    onTextAlignToggle = { onEvent(DiaryWriteEvent.OnTextAlignToggle) }
+                    onTextAlignToggle = { onEvent(DiaryWriteEvent.OnTextAlignToggle) },
+                    onColorPickerToggle = { onEvent(DiaryWriteEvent.OnColorPickerToggle) }
                 )
             }
         } // AnimatedVisibility
@@ -405,6 +425,7 @@ private fun DiaryTextField(
     onContentChange: (String) -> Unit,
     enabled: Boolean,
     textAlign: TextAlign,
+    textColor: Color,
     modifier: Modifier = Modifier
 ) {
     BasicTextField(
@@ -414,8 +435,11 @@ private fun DiaryTextField(
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         enabled = enabled,
-        textStyle = MongsilTheme.typography.body1Medium.copy(textAlign = textAlign),
-        cursorBrush = SolidColor(MongsilTheme.colorScheme.labelWeak),
+        textStyle = MongsilTheme.typography.body1Medium.copy(
+            textAlign = textAlign,
+            color = textColor,
+        ),
+        cursorBrush = SolidColor(textColor),
         decorationBox = { innerTextField ->
             Box(modifier = Modifier.fillMaxWidth(), propagateMinConstraints = true) {
                 if (content.isEmpty()) {
