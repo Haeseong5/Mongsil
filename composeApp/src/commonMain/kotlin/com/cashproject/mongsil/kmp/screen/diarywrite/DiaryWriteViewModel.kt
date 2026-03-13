@@ -21,6 +21,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * 일기 작성 화면의 비즈니스 로직을 담당하는 ViewModel
@@ -138,6 +142,7 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnTextAlignToggle -> handleTextAlignToggle()
             is DiaryWriteEvent.OnColorPickerToggle -> handleColorPickerToggle()
             is DiaryWriteEvent.OnTextColorSelected -> handleTextColorSelected(event.color)
+            is DiaryWriteEvent.OnInsertCurrentTime -> handleInsertCurrentTime()
         }
     }
 
@@ -196,6 +201,26 @@ class DiaryWriteViewModel(
 
     private fun handleTextColorSelected(color: Color) {
         _uiState.update { it.copy(textColor = color) }
+        scheduleAutoSave()
+    }
+
+    @OptIn(ExperimentalTime::class)
+    private fun handleInsertCurrentTime() {
+        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        val isAm = now.hour < 12
+        val displayHour = when {
+            now.hour == 0 -> 12
+            now.hour > 12 -> now.hour - 12
+            else -> now.hour
+        }
+        val timeText = "${if (isAm) "AM" else "PM"} ${
+            displayHour.toString().padStart(2, '0')
+        }:${now.minute.toString().padStart(2, '0')}"
+        _uiState.update { state ->
+            val newContent =
+                if (state.content.isEmpty()) timeText else "${state.content}\n$timeText"
+            state.copy(content = newContent)
+        }
         scheduleAutoSave()
     }
 

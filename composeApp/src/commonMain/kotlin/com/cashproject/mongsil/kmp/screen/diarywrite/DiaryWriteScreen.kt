@@ -260,6 +260,7 @@ private fun DiaryWriteScreenContent(
                     textColor = uiState.textColor,
                     showColorPalette = uiState.showColorPalette,
                     openImagePicker = openImagePicker,
+                    onClickTime = { onEvent(DiaryWriteEvent.OnInsertCurrentTime) },
                     onTextAlignToggle = { onEvent(DiaryWriteEvent.OnTextAlignToggle) },
                     onColorPickerToggle = { onEvent(DiaryWriteEvent.OnColorPickerToggle) }
                 )
