@@ -4,4 +4,9 @@
     <string name="emoticon_bottom_sheet_subtitle">잠금 이모티콘은 영상광고를 시청하면 사용할 수 있어요!</string>
     <string name="text_align_toggle">텍스트 정렬 변경</string>
     <string name="text_color_picker">텍스트 색상 선택</string>
+    <string name="custom_color_picker_title">색상 선택</string>
+    <string name="custom_color_picker_confirm">확인</string>
+    <string name="custom_color_picker_cancel">취소</string>
+    <string name="custom_color_selected_label">선택된 색상</string>
+    <string name="custom_color_circle_desc">커스텀 색상 선택</string>
 </resources>
