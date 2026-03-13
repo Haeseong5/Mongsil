@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite
 
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
@@ -85,6 +86,7 @@ class DiaryWriteViewModel(
 
             val loadedContent = diary?.content ?: ""
             val loadedPhotoUris = parsePhotoUris(diary?.photoUri)
+            val loadedTextAlign = diary?.textAlign?.toTextAlign() ?: TextAlign.Start
 
             _uiState.update { state ->
                 state.copy(
@@ -98,6 +100,8 @@ class DiaryWriteViewModel(
                     savedPhotoUris = loadedPhotoUris,
                     savedEmoticonId = selectedEmoticon?.id,
                     unlockedPremiumIds = unlockedIds,
+                    textAlign = loadedTextAlign,
+                    savedTextAlign = loadedTextAlign,
                 )
             }
         }
@@ -125,6 +129,7 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnPremiumEmoticonClick -> handlePremiumEmoticonClick(event.emoticon)
             is DiaryWriteEvent.OnAdRewardEarned -> handleAdRewardEarned(event.emoticonId)
             is DiaryWriteEvent.OnAdDismissed -> Unit
+            is DiaryWriteEvent.OnTextAlignToggle -> handleTextAlignToggle()
         }
     }
 
@@ -182,13 +187,15 @@ class DiaryWriteViewModel(
                 day = currentState.day,
                 content = currentState.content,
                 emoticonId = currentState.selectedEmoticon?.id?.toLong(),
-                photoUri = serializePhotoUris(currentState.photoUris)
+                photoUri = serializePhotoUris(currentState.photoUris),
+                textAlign = currentState.textAlign.toDbString(),
             )
 
             _uiState.update { it.copy(isLoading = false) }
 
             result.fold(
                 onSuccess = {
+                    _uiState.update { it.copy(savedTextAlign = it.textAlign) }
                     _sideEffect.send(DiaryWriteSideEffect.SaveSuccess)
                 },
                 onFailure = { error ->
@@ -275,6 +282,29 @@ class DiaryWriteViewModel(
                 )
             }
         }
+    }
+
+    private fun handleTextAlignToggle() {
+        _uiState.update { state ->
+            val nextAlign = when (state.textAlign) {
+                TextAlign.Start -> TextAlign.Center
+                TextAlign.Center -> TextAlign.End
+                else -> TextAlign.Start
+            }
+            state.copy(textAlign = nextAlign)
+        }
+    }
+
+    private fun TextAlign.toDbString(): String = when (this) {
+        TextAlign.Center -> "center"
+        TextAlign.End -> "end"
+        else -> "start"
+    }
+
+    private fun String.toTextAlign(): TextAlign = when (this) {
+        "center" -> TextAlign.Center
+        "end" -> TextAlign.End
+        else -> TextAlign.Start
     }
 
     private fun serializePhotoUris(photoUris: List<String>): String? {

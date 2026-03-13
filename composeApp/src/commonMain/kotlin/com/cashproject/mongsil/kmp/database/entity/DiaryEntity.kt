@@ -13,6 +13,7 @@ data class DiaryEntity(
     val content: String,
     val emoticonId: Long? = null,
     val photoUri: String? = null,
+    val textAlign: String = "start",
     val createdAt: Long,
     val updatedAt: Long,
 )

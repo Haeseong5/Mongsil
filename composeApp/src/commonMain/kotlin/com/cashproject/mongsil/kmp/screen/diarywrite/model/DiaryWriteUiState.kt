@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite.model
 
+import androidx.compose.ui.text.style.TextAlign
 import com.cashproject.mongsil.kmp.model.Emoticon
 
 /**
@@ -33,6 +34,8 @@ data class DiaryWriteUiState(
     val savedPhotoUris: List<String> = emptyList(),
     val savedEmoticonId: Int? = null,
     val unlockedPremiumIds: Set<Int> = emptySet(),
+    val textAlign: TextAlign = TextAlign.Start,
+    val savedTextAlign: TextAlign = TextAlign.Start,
 ) {
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()
@@ -44,4 +47,5 @@ data class DiaryWriteUiState(
         get() = content != savedContent
                 || photoUris != savedPhotoUris
                 || selectedEmoticon?.id != savedEmoticonId
+                || textAlign != savedTextAlign
 }

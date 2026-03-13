@@ -6,6 +6,7 @@ CREATE TABLE DiaryEntity (
     content TEXT NOT NULL,
     emoticonId INTEGER,
     photoUri TEXT,
+    textAlign TEXT NOT NULL DEFAULT 'start',
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL
 );
@@ -26,12 +27,12 @@ SELECT * FROM DiaryEntity
 ORDER BY year DESC, month DESC, day DESC;
 
 insertDiary:
-INSERT INTO DiaryEntity (year, month, day, content, emoticonId, photoUri, createdAt, updatedAt)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO DiaryEntity (year, month, day, content, emoticonId, photoUri, textAlign, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 updateDiary:
 UPDATE DiaryEntity
-SET content = ?, emoticonId = ?, photoUri = ?, updatedAt = ?
+SET content = ?, emoticonId = ?, photoUri = ?, textAlign = ?, updatedAt = ?
 WHERE year = ? AND month = ? AND day = ?;
 
 deleteDiary:

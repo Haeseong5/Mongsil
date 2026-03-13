@@ -2,4 +2,5 @@
 <resources>
     <string name="emoticon_bottom_sheet_title">오늘의 기분을 선택해주세요</string>
     <string name="emoticon_bottom_sheet_subtitle">잠금 이모티콘은 영상광고를 시청하면 사용할 수 있어요!</string>
+    <string name="text_align_toggle">텍스트 정렬 변경</string>
 </resources>

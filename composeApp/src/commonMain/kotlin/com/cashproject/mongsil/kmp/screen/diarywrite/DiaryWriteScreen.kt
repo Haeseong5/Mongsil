@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -245,6 +246,7 @@ private fun DiaryWriteScreenContent(
                         content = uiState.content,
                         onContentChange = { onEvent(DiaryWriteEvent.OnContentChange(it)) },
                         enabled = !uiState.isLoading,
+                        textAlign = uiState.textAlign,
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
@@ -257,7 +259,9 @@ private fun DiaryWriteScreenContent(
                     onSaveClick = { onEvent(DiaryWriteEvent.OnSaveClick) },
                     openImagePicker = openImagePicker,
                     canSave = uiState.hasContent,
-                    isLoading = uiState.isLoading
+                    isLoading = uiState.isLoading,
+                    textAlign = uiState.textAlign,
+                    onTextAlignToggle = { onEvent(DiaryWriteEvent.OnTextAlignToggle) }
                 )
             }
         } // AnimatedVisibility
@@ -428,21 +432,25 @@ private fun DiaryTextField(
     content: String,
     onContentChange: (String) -> Unit,
     enabled: Boolean,
+    textAlign: TextAlign,
     modifier: Modifier = Modifier
 ) {
     BasicTextField(
         value = content,
         onValueChange = onContentChange,
-        modifier = modifier.padding(horizontal = 20.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
         enabled = enabled,
-        textStyle = MongsilTheme.typography.body1Medium,
+        textStyle = MongsilTheme.typography.body1Medium.copy(textAlign = textAlign),
         cursorBrush = SolidColor(MongsilTheme.colorScheme.labelWeak),
         decorationBox = { innerTextField ->
-            Box {
+            Box(modifier = Modifier.fillMaxWidth(), propagateMinConstraints = true) {
                 if (content.isEmpty()) {
                     Text(
                         text = "오늘 하루를 기록해보세요",
-                        style = MongsilTheme.typography.default,
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MongsilTheme.typography.default.copy(textAlign = textAlign),
                         color = MongsilTheme.colorScheme.labelWeak
                     )
                 }
@@ -573,6 +581,59 @@ private fun DiaryWriteScreenContentWithEmoticonPreview() {
                 isLoading = false,
                 isInitializing = false,
                 showExitDialog = false
+            ),
+            onEvent = {},
+            openImagePicker = {}
+        )
+    }
+}
+
+private val previewContent = "오늘은 날씨가 정말 좋았다.\n아침부터 햇살이 따스하게 비춰서 기분이 좋았다."
+
+@Preview(showBackground = true)
+@Composable
+private fun DiaryWriteAlignStartPreview() {
+    MongsilTheme {
+        DiaryWriteScreenContent(
+            uiState = DiaryWriteUiState(
+                year = 2026, month = 3, day = 14,
+                content = previewContent,
+                isInitializing = false,
+                textAlign = TextAlign.Start
+            ),
+            onEvent = {},
+            openImagePicker = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiaryWriteAlignCenterPreview() {
+    MongsilTheme {
+        DiaryWriteScreenContent(
+            uiState = DiaryWriteUiState(
+                year = 2026, month = 3, day = 14,
+                content = previewContent,
+                isInitializing = false,
+                textAlign = TextAlign.Center
+            ),
+            onEvent = {},
+            openImagePicker = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiaryWriteAlignEndPreview() {
+    MongsilTheme {
+        DiaryWriteScreenContent(
+            uiState = DiaryWriteUiState(
+                year = 2026, month = 3, day = 14,
+                content = previewContent,
+                isInitializing = false,
+                textAlign = TextAlign.End
             ),
             onEvent = {},
             openImagePicker = {}

@@ -14,14 +14,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_check
+import mongsil.composeapp.generated.resources.ic_format_align_center
+import mongsil.composeapp.generated.resources.ic_format_align_left
+import mongsil.composeapp.generated.resources.ic_format_align_right
 import mongsil.composeapp.generated.resources.ic_imagesmode
 import mongsil.composeapp.generated.resources.ic_more_time
+import mongsil.composeapp.generated.resources.text_align_toggle
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -29,9 +35,11 @@ fun BottomToolbar(
     modifier: Modifier = Modifier,
     canSave: Boolean,
     isLoading: Boolean,
+    textAlign: TextAlign = TextAlign.Start,
     onSaveClick: () -> Unit = {},
     openImagePicker: () -> Unit = {},
-    onClickTime: () -> Unit = {}
+    onClickTime: () -> Unit = {},
+    onTextAlignToggle: () -> Unit = {}
 ) {
     val iconBoxSize = 34.dp
     Row(
@@ -72,6 +80,19 @@ fun BottomToolbar(
                     contentDescription = "current time"
                 )
             }
+
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(iconBoxSize)
+                    .clickable { onTextAlignToggle() },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(textAlignIcon(textAlign)),
+                    contentDescription = stringResource(Res.string.text_align_toggle)
+                )
+            }
         }
 
         // 저장 버튼
@@ -90,6 +111,11 @@ fun BottomToolbar(
     }
 }
 
+private fun textAlignIcon(textAlign: TextAlign) = when (textAlign) {
+    TextAlign.Center -> Res.drawable.ic_format_align_center
+    TextAlign.End -> Res.drawable.ic_format_align_right
+    else -> Res.drawable.ic_format_align_left
+}
 
 @Preview(showBackground = true)
 @Composable

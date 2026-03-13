@@ -16,6 +16,7 @@ interface DiaryLocalDataSource {
         content: String,
         emoticonId: Long?,
         photoUri: String?,
+        textAlign: String,
     )
     suspend fun deleteDiary(year: Int, month: Int, day: Int)
     suspend fun hasDiaryForDate(year: Int, month: Int, day: Int): Boolean

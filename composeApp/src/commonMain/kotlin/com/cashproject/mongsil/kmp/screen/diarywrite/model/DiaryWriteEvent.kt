@@ -90,4 +90,9 @@ sealed interface DiaryWriteEvent {
      * 광고가 닫혔을 때 (보상 없이)
      */
     data object OnAdDismissed : DiaryWriteEvent
+
+    /**
+     * 텍스트 정렬 토글 버튼을 눌렀을 때
+     */
+    data object OnTextAlignToggle : DiaryWriteEvent
 }
