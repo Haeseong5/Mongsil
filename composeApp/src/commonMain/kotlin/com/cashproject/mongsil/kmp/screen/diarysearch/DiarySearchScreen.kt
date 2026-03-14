@@ -158,7 +158,7 @@ private fun SearchTextField(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val borderColor = MongsilTheme.colorScheme.line
+    val borderColor = MongsilTheme.colorScheme.fill400
     val shape = RoundedCornerShape(14.dp)
 
     BasicTextField(
