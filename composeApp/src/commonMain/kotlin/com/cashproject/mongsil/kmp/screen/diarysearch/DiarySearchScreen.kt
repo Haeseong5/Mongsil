@@ -2,22 +2,23 @@ package com.cashproject.mongsil.kmp.screen.diarysearch
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -72,6 +74,7 @@ private fun DiarySearchScreenContent(
             .background(MongsilTheme.colorScheme.background)
     ) {
         SearchTopBar(
+            modifier = Modifier,
             query = uiState.query,
             onQueryChange = onQueryChange,
             onBack = onBack,
@@ -118,29 +121,15 @@ private fun SearchTopBar(
     onQueryChange: (String) -> Unit,
     onBack: () -> Unit,
     onClear: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     MongsilTopBar(
+        modifier = modifier,
         leftContent = { MongsilTopBarBackButton(onClick = onBack) },
         centerContent = {
-            OutlinedTextField(
-                modifier = Modifier.padding(4.dp).fillMaxWidth(),
-                value = query,
-                onValueChange = onQueryChange,
-                singleLine = true,
-                placeholder = {
-                    Text(
-                        text = "일기 검색",
-                        style = MongsilTheme.typography.body1Normal,
-                        color = MongsilTheme.colorScheme.labelWeak,
-                    )
-                },
-                shape = RoundedCornerShape(14.dp),
-                textStyle = MongsilTheme.typography.body1Normal,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MongsilTheme.colorScheme.line,
-                    unfocusedBorderColor = MongsilTheme.colorScheme.line,
-                    cursorColor = MongsilTheme.colorScheme.labelStrong,
-                ),
+            SearchTextField(
+                query = query,
+                onQueryChange = onQueryChange,
             )
         },
         rightContent = {
@@ -158,6 +147,48 @@ private fun SearchTopBar(
                     colorFilter = ColorFilter.tint(Color.White),
                     contentDescription = "",
                 )
+            }
+        },
+    )
+}
+
+@Composable
+private fun SearchTextField(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val borderColor = MongsilTheme.colorScheme.line
+    val shape = RoundedCornerShape(14.dp)
+
+    BasicTextField(
+        modifier = modifier
+            .height(38.dp)
+            .fillMaxWidth(),
+        value = query,
+        onValueChange = onQueryChange,
+        singleLine = true,
+        textStyle = MongsilTheme.typography.body1Normal.copy(
+            color = MongsilTheme.colorScheme.labelStrong,
+        ),
+        maxLines = 1,
+        cursorBrush = SolidColor(MongsilTheme.colorScheme.labelStrong),
+        decorationBox = { innerTextField ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(width = 1.dp, color = borderColor, shape = shape)
+                    .padding(horizontal = 12.dp),
+                contentAlignment = Alignment.CenterStart,
+            ) {
+                if (query.isEmpty()) {
+                    Text(
+                        text = "일기 검색",
+                        style = MongsilTheme.typography.body1Normal,
+                        color = MongsilTheme.colorScheme.labelWeak,
+                    )
+                }
+                innerTextField()
             }
         },
     )
@@ -235,6 +266,40 @@ private fun DiarySearchScreenContentWithResultsPreview() {
             onQueryChange = {},
             onDiaryClick = { _, _, _ -> }
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchTopBarEmptyPreview() {
+    MongsilTheme {
+        SearchTopBar(
+            query = "",
+            onQueryChange = {},
+            onBack = {},
+            onClear = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchTopBarWithQueryPreview() {
+    MongsilTheme {
+        SearchTopBar(
+            query = "행복한 하루",
+            onQueryChange = {},
+            onBack = {},
+            onClear = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchGuideMessagePreview() {
+    MongsilTheme {
+        SearchGuideMessage("검색어를 입력해 주세요")
     }
 }
 
