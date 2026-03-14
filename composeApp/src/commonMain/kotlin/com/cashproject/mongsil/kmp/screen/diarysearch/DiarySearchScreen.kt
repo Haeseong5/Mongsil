@@ -271,6 +271,28 @@ private fun DiarySearchScreenContentWithResultsPreview() {
 
 @Preview(showBackground = true)
 @Composable
+private fun SearchTextFieldEmptyPreview() {
+    MongsilTheme {
+        SearchTextField(
+            query = "",
+            onQueryChange = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchTextFieldWithQueryPreview() {
+    MongsilTheme {
+        SearchTextField(
+            query = "행복한 하루",
+            onQueryChange = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 private fun SearchTopBarEmptyPreview() {
     MongsilTheme {
         SearchTopBar(
