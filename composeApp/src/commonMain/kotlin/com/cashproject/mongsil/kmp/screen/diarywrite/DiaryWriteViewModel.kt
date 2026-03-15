@@ -162,6 +162,14 @@ class DiaryWriteViewModel(
     }
 
     private fun handleEmoticonSelected(emoticon: com.cashproject.mongsil.kmp.model.Emoticon) {
+        firebaseService.logEvent(
+            name = EVENT_EMOTICON_SELECTED,
+            params = mapOf(
+                PARAM_EMOTICON_ID to emoticon.id.toString(),
+                PARAM_EMOTICON_TITLE to emoticon.title,
+                PARAM_EMOTICON_IS_PREMIUM to emoticon.isPremium.toString(),
+            )
+        )
         _uiState.update {
             it.copy(
                 selectedEmoticon = emoticon,
@@ -425,5 +433,9 @@ class DiaryWriteViewModel(
         const val ACTION_TEXT_ALIGN = "text_align"
         const val ACTION_COLOR_PICKER = "color_picker"
         const val ACTION_INSERT_TIME = "insert_time"
+
+        const val EVENT_EMOTICON_SELECTED = "emoticon_selected"
+        const val PARAM_EMOTICON_TITLE = "emoticon_title"
+        const val PARAM_EMOTICON_IS_PREMIUM = "is_premium"
     }
 }
