@@ -204,6 +204,7 @@ gitlive-firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics
 gitlive-firebase-crashlytics = { group = "dev.gitlive", name = "firebase-crashlytics", version.ref = "gitliveFirebase" }
 
 # Third-party
+compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", version = "2.6.0" }
 compose-fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version = "1.0.4" }
 
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
