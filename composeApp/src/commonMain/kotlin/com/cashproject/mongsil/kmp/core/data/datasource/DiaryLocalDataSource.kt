@@ -20,6 +20,7 @@ interface DiaryLocalDataSource {
         photoUri: String?,
         textAlign: String,
         textColor: String,
+        backgroundColor: String,
     )
     suspend fun deleteDiary(year: Int, month: Int, day: Int)
     suspend fun hasDiaryForDate(year: Int, month: Int, day: Int): Boolean

@@ -100,6 +100,7 @@ class DiaryWriteViewModel(
             val loadedPhotoUris = parsePhotoUris(diary?.photoUri)
             val loadedTextAlign = diary?.textAlign?.toTextAlign() ?: TextAlign.Start
             val loadedTextColor = diary?.textColor?.hexToColor() ?: Color.Black
+            val loadedBackgroundColor = diary?.backgroundColor?.hexToColor() ?: Color.Transparent
 
             _uiState.update { state ->
                 state.copy(
@@ -117,6 +118,8 @@ class DiaryWriteViewModel(
                     savedTextAlign = loadedTextAlign,
                     textColor = loadedTextColor,
                     savedTextColor = loadedTextColor,
+                    backgroundColor = loadedBackgroundColor,
+                    savedBackgroundColor = loadedBackgroundColor,
                 )
             }
         }
@@ -145,6 +148,8 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnColorPickerToggle -> handleColorPickerToggle()
             is DiaryWriteEvent.OnTextColorSelected -> handleTextColorSelected(event.color)
             is DiaryWriteEvent.OnInsertCurrentTime -> handleInsertCurrentTime()
+            is DiaryWriteEvent.OnBackgroundColorPickerToggle -> handleBackgroundColorPickerToggle()
+            is DiaryWriteEvent.OnBackgroundColorSelected -> handleBackgroundColorSelected(event.color)
         }
     }
 
@@ -221,11 +226,26 @@ class DiaryWriteViewModel(
                 mapOf(PARAM_TOOLBAR_ACTION to ACTION_COLOR_PICKER)
             )
         }
-        _uiState.update { it.copy(showColorPalette = !it.showColorPalette) }
+        _uiState.update { it.copy(showColorPalette = !it.showColorPalette, showBackgroundColorPalette = false) }
     }
 
     private fun handleTextColorSelected(color: Color) {
         _uiState.update { it.copy(textColor = color) }
+        scheduleAutoSave()
+    }
+
+    private fun handleBackgroundColorPickerToggle() {
+        if (!_uiState.value.showBackgroundColorPalette) {
+            firebaseService.logEvent(
+                EVENT_TOOLBAR_CLICKED,
+                mapOf(PARAM_TOOLBAR_ACTION to ACTION_BACKGROUND_COLOR_PICKER)
+            )
+        }
+        _uiState.update { it.copy(showBackgroundColorPalette = !it.showBackgroundColorPalette, showColorPalette = false) }
+    }
+
+    private fun handleBackgroundColorSelected(color: Color) {
+        _uiState.update { it.copy(backgroundColor = color) }
         scheduleAutoSave()
     }
 
@@ -346,6 +366,7 @@ class DiaryWriteViewModel(
             photoUri = serializePhotoUris(state.photoUris),
             textAlign = state.textAlign.toDbString(),
             textColor = state.textColor.toHexString(),
+            backgroundColor = state.backgroundColor.toHexString(),
         )
 
         result.fold(
@@ -368,6 +389,7 @@ class DiaryWriteViewModel(
                         savedEmoticonId = s.selectedEmoticon?.id,
                         savedTextAlign = s.textAlign,
                         savedTextColor = s.textColor,
+                        savedBackgroundColor = s.backgroundColor,
                     )
                 }
             },
@@ -432,6 +454,7 @@ class DiaryWriteViewModel(
         const val ACTION_PHOTO = "photo"
         const val ACTION_TEXT_ALIGN = "text_align"
         const val ACTION_COLOR_PICKER = "color_picker"
+        const val ACTION_BACKGROUND_COLOR_PICKER = "background_color_picker"
         const val ACTION_INSERT_TIME = "insert_time"
 
         const val EVENT_EMOTICON_SELECTED = "emoticon_selected"

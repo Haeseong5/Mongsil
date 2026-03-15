@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -23,9 +22,11 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.background_color_picker
 import mongsil.composeapp.generated.resources.ic_format_align_center
 import mongsil.composeapp.generated.resources.ic_format_align_left
 import mongsil.composeapp.generated.resources.ic_format_align_right
+import mongsil.composeapp.generated.resources.ic_format_color_fill
 import mongsil.composeapp.generated.resources.ic_format_color_text
 import mongsil.composeapp.generated.resources.ic_imagesmode
 import mongsil.composeapp.generated.resources.ic_more_time
@@ -41,11 +42,14 @@ fun BottomToolbar(
     isSaving: Boolean = false,
     textAlign: TextAlign = TextAlign.Start,
     textColor: Color = Color.Black,
+    backgroundColor: Color = Color.Transparent,
     showColorPalette: Boolean = false,
+    showBackgroundColorPalette: Boolean = false,
     openImagePicker: () -> Unit = {},
     onClickTime: () -> Unit = {},
     onTextAlignToggle: () -> Unit = {},
-    onColorPickerToggle: () -> Unit = {}
+    onColorPickerToggle: () -> Unit = {},
+    onBackgroundColorPickerToggle: () -> Unit = {},
 ) {
     val iconBoxSize = 34.dp
     Row(
@@ -100,7 +104,7 @@ fun BottomToolbar(
                 )
             }
 
-            // 색상 선택 버튼: 현재 색상 도트 + 아이콘
+            // 글자 색상 선택 버튼
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -118,6 +122,31 @@ fun BottomToolbar(
                     painter = painterResource(Res.drawable.ic_format_color_text),
                     contentDescription = stringResource(Res.string.text_color_picker),
                     tint = textColor
+                )
+            }
+
+            // 배경 색상 선택 버튼
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(iconBoxSize)
+                    .then(
+                        if (showBackgroundColorPalette) Modifier.background(
+                            MongsilTheme.colorScheme.labelDisable.copy(alpha = 0.15f),
+                            CircleShape
+                        ) else Modifier
+                    )
+                    .circularRippleClickable { onBackgroundColorPickerToggle() },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_format_color_fill),
+                    contentDescription = stringResource(Res.string.background_color_picker),
+                    tint = if (backgroundColor == Color.Transparent) {
+                        MongsilTheme.colorScheme.labelStrong
+                    } else {
+                        backgroundColor
+                    }
                 )
             }
         }

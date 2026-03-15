@@ -95,4 +95,14 @@ sealed interface DiaryWriteEvent {
      * 시계 아이콘을 눌러 현재 시간을 본문에 삽입할 때
      */
     data object OnInsertCurrentTime : DiaryWriteEvent
+
+    /**
+     * 배경 색상 팔레트 표시/숨김 토글
+     */
+    data object OnBackgroundColorPickerToggle : DiaryWriteEvent
+
+    /**
+     * 배경 색상을 선택했을 때
+     */
+    data class OnBackgroundColorSelected(val color: androidx.compose.ui.graphics.Color) : DiaryWriteEvent
 }

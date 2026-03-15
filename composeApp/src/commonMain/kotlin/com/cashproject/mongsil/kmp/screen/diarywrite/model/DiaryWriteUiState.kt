@@ -39,7 +39,10 @@ data class DiaryWriteUiState(
     val savedTextAlign: TextAlign = TextAlign.Start,
     val textColor: Color = Color.Black,
     val savedTextColor: Color = Color.Black,
+    val backgroundColor: Color = Color.Transparent,
+    val savedBackgroundColor: Color = Color.Transparent,
     val showColorPalette: Boolean = false,
+    val showBackgroundColorPalette: Boolean = false,
 ) {
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()
@@ -50,4 +53,5 @@ data class DiaryWriteUiState(
                 || selectedEmoticon?.id != savedEmoticonId
                 || textAlign != savedTextAlign
                 || textColor != savedTextColor
+                || backgroundColor != savedBackgroundColor
 }

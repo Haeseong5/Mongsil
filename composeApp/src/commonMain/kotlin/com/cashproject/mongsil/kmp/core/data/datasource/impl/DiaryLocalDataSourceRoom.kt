@@ -44,6 +44,7 @@ class DiaryLocalDataSourceRoom(private val diaryDao: DiaryDao) : DiaryLocalDataS
         photoUri: String?,
         textAlign: String,
         textColor: String,
+        backgroundColor: String,
     ) {
         val now = kotlin.time.Clock.System.now().toEpochMilliseconds()
         val existing = diaryDao.getDiaryByDate(year, month, day)
@@ -58,6 +59,7 @@ class DiaryLocalDataSourceRoom(private val diaryDao: DiaryDao) : DiaryLocalDataS
                 photoUri = photoUri,
                 textAlign = textAlign,
                 textColor = textColor,
+                backgroundColor = backgroundColor,
                 createdAt = existing?.createdAt ?: now,
                 updatedAt = now,
             )

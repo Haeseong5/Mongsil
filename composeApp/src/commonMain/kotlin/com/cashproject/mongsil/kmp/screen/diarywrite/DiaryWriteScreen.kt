@@ -55,6 +55,7 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import com.cashproject.mongsil.kmp.model.Emoticon
+import com.cashproject.mongsil.kmp.screen.diarywrite.component.BackgroundColorPalette
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ColorPalette
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.DeleteConfirmDialog
@@ -192,7 +193,12 @@ private fun DiaryWriteScreenContent(
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .then(
+                            if (uiState.backgroundColor != Color.Transparent) {
+                                Modifier.background(uiState.backgroundColor)
+                            } else Modifier
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(24.dp))
@@ -241,7 +247,7 @@ private fun DiaryWriteScreenContent(
                     )
                 }
 
-                // 색상 팔레트
+                // 글자 색상 팔레트
                 AnimatedVisibility(
                     visible = uiState.showColorPalette,
                     enter = slideInVertically { it } + fadeIn(),
@@ -250,7 +256,18 @@ private fun DiaryWriteScreenContent(
                     ColorPalette(
                         selectedColor = uiState.textColor,
                         onColorSelected = { onEvent(DiaryWriteEvent.OnTextColorSelected(it)) },
-                        modifier = Modifier.background(MongsilTheme.colorScheme.card)
+                    )
+                }
+
+                // 배경 색상 팔레트
+                AnimatedVisibility(
+                    visible = uiState.showBackgroundColorPalette,
+                    enter = slideInVertically { it } + fadeIn(),
+                    exit = slideOutVertically { it } + fadeOut()
+                ) {
+                    BackgroundColorPalette(
+                        selectedColor = uiState.backgroundColor,
+                        onColorSelected = { onEvent(DiaryWriteEvent.OnBackgroundColorSelected(it)) },
                     )
                 }
 
@@ -260,11 +277,14 @@ private fun DiaryWriteScreenContent(
                     isSaving = uiState.isSaving,
                     textAlign = uiState.textAlign,
                     textColor = uiState.textColor,
+                    backgroundColor = uiState.backgroundColor,
                     showColorPalette = uiState.showColorPalette,
+                    showBackgroundColorPalette = uiState.showBackgroundColorPalette,
                     openImagePicker = openImagePicker,
                     onClickTime = { onEvent(DiaryWriteEvent.OnInsertCurrentTime) },
                     onTextAlignToggle = { onEvent(DiaryWriteEvent.OnTextAlignToggle) },
-                    onColorPickerToggle = { onEvent(DiaryWriteEvent.OnColorPickerToggle) }
+                    onColorPickerToggle = { onEvent(DiaryWriteEvent.OnColorPickerToggle) },
+                    onBackgroundColorPickerToggle = { onEvent(DiaryWriteEvent.OnBackgroundColorPickerToggle) },
                 )
             }
         } // AnimatedVisibility

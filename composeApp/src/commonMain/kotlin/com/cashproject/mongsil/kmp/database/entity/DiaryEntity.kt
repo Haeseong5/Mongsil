@@ -15,6 +15,7 @@ data class DiaryEntity(
     val photoUri: String? = null,
     val textAlign: String = "start",
     val textColor: String = "FF000000",
+    val backgroundColor: String = "00000000",
     val createdAt: Long,
     val updatedAt: Long,
 )

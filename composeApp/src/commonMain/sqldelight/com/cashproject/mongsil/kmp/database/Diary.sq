@@ -8,6 +8,7 @@ CREATE TABLE DiaryEntity (
     photoUri TEXT,
     textAlign TEXT NOT NULL DEFAULT 'start',
     textColor TEXT NOT NULL DEFAULT 'FF000000',
+    backgroundColor TEXT NOT NULL DEFAULT '00000000',
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL
 );
@@ -41,12 +42,12 @@ getAllDiariesCount:
 SELECT COUNT(*) FROM DiaryEntity;
 
 insertDiary:
-INSERT INTO DiaryEntity (year, month, day, content, emoticonId, photoUri, textAlign, textColor, createdAt, updatedAt)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO DiaryEntity (year, month, day, content, emoticonId, photoUri, textAlign, textColor, backgroundColor, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 updateDiary:
 UPDATE DiaryEntity
-SET content = ?, emoticonId = ?, photoUri = ?, textAlign = ?, textColor = ?, updatedAt = ?
+SET content = ?, emoticonId = ?, photoUri = ?, textAlign = ?, textColor = ?, backgroundColor = ?, updatedAt = ?
 WHERE year = ? AND month = ? AND day = ?;
 
 deleteDiary:
