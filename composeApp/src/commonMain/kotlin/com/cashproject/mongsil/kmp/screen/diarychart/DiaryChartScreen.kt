@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,14 +48,15 @@ import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
 import com.cashproject.mongsil.kmp.screen.diarychart.model.WordCloudItem
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.chart_empty_emoticon
-import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.chart_section_emoticon_stats
 import mongsil.composeapp.generated.resources.chart_section_emoticon_top
 import mongsil.composeapp.generated.resources.chart_section_word_cloud
 import mongsil.composeapp.generated.resources.chart_streak_banner
 import mongsil.composeapp.generated.resources.chart_word_cloud_empty
+import mongsil.composeapp.generated.resources.emoticon_01
+import mongsil.composeapp.generated.resources.ic_arrow_left_contained
+import mongsil.composeapp.generated.resources.ic_arrow_right_contained
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
-import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -97,7 +96,7 @@ private fun DiaryChartScreenContent(
                     modifier = Modifier
                         .size(24.dp)
                         .circularRippleClickable(onClick = onClose),
-                    imageVector = Icons.Default.Close,
+                    painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
                     contentDescription = "닫기",
                     tint = MongsilTheme.colorScheme.labelStrong,
                 )
@@ -197,7 +196,7 @@ private fun StatSectionHeader(
     Text(
         modifier = modifier.fillMaxWidth(),
         text = title,
-        style = MongsilTheme.typography.heading1,
+        style = MongsilTheme.typography.headline1,
         color = MongsilTheme.colorScheme.labelStrong,
     )
 }
@@ -224,12 +223,12 @@ private fun MonthHeader(
         ) {
             Text(
                 text = year.toString(),
-                style = MongsilTheme.typography.title3,
+                style = MongsilTheme.typography.heading1,
                 color = MongsilTheme.colorScheme.labelWeak
             )
             Text(
                 text = "${month}월",
-                style = MongsilTheme.typography.title2,
+                style = MongsilTheme.typography.heading1,
                 color = MongsilTheme.colorScheme.labelStrong
             )
         }
@@ -245,9 +244,9 @@ private fun IconArrow(
     onClick: () -> Unit,
 ) {
     val painter = if (isBack) {
-        painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24)
+        painterResource(Res.drawable.ic_arrow_left_contained)
     } else {
-        painterResource(Res.drawable.ic_baseline_arrow_forward_ios_24)
+        painterResource(Res.drawable.ic_arrow_right_contained)
     }
 
     Box(
@@ -289,7 +288,7 @@ private fun TopEmoticonItem(item: DiaryChartItem) {
         EmoticonImage(
             image = item.image,
             contentDescription = item.title,
-            modifier = Modifier.size(92.dp),
+            modifier = Modifier.size(70.dp),
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -384,7 +383,7 @@ private fun EmptyMessage() {
     ) {
         Text(
             text = stringResource(Res.string.chart_empty_emoticon),
-            style = MongsilTheme.typography.heading2,
+            style = MongsilTheme.typography.headline1,
             color = MongsilTheme.colorScheme.labelDisable
         )
     }
@@ -520,7 +519,7 @@ private fun LazyListScope.wordCloudSection(items: List<WordCloudItem>) {
             ) {
                 Text(
                     text = stringResource(Res.string.chart_word_cloud_empty),
-                    style = MongsilTheme.typography.heading2,
+                    style = MongsilTheme.typography.headline1,
                     color = MongsilTheme.colorScheme.labelDisable,
                 )
             }
