@@ -53,7 +53,6 @@ import mongsil.composeapp.generated.resources.chart_section_emoticon_stats
 import mongsil.composeapp.generated.resources.chart_section_emoticon_top
 import mongsil.composeapp.generated.resources.chart_section_word_cloud
 import mongsil.composeapp.generated.resources.chart_streak_banner
-import mongsil.composeapp.generated.resources.chart_streak_label
 import mongsil.composeapp.generated.resources.chart_word_cloud_empty
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
@@ -124,7 +123,8 @@ private fun DiaryReportContent(
             item {
                 StreakBanner(
                     streak = uiState.currentStreak,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                        .padding(top = 8.dp, bottom = 32.dp),
                 )
             }
         }
@@ -151,20 +151,14 @@ private fun StreakBanner(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = MongsilTheme.colorScheme.fill100,
+                color = MongsilTheme.colorScheme.fill50,
                 shape = RoundedCornerShape(16.dp),
-            )
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            ).padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = stringResource(Res.string.chart_streak_label),
-            style = MongsilTheme.typography.body1Medium,
-            color = MongsilTheme.colorScheme.labelRegular,
-        )
-        Text(
-            text = "${streak}${stringResource(Res.string.chart_streak_banner)}",
+            text = stringResource(Res.string.chart_streak_banner, streak),
             style = MongsilTheme.typography.heading2,
             color = MongsilTheme.colorScheme.labelStrong,
         )
@@ -311,10 +305,10 @@ private fun EmoticonCountList(items: List<DiaryChartItem>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp)
+            .padding(top = 16.dp, start = 20.dp, end = 20.dp)
             .background(
                 color = MongsilTheme.colorScheme.fill50,
-                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+                shape = RoundedCornerShape(24.dp)
             )
             .padding(horizontal = 20.dp, vertical = 24.dp),
         verticalArrangement = Arrangement.spacedBy(22.dp)
