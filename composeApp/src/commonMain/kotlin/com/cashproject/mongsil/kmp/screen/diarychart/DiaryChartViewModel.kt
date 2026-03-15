@@ -6,11 +6,15 @@ import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
+import com.cashproject.mongsil.kmp.screen.diarychart.model.WordCloudItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.ExperimentalTime
 
@@ -38,6 +42,8 @@ class DiaryChartViewModel(
 
     init {
         loadMonthStatistics(initialYear, initialMonth)
+        loadStreak()
+        loadWordCloud()
     }
 
     fun moveToPreviousMonth() {
@@ -85,6 +91,7 @@ class DiaryChartViewModel(
                     DiaryChartItem(
                         emoticonId = emoticonId,
                         imageUrl = emoticon.imageUrl,
+                        title = emoticon.title,
                         count = count,
                         barColorHex = emoticon.backgroundColor
                     )
@@ -92,6 +99,63 @@ class DiaryChartViewModel(
                 .sortedWith(compareByDescending<DiaryChartItem> { it.count }.thenBy { it.emoticonId })
 
             _uiState.update { it.copy(items = items) }
+        }
+    }
+
+    private fun loadStreak() {
+        viewModelScope.launch {
+            val today = currentDateTime.date
+            val sortedDates = diaryRepository.getAllDiaries()
+                .map { LocalDate(it.year, it.month, it.day) }
+                .distinct()
+                .sortedDescending()
+
+            val latestDate = sortedDates.firstOrNull() ?: return@launch
+            val yesterday = today.minus(1, DateTimeUnit.DAY)
+            if (latestDate < yesterday) return@launch
+
+            var streak = 0
+            var expected = latestDate
+            for (date in sortedDates) {
+                if (date == expected) {
+                    streak++
+                    expected = expected.minus(1, DateTimeUnit.DAY)
+                } else {
+                    break
+                }
+            }
+            _uiState.update { it.copy(currentStreak = streak) }
+        }
+    }
+
+    private fun loadWordCloud() {
+        viewModelScope.launch {
+            val stopWords = setOf(
+                "이", "가", "은", "는", "을", "를", "의", "에", "도", "에서", "으로", "로", "과", "와",
+                "이나", "나", "이라", "라", "이고", "고", "하고", "에게", "한테", "보다", "만큼", "처럼",
+                "같이", "까지", "부터", "이랑", "랑", "하며", "며", "이며", "했", "한", "하는", "이다",
+                "그", "것", "수", "때", "더", "같은", "이런", "저런", "그런", "어떤", "오늘", "일",
+                "나는", "내가", "그리고", "그래서", "하지만", "그런데", "아", "그냥", "진짜", "너무",
+                "정말", "매우", "아주", "좀", "이제", "여기", "저기", "거기", "우리", "저는", "제가",
+                "나도", "있다", "없다", "하다", "되다", "되어", "됩니다", "않고", "않는", "않아",
+                "있어", "없어", "했어", "한다", "합니다", "이에", "에도", "에서도", "으로도"
+            )
+
+            val wordCounts = diaryRepository.getAllDiaries()
+                .flatMap { diary ->
+                    diary.content
+                        .split(Regex("[\\s\\p{Punct}.,!?…\\-·。、]+"))
+                        .filter { token -> token.length >= 2 && token !in stopWords }
+                }
+                .groupingBy { it }
+                .eachCount()
+
+            val items = wordCounts.entries
+                .sortedByDescending { it.value }
+                .take(60)
+                .map { (word, count) -> WordCloudItem(word = word, count = count) }
+
+            _uiState.update { it.copy(wordCloudItems = items) }
         }
     }
 

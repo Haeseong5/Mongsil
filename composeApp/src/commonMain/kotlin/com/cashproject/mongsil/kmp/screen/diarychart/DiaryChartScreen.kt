@@ -1,10 +1,11 @@
 package com.cashproject.mongsil.kmp.screen.diarychart
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,23 +18,43 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.cashproject.mongsil.kmp.designsystem.Blue200
 import com.cashproject.mongsil.kmp.designsystem.Gray300
+import com.cashproject.mongsil.kmp.designsystem.Green200
+import com.cashproject.mongsil.kmp.designsystem.Mint200
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.Orange200
+import com.cashproject.mongsil.kmp.designsystem.Pink200
+import com.cashproject.mongsil.kmp.designsystem.Purple200
+import com.cashproject.mongsil.kmp.designsystem.RedOrange200
+import com.cashproject.mongsil.kmp.designsystem.SkyBlue200
+import com.cashproject.mongsil.kmp.designsystem.component.MongsilTopBar
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
+import com.cashproject.mongsil.kmp.screen.diarychart.model.WordCloudItem
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.chart_empty_emoticon
 import mongsil.composeapp.generated.resources.chart_section_emoticon_stats
 import mongsil.composeapp.generated.resources.chart_section_emoticon_top
+import mongsil.composeapp.generated.resources.chart_section_word_cloud
+import mongsil.composeapp.generated.resources.chart_streak_banner
+import mongsil.composeapp.generated.resources.chart_streak_label
+import mongsil.composeapp.generated.resources.chart_word_cloud_empty
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
 import org.jetbrains.compose.resources.painterResource
@@ -47,17 +68,44 @@ fun DiaryChartScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    DiaryChartScreenContent(
+        uiState = uiState,
+        onClose = onClose,
+        onMovePrev = viewModel::moveToPreviousMonth,
+        onMoveNext = viewModel::moveToNextMonth,
+        modifier = Modifier.padding(padding),
+    )
+}
+
+@Composable
+private fun DiaryChartScreenContent(
+    uiState: DiaryChartUiState,
+    onClose: () -> Unit,
+    onMovePrev: () -> Unit,
+    onMoveNext: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MongsilTheme.colorScheme.background)
-            .padding(padding)
     ) {
-        CloseBar(onClose = onClose)
+        MongsilTopBar(
+            leftContent = {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .circularRippleClickable(onClick = onClose),
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "닫기",
+                    tint = MongsilTheme.colorScheme.labelStrong,
+                )
+            }
+        )
         DiaryReportContent(
             uiState = uiState,
-            onMovePrev = viewModel::moveToPreviousMonth,
-            onMoveNext = viewModel::moveToNextMonth,
+            onMovePrev = onMovePrev,
+            onMoveNext = onMoveNext,
         )
     }
 }
@@ -72,6 +120,14 @@ private fun DiaryReportContent(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 40.dp),
     ) {
+        if (uiState.currentStreak >= 2) {
+            item {
+                StreakBanner(
+                    streak = uiState.currentStreak,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+                )
+            }
+        }
         item {
             MonthHeader(
                 year = uiState.year,
@@ -82,6 +138,36 @@ private fun DiaryReportContent(
             )
         }
         emoticonStatSection(items = uiState.items)
+        wordCloudSection(items = uiState.wordCloudItems)
+    }
+}
+
+@Composable
+private fun StreakBanner(
+    streak: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = MongsilTheme.colorScheme.fill100,
+                shape = RoundedCornerShape(16.dp),
+            )
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = stringResource(Res.string.chart_streak_label),
+            style = MongsilTheme.typography.body1Medium,
+            color = MongsilTheme.colorScheme.labelRegular,
+        )
+        Text(
+            text = "${streak}${stringResource(Res.string.chart_streak_banner)}",
+            style = MongsilTheme.typography.heading2,
+            color = MongsilTheme.colorScheme.labelStrong,
+        )
     }
 }
 
@@ -121,24 +207,6 @@ private fun StatSectionHeader(
 }
 
 @Composable
-private fun CloseBar(onClose: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 20.dp),
-        contentAlignment = Alignment.CenterEnd
-    ) {
-        Text(
-            modifier = Modifier.clickable { onClose() },
-            text = "X",
-            style = MongsilTheme.typography.heading1,
-            color = MongsilTheme.colorScheme.labelStrong
-        )
-    }
-}
-
-@Composable
 private fun MonthHeader(
     year: Int,
     month: Int,
@@ -148,8 +216,7 @@ private fun MonthHeader(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -190,11 +257,11 @@ private fun IconArrow(
     Box(
         modifier = Modifier
             .size(40.dp)
-            .clickable(enabled = enabled) { onClick() },
+            .circularRippleClickable(enabled = enabled) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         if (enabled || isBack) {
-            androidx.compose.material3.Icon(
+            Icon(
                 painter = painter,
                 contentDescription = if (isBack) "이전 달" else "다음 달",
                 tint = MongsilTheme.colorScheme.labelStrong
@@ -212,14 +279,28 @@ private fun TopEmoticons(items: List<DiaryChartItem>) {
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEach { item ->
-            AsyncImage(
-                model = item.imageUrl,
-                contentDescription = "이모티콘",
-                modifier = Modifier
-                    .size(92.dp)
-                    .padding(horizontal = 8.dp)
-            )
+            TopEmoticonItem(item = item)
         }
+    }
+}
+
+@Composable
+private fun TopEmoticonItem(item: DiaryChartItem) {
+    Column(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AsyncImage(
+            model = item.imageUrl,
+            contentDescription = item.title,
+            modifier = Modifier.size(92.dp),
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = item.title,
+            style = MongsilTheme.typography.caption1,
+            color = MongsilTheme.colorScheme.labelRegular,
+        )
     }
 }
 
@@ -255,11 +336,22 @@ private fun EmoticonCountRow(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            model = item.imageUrl,
-            contentDescription = "이모티콘",
-            modifier = Modifier.size(64.dp)
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.width(64.dp),
+        ) {
+            AsyncImage(
+                model = item.imageUrl,
+                contentDescription = item.title,
+                modifier = Modifier.size(48.dp),
+            )
+            Text(
+                text = item.title,
+                style = MongsilTheme.typography.caption2,
+                color = MongsilTheme.colorScheme.labelRegular,
+                maxLines = 1,
+            )
+        }
 
         Spacer(modifier = Modifier.width(18.dp))
 
@@ -298,6 +390,200 @@ private fun EmptyMessage() {
             text = stringResource(Res.string.chart_empty_emoticon),
             style = MongsilTheme.typography.heading2,
             color = MongsilTheme.colorScheme.labelDisable
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiaryChartScreenContentEmptyPreview() {
+    MongsilTheme {
+        DiaryChartScreenContent(
+            uiState = DiaryChartUiState(year = 2025, month = 3, items = emptyList()),
+            onClose = {},
+            onMovePrev = {},
+            onMoveNext = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiaryChartScreenContentWithDataPreview() {
+    MongsilTheme {
+        DiaryChartScreenContent(
+            uiState = DiaryChartUiState(
+                year = 2025,
+                month = 3,
+                canMoveNextMonth = false,
+                items = listOf(
+                    DiaryChartItem(
+                        emoticonId = 1,
+                        imageUrl = "",
+                        title = "행복",
+                        count = 10,
+                        barColorHex = "#FFB347"
+                    ),
+                    DiaryChartItem(
+                        emoticonId = 2,
+                        imageUrl = "",
+                        title = "슬픔",
+                        count = 6,
+                        barColorHex = "#87CEEB"
+                    ),
+                    DiaryChartItem(
+                        emoticonId = 3,
+                        imageUrl = "",
+                        title = "평온",
+                        count = 3,
+                        barColorHex = "#90EE90"
+                    ),
+                ),
+            ),
+            onClose = {},
+            onMovePrev = {},
+            onMoveNext = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DiaryChartScreenContentWithStreakPreview() {
+    MongsilTheme {
+        DiaryChartScreenContent(
+            uiState = DiaryChartUiState(
+                year = 2025,
+                month = 3,
+                currentStreak = 7,
+                items = emptyList(),
+            ),
+            onClose = {},
+            onMovePrev = {},
+            onMoveNext = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WordCloudPreview() {
+    MongsilTheme {
+        DiaryChartScreenContent(
+            uiState = DiaryChartUiState(
+                year = 2025,
+                month = 3,
+                items = emptyList(),
+                wordCloudItems = listOf(
+                    WordCloudItem("행복", 15),
+                    WordCloudItem("오늘도", 12),
+                    WordCloudItem("커피", 10),
+                    WordCloudItem("산책", 9),
+                    WordCloudItem("힘들다", 8),
+                    WordCloudItem("날씨", 7),
+                    WordCloudItem("친구", 6),
+                    WordCloudItem("맛있었다", 5),
+                    WordCloudItem("피곤", 5),
+                    WordCloudItem("좋아", 4),
+                    WordCloudItem("하늘", 3),
+                    WordCloudItem("기분", 3),
+                ),
+            ),
+            onClose = {},
+            onMovePrev = {},
+            onMoveNext = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StreakBannerPreview() {
+    MongsilTheme {
+        StreakBanner(
+            streak = 5,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+        )
+    }
+}
+
+private fun LazyListScope.wordCloudSection(items: List<WordCloudItem>) {
+    item {
+        StatSectionHeader(
+            title = stringResource(Res.string.chart_section_word_cloud),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 32.dp, bottom = 16.dp),
+        )
+    }
+    if (items.isEmpty()) {
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = stringResource(Res.string.chart_word_cloud_empty),
+                    style = MongsilTheme.typography.heading2,
+                    color = MongsilTheme.colorScheme.labelDisable,
+                )
+            }
+        }
+        return
+    }
+    item { WordCloudContent(items = items) }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun WordCloudContent(items: List<WordCloudItem>) {
+    val maxCount = items.maxOfOrNull { it.count } ?: 1
+    val minCount = items.minOfOrNull { it.count } ?: 1
+    val countRange = (maxCount - minCount).coerceAtLeast(1).toFloat()
+
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        items.forEach { item ->
+            WordChip(item = item, minCount = minCount, countRange = countRange)
+        }
+    }
+}
+
+private val wordChipColors = listOf(
+    Purple200, Pink200, Blue200, Mint200, Orange200, Green200, RedOrange200, SkyBlue200
+)
+
+@Composable
+private fun WordChip(
+    item: WordCloudItem,
+    minCount: Int,
+    countRange: Float,
+) {
+    val ratio = (item.count - minCount) / countRange
+    val fontSize = (14 + ratio * 18).sp
+    val colorIndex = item.word.hashCode().mod(wordChipColors.size).let {
+        if (it < 0) it + wordChipColors.size else it
+    }
+    val chipColor = wordChipColors[colorIndex]
+
+    Box(
+        modifier = Modifier
+            .background(
+                color = chipColor.copy(alpha = 0.4f + ratio * 0.5f),
+                shape = RoundedCornerShape(999.dp),
+            )
+            .padding(horizontal = 12.dp, vertical = 6.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = item.word,
+            fontSize = fontSize,
+            color = MongsilTheme.colorScheme.labelStrong,
         )
     }
 }

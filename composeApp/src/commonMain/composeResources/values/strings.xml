@@ -18,4 +18,8 @@
     <string name="chart_section_emoticon_top">이달의 감정 Top 3</string>
     <string name="chart_section_emoticon_stats">감정 통계</string>
     <string name="chart_empty_emoticon">추가한 스티커가 없어요</string>
+    <string name="chart_streak_banner">일 연속 기록 중 🔥</string>
+    <string name="chart_streak_label">연속 기록</string>
+    <string name="chart_section_word_cloud">자주 쓴 단어</string>
+    <string name="chart_word_cloud_empty">아직 작성한 일기가 없어요</string>
 </resources>

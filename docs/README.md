@@ -25,6 +25,7 @@ docs/
 |-------------------------------------------------------------------|-------------------|------------|
 | [motivation-reward-ideas.md](features/motivation-reward-ideas.md) | 동기부여 & 보상 기능 아이디어 | 2026-03-08 |
 | [monetization-ideas.md](features/monetization-ideas.md)           | 수익화 아이디어          | 2026-03-08 |
+| [statistics-ideas.md](features/statistics-ideas.md)               | 통계 기능 아이디어        | 2026-03-14 |
 
 ---
 
