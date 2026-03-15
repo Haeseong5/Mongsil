@@ -154,6 +154,10 @@ class DiaryWriteViewModel(
     }
 
     private fun handleEmoticonButtonClick() {
+        firebaseService.logEvent(
+            EVENT_TOOLBAR_CLICKED,
+            mapOf(PARAM_TOOLBAR_ACTION to ACTION_EMOTICON)
+        )
         _uiState.update { it.copy(showEmoticonBottomSheet = true) }
     }
 
@@ -173,6 +177,7 @@ class DiaryWriteViewModel(
 
     private fun handlePhotosSelected(photoUris: List<String>) {
         if (photoUris.isEmpty()) return
+        firebaseService.logEvent(EVENT_TOOLBAR_CLICKED, mapOf(PARAM_TOOLBAR_ACTION to ACTION_PHOTO))
         _uiState.update { state -> state.copy(photoUris = state.photoUris + photoUris) }
         scheduleAutoSave()
     }
@@ -186,6 +191,10 @@ class DiaryWriteViewModel(
     }
 
     private fun handleTextAlignToggle() {
+        firebaseService.logEvent(
+            EVENT_TOOLBAR_CLICKED,
+            mapOf(PARAM_TOOLBAR_ACTION to ACTION_TEXT_ALIGN)
+        )
         _uiState.update { state ->
             val nextAlign = when (state.textAlign) {
                 TextAlign.Start -> TextAlign.Center
@@ -198,6 +207,12 @@ class DiaryWriteViewModel(
     }
 
     private fun handleColorPickerToggle() {
+        if (!_uiState.value.showColorPalette) {
+            firebaseService.logEvent(
+                EVENT_TOOLBAR_CLICKED,
+                mapOf(PARAM_TOOLBAR_ACTION to ACTION_COLOR_PICKER)
+            )
+        }
         _uiState.update { it.copy(showColorPalette = !it.showColorPalette) }
     }
 
@@ -208,6 +223,10 @@ class DiaryWriteViewModel(
 
     @OptIn(ExperimentalTime::class)
     private fun handleInsertCurrentTime() {
+        firebaseService.logEvent(
+            EVENT_TOOLBAR_CLICKED,
+            mapOf(PARAM_TOOLBAR_ACTION to ACTION_INSERT_TIME)
+        )
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val isAm = now.hour < 12
         val displayHour = when {
@@ -217,7 +236,7 @@ class DiaryWriteViewModel(
         }
         val timeText = "${if (isAm) "AM" else "PM"} ${
             displayHour.toString().padStart(2, '0')
-        }:${now.minute.toString().padStart(2, '0')}"
+        }:${now.minute.toString().padStart(2, '0')}" + "\n"
         _uiState.update { state ->
             val newContent =
                 if (state.content.isEmpty()) timeText else "${state.content}\n$timeText"
@@ -398,5 +417,13 @@ class DiaryWriteViewModel(
         const val EVENT_DIARY_CREATED = "diary_created"
         const val PARAM_HAS_PHOTO = "has_photo"
         const val PARAM_EMOTICON_ID = "emoticon_id"
+
+        const val EVENT_TOOLBAR_CLICKED = "diary_toolbar_clicked"
+        const val PARAM_TOOLBAR_ACTION = "action"
+        const val ACTION_EMOTICON = "emoticon"
+        const val ACTION_PHOTO = "photo"
+        const val ACTION_TEXT_ALIGN = "text_align"
+        const val ACTION_COLOR_PICKER = "color_picker"
+        const val ACTION_INSERT_TIME = "insert_time"
     }
 }

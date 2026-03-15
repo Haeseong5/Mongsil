@@ -42,6 +42,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -429,9 +431,24 @@ private fun DiaryTextField(
     textColor: Color,
     modifier: Modifier = Modifier
 ) {
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(content)) }
+
+    // ViewModel에서 content가 외부에서 변경된 경우(시간 삽입 등) 커서를 끝으로 이동
+    LaunchedEffect(content) {
+        if (textFieldValue.text != content) {
+            textFieldValue = TextFieldValue(
+                text = content,
+                selection = TextRange(content.length)
+            )
+        }
+    }
+
     BasicTextField(
-        value = content,
-        onValueChange = onContentChange,
+        value = textFieldValue,
+        onValueChange = { newValue ->
+            textFieldValue = newValue
+            onContentChange(newValue.text)
+        },
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
