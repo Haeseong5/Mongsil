@@ -53,8 +53,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
+import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import com.cashproject.mongsil.kmp.model.Emoticon
+import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BackgroundColorPalette
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ColorPalette
@@ -64,6 +66,7 @@ import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_plus
 import mongsil.composeapp.generated.resources.ic_trash
@@ -409,8 +412,8 @@ private fun EmoticonButton(
         contentAlignment = Alignment.Center
     ) {
         if (selectedEmoticon != null) {
-            AsyncImage(
-                model = selectedEmoticon.imageUrl,
+            EmoticonImage(
+                image = selectedEmoticon.image,
                 contentDescription = selectedEmoticon.title,
                 modifier = Modifier.size(40.dp)
             )
@@ -604,7 +607,7 @@ private fun DiaryWriteScreenContentWithEmoticonPreview() {
                 selectedEmoticon = Emoticon(
                     id = 1,
                     title = "행복",
-                    imageUrl = "https://example.com/happy.png",
+                    image = ImageResource.Local(Res.drawable.emoticon_01),
                     textColor = "#333333",
                     backgroundColor = "#FFE5E5"
                 ),

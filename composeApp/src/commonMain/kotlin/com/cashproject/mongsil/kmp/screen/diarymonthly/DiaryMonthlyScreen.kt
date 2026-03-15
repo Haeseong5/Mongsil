@@ -263,7 +263,7 @@ private fun DiaryList(
     ) {
         items(items = diaries, key = { it.id }) { item ->
             DiaryCard(
-                emoticonUrl = item.emoticonImageUrl,
+                emoticonImage = item.emoticonImage,
                 content = item.content,
                 date = item.date,
                 onClick = { onDiaryClick(item.year, item.month, item.day) },
@@ -323,7 +323,7 @@ private val previewDiaries = listOf(
         month = 3,
         day = 14,
         content = "오늘은 날씨가 맑고 기분이 좋았다. 오랜만에 공원을 산책하며 봄 기운을 느꼈다.",
-        emoticonImageUrl = ""
+        emoticonImage = null
     ),
     DiaryMonthlyItem(
         id = 2L,
@@ -331,7 +331,7 @@ private val previewDiaries = listOf(
         month = 3,
         day = 10,
         content = "바쁜 하루였지만 저녁에 따뜻한 차 한 잔으로 마무리했다.",
-        emoticonImageUrl = ""
+        emoticonImage = null
     ),
     DiaryMonthlyItem(
         id = 3L,
@@ -339,7 +339,7 @@ private val previewDiaries = listOf(
         month = 3,
         day = 5,
         content = "친구와 오랜만에 만나서 맛있는 밥을 먹었다. 행복한 시간이었다.",
-        emoticonImageUrl = ""
+        emoticonImage = null
     ),
 )
 

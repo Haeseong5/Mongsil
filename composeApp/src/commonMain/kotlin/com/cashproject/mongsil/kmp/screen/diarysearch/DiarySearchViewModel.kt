@@ -44,10 +44,9 @@ class DiarySearchViewModel(
                     month = diary.month.toInt(),
                     day = diary.day.toInt(),
                     content = diary.content,
-                    emoticonImageUrl = diary.emoticonId
+                    emoticonImage = diary.emoticonId
                         ?.toInt()
-                        ?.let { emoticonMap[it]?.imageUrl }
-                        .orEmpty()
+                        ?.let { emoticonMap[it]?.image }
                 )
             }
 

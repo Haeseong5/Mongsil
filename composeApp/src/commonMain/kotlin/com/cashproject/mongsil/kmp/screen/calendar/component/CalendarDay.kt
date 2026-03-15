@@ -17,11 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
 
 /**
  * 캘린더 개별 날짜 셀
@@ -29,7 +32,7 @@ import kotlinx.datetime.LocalDate
  * @param date 날짜
  * @param isToday 오늘 날짜 여부
  * @param isRecord 일기 기록 여부
- * @param emoticonImageUrl 이모티콘 이미지 URL
+ * @param emoticonImage 이모티콘 이미지 리소스
  * @param onClick 날짜 클릭 콜백
  */
 @Composable
@@ -38,7 +41,7 @@ fun BoxScope.CalendarDay(
     date: LocalDate,
     isToday: Boolean,
     isRecord: Boolean,
-    emoticonImageUrl: String,
+    emoticonImage: ImageResource?,
     isFuture: Boolean,
     onClick: () -> Unit,
 ) {
@@ -58,7 +61,7 @@ fun BoxScope.CalendarDay(
         contentAlignment = Alignment.Center
     ) {
         // 날짜 텍스트 (기록이 없을 때만 표시)
-        if (!isRecord || emoticonImageUrl.isEmpty()) {
+        if (!isRecord || emoticonImage == null) {
             Text(
                 text = date.dayOfMonth.toString(),
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
@@ -72,14 +75,11 @@ fun BoxScope.CalendarDay(
         }
 
         // 감정 이모티콘 이미지
-        if (emoticonImageUrl.isNotEmpty()) {
-            AsyncImage(
-                model = emoticonImageUrl,
+        if (emoticonImage != null) {
+            EmoticonImage(
+                image = emoticonImage,
                 contentDescription = "감정 이모티콘",
                 modifier = Modifier.size(36.dp),
-                onError = { error ->
-                    println("이미지 로딩 실패: ${error.result.throwable.message}")
-                }
             )
         }
     }
@@ -102,7 +102,7 @@ internal fun CalendarDayPreview() {
                 isToday = false,
                 isRecord = false,
                 isFuture = false,
-                emoticonImageUrl = "",
+                emoticonImage = null,
                 onClick = {}
             )
         }
@@ -124,7 +124,7 @@ internal fun CalendarDayTodayPreview() {
                 isToday = true,
                 isRecord = false,
                 isFuture = false,
-                emoticonImageUrl = "",
+                emoticonImage = null,
                 onClick = {}
             )
         }
@@ -146,7 +146,7 @@ internal fun CalendarDaySundayPreview() {
                 isToday = false,
                 isRecord = false,
                 isFuture = false,
-                emoticonImageUrl = "",
+                emoticonImage = null,
                 onClick = {}
             )
         }
@@ -168,7 +168,7 @@ internal fun CalendarDayWithEmoticonPreview() {
                 isToday = false,
                 isRecord = true,
                 isFuture = false,
-                emoticonImageUrl = "https://firebasestorage.googleapis.com/v0/b/mongsil-8dc44.appspot.com/o/emoticons%2Femoticon_01.png?alt=media&token=a58f5622-6568-49a4-9484-90d5cce02316",
+                emoticonImage = ImageResource.Local(Res.drawable.emoticon_01),
                 onClick = {}
             )
         }
@@ -190,7 +190,7 @@ internal fun CalendarDayFuturePreview() {
                 isToday = false,
                 isRecord = false,
                 isFuture = true,
-                emoticonImageUrl = "",
+                emoticonImage = null,
                 onClick = {}
             )
         }

@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.diarymonthly.model
 
 import com.cashproject.mongsil.kmp.core.data.Date
+import com.cashproject.mongsil.kmp.model.ImageResource
 
 data class DiaryMonthlyUiState(
     val year: Int,
@@ -33,7 +34,7 @@ data class DiaryMonthlyItem(
     val month: Int,
     val day: Int,
     val content: String,
-    val emoticonImageUrl: String,
+    val emoticonImage: ImageResource?,
 ) {
     val date: Date = Date(year, month, day)
 }

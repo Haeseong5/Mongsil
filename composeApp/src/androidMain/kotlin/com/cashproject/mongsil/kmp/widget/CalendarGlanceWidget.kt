@@ -41,6 +41,7 @@ import com.cashproject.mongsil.kmp.MainActivity
 import com.cashproject.mongsil.kmp.R
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
+import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
@@ -73,8 +74,8 @@ class CalendarGlanceWidget : GlanceAppWidget() {
                 val bitmaps = mutableMapOf<Int, Bitmap>()
                 for (diary in diaries) {
                     val emoticonId = diary.emoticonId ?: continue
-                    val imageUrl = emoticons[emoticonId]?.imageUrl ?: continue
-                    val bitmap = loadBitmap(context, imageUrl) ?: continue
+                    val image = emoticons[emoticonId]?.image ?: continue
+                    val bitmap = loadBitmapFromImageResource(context, image) ?: continue
                     bitmaps[diary.day] = bitmap
                 }
                 Pair(recorded, bitmaps as Map<Int, Bitmap>)
@@ -90,13 +91,22 @@ class CalendarGlanceWidget : GlanceAppWidget() {
         }
     }
 
-    private suspend fun loadBitmap(context: Context, url: String): Bitmap? = runCatching {
+    private suspend fun loadBitmapFromImageResource(context: Context, resource: ImageResource): Bitmap? =
+        when (resource) {
+            is ImageResource.Url -> loadBitmapFromUrl(context, resource.url)
+            is ImageResource.Local -> runCatching {
+                context.assets.open(resource.assetPath).use(android.graphics.BitmapFactory::decodeStream)
+            }.getOrNull()
+        }
+
+    private suspend fun loadBitmapFromUrl(context: Context, url: String): Bitmap? = runCatching {
         val request = ImageRequest.Builder(context)
             .data(url)
             .allowHardware(false)
             .build()
         (context.imageLoader.execute(request) as? SuccessResult)?.image?.toBitmap()
     }.getOrNull()
+
 }
 
 @SuppressLint("RestrictedApi")

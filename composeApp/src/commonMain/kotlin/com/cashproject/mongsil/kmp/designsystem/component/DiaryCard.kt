@@ -14,17 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.core.data.Date
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 
 
 @Composable
 fun DiaryCard(
-    emoticonUrl: String,
+    emoticonImage: ImageResource?,
     date: Date,
     content: String,
     onClick: () -> Unit,
@@ -45,9 +45,9 @@ fun DiaryCard(
                 .padding(horizontal = 20.dp, vertical = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (emoticonUrl.isNotEmpty()) {
-                AsyncImage(
-                    model = emoticonUrl,
+            if (emoticonImage != null) {
+                EmoticonImage(
+                    image = emoticonImage,
                     contentDescription = "감정 이모티콘",
                     modifier = Modifier.size(100.dp)
                 )
@@ -97,7 +97,7 @@ fun formatDate(year: Int, month: Int, day: Int): String {
 private fun DiaryCardPreview() {
     MongsilTheme {
         DiaryCard(
-            emoticonUrl = "",
+            emoticonImage = null,
             date = Date(2023, 10, 10),
             content = "오늘은 행복한 하루였어요. 내일도 행복한 하루가 되길 바랄게요.",
             onClick = {}

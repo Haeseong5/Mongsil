@@ -170,10 +170,9 @@ class DiaryListViewModel(
             month = diary.month,
             day = diary.day,
             content = diary.content,
-            emoticonImageUrl = diary.emoticonId
+            emoticonImage = diary.emoticonId
                 ?.toInt()
-                ?.let { emoticonMap[it]?.imageUrl }
-                .orEmpty(),
+                ?.let { emoticonMap[it]?.image },
         )
 
     private fun canMoveNextMonth(year: Int, month: Int): Boolean =

@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
 import android.os.Build
 import android.os.Environment
+import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -46,7 +47,7 @@ class AndroidPdfExportService(
                 val startProgress = 0.25f + (index.toFloat() / entries.size.toFloat()) * 0.65f
                 onProgress(startProgress, "${index + 1}/${entries.size} 페이지 내용을 그리는 중")
 
-                val emoticonBitmap = entry.emoticonImageUrl?.let(::loadBitmap)
+                val emoticonBitmap = entry.emoticonImage?.let(::loadBitmapFromImageResource)
                 val photoBitmap = entry.photoPath?.let(::loadBitmap)
                 val sectionHeight = estimateSectionHeight(
                     pageWidth = pageWidth.toFloat(),
@@ -282,6 +283,15 @@ class AndroidPdfExportService(
         }
 
         return result.filter { it.isNotEmpty() }.ifEmpty { listOf("") }
+    }
+
+    private fun loadBitmapFromImageResource(resource: ImageResource): Bitmap? = when (resource) {
+        is ImageResource.Url -> runCatching {
+            URL(resource.url).openStream().use(BitmapFactory::decodeStream)
+        }.getOrNull()
+        is ImageResource.Local -> runCatching {
+            context.assets.open(resource.assetPath).use(BitmapFactory::decodeStream)
+        }.getOrNull()
     }
 
     private fun loadBitmap(pathOrUrl: String): Bitmap? = runCatching {

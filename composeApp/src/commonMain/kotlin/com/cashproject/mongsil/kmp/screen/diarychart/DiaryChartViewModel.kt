@@ -90,7 +90,7 @@ class DiaryChartViewModel(
                     val emoticon = emoticons[emoticonId] ?: return@mapNotNull null
                     DiaryChartItem(
                         emoticonId = emoticonId,
-                        imageUrl = emoticon.imageUrl,
+                        image = emoticon.image,
                         title = emoticon.title,
                         count = count,
                         barColorHex = emoticon.backgroundColor

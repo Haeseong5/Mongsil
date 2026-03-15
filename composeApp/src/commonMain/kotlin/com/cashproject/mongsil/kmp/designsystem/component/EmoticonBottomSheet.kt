@@ -37,10 +37,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.model.Emoticon
+import com.cashproject.mongsil.kmp.model.ImageResource
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.emoticon_bottom_sheet_subtitle
 import mongsil.composeapp.generated.resources.emoticon_bottom_sheet_title
 import mongsil.composeapp.generated.resources.ic_lock
@@ -187,9 +188,9 @@ fun EmoticonItem(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AsyncImage(
+            EmoticonImage(
                 modifier = Modifier.size(40.dp),
-                model = emoticon.imageUrl,
+                image = emoticon.image,
                 contentDescription = emoticon.title
             )
             VerticalSpacer(4.dp)
@@ -259,7 +260,7 @@ private fun EmoticonItemPreview() {
             emoticon = Emoticon(
                 id = 1,
                 title = "행복",
-                imageUrl = "https://example.com/happy.png",
+                image = ImageResource.Local(Res.drawable.emoticon_01),
                 textColor = "#333333",
                 backgroundColor = "#FFE5E5"
             ),
@@ -274,10 +275,10 @@ private fun EmoticonSelectionBottomSheetContentPreview() {
     MongsilTheme {
         EmoticonSelectionBottomSheetContent(
             emoticons = listOf(
-                Emoticon(1, "행복", "url", "#333333", "#FFE5E5"),
-                Emoticon(2, "슬픔", "url", "#333333", "#E5F0FF"),
-                Emoticon(3, "화남", "url", "#333333", "#FFE5CC"),
-                Emoticon(4, "평온", "url", "#333333", "#E5FFE5"),
+                Emoticon(1, "행복", ImageResource.Local(Res.drawable.emoticon_01), "#333333", "#FFE5E5"),
+                Emoticon(2, "슬픔", ImageResource.Local(Res.drawable.emoticon_01), "#333333", "#E5F0FF"),
+                Emoticon(3, "화남", ImageResource.Local(Res.drawable.emoticon_01), "#333333", "#FFE5CC"),
+                Emoticon(4, "평온", ImageResource.Local(Res.drawable.emoticon_01), "#333333", "#E5FFE5"),
             )
         )
     }

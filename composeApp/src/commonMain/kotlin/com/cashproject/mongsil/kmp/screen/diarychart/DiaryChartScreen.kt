@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import com.cashproject.mongsil.kmp.designsystem.Blue200
 import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.Green200
@@ -42,13 +41,16 @@ import com.cashproject.mongsil.kmp.designsystem.Pink200
 import com.cashproject.mongsil.kmp.designsystem.Purple200
 import com.cashproject.mongsil.kmp.designsystem.RedOrange200
 import com.cashproject.mongsil.kmp.designsystem.SkyBlue200
+import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.MongsilTopBar
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
 import com.cashproject.mongsil.kmp.screen.diarychart.model.WordCloudItem
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.chart_empty_emoticon
+import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.chart_section_emoticon_stats
 import mongsil.composeapp.generated.resources.chart_section_emoticon_top
 import mongsil.composeapp.generated.resources.chart_section_word_cloud
@@ -284,8 +286,8 @@ private fun TopEmoticonItem(item: DiaryChartItem) {
         modifier = Modifier.padding(horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
-            model = item.imageUrl,
+        EmoticonImage(
+            image = item.image,
             contentDescription = item.title,
             modifier = Modifier.size(92.dp),
         )
@@ -334,8 +336,8 @@ private fun EmoticonCountRow(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.width(64.dp),
         ) {
-            AsyncImage(
-                model = item.imageUrl,
+            EmoticonImage(
+                image = item.image,
                 contentDescription = item.title,
                 modifier = Modifier.size(48.dp),
             )
@@ -413,21 +415,21 @@ private fun DiaryChartScreenContentWithDataPreview() {
                 items = listOf(
                     DiaryChartItem(
                         emoticonId = 1,
-                        imageUrl = "",
+                        image = ImageResource.Local(Res.drawable.emoticon_01),
                         title = "행복",
                         count = 10,
                         barColorHex = "#FFB347"
                     ),
                     DiaryChartItem(
                         emoticonId = 2,
-                        imageUrl = "",
+                        image = ImageResource.Local(Res.drawable.emoticon_01),
                         title = "슬픔",
                         count = 6,
                         barColorHex = "#87CEEB"
                     ),
                     DiaryChartItem(
                         emoticonId = 3,
-                        imageUrl = "",
+                        image = ImageResource.Local(Res.drawable.emoticon_01),
                         title = "평온",
                         count = 3,
                         barColorHex = "#90EE90"

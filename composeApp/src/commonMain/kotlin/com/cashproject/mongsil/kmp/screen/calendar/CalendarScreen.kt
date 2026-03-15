@@ -24,6 +24,9 @@ import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
+import com.cashproject.mongsil.kmp.model.ImageResource
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
 import com.cashproject.mongsil.kmp.screen.calendar.component.DayPickerDialog
@@ -207,8 +210,7 @@ fun CalendarScreenContent(
                                     date = day.date,
                                     isToday = day.date == today,
                                     isRecord = record != null,
-                                    emoticonImageUrl = emoticonMap[record?.emotionId]?.imageUrl
-                                        ?: "",
+                                    emoticonImage = emoticonMap[record?.emotionId]?.image,
                                     isFuture = day.date > today,
                                     onClick = { onDateClick(day.date) }
                                 )
@@ -250,14 +252,14 @@ private val previewEmoticons = listOf(
     Emoticon(
         id = 1,
         title = "행복",
-        imageUrl = "",
+        image = ImageResource.Local(Res.drawable.emoticon_01),
         textColor = "#000000",
         backgroundColor = "#FFFFFF"
     ),
     Emoticon(
         id = 2,
         title = "슬픔",
-        imageUrl = "",
+        image = ImageResource.Local(Res.drawable.emoticon_01),
         textColor = "#000000",
         backgroundColor = "#FFFFFF"
     ),

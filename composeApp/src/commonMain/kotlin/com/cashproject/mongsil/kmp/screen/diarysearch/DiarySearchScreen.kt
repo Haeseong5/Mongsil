@@ -101,7 +101,7 @@ private fun DiarySearchScreenContent(
                         key = { it.id }
                     ) { diary ->
                         DiaryCard(
-                            emoticonUrl = diary.emoticonImageUrl,
+                            emoticonImage = diary.emoticonImage,
                             content = diary.content,
                             date = diary.date,
                             onClick = {
@@ -250,7 +250,7 @@ private fun DiarySearchScreenContentWithResultsPreview() {
                         month = 3,
                         day = 9,
                         content = "오늘은 정말 행복한 하루였다. 친구들과 맛있는 밥을 먹고 즐거운 시간을 보냈다.",
-                        emoticonImageUrl = ""
+                        emoticonImage = null
                     ),
                     DiarySearchItem(
                         id = 2L,
@@ -258,7 +258,7 @@ private fun DiarySearchScreenContentWithResultsPreview() {
                         month = 2,
                         day = 14,
                         content = "행복한 발렌타인데이. 소소한 일상이 행복임을 느꼈다.",
-                        emoticonImageUrl = ""
+                        emoticonImage = null
                     ),
                 )
             ),

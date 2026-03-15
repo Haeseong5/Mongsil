@@ -51,8 +51,8 @@ class PdfExportViewModel(
                         emoticonTitle = diary.emoticonId
                             ?.let { emoticons[it]?.title }
                             ?: "기록 없음",
-                        emoticonImageUrl = diary.emoticonId
-                            ?.let { emoticons[it]?.imageUrl },
+                        emoticonImage = diary.emoticonId
+                            ?.let { emoticons[it]?.image },
                         content = diary.content,
                         photoPath = diary.photoUri,
                     )
