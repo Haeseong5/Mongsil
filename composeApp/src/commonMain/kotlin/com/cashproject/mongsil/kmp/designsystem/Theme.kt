@@ -9,7 +9,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.Density
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.gamja_flower_regular
 import org.jetbrains.compose.resources.Font
@@ -24,8 +26,15 @@ fun MongsilTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val density = LocalDensity.current
+
     CompositionLocalProvider(
         LocalDarkTheme provides darkTheme,
+        LocalAppFontScale provides fontScale,
+        LocalDensity provides Density(
+            density = density.density,
+            fontScale = 1f
+        ),
         LocalColorScheme provides if (darkTheme) {
             MongsilColorScheme.darkColorScheme
         } else {
@@ -59,3 +68,4 @@ object MongsilTheme {
 
 
 val LocalColorScheme = staticCompositionLocalOf { MongsilColorScheme.lightColorScheme }
+val LocalAppFontScale = staticCompositionLocalOf { 1f }
