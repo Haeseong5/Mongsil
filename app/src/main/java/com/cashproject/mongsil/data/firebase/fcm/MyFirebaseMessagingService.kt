@@ -143,7 +143,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         builder
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.emoticon_01_happy))
+            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.emoticon_01))
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)

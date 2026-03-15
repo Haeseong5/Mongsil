@@ -3,7 +3,13 @@ package com.cashproject.mongsil.kmp.core.data
 import com.cashproject.mongsil.kmp.core.data.datasource.DiaryLocalDataSource
 import com.cashproject.mongsil.kmp.database.entity.DiaryEntity
 import com.cashproject.mongsil.kmp.model.Emoticon
+import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.coroutines.flow.Flow
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
+import mongsil.composeapp.generated.resources.emoticon_02
+import mongsil.composeapp.generated.resources.emoticon_03
+import mongsil.composeapp.generated.resources.emoticon_04
 
 class DiaryRepository(private val localDataSource: DiaryLocalDataSource) {
 
@@ -51,9 +57,9 @@ class DiaryRepository(private val localDataSource: DiaryLocalDataSource) {
 
     // TODO: 실제 이모티콘은 EmoticonRepository에서 가져와야 합니다.
     suspend fun getEmoticons(): List<Emoticon> = listOf(
-        Emoticon(1, "행복", "https://example.com/happy.png", "#333333", "#FFE5E5"),
-        Emoticon(2, "슬픔", "https://example.com/sad.png", "#333333", "#E5F0FF"),
-        Emoticon(3, "화남", "https://example.com/angry.png", "#333333", "#FFE5CC"),
-        Emoticon(4, "평온", "https://example.com/calm.png", "#333333", "#E5FFE5"),
+        Emoticon(1, "행복", ImageResource.Local(Res.drawable.emoticon_01), "#333333", "#FFE5E5"),
+        Emoticon(2, "슬픔", ImageResource.Local(Res.drawable.emoticon_02), "#333333", "#E5F0FF"),
+        Emoticon(3, "화남", ImageResource.Local(Res.drawable.emoticon_03), "#333333", "#FFE5CC"),
+        Emoticon(4, "평온", ImageResource.Local(Res.drawable.emoticon_04), "#333333", "#E5FFE5"),
     )
 }

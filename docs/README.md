@@ -26,6 +26,7 @@ docs/
 | [motivation-reward-ideas.md](features/motivation-reward-ideas.md) | 동기부여 & 보상 기능 아이디어 | 2026-03-08 |
 | [monetization-ideas.md](features/monetization-ideas.md)           | 수익화 아이디어          | 2026-03-08 |
 | [statistics-ideas.md](features/statistics-ideas.md)               | 통계 기능 아이디어        | 2026-03-14 |
+| [ai-diary-feedback.md](features/ai-diary-feedback.md)             | AI 일기 피드백 기능      | 2026-03-16 |
 
 ---
 
