@@ -77,7 +77,7 @@ fun SettingScreen(
             SettingItem(
                 icon = Res.drawable.ic_shopping_bag,
                 label = "몽실 스토어",
-                onClick = onNavigateToMongsilStore
+                onClick = { viewModel.logMenuClick("store"); onNavigateToMongsilStore() }
             )
 
             HorizontalDivider(
@@ -98,13 +98,13 @@ fun SettingScreen(
             SettingItem(
                 icon = Res.drawable.ic_menu,
                 label = "테마 설정",
-                onClick = onNavigateToThemeSetting
+                onClick = { viewModel.logMenuClick("theme"); onNavigateToThemeSetting() }
             )
 
             SettingItem(
                 icon = Res.drawable.ic_archive,
                 label = "글자 스타일",
-                onClick = onNavigateToFontStyle
+                onClick = { viewModel.logMenuClick("font_style"); onNavigateToFontStyle() }
             )
 
             HorizontalDivider(
@@ -116,25 +116,25 @@ fun SettingScreen(
             SettingItem(
                 icon = Res.drawable.ic_lock,
                 label = "화면 잠금",
-                onClick = onNavigateToScreenLock
+                onClick = { viewModel.logMenuClick("screen_lock"); onNavigateToScreenLock() }
             )
 
             SettingItem(
                 icon = Res.drawable.ic_archive,
                 label = "백업/복원",
-                onClick = onNavigateToBackupRestore
+                onClick = { viewModel.logMenuClick("backup_restore"); onNavigateToBackupRestore() }
             )
 
             SettingItem(
                 icon = Res.drawable.ic_upload,
                 label = "PDF 내보내기",
-                onClick = onNavigateToPdfExport
+                onClick = { viewModel.logMenuClick("pdf_export"); onNavigateToPdfExport() }
             )
 
             SettingItem(
                 icon = Res.drawable.ic_language,
                 label = "언어 설정",
-                onClick = onNavigateToLanguageSetting
+                onClick = { viewModel.logMenuClick("language"); onNavigateToLanguageSetting() }
             )
 
             HorizontalDivider(
@@ -146,7 +146,7 @@ fun SettingScreen(
             SettingItem(
                 icon = Res.drawable.ic_menu,
                 label = "앱 평가하기",
-                onClick = onNavigateToAppReview
+                onClick = { viewModel.logMenuClick("app_review"); onNavigateToAppReview() }
             )
         }
     }
