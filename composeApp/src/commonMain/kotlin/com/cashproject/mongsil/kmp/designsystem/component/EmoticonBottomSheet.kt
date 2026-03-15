@@ -24,8 +24,14 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -51,7 +57,7 @@ fun EmoticonBottomSheet(
     onEmoticonSelected: (Emoticon) -> Unit,
     onPremiumLocked: (Emoticon) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
     )
 ) {
     ModalBottomSheet(
@@ -96,6 +102,17 @@ fun EmoticonSelectionBottomSheetContent(
     onPremiumLocked: (Emoticon) -> Unit = {},
 ) {
     val isSmallDevice = true
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset = available
+
+            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity = available
+        }
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -124,6 +141,7 @@ fun EmoticonSelectionBottomSheetContent(
 
         LazyVerticalGrid(
             state = listState,
+            modifier = Modifier.nestedScroll(nestedScrollConnection),
             contentPadding = PaddingValues(
                 horizontal = if (isSmallDevice) 16.dp else 24.dp,
                 vertical = 16.dp
@@ -170,7 +188,7 @@ fun EmoticonItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                modifier = Modifier.size(60.dp),
+                modifier = Modifier.size(40.dp),
                 model = emoticon.imageUrl,
                 contentDescription = emoticon.title
             )
