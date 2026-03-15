@@ -2,10 +2,7 @@ package com.cashproject.mongsil.kmp.core.data
 
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
-import com.cashproject.mongsil.kmp.network.api.EmoticonApi
 import com.cashproject.mongsil.kmp.network.model.EmoticonResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.emoticon_02
@@ -30,26 +27,15 @@ private const val COMPOSE_RESOURCES_BASE =
  * 감정 이모티콘 데이터를 관리하는 Repository
  * 이미지는 로컬 DrawableResource를 사용하고, 메타데이터(title, color)는 서버에서 받아옵니다.
  */
-class EmoticonRepository(
-    private val emoticonApi: EmoticonApi,
-) {
+class EmoticonRepository() {
 
     /**
      * 모든 이모티콘 목록 조회
      * API 호출이 실패하면 기본 데이터를 반환합니다.
      */
-    suspend fun getEmoticons(): Result<List<Emoticon>> =
-        withContext(Dispatchers.Default) {
-            val result = emoticonApi.getEmoticons()
-
-            if (result.isFailure) {
-                println("API 호출 실패, 기본 데이터 사용: ${result.exceptionOrNull()?.message}")
-                Result.success(getDefaultEmoticons())
-            } else {
-                Result.success(result.getOrNull()!!.map { it.toEmoticon() })
-            }
-        }
-
+    fun getEmoticons(): Result<List<Emoticon>> {
+        return Result.success(getDefaultEmoticons())
+    }
     fun getDefaultEmoticons(): List<Emoticon> = listOf(
         Emoticon(id = 0,  title = "행복",  image = localImage(1,  Res.drawable.emoticon_01), textColor = "#dcc75a", backgroundColor = "#fff9da"),
         Emoticon(id = 1,  title = "기쁨",  image = localImage(2,  Res.drawable.emoticon_02), textColor = "#db8fbd", backgroundColor = "#ffecf7"),
