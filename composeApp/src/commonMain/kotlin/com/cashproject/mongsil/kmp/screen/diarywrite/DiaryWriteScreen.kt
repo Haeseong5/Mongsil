@@ -65,12 +65,22 @@ import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.day_of_week_friday
+import mongsil.composeapp.generated.resources.day_of_week_monday
+import mongsil.composeapp.generated.resources.day_of_week_saturday
+import mongsil.composeapp.generated.resources.day_of_week_sunday
+import mongsil.composeapp.generated.resources.day_of_week_thursday
+import mongsil.composeapp.generated.resources.day_of_week_tuesday
+import mongsil.composeapp.generated.resources.day_of_week_wednesday
 import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_plus
 import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 /**
@@ -530,23 +540,16 @@ private fun AdLoadingDialog() {
 }
 
 // 요일 텍스트 반환
+@Composable
 private fun getDayOfWeekText(year: Int, month: Int, day: Int): String {
-    // 간단한 요일 계산 (Zeller's congruence 알고리즘)
-    val adjustedMonth = if (month < 3) month + 12 else month
-    val adjustedYear = if (month < 3) year - 1 else year
-    val k = adjustedYear % 100
-    val j = adjustedYear / 100
-    val h = (day + (13 * (adjustedMonth + 1) / 5) + k + k / 4 + j / 4 - 2 * j) % 7
-
-    return when ((h + 6) % 7) {
-        0 -> "월요일"
-        1 -> "화요일"
-        2 -> "수요일"
-        3 -> "목요일"
-        4 -> "금요일"
-        5 -> "토요일"
-        6 -> "일요일"
-        else -> ""
+    return when (LocalDate(year, month, day).dayOfWeek) {
+        DayOfWeek.MONDAY -> stringResource(Res.string.day_of_week_monday)
+        DayOfWeek.TUESDAY -> stringResource(Res.string.day_of_week_tuesday)
+        DayOfWeek.WEDNESDAY -> stringResource(Res.string.day_of_week_wednesday)
+        DayOfWeek.THURSDAY -> stringResource(Res.string.day_of_week_thursday)
+        DayOfWeek.FRIDAY -> stringResource(Res.string.day_of_week_friday)
+        DayOfWeek.SATURDAY -> stringResource(Res.string.day_of_week_saturday)
+        DayOfWeek.SUNDAY -> stringResource(Res.string.day_of_week_sunday)
     }
 }
 

@@ -23,4 +23,11 @@
     <string name="chart_word_cloud_empty">아직 작성한 일기가 없어요</string>
     <string name="background_color_picker">배경 색상 선택</string>
     <string name="background_color_none">배경 없음</string>
+    <string name="day_of_week_monday">월요일</string>
+    <string name="day_of_week_tuesday">화요일</string>
+    <string name="day_of_week_wednesday">수요일</string>
+    <string name="day_of_week_thursday">목요일</string>
+    <string name="day_of_week_friday">금요일</string>
+    <string name="day_of_week_saturday">토요일</string>
+    <string name="day_of_week_sunday">일요일</string>
 </resources>
