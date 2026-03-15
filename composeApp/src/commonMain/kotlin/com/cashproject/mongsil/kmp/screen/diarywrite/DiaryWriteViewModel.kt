@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
+import com.cashproject.mongsil.kmp.firebase.FirebaseService
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
@@ -38,6 +39,7 @@ class DiaryWriteViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
     private val localPreferences: LocalPreferences,
+    private val firebaseService: FirebaseService,
     year: Int,
     month: Int,
     day: Int
@@ -321,6 +323,15 @@ class DiaryWriteViewModel(
 
         result.fold(
             onSuccess = {
+                if (!state.isExistingDiary) {
+                    firebaseService.logEvent(
+                        name = EVENT_DIARY_CREATED,
+                        params = mapOf(
+                            PARAM_HAS_PHOTO to (state.photoUris.isNotEmpty()).toString(),
+                            PARAM_EMOTICON_ID to (state.selectedEmoticon?.id?.toString() ?: "none"),
+                        )
+                    )
+                }
                 _uiState.update { s ->
                     s.copy(
                         isSaving = false,
@@ -384,5 +395,8 @@ class DiaryWriteViewModel(
         const val SEPARATOR = "||"
         const val KEY_UNLOCKED_PREMIUMS = "unlocked_premium_emoticon_ids"
         const val AUTO_SAVE_DELAY_MS = 1500L
+        const val EVENT_DIARY_CREATED = "diary_created"
+        const val PARAM_HAS_PHOTO = "has_photo"
+        const val PARAM_EMOTICON_ID = "emoticon_id"
     }
 }

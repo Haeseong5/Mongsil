@@ -16,6 +16,7 @@ internal val diaryModule = module {
             diaryRepository = get(),
             emoticonRepository = get(),
             localPreferences = get { parametersOf("diary_write_prefs") },
+            firebaseService = get(),
             year = year,
             month = month,
             day = day

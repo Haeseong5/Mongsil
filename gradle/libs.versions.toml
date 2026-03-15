@@ -60,6 +60,7 @@ googleBilling = "7.1.1"
 firebaseBom = "34.5.0"
 googleServicesVersion = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.6"
+gitliveFirebase = "2.1.0"
 
 # RxJava
 rxjava2 = "2.2.21"
@@ -195,6 +196,10 @@ firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config" 
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics" }
+
+# GitLive Firebase KMP
+gitlive-firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics", version.ref = "gitliveFirebase" }
+gitlive-firebase-crashlytics = { group = "dev.gitlive", name = "firebase-crashlytics", version.ref = "gitliveFirebase" }
 
 # Third-party
 compose-fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version = "1.0.4" }

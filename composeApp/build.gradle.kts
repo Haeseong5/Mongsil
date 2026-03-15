@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.sqldelight)
     id("com.android.application")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 kotlin {
     androidTarget()
@@ -55,6 +57,10 @@ kotlin {
 
             // AdMob
             implementation(libs.google.ads)
+
+            // Firebase (GitLive KMP)
+            implementation(libs.gitlive.firebase.analytics)
+            implementation(libs.gitlive.firebase.crashlytics)
         }
 
         iosMain.dependencies {

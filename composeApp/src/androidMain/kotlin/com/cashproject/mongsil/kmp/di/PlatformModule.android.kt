@@ -14,6 +14,8 @@ import com.cashproject.mongsil.kmp.screen.setting.AndroidDiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.DiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.AndroidPdfExportService
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.PdfExportService
+import com.cashproject.mongsil.kmp.firebase.FirebaseService
+import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.AndroidNativeScreenLockAuthenticator
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.CurrentActivityHolder
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.NativeScreenLockAuthenticator
@@ -54,4 +56,5 @@ actual fun platformModule(): Module = module {
     single<PdfExportService> { AndroidPdfExportService(get()) }
     single { CurrentActivityHolder() }
     single<NativeScreenLockAuthenticator> { AndroidNativeScreenLockAuthenticator(get()) }
+    single<FirebaseService> { FirebaseServiceImpl() }
 }
