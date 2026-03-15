@@ -19,8 +19,14 @@ class SettingRepositoryImpl(
     override fun screenLockMethod(): Flow<ScreenLockMethod> = preferenceDataSource.screenLockMethod
     override fun screenLockPasswordHash(): Flow<String?> = preferenceDataSource.screenLockPasswordHash
 
+    override fun getThemeModeSync(): ThemeMode = preferenceDataSource.getThemeModeSync()
+
+    override fun getFontStyleOptionSync(): FontStyleOption = preferenceDataSource.getFontStyleOptionSync()
+
+    override fun getFontScaleSync(): Float = preferenceDataSource.getFontScaleSync()
+
     override suspend fun updateIsDarkTheme(isDarkTheme: Boolean) {
-        preferenceDataSource.updateIsDarkTheme(isDarkTheme)
+preferenceDataSource.updateIsDarkTheme(isDarkTheme)
     }
 
     override suspend fun updateThemeMode(themeMode: ThemeMode) {

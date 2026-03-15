@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import org.jetbrains.compose.resources.painterResource
@@ -52,7 +53,7 @@ fun CommonToolbar(
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = title,
-            style = MongsilTheme.typography.body1Medium,
+            style = fixedScaleTextStyle(MongsilTheme.typography.body1Medium),
             color = MongsilTheme.colorScheme.labelStrong
         )
     }

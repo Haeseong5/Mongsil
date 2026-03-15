@@ -15,8 +15,12 @@ interface SettingRepository {
     fun screenLockMethod(): Flow<ScreenLockMethod>
     fun screenLockPasswordHash(): Flow<String?>
 
+    fun getThemeModeSync(): ThemeMode
+    fun getFontStyleOptionSync(): FontStyleOption
+    fun getFontScaleSync(): Float
+
     suspend fun updateIsDarkTheme(isDarkTheme: Boolean)
-    suspend fun updateThemeMode(themeMode: ThemeMode)
+suspend fun updateThemeMode(themeMode: ThemeMode)
     suspend fun updateFontStyleOption(option: FontStyleOption)
     suspend fun updateFontScale(scale: Float)
     suspend fun updateDiaryReminderEnabled(enabled: Boolean)

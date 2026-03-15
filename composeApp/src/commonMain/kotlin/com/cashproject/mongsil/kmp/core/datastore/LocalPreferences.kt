@@ -6,20 +6,28 @@ import kotlinx.coroutines.flow.Flow
 interface LocalPreferences {
 
     fun getBoolean(key: String): Flow<Boolean?>
+    fun getBooleanSync(key: String): Boolean?
 
     fun getInt(key: String): Flow<Int?>
+    fun getIntSync(key: String): Int?
 
     fun getLong(key: String): Flow<Long?>
+    fun getLongSync(key: String): Long?
 
     fun getFloat(key: String): Flow<Float?>
+    fun getFloatSync(key: String): Float?
 
     fun getDouble(key: String): Flow<Double?>
+    fun getDoubleSync(key: String): Double?
 
     fun getString(key: String): Flow<String?>
+    fun getStringSync(key: String): String?
 
     fun getStringSet(key: String): Flow<Set<String>?>
+    fun getStringSetSync(key: String): Set<String>?
 
     fun getByteArray(key: String): Flow<ByteArray?>
+    fun getByteArraySync(key: String): ByteArray?
 
     suspend fun setBoolean(key: String, value: Boolean)
 

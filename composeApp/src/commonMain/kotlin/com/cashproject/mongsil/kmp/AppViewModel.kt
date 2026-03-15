@@ -23,14 +23,13 @@ class AppViewModel(
             fontStyleOption = fontStyleOption,
             fontScale = fontScale
         )
-    }
-        .stateIn(
+    }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
             AppUiState(
-                themeMode = ThemeMode.SYSTEM,
-                fontStyleOption = FontStyleOption.GAMJA_FLOWER,
-                fontScale = 1f
+                themeMode = settingRepository.getThemeModeSync(),
+                fontStyleOption = settingRepository.getFontStyleOptionSync(),
+                fontScale = settingRepository.getFontScaleSync(),
             )
         )
 }

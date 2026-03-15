@@ -11,6 +11,10 @@ interface SettingsPreferenceDataSource {
     val themeMode: Flow<ThemeMode>
     val fontStyleOption: Flow<FontStyleOption>
     val fontScale: Flow<Float>
+
+    fun getThemeModeSync(): ThemeMode
+    fun getFontStyleOptionSync(): FontStyleOption
+    fun getFontScaleSync(): Float
     val isDiaryReminderEnabled: Flow<Boolean>
     val isScreenLockEnabled: Flow<Boolean>
     val screenLockMethod: Flow<ScreenLockMethod>

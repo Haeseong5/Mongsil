@@ -29,27 +29,43 @@ abstract class AbstractLocalPreferences : LocalPreferences {
     override fun getBoolean(key: String): Flow<Boolean?> =
         getOrCreateFlow(key) { loadBoolean(key) }.map { it as? Boolean }
 
+    override fun getBooleanSync(key: String): Boolean? = loadBoolean(key)
+
     override fun getInt(key: String): Flow<Int?> =
         getOrCreateFlow(key) { loadInt(key) }.map { it as? Int }
+
+    override fun getIntSync(key: String): Int? = loadInt(key)
 
     override fun getLong(key: String): Flow<Long?> =
         getOrCreateFlow(key) { loadLong(key) }.map { it as? Long }
 
+    override fun getLongSync(key: String): Long? = loadLong(key)
+
     override fun getFloat(key: String): Flow<Float?> =
         getOrCreateFlow(key) { loadFloat(key) }.map { it as? Float }
+
+    override fun getFloatSync(key: String): Float? = loadFloat(key)
 
     override fun getDouble(key: String): Flow<Double?> =
         getOrCreateFlow(key) { loadDouble(key) }.map { it as? Double }
 
+    override fun getDoubleSync(key: String): Double? = loadDouble(key)
+
     override fun getString(key: String): Flow<String?> =
         getOrCreateFlow(key) { loadString(key) }.map { it as? String }
+
+    override fun getStringSync(key: String): String? = loadString(key)
 
     @Suppress("UNCHECKED_CAST")
     override fun getStringSet(key: String): Flow<Set<String>?> =
         getOrCreateFlow(key) { loadStringSet(key) }.map { it as? Set<String> }
 
+    override fun getStringSetSync(key: String): Set<String>? = loadStringSet(key)
+
     override fun getByteArray(key: String): Flow<ByteArray?> =
         getOrCreateFlow(key) { loadByteArray(key) }.map { it as? ByteArray }
+
+    override fun getByteArraySync(key: String): ByteArray? = loadByteArray(key)
 
     // ---- set ----
 

@@ -30,11 +30,23 @@ class DefaultSettingsPreferenceDataSource(
 
     override val fontStyleOption: Flow<FontStyleOption> = localPreferences
         .getString(KEY_FONT_STYLE_OPTION)
-        .map { FontStyleOption.fromKey(it ?: FontStyleOption.GAMJA_FLOWER.key) }
+        .map { FontStyleOption.fromKey(it ?: FontStyleOption.SYSTEM.key) }
 
     override val fontScale: Flow<Float> = localPreferences
         .getFloat(KEY_FONT_SCALE)
         .map { (it ?: DEFAULT_FONT_SCALE).coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE) }
+
+    override fun getThemeModeSync(): ThemeMode =
+        ThemeMode.fromKey(localPreferences.getStringSync(KEY_THEME_MODE) ?: ThemeMode.SYSTEM.key)
+
+    override fun getFontStyleOptionSync(): FontStyleOption =
+        FontStyleOption.fromKey(
+            localPreferences.getStringSync(KEY_FONT_STYLE_OPTION) ?: FontStyleOption.SYSTEM.key
+        )
+
+    override fun getFontScaleSync(): Float =
+        (localPreferences.getFloatSync(KEY_FONT_SCALE) ?: DEFAULT_FONT_SCALE)
+            .coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE)
 
     override val isDiaryReminderEnabled: Flow<Boolean> = localPreferences
         .getBoolean(KEY_IS_DIARY_REMINDER_ENABLED)

@@ -75,8 +75,10 @@ fun App(
     }
 }
 
+// 폰트 종류 추가는 여기에서
 @Composable
 private fun resolveFontFamily(option: FontStyleOption): FontFamily = when (option) {
+    FontStyleOption.SYSTEM -> FontFamily.Default
     FontStyleOption.GAMJA_FLOWER -> FontFamily(Font(resource = Res.font.gamja_flower_regular))
 }
 

@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.kmp.model
 
 enum class FontStyleOption(val key: String) {
+    SYSTEM("SYSTEM"),
     GAMJA_FLOWER("GAMJA_FLOWER");
 
     companion object {
