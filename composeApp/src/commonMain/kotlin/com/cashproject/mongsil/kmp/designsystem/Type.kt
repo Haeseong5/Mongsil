@@ -151,7 +151,8 @@ data class MongsilTypography(
         ) = MongsilTypography(
             default = TextStyle(
                 fontFamily = fontFamily,
-                fontWeight = fontWeight
+                fontWeight = fontWeight,
+                fontSize = 18.sp,
             )
         ).scaled(fontScale.coerceIn(0.8f, 1.4f))
     }
