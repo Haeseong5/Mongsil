@@ -61,6 +61,9 @@ kotlin {
             // Firebase (GitLive KMP)
             implementation(libs.gitlive.firebase.analytics)
             implementation(libs.gitlive.firebase.crashlytics)
+
+            // Glance AppWidget
+            implementation(libs.androidx.glance.appwidget)
         }
 
         iosMain.dependencies {

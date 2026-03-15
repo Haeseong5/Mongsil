@@ -37,6 +37,18 @@
             android:enabled="true"
             android:exported="false" />
 
+        <!-- 캘린더 홈 위젯 -->
+        <receiver
+            android:name=".widget.CalendarWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_info" />
+        </receiver>
+
         <receiver
             android:name=".receiver.DiaryReminderBootReceiver"
             android:enabled="true"
