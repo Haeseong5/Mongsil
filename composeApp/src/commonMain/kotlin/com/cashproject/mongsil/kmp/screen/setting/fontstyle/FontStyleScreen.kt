@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import com.cashproject.mongsil.kmp.model.FontStyleOption
 import com.cashproject.mongsil.kmp.screen.setting.fontstyle.component.FontOptionItem
 import com.cashproject.mongsil.kmp.screen.setting.fontstyle.component.TextSizeControl
@@ -100,14 +102,15 @@ private fun FontPreviewCard() {
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 text = getTodayText(),
-                style = MongsilTheme.typography.body1Normal,
+                style = fixedScaleTextStyle(MongsilTheme.typography.body2Normal),
                 color = MongsilTheme.colorScheme.labelWeak
             )
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(140.dp)
                     .padding(top = 16.dp),
-                text = "꼬박꼬박 일기 쓰는 습관 :)\n폰트 사이즈를 변경할 수 있어요",
+                text = "몽실 일기 쓰는 습관\n폰트 사이즈를 변경할 수 있어요",
                 style = MongsilTheme.typography.heading2,
                 color = MongsilTheme.colorScheme.labelStrong,
                 textAlign = TextAlign.Start

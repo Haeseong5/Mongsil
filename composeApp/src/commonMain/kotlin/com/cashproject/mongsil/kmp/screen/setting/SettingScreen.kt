@@ -24,8 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_archive
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
@@ -33,7 +33,6 @@ import mongsil.composeapp.generated.resources.ic_language
 import mongsil.composeapp.generated.resources.ic_lock
 import mongsil.composeapp.generated.resources.ic_menu
 import mongsil.composeapp.generated.resources.ic_notifications
-import mongsil.composeapp.generated.resources.ic_shopping_bag
 import mongsil.composeapp.generated.resources.ic_upload
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -73,17 +72,18 @@ fun SettingScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
+            // TODO 미개발 기능
             // 섹션 1: 몽실 스토어
-            SettingItem(
-                icon = Res.drawable.ic_shopping_bag,
-                label = "몽실 스토어",
-                onClick = { viewModel.logMenuClick("store"); onNavigateToMongsilStore() }
-            )
+//            SettingItem(
+//                icon = Res.drawable.ic_shopping_bag,
+//                label = "몽실 스토어",
+//                onClick = { viewModel.logMenuClick("store"); onNavigateToMongsilStore() }
+//            )
 
-            HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                color = Color(0xFFE0E0E0)
-            )
+//            HorizontalDivider(
+//                modifier = Modifier.padding(horizontal = 20.dp),
+//                color = Color(0xFFE0E0E0)
+//            )
 
             // 섹션 2: 알림, 테마, 글자
             SettingToggleItem(
@@ -131,6 +131,7 @@ fun SettingScreen(
                 onClick = { viewModel.logMenuClick("pdf_export"); onNavigateToPdfExport() }
             )
 
+            // TODO 미개발 기능
             SettingItem(
                 icon = Res.drawable.ic_language,
                 label = "언어 설정",
@@ -198,8 +199,7 @@ private fun SettingItem(
         Text(
             modifier = Modifier.padding(start = 16.dp),
             text = label,
-            fontSize = 16.sp,
-            color = Color.Black
+            style = MongsilTheme.typography.default
         )
     }
 }
@@ -229,8 +229,7 @@ private fun SettingToggleItem(
                 .weight(1f)
                 .padding(start = 16.dp),
             text = label,
-            fontSize = 16.sp,
-            color = Color.Black
+            style = MongsilTheme.typography.default,
         )
         Switch(
             checked = checked,

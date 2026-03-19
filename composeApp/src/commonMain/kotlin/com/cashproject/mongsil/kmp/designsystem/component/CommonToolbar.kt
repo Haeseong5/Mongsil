@@ -45,7 +45,7 @@ fun CommonToolbar(
             modifier = Modifier
                 .size(20.dp)
                 .align(Alignment.CenterStart)
-                .clickable { onBack() },
+                .circularRippleClickable { onBack() },
             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
             contentDescription = "뒤로 가기",
             tint = MongsilTheme.colorScheme.labelStrong

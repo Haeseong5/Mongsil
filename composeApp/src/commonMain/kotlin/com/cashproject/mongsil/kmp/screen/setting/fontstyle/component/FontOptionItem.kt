@@ -1,6 +1,5 @@
 package com.cashproject.mongsil.kmp.screen.setting.fontstyle.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
+import com.cashproject.mongsil.kmp.designsystem.extensions.noRippleClickable
 
 @Composable
 fun FontOptionItem(
@@ -27,14 +28,14 @@ fun FontOptionItem(
         modifier = modifier
             .fillMaxWidth()
             .height(62.dp)
-            .clickable(onClick = onClick)
+            .noRippleClickable(onClick = onClick)
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             modifier = Modifier.weight(1f),
             text = label,
-            style = MongsilTheme.typography.body1Medium,
+            style = fixedScaleTextStyle(MongsilTheme.typography.body1Medium),
             color = MongsilTheme.colorScheme.labelStrong
         )
         RadioButton(

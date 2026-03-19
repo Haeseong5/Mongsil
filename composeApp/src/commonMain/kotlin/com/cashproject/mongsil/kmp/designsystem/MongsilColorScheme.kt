@@ -105,7 +105,7 @@ data class MongsilColorScheme(
                 labelDisable = Gray700,
                 primary100 = Color(0xFF302476),
                 card = Default,
-                background = Black100,
+                background = Color(0xFF1E1E1E),
                 line = Gray800,
                 alert = Gray900,
                 toolingBackground = ToolingBlackBackground
