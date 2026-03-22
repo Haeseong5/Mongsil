@@ -55,12 +55,14 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BackgroundColorPalette
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BottomToolbar
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ColorPalette
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.DeleteConfirmDialog
+import com.cashproject.mongsil.kmp.screen.diarywrite.component.PhotoPreviewScreen
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
@@ -155,7 +157,7 @@ private fun DiaryWriteScreenContent(
 ) {
     // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
     BackPressHandler(
-        enabled = !uiState.showEmoticonBottomSheet && !uiState.showDeleteDialog
+        enabled = !uiState.showEmoticonBottomSheet && !uiState.showDeleteDialog && uiState.previewPhotoIndex == null
     ) {
         onEvent(DiaryWriteEvent.OnBackPressed)
     }
@@ -185,7 +187,7 @@ private fun DiaryWriteScreenContent(
                             tint = MongsilTheme.colorScheme.labelStrong,
                             modifier = Modifier
                                 .size(20.dp)
-                                .clickable { onEvent(DiaryWriteEvent.OnBackClick) }
+                                .circularRippleClickable { onEvent(DiaryWriteEvent.OnBackClick) }
                         )
                     },
                     rightContent = {
@@ -196,7 +198,7 @@ private fun DiaryWriteScreenContent(
                                 tint = Color(0xFFE53935),
                                 modifier = Modifier
                                     .size(20.dp)
-                                    .clickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
+                                    .circularRippleClickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
                             )
                         }
                     }
@@ -238,6 +240,9 @@ private fun DiaryWriteScreenContent(
                             photoUris = uiState.photoUris,
                             onRemove = { index ->
                                 onEvent(DiaryWriteEvent.OnPhotoRemoved(index))
+                            },
+                            onPhotoClick = { index ->
+                                onEvent(DiaryWriteEvent.OnPhotoClick(index))
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -288,6 +293,7 @@ private fun DiaryWriteScreenContent(
                 BottomToolbar(
                     modifier = Modifier.background(MongsilTheme.colorScheme.card),
                     isSaving = uiState.isSaving,
+                    canAddPhoto = uiState.canAddPhoto,
                     textAlign = uiState.textAlign,
                     textColor = uiState.textColor,
                     backgroundColor = uiState.backgroundColor,
@@ -337,6 +343,15 @@ private fun DiaryWriteScreenContent(
                 onDismiss = { onEvent(DiaryWriteEvent.OnDeleteCancel) }
             )
         }
+
+        // 전체화면 사진 미리보기
+        uiState.previewPhotoIndex?.let { initialPage ->
+            PhotoPreviewScreen(
+                photoUris = uiState.photoUris,
+                initialPage = initialPage,
+                onDismiss = { onEvent(DiaryWriteEvent.OnPhotoPreviewDismiss) }
+            )
+        }
     }
 }
 
@@ -344,6 +359,7 @@ private fun DiaryWriteScreenContent(
 private fun SelectedPhotos(
     photoUris: List<String>,
     onRemove: (Int) -> Unit,
+    onPhotoClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = { photoUris.size })
@@ -361,7 +377,8 @@ private fun SelectedPhotos(
                     contentDescription = "첨부 이미지",
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(14.dp)),
+                        .clip(RoundedCornerShape(14.dp))
+                        .clickable { onPhotoClick(page) },
                     contentScale = ContentScale.Crop
                 )
             }

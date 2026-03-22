@@ -45,6 +45,7 @@ fun BottomToolbar(
     backgroundColor: Color = Color.Transparent,
     showColorPalette: Boolean = false,
     showBackgroundColorPalette: Boolean = false,
+    canAddPhoto: Boolean = true,
     openImagePicker: () -> Unit = {},
     onClickTime: () -> Unit = {},
     onTextAlignToggle: () -> Unit = {},
@@ -69,12 +70,17 @@ fun BottomToolbar(
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(iconBoxSize)
-                    .circularRippleClickable { openImagePicker() },
+                    .then(
+                        if (canAddPhoto) Modifier.circularRippleClickable { openImagePicker() }
+                        else Modifier
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_imagesmode),
-                    contentDescription = "image"
+                    contentDescription = "image",
+                    tint = if (canAddPhoto) MongsilTheme.colorScheme.labelStrong
+                           else MongsilTheme.colorScheme.labelDisable
                 )
             }
 

@@ -105,4 +105,14 @@ sealed interface DiaryWriteEvent {
      * 배경 색상을 선택했을 때
      */
     data class OnBackgroundColorSelected(val color: androidx.compose.ui.graphics.Color) : DiaryWriteEvent
+
+    /**
+     * 첨부 사진을 클릭하여 전체화면 미리보기를 열 때
+     */
+    data class OnPhotoClick(val index: Int) : DiaryWriteEvent
+
+    /**
+     * 전체화면 사진 미리보기를 닫을 때
+     */
+    data object OnPhotoPreviewDismiss : DiaryWriteEvent
 }
