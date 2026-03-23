@@ -13,13 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -45,7 +45,6 @@ fun BoxScope.CalendarDay(
     isFuture: Boolean,
     onClick: () -> Unit,
 ) {
-
     Box(
         modifier = modifier
             .padding(vertical = 6.dp)
@@ -65,11 +64,11 @@ fun BoxScope.CalendarDay(
             Text(
                 text = date.dayOfMonth.toString(),
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
-                style = MongsilTheme.typography.default,
+                style = fixedScaleTextStyle(MongsilTheme.typography.default),
                 color = when (date.dayOfWeek) {
-                    DayOfWeek.SUNDAY -> Color(0xFFE57373)
-                    DayOfWeek.SATURDAY -> Color(0xFF64B5F6)
-                    else -> Color.Black
+                    DayOfWeek.SUNDAY -> MongsilTheme.colorScheme.fillRed
+                    DayOfWeek.SATURDAY -> MongsilTheme.colorScheme.fillBlue
+                    else -> MongsilTheme.colorScheme.labelStrong
                 }
             )
         }
@@ -94,7 +93,7 @@ internal fun CalendarDayPreview() {
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .background(Color.White),
+                .background(MongsilTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
             CalendarDay(
@@ -116,7 +115,7 @@ internal fun CalendarDayTodayPreview() {
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .background(Color.White),
+                .background(MongsilTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
             CalendarDay(
@@ -138,7 +137,7 @@ internal fun CalendarDaySundayPreview() {
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .background(Color.White),
+                .background(MongsilTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
             CalendarDay(
@@ -160,7 +159,7 @@ internal fun CalendarDayWithEmoticonPreview() {
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .background(Color.White),
+                .background(MongsilTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
             CalendarDay(
@@ -182,7 +181,7 @@ internal fun CalendarDayFuturePreview() {
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .background(Color.White),
+                .background(MongsilTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
             CalendarDay(

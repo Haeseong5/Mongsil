@@ -252,7 +252,10 @@ private fun IconArrow(
     Box(
         modifier = Modifier
             .size(40.dp)
-            .circularRippleClickable(enabled = enabled) { onClick() },
+            .circularRippleClickable(
+                radius = 19.dp,
+                enabled = enabled
+            ) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         if (enabled || isBack) {

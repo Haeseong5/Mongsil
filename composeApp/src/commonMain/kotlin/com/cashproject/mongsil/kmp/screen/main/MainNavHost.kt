@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
@@ -98,7 +99,7 @@ internal fun MainNavHost(
                 padding = padding,
                 viewModel = viewModel,
                 onBack = {
-                    navigator.popBackStack()
+                    navigator.popBackStackSafe()
                 }
             )
         }
@@ -121,7 +122,7 @@ internal fun MainNavHost(
 
         composable<Route.Setting> {
             SettingScreen(
-                onBack = { navigator.popBackStack() },
+                onBack = { navigator.popBackStackSafe() },
                 onNavigateToMongsilStore = { navigator.navigateTo(Route.MongsilStore) },
                 onNavigateToThemeSetting = { navigator.navigateTo(Route.ThemeSetting) },
                 onNavigateToFontStyle = { navigator.navigateTo(Route.FontStyle) },
@@ -142,59 +143,59 @@ internal fun MainNavHost(
 
         composable<Route.MongsilStore> {
             MongsilStoreScreen(
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.ThemeSetting> {
             ThemeSettingScreen(
                 padding = padding,
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.FontStyle> {
             FontStyleScreen(
                 padding = padding,
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.ScreenLock> {
             ScreenLockScreen(
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.BackupRestore> {
             BackupRestoreScreen(
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.PdfExport> {
             PdfExportScreen(
                 padding = padding,
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.LanguageSetting> {
             LanguageSettingScreen(
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.AppReview> {
             AppReviewScreen(
-                onBack = { navigator.popBackStack() }
+                onBack = { navigator.popBackStackSafe() }
             )
         }
 
         composable<Route.DiarySearch> {
             DiarySearchScreen(
                 padding = padding,
-                onBack = { navigator.popBackStack() },
+                onBack = { navigator.popBackStackSafe() },
                 onDiaryClick = { year, month, day ->
                     navigator.navigateTo(Route.DiaryWrite(year, month, day))
                 }
@@ -210,7 +211,7 @@ internal fun MainNavHost(
             DiaryChartScreen(
                 viewModel = viewModel,
                 padding = padding,
-                onClose = { navigator.popBackStack() }
+                onClose = { navigator.popBackStackSafe() }
             )
         }
 
@@ -223,13 +224,22 @@ internal fun MainNavHost(
             DiaryListScreen(
                 viewModel = viewModel,
                 padding = padding,
-                onBack = { navigator.popBackStack() },
+                onBack = { navigator.popBackStackSafe() },
                 onDiaryClick = { year, month, day ->
                     navigator.navigateTo(Route.DiaryWrite(year, month, day))
                 }
             )
         }
     }
+}
+
+private fun NavHostController.canHandleNavigation(): Boolean {
+    return currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
+}
+
+fun NavHostController.popBackStackSafe(): Boolean {
+    if (!canHandleNavigation()) return false
+    return popBackStack()
 }
 
 /**
@@ -250,6 +260,8 @@ fun NavHostController.navigateAndClearStack(
     clearRoute: Route? = null,
     builder: (NavOptionsBuilder.() -> Unit)? = null
 ) {
+    if (!canHandleNavigation()) return
+
     navigate(route) {
         // 백스택 초기화
         val targetRoute = clearRoute ?: graph.startDestinationRoute
@@ -294,6 +306,8 @@ fun NavHostController.navigateTo(
     restoreState: Boolean = false,
     builder: (NavOptionsBuilder.() -> Unit)? = null
 ) {
+    if (!canHandleNavigation()) return
+
     navigate(route) {
         // 중복 방지 옵션
         launchSingleTop = singleTop
@@ -329,6 +343,8 @@ fun NavHostController.navigateWithPopUpTo(
     inclusive: Boolean = false,
     singleTop: Boolean = true
 ) {
+    if (!canHandleNavigation()) return
+
     navigate(route) {
         popUpTo(popUpTo) {
             this.inclusive = inclusive

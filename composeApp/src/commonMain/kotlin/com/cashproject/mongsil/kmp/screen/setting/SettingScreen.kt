@@ -25,7 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cashproject.mongsil.kmp.designsystem.Gray300
+import com.cashproject.mongsil.kmp.designsystem.LocalDarkTheme
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_archive
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
@@ -61,11 +64,11 @@ fun SettingScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(0xFFF5F5F5))
+            .background(color = MongsilTheme.colorScheme.background)
             .statusBarsPadding()
     ) {
         // 툴바 (뒤로 가기)
-        SettingToolbar(onBack = onBack)
+        CommonToolbar(onBack = onBack)
 
         Column(
             modifier = Modifier
@@ -107,36 +110,39 @@ fun SettingScreen(
                 onClick = { viewModel.logMenuClick("font_style"); onNavigateToFontStyle() }
             )
 
-            HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                color = Color(0xFFE0E0E0)
-            )
+//            HorizontalDivider(
+//                modifier = Modifier.padding(horizontal = 20.dp),
+//                color = Color(0xFFE0E0E0)
+//            )
 
+            // TODO 다음 배포에 추가
             // 섹션 3: 보안, 백업, PDF, 언어
-            SettingItem(
-                icon = Res.drawable.ic_lock,
-                label = "화면 잠금",
-                onClick = { viewModel.logMenuClick("screen_lock"); onNavigateToScreenLock() }
-            )
+//            SettingItem(
+//                icon = Res.drawable.ic_lock,
+//                label = "화면 잠금",
+//                onClick = { viewModel.logMenuClick("screen_lock"); onNavigateToScreenLock() }
+//            )
 
+            // TODO 미개발 기능
             SettingItem(
                 icon = Res.drawable.ic_archive,
                 label = "백업/복원",
                 onClick = { viewModel.logMenuClick("backup_restore"); onNavigateToBackupRestore() }
             )
 
-            SettingItem(
-                icon = Res.drawable.ic_upload,
-                label = "PDF 내보내기",
-                onClick = { viewModel.logMenuClick("pdf_export"); onNavigateToPdfExport() }
-            )
+            // TODO 다음 배포에 추가
+//            SettingItem(
+//                icon = Res.drawable.ic_upload,
+//                label = "PDF 내보내기",
+//                onClick = { viewModel.logMenuClick("pdf_export"); onNavigateToPdfExport() }
+//            )
 
             // TODO 미개발 기능
-            SettingItem(
-                icon = Res.drawable.ic_language,
-                label = "언어 설정",
-                onClick = { viewModel.logMenuClick("language"); onNavigateToLanguageSetting() }
-            )
+//            SettingItem(
+//                icon = Res.drawable.ic_language,
+//                label = "언어 설정",
+//                onClick = { viewModel.logMenuClick("language"); onNavigateToLanguageSetting() }
+//            )
 
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 20.dp),
@@ -194,12 +200,13 @@ private fun SettingItem(
             modifier = Modifier.size(24.dp),
             painter = painterResource(icon),
             contentDescription = label,
-            tint = Color.Black
+            tint = MongsilTheme.colorScheme.labelStrong
         )
         Text(
             modifier = Modifier.padding(start = 16.dp),
             text = label,
-            style = MongsilTheme.typography.default
+            style = MongsilTheme.typography.default,
+            color = MongsilTheme.colorScheme.labelStrong
         )
     }
 }
@@ -211,6 +218,7 @@ private fun SettingToggleItem(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
+    val isDark = LocalDarkTheme.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -222,7 +230,7 @@ private fun SettingToggleItem(
             modifier = Modifier.size(24.dp),
             painter = painterResource(icon),
             contentDescription = label,
-            tint = Color.Black
+            tint = MongsilTheme.colorScheme.labelStrong
         )
         Text(
             modifier = Modifier
@@ -230,16 +238,17 @@ private fun SettingToggleItem(
                 .padding(start = 16.dp),
             text = label,
             style = MongsilTheme.typography.default,
+            color = MongsilTheme.colorScheme.labelStrong
         )
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
                 uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = Color(0xFFE0E0E0),
+                uncheckedTrackColor = Gray300,
                 uncheckedBorderColor = Color.Transparent,
-                checkedThumbColor = Color.White,
-                checkedTrackColor = Color.Black
+                checkedThumbColor = if (isDark) Color.Black else Color.White,
+                checkedTrackColor = MongsilTheme.colorScheme.labelStrong
             )
         )
     }

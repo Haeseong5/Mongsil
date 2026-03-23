@@ -1,6 +1,10 @@
 package com.cashproject.mongsil.kmp.screen.setting
 
 import kotlinx.coroutines.suspendCancellableCoroutine
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.app_name
+import mongsil.composeapp.generated.resources.notification_message
+import org.jetbrains.compose.resources.getString
 import platform.Foundation.NSDateComponents
 import platform.UserNotifications.UNAuthorizationOptionAlert
 import platform.UserNotifications.UNAuthorizationOptionBadge
@@ -32,8 +36,8 @@ class IosDiaryReminderScheduler : DiaryReminderScheduler {
         center.removePendingNotificationRequestsWithIdentifiers(listOf(REQUEST_ID))
 
         val content = UNMutableNotificationContent().apply {
-            setTitle("몽실")
-            setBody("오늘 하루는 어땠나요?")
+            setTitle(getString(Res.string.app_name))
+            setBody(getString(Res.string.notification_message))
             setSound(UNNotificationSound.defaultSound)
         }
 

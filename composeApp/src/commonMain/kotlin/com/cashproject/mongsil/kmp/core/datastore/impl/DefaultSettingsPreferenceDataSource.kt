@@ -15,6 +15,8 @@ import com.cashproject.mongsil.kmp.model.ScreenLockMethod
 import com.cashproject.mongsil.kmp.model.ThemeMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 class DefaultSettingsPreferenceDataSource(
     private val localPreferences: LocalPreferences,
@@ -30,23 +32,22 @@ class DefaultSettingsPreferenceDataSource(
 
     override val fontStyleOption: Flow<FontStyleOption> = localPreferences
         .getString(KEY_FONT_STYLE_OPTION)
-        .map { FontStyleOption.fromKey(it ?: FontStyleOption.SYSTEM.key) }
+        .map { FontStyleOption.fromKey(it ?: FontStyleOption.GAMJA_FLOWER.key) }
 
     override val fontScale: Flow<Float> = localPreferences
         .getFloat(KEY_FONT_SCALE)
-        .map { (it ?: DEFAULT_FONT_SCALE).coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE) }
+        .map { normalizeFontScale(it ?: DEFAULT_FONT_SCALE) }
 
     override fun getThemeModeSync(): ThemeMode =
         ThemeMode.fromKey(localPreferences.getStringSync(KEY_THEME_MODE) ?: ThemeMode.SYSTEM.key)
 
     override fun getFontStyleOptionSync(): FontStyleOption =
         FontStyleOption.fromKey(
-            localPreferences.getStringSync(KEY_FONT_STYLE_OPTION) ?: FontStyleOption.SYSTEM.key
+            localPreferences.getStringSync(KEY_FONT_STYLE_OPTION) ?: FontStyleOption.GAMJA_FLOWER.key
         )
 
     override fun getFontScaleSync(): Float =
-        (localPreferences.getFloatSync(KEY_FONT_SCALE) ?: DEFAULT_FONT_SCALE)
-            .coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE)
+        normalizeFontScale(localPreferences.getFloatSync(KEY_FONT_SCALE) ?: DEFAULT_FONT_SCALE)
 
     override val isDiaryReminderEnabled: Flow<Boolean> = localPreferences
         .getBoolean(KEY_IS_DIARY_REMINDER_ENABLED)
@@ -79,7 +80,7 @@ class DefaultSettingsPreferenceDataSource(
     override suspend fun updateFontScale(scale: Float) {
         localPreferences.setFloat(
             KEY_FONT_SCALE,
-            scale.coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE)
+            normalizeFontScale(scale)
         )
     }
 
@@ -99,9 +100,18 @@ class DefaultSettingsPreferenceDataSource(
         localPreferences.setString(KEY_SCREEN_LOCK_PASSWORD_HASH, passwordHash.orEmpty())
     }
 
+    private fun normalizeFontScale(scale: Float): Float {
+        val clamped = scale.coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE)
+        val stepIndex = ((clamped - MIN_FONT_SCALE) / FONT_SCALE_STEP).roundToInt()
+        val snapped = (MIN_FONT_SCALE + stepIndex * FONT_SCALE_STEP).coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE)
+        return if (abs(clamped - snapped) <= FONT_SCALE_EPSILON) snapped else DEFAULT_FONT_SCALE
+    }
+
     companion object {
         private const val DEFAULT_FONT_SCALE = 1f
         private const val MIN_FONT_SCALE = 0.8f
         private const val MAX_FONT_SCALE = 1.4f
+        private const val FONT_SCALE_STEP = 0.1f
+        private const val FONT_SCALE_EPSILON = 0.0001f
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">몽실 KMP</string>
+    <string name="app_name">몽실</string>
     <string name="widget_calendar_description">이번 달 달력과 일기 기록을 홈 화면에서 확인하세요</string>
+    <string name="notification_message">오늘 하루 어땠나요?</string>
 </resources>

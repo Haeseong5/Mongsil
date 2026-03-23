@@ -33,11 +33,21 @@ class AndroidDiaryReminderScheduler(
 
     fun scheduleReminder() {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val triggerAtMillis = nextTriggerAtMillis()
         val pendingIntent = reminderPendingIntent()
-        alarmManager.setInexactRepeating(
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                pendingIntent,
+            )
+            return
+        }
+
+        alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            nextTriggerAtMillis(),
-            AlarmManager.INTERVAL_DAY,
+            triggerAtMillis,
             pendingIntent,
         )
     }

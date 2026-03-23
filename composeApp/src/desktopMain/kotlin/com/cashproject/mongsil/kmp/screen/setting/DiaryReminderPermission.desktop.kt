@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 @Composable
 actual fun rememberDiaryReminderPermissionRequester(
     onPermissionResult: (Boolean) -> Unit,
+    onNavigateToNotificationSetting: () -> Unit,
 ): () -> Unit = remember {
     { onPermissionResult(true) }
 }

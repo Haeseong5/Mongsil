@@ -7,15 +7,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.cashproject.mongsil.kmp.MainActivity
 import com.cashproject.mongsil.kmp.R
+import com.cashproject.mongsil.kmp.core.datastore.KEY_IS_DIARY_REMINDER_ENABLED
+import com.cashproject.mongsil.kmp.core.datastore.SETTINGS_PREFERENCES_NAME
+import com.cashproject.mongsil.kmp.screen.setting.AndroidDiaryReminderScheduler
 
 class DiaryReminderReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val prefs = context.getSharedPreferences(SETTINGS_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val isEnabled = prefs.getBoolean(KEY_IS_DIARY_REMINDER_ENABLED, false)
+        if (!isEnabled) return
+
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         createNotificationChannel(notificationManager)
 
         val contentIntent = PendingIntent.getActivity(
@@ -28,7 +35,7 @@ class DiaryReminderReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle(context.getString(R.string.app_name))
-            .setContentText("오늘 하루는 어땠나요?")
+            .setContentText(context.getString(R.string.notification_message))
             .setContentIntent(contentIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -36,11 +43,10 @@ class DiaryReminderReceiver : BroadcastReceiver() {
             .build()
 
         notificationManager.notify(NOTIFICATION_ID, notification)
+        AndroidDiaryReminderScheduler(context).scheduleReminder()
     }
 
     private fun createNotificationChannel(notificationManager: NotificationManager) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-
         val channel = NotificationChannel(
             CHANNEL_ID,
             CHANNEL_NAME,

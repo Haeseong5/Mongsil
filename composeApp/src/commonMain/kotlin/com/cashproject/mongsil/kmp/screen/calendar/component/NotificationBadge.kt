@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
@@ -31,7 +30,7 @@ fun NotificationBadge(
             )
             .clip(shape = CircleShape)
             .size(9.dp)
-            .background(color = Color.Red)
+            .background(color = MongsilTheme.colorScheme.fillRed)
     )
 }
 
@@ -44,7 +43,7 @@ internal fun NotificationBadgePreview() {
         Box(
             modifier = Modifier
                 .size(48.dp)
-                .background(Color.White),
+                .background(MongsilTheme.colorScheme.background),
             contentAlignment = Alignment.TopEnd
         ) {
             NotificationBadge(

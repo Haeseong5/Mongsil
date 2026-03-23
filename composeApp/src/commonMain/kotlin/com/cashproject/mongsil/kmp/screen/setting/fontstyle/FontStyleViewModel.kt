@@ -17,7 +17,7 @@ class FontStyleViewModel(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
-            FontStyleOption.SYSTEM
+            FontStyleOption.GAMJA_FLOWER
         )
 
     val fontScale = settingRepository
