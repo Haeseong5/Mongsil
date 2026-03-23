@@ -38,11 +38,12 @@ fun BoxScope.CalendarToolbar(
                 painter = painterResource(Res.drawable.ic_more),
                 contentDescription = "설정"
             )
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(Res.drawable.ic_shopping_bag),
-                contentDescription = ""
-            )
+            // TODO Shop 기능 미개발
+//            Icon(
+//                modifier = Modifier.size(24.dp),
+//                painter = painterResource(Res.drawable.ic_shopping_bag),
+//                contentDescription = ""
+//            )
         },
         rightContent = {
             Icon(
