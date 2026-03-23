@@ -124,11 +124,11 @@ fun SettingScreen(
 //            )
 
             // TODO 미개발 기능
-//            SettingItem(
-//                icon = Res.drawable.ic_archive,
-//                label = "백업/복원",
-//                onClick = { viewModel.logMenuClick("backup_restore"); onNavigateToBackupRestore() }
-//            )
+            SettingItem(
+                icon = Res.drawable.ic_archive,
+                label = "백업/복원",
+                onClick = { viewModel.logMenuClick("backup_restore"); onNavigateToBackupRestore() }
+            )
 
             // TODO 다음 배포에 추가
 //            SettingItem(
