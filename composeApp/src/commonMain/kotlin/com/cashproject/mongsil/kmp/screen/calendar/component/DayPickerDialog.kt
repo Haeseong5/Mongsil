@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.calendar.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 
 
 @Composable
@@ -90,7 +90,7 @@ private fun MonthItem(
         modifier = Modifier
             .clip(RoundedCornerShape(100.dp))
             .size(50.dp)
-            .clickable {
+            .circularRippleClickable(radius = 18.dp) {
                 onClick()
             },
         contentAlignment = Alignment.Center

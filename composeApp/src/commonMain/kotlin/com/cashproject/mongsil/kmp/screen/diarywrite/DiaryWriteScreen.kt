@@ -55,6 +55,7 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.BackgroundColorPalette
@@ -175,7 +176,6 @@ private fun DiaryWriteScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                // 상단 툴바
                 IconToolbar(
                     modifier = Modifier.background(MongsilTheme.colorScheme.background),
                     leftContent = {
@@ -185,7 +185,7 @@ private fun DiaryWriteScreenContent(
                             tint = MongsilTheme.colorScheme.labelStrong,
                             modifier = Modifier
                                 .size(20.dp)
-                                .clickable { onEvent(DiaryWriteEvent.OnBackClick) }
+                                .circularRippleClickable { onEvent(DiaryWriteEvent.OnBackClick) }
                         )
                     },
                     rightContent = {
@@ -193,10 +193,10 @@ private fun DiaryWriteScreenContent(
                             Icon(
                                 painter = painterResource(Res.drawable.ic_trash),
                                 contentDescription = "삭제",
-                                tint = Color(0xFFE53935),
+                                tint = MongsilTheme.colorScheme.fillRed,
                                 modifier = Modifier
                                     .size(20.dp)
-                                    .clickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
+                                    .circularRippleClickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
                             )
                         }
                     }

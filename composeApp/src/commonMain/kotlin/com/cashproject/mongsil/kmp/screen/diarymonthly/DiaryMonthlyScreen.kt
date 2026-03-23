@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import com.cashproject.mongsil.kmp.designsystem.component.DiaryCard
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyItem
@@ -88,15 +89,7 @@ private fun DiaryListScreenContent(
             .fillMaxSize()
             .background(MongsilTheme.colorScheme.background)
     ) {
-        Icon(
-            modifier = Modifier
-                .padding(16.dp)
-                .size(24.dp)
-                .clickable { onBack() },
-            painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-            contentDescription = "뒤로 가기",
-            tint = MongsilTheme.colorScheme.labelStrong,
-        )
+        CommonToolbar(onBack = onBack)
 
         TopBar(
             year = uiState.year,

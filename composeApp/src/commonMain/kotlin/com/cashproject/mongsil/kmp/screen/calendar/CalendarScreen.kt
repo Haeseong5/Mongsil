@@ -22,17 +22,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
-import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
-import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.emoticon_01
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
 import com.cashproject.mongsil.kmp.screen.calendar.component.DayPickerDialog
 import com.cashproject.mongsil.kmp.screen.calendar.component.DaysOfWeekTitle
 import com.cashproject.mongsil.kmp.screen.calendar.component.NotificationBadge
-import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitleV2
+import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarYearMonth
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
@@ -47,6 +44,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.number
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
 import com.kizitonwose.calendar.core.CalendarDay as KCalendarDay
@@ -181,16 +180,14 @@ fun CalendarScreenContent(
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                SimpleCalendarTitleV2(
+                SimpleCalendarYearMonth(
                     modifier = Modifier
-                        .padding(start = 20.dp, bottom = 12.dp)
-                        .circularRippleClickable(
-                            radius = 36.dp
-                        ) {
-                            uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
-                        },
+                        .padding(start = 20.dp, bottom = 12.dp),
                     year = visibleYearMonth.year,
                     month = visibleYearMonth.month.number,
+                    onClick = {
+                        uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
+                    }
                 )
                 VerticalSpacer(16.dp)
 
