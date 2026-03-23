@@ -21,6 +21,8 @@
     <string name="chart_streak_banner">%1$d일 연속 기록 중 🔥</string>
     <string name="chart_section_word_cloud">자주 쓴 단어</string>
     <string name="chart_word_cloud_empty">아직 작성한 일기가 없어요</string>
+    <string name="app_name">몽실</string>
+    <string name="notification_message">오늘 하루 어땠나요?</string>
     <string name="background_color_picker">배경 색상 선택</string>
     <string name="background_color_none">배경 없음</string>
     <string name="day_of_week_monday">월요일</string>
