@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import com.cashproject.mongsil.kmp.model.ImageResource
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
@@ -44,7 +45,6 @@ fun BoxScope.CalendarDay(
     isFuture: Boolean,
     onClick: () -> Unit,
 ) {
-
     Box(
         modifier = modifier
             .padding(vertical = 6.dp)
@@ -64,7 +64,7 @@ fun BoxScope.CalendarDay(
             Text(
                 text = date.dayOfMonth.toString(),
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
-                style = MongsilTheme.typography.default,
+                style = fixedScaleTextStyle(MongsilTheme.typography.default),
                 color = when (date.dayOfWeek) {
                     DayOfWeek.SUNDAY -> MongsilTheme.colorScheme.fillRed
                     DayOfWeek.SATURDAY -> MongsilTheme.colorScheme.fillBlue

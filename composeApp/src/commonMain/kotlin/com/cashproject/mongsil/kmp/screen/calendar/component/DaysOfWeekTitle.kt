@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 
 /**
  * 캘린더 요일 헤더
@@ -35,7 +36,7 @@ fun DaysOfWeekTitle(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 text = day,
-                style = MongsilTheme.typography.body2Normal,
+                style = fixedScaleTextStyle(MongsilTheme.typography.body2Normal),
                 color = when (index) {
                     0 -> MongsilTheme.colorScheme.fillRed // 일요일
                     6 -> MongsilTheme.colorScheme.fillBlue // 토요일

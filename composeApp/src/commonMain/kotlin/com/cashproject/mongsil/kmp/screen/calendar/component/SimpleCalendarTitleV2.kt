@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.HorizontalSpacer
+import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
 import org.jetbrains.compose.resources.painterResource
@@ -30,7 +31,7 @@ fun SimpleCalendarTitleV2(
             modifier = Modifier,
             text = "${year}년 ${month}월",
             textAlign = TextAlign.Center,
-            style = MongsilTheme.typography.title3,
+            style = fixedScaleTextStyle(MongsilTheme.typography.title3),
             color = MongsilTheme.colorScheme.labelStrong
         )
         HorizontalSpacer(8.dp)
