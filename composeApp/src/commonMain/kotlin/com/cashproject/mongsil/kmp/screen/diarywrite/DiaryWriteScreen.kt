@@ -8,6 +8,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,9 +24,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +46,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -67,6 +73,7 @@ import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteEvent
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteSideEffect
 import com.cashproject.mongsil.kmp.screen.diarywrite.model.DiaryWriteUiState
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import mongsil.composeapp.generated.resources.Res
@@ -155,7 +162,6 @@ private fun DiaryWriteScreenContent(
     openImagePicker: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // 시스템 뒤로가기 처리 (BottomSheet나 Dialog가 없을 때만 활성화)
     BackPressHandler(
         enabled = !uiState.showEmoticonBottomSheet && !uiState.showDeleteDialog && uiState.previewPhotoIndex == null
     ) {
@@ -261,7 +267,7 @@ private fun DiaryWriteScreenContent(
                         textColor = uiState.textColor,
                         modifier = Modifier
                             .weight(1f)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     )
                 }
 
@@ -481,6 +487,7 @@ private fun DiaryTextField(
     textColor: Color,
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
     var textFieldValue by remember { mutableStateOf(TextFieldValue(content)) }
 
     // ViewModel에서 content가 외부에서 변경된 경우(시간 삽입 등) 커서를 끝으로 이동
@@ -493,15 +500,41 @@ private fun DiaryTextField(
         }
     }
 
+    val scrollState = rememberScrollState()
+    var height by remember { mutableStateOf(0) }
+    var layoutResult: TextLayoutResult? by remember { mutableStateOf(null) }
+
     BasicTextField(
         value = textFieldValue,
         onValueChange = { newValue ->
             textFieldValue = newValue
             onContentChange(newValue.text)
         },
+        onTextLayout = { layoutResult = it },
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .onSizeChanged { size ->
+                coroutineScope.launch {
+                    val result = layoutResult ?: return@launch
+                    val cursorInView = textFieldValue.isCursorInView(
+                        layoutResult = result,
+                        height = size.height.toFloat(),
+                        scrollValue = scrollState.value.toFloat()
+                    )
+                    if (!cursorInView && height > size.height) {
+                        scrollState.scrollBy(
+                            textFieldValue.calculateRequiredSizeScroll(
+                                layoutResult = result,
+                                oldHeight = height.toFloat(),
+                                newHeight = size.height.toFloat(),
+                                scrollValue = scrollState.value.toFloat()
+                            )
+                        )
+                    }
+                    height = size.height
+                }
+            },
         enabled = enabled,
         textStyle = MongsilTheme.typography.body1Medium.copy(
             textAlign = textAlign,
@@ -509,7 +542,12 @@ private fun DiaryTextField(
         ),
         cursorBrush = SolidColor(textColor),
         decorationBox = { innerTextField ->
-            Box(modifier = Modifier.fillMaxWidth(), propagateMinConstraints = true) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState),
+                propagateMinConstraints = true
+            ) {
                 if (content.isEmpty()) {
                     Text(
                         text = "오늘 하루를 기록해보세요",
@@ -522,6 +560,25 @@ private fun DiaryTextField(
             }
         }
     )
+
+    // 커서 위치 변경 시 스크롤
+    LaunchedEffect(textFieldValue.selection) {
+        val result = layoutResult ?: return@LaunchedEffect
+        val cursorInView = textFieldValue.isCursorInView(
+            layoutResult = result,
+            height = height.toFloat(),
+            scrollValue = scrollState.value.toFloat()
+        )
+        if (!cursorInView) {
+            scrollState.scrollBy(
+                textFieldValue.calculateRequiredSelectionScroll(
+                    layoutResult = result,
+                    height = height.toFloat(),
+                    scrollValue = scrollState.value.toFloat()
+                )
+            )
+        }
+    }
 }
 
 
@@ -693,4 +750,45 @@ private fun DiaryWriteAlignEndPreview() {
             openImagePicker = {}
         )
     }
+}
+
+private fun TextFieldValue.isCursorInView(
+    layoutResult: TextLayoutResult,
+    height: Float,
+    scrollValue: Float,
+): Boolean = with(layoutResult) {
+    val currentLine =
+        getLineForOffset(selection.min.coerceIn(0, layoutResult.layoutInput.text.length))
+    val lineBottom = getLineBottom(currentLine)
+    val lineTop = getLineTop(currentLine)
+    lineBottom <= height + scrollValue && lineTop >= scrollValue
+}
+
+private fun TextFieldValue.calculateRequiredSelectionScroll(
+    layoutResult: TextLayoutResult,
+    height: Float,
+    scrollValue: Float,
+): Float = with(layoutResult) {
+    val currentLine =
+        getLineForOffset(selection.min.coerceIn(0, layoutResult.layoutInput.text.length))
+    val lineTop = getLineTop(currentLine)
+    val lineBottom = getLineBottom(currentLine)
+    if (lineTop < scrollValue) -(scrollValue - lineTop)
+    else if (lineBottom > height + scrollValue) lineBottom - (height + scrollValue)
+    else 0f
+}
+
+private fun TextFieldValue.calculateRequiredSizeScroll(
+    layoutResult: TextLayoutResult,
+    oldHeight: Float,
+    newHeight: Float,
+    scrollValue: Float,
+): Float = with(layoutResult) {
+    val currentLine =
+        getLineForOffset(selection.min.coerceIn(0, layoutResult.layoutInput.text.length))
+    val lineBottom = getLineBottom(currentLine)
+    val sizeDifference = oldHeight - newHeight
+    if (lineBottom in (newHeight + scrollValue)..(oldHeight + scrollValue))
+        sizeDifference - (oldHeight - (lineBottom - scrollValue))
+    else 0f
 }
