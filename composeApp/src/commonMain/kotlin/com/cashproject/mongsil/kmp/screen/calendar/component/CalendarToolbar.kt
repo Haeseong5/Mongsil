@@ -17,7 +17,6 @@ import mongsil.composeapp.generated.resources.ic_article
 import mongsil.composeapp.generated.resources.ic_bar_chart
 import mongsil.composeapp.generated.resources.ic_more
 import mongsil.composeapp.generated.resources.ic_search
-import mongsil.composeapp.generated.resources.ic_shopping_bag
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -36,7 +35,8 @@ fun BoxScope.CalendarToolbar(
                     .size(24.dp)
                     .circularRippleClickable { onNavigateToSetting() },
                 painter = painterResource(Res.drawable.ic_more),
-                contentDescription = "설정"
+                contentDescription = "설정",
+                tint = MongsilTheme.colorScheme.labelStrong
             )
             // TODO Shop 기능 미개발
 //            Icon(
@@ -51,21 +51,24 @@ fun BoxScope.CalendarToolbar(
                     .size(24.dp)
                     .circularRippleClickable { onNavigateToSearch() },
                 painter = painterResource(Res.drawable.ic_search),
-                contentDescription = "검색"
+                contentDescription = "검색",
+                tint = MongsilTheme.colorScheme.labelStrong
             )
             Icon(
                 modifier = Modifier
                     .size(24.dp)
                     .circularRippleClickable { onNavigateToChart() },
                 painter = painterResource(Res.drawable.ic_bar_chart),
-                contentDescription = "차트"
+                contentDescription = "차트",
+                tint = MongsilTheme.colorScheme.labelStrong
             )
             Icon(
                 modifier = Modifier
                     .size(24.dp)
                     .circularRippleClickable { onNavigateToMonthly() },
                 painter = painterResource(Res.drawable.ic_article),
-                contentDescription = "모아보기"
+                contentDescription = "모아보기",
+                tint = MongsilTheme.colorScheme.labelStrong
             )
         }
     )

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,9 +37,9 @@ fun DaysOfWeekTitle(
                 text = day,
                 style = MongsilTheme.typography.body2Normal,
                 color = when (index) {
-                    0 -> Color(0xFFE57373) // 일요일
-                    6 -> Color(0xFF64B5F6) // 토요일
-                    else -> Color.Black
+                    0 -> MongsilTheme.colorScheme.fillRed // 일요일
+                    6 -> MongsilTheme.colorScheme.fillBlue // 토요일
+                    else -> MongsilTheme.colorScheme.labelStrong
                 }
             )
         }
@@ -54,7 +53,7 @@ fun DaysOfWeekTitle(
 internal fun DaysOfWeekTitlePreview() {
     MongsilTheme {
         DaysOfWeekTitle(
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(MongsilTheme.colorScheme.background)
         )
     }
 }

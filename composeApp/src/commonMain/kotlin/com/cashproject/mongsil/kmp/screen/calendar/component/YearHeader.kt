@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,13 +44,14 @@ fun YearHeader(
                 },
             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
             contentDescription = "back",
-            tint = Color.Black
+            tint = MongsilTheme.colorScheme.labelStrong
         )
         Text(
             modifier = Modifier.weight(1f),
             text = "${year}년",
             textAlign = TextAlign.Center,
             style = MongsilTheme.typography.title3,
+            color = MongsilTheme.colorScheme.labelStrong
         )
         Icon(
             modifier = Modifier
@@ -64,7 +64,7 @@ fun YearHeader(
                 },
             painter = painterResource(Res.drawable.ic_baseline_arrow_forward_ios_24),
             contentDescription = "forward",
-            tint = Color.Black
+            tint = MongsilTheme.colorScheme.labelStrong
         )
     }
 }

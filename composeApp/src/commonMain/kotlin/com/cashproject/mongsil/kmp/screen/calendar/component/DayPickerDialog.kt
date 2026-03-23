@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,7 +54,7 @@ private fun DayPickerContent(
 
     Column(
         modifier = Modifier
-            .background(Color.White, RoundedCornerShape(20.dp))
+            .background(MongsilTheme.colorScheme.alert, RoundedCornerShape(20.dp))
             .padding(24.dp)
     ) {
         // 년도 선택 헤더
@@ -99,7 +98,8 @@ private fun MonthItem(
         Text(
             text = month.toString(),
             style = MongsilTheme.typography.body1Normal,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MongsilTheme.colorScheme.labelStrong
         )
     }
 }
@@ -109,6 +109,6 @@ private fun MonthItem(
 private fun DayPickerContentPreview() {
     DayPickerContent(
         initialYear = 2025,
-        onMonthSelected = { a, b -> }
+        onMonthSelected = { _, _ -> }
     )
 }
