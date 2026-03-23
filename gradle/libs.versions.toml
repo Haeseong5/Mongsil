@@ -57,6 +57,9 @@ activityCompose = "1.11.0"
 # Google Services
 googleAds = "24.7.0"
 googleBilling = "7.1.1"
+playServicesAuth = "21.3.0"
+googleApiClient = "2.7.2"
+googleApiDrive = "v3-rev20250220-2.0.0"
 firebaseBom = "34.5.0"
 googleServicesVersion = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.6"
@@ -190,6 +193,9 @@ coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", v
 # Google Services
 google-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "googleAds" }
 google-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "googleBilling" }
+google-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+google-api-client-android = { group = "com.google.api-client", name = "google-api-client-android", version.ref = "googleApiClient" }
+google-api-drive = { group = "com.google.apis", name = "google-api-services-drive", version.ref = "googleApiDrive" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore" }

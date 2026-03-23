@@ -2,6 +2,8 @@ package com.cashproject.mongsil.kmp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.cashproject.mongsil.kmp.core.backup.CloudBackupService
+import com.cashproject.mongsil.kmp.core.backup.GoogleDriveBackupService
 import com.cashproject.mongsil.kmp.core.data.datasource.CounterLocalDataSource
 import com.cashproject.mongsil.kmp.core.data.datasource.DiaryLocalDataSource
 import com.cashproject.mongsil.kmp.core.data.datasource.impl.CounterLocalDataSourceRoom
@@ -10,12 +12,12 @@ import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
+import com.cashproject.mongsil.kmp.firebase.FirebaseService
+import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
 import com.cashproject.mongsil.kmp.screen.setting.AndroidDiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.DiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.AndroidPdfExportService
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.PdfExportService
-import com.cashproject.mongsil.kmp.firebase.FirebaseService
-import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.AndroidNativeScreenLockAuthenticator
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.CurrentActivityHolder
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.NativeScreenLockAuthenticator
@@ -57,4 +59,5 @@ actual fun platformModule(): Module = module {
     single { CurrentActivityHolder() }
     single<NativeScreenLockAuthenticator> { AndroidNativeScreenLockAuthenticator(get()) }
     single<FirebaseService> { FirebaseServiceImpl() }
+    single<CloudBackupService> { GoogleDriveBackupService(get()) }
 }

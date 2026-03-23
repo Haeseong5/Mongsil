@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="emoticon_bottom_sheet_title">How are you feeling today?</string>
+    <string name="emoticon_bottom_sheet_subtitle">Watch a short ad to unlock locked emoticons!</string>
+    <string name="text_align_toggle">Change text alignment</string>
+    <string name="text_color_picker">Choose text color</string>
+    <string name="custom_color_picker_title">Choose Color</string>
+    <string name="custom_color_picker_confirm">OK</string>
+    <string name="custom_color_picker_cancel">Cancel</string>
+    <string name="custom_color_selected_label">Selected color</string>
+    <string name="custom_color_circle_desc">Custom color picker</string>
+    <string name="view_mode_monthly">Monthly</string>
+    <string name="view_mode_all">All</string>
+    <string name="diary_all_title">All Diary Entries</string>
+    <string name="load_more">Load More</string>
+    <string name="sort_latest">Newest</string>
+    <string name="sort_oldest">Oldest</string>
+    <string name="chart_section_emoticon_top">Top 3 Emotions This Month</string>
+    <string name="chart_section_emoticon_stats">Emotion Stats</string>
+    <string name="chart_empty_emoticon">No stickers added</string>
+    <string name="chart_streak_banner">%1$d-day streak 🔥</string>
+    <string name="chart_section_word_cloud">Frequently Used Words</string>
+    <string name="chart_word_cloud_empty">No diary entries yet</string>
+    <string name="app_name">Mongsil</string>
+    <string name="notification_message">How was your day?</string>
+    <string name="background_color_picker">Choose background color</string>
+    <string name="background_color_none">No background</string>
+    <string name="day_of_week_monday">Monday</string>
+    <string name="day_of_week_tuesday">Tuesday</string>
+    <string name="day_of_week_wednesday">Wednesday</string>
+    <string name="day_of_week_thursday">Thursday</string>
+    <string name="day_of_week_friday">Friday</string>
+    <string name="day_of_week_saturday">Saturday</string>
+    <string name="day_of_week_sunday">Sunday</string>
+
+    <!-- Backup / Restore Screen -->
+    <string name="backup_restore_title">Backup / Restore</string>
+    <string name="backup_section_title">Backup</string>
+    <string name="backup_section_desc">Export all diary data as a JSON file.</string>
+    <string name="backup_create">Create Backup</string>
+    <string name="backup_creating">Creating backup…</string>
+    <string name="backup_save_to_file">Save to File</string>
+    <string name="backup_result_summary">Backup complete: %1$d entries</string>
+    <string name="restore_section_title">Restore</string>
+    <string name="restore_section_desc">Import diary data from a backup file.</string>
+    <string name="restore_select_file">Select File</string>
+    <string name="restore_preview_title">Backup File Info</string>
+    <string name="restore_preview_diary_count">Entries</string>
+    <string name="restore_preview_created_at">Created</string>
+    <string name="restore_preview_platform">Platform</string>
+    <string name="restore_preview_app_version">App Version</string>
+    <string name="restore_conflict_title">Duplicate Handling</string>
+    <string name="restore_policy_skip">Skip</string>
+    <string name="restore_policy_skip_desc">Keep existing diary entries.</string>
+    <string name="restore_policy_overwrite">Overwrite</string>
+    <string name="restore_policy_overwrite_desc">Replace with backup data.</string>
+    <string name="restore_policy_merge">Merge</string>
+    <string name="restore_policy_merge_desc">Combine both contents.</string>
+    <string name="restore_cancel">Cancel</string>
+    <string name="restore_restoring">Restoring…</string>
+    <string name="restore_start">Start Restore</string>
+    <string name="restore_result_title">Restore Result</string>
+    <string name="restore_result_imported">Imported</string>
+    <string name="restore_result_skipped">Skipped</string>
+    <string name="restore_result_merged">Merged</string>
+    <string name="restore_result_failed">Failed</string>
+    <string name="count_with_unit">%1$d</string>
+
+    <!-- Cloud Backup -->
+    <string name="cloud_sign_in_google">Sign in with Google</string>
+    <string name="cloud_signed_in_format">Signed in as %1$s</string>
+    <string name="cloud_backup_to_drive">Back up to Google Drive</string>
+    <string name="cloud_saved_backups">Saved Backups</string>
+    <string name="cloud_sign_out">Sign Out</string>
+    <string name="cloud_download">Download</string>
+    <string name="cloud_delete">Delete</string>
+    <string name="cloud_uploading">Uploading…</string>
+    <string name="cloud_downloading">Downloading…</string>
+    <string name="cloud_deleting">Deleting…</string>
+    <string name="cloud_ios_not_available">iCloud backup is not yet available.</string>
+    <string name="cloud_desktop_not_available">Cloud backup is not supported on desktop.</string>
+
+    <!-- Snackbar Messages -->
+    <string name="snackbar_backup_created">Backup created. (%1$d entries)</string>
+    <string name="snackbar_backup_failed">Failed to create backup.</string>
+    <string name="snackbar_file_saved">File saved.</string>
+    <string name="snackbar_invalid_file">Invalid backup file.</string>
+    <string name="snackbar_restore_completed">Restore completed. (%1$d imported)</string>
+    <string name="snackbar_restore_failed">Restore failed.</string>
+    <string name="snackbar_signed_in">Signed in as %1$s.</string>
+    <string name="snackbar_sign_in_failed">Google sign-in failed.</string>
+    <string name="snackbar_cloud_upload_success">Backed up to Google Drive.</string>
+    <string name="snackbar_cloud_upload_failed">Upload failed.</string>
+    <string name="snackbar_cloud_download_success">Backup downloaded.</string>
+    <string name="snackbar_cloud_download_failed">Download failed.</string>
+    <string name="snackbar_cloud_delete_success">Backup deleted.</string>
+    <string name="snackbar_cloud_delete_failed">Delete failed.</string>
+</resources>

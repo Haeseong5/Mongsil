@@ -32,4 +32,67 @@
     <string name="day_of_week_friday">금요일</string>
     <string name="day_of_week_saturday">토요일</string>
     <string name="day_of_week_sunday">일요일</string>
+
+    <!-- Backup / Restore Screen -->
+    <string name="backup_restore_title">백업/복원</string>
+    <string name="backup_section_title">백업</string>
+    <string name="backup_section_desc">모든 일기 데이터를 JSON 파일로 내보냅니다.</string>
+    <string name="backup_create">백업 생성</string>
+    <string name="backup_creating">백업 생성 중…</string>
+    <string name="backup_save_to_file">파일로 저장</string>
+    <string name="backup_result_summary">백업 완료: %1$d개의 일기</string>
+    <string name="restore_section_title">복원</string>
+    <string name="restore_section_desc">백업 파일에서 일기 데이터를 가져옵니다.</string>
+    <string name="restore_select_file">파일 선택</string>
+    <string name="restore_preview_title">백업 파일 정보</string>
+    <string name="restore_preview_diary_count">일기 수</string>
+    <string name="restore_preview_created_at">생성일</string>
+    <string name="restore_preview_platform">플랫폼</string>
+    <string name="restore_preview_app_version">앱 버전</string>
+    <string name="restore_conflict_title">중복 일기 처리 방식</string>
+    <string name="restore_policy_skip">건너뛰기</string>
+    <string name="restore_policy_skip_desc">기존 일기를 유지합니다.</string>
+    <string name="restore_policy_overwrite">덮어쓰기</string>
+    <string name="restore_policy_overwrite_desc">백업 데이터로 교체합니다.</string>
+    <string name="restore_policy_merge">병합</string>
+    <string name="restore_policy_merge_desc">두 내용을 합칩니다.</string>
+    <string name="restore_cancel">취소</string>
+    <string name="restore_restoring">복원 중…</string>
+    <string name="restore_start">복원 시작</string>
+    <string name="restore_result_title">복원 결과</string>
+    <string name="restore_result_imported">가져옴</string>
+    <string name="restore_result_skipped">건너뜀</string>
+    <string name="restore_result_merged">병합</string>
+    <string name="restore_result_failed">실패</string>
+    <string name="count_with_unit">%1$d개</string>
+
+    <!-- Cloud Backup -->
+    <string name="cloud_sign_in_google">Google 계정으로 로그인</string>
+    <string name="cloud_signed_in_format">%1$s 로그인됨</string>
+    <string name="cloud_backup_to_drive">Google Drive에 백업</string>
+    <string name="cloud_saved_backups">저장된 백업</string>
+    <string name="cloud_sign_out">로그아웃</string>
+    <string name="cloud_download">다운로드</string>
+    <string name="cloud_delete">삭제</string>
+    <string name="cloud_uploading">업로드 중…</string>
+    <string name="cloud_downloading">다운로드 중…</string>
+    <string name="cloud_deleting">삭제 중…</string>
+    <string name="cloud_ios_not_available">iCloud 백업은 준비 중입니다.</string>
+    <string name="cloud_desktop_not_available">클라우드 백업은 데스크톱에서 지원하지 않습니다.</string>
+
+    <!-- Snackbar Messages -->
+    <string name="snackbar_backup_created">백업이 생성되었습니다. (%1$d개)</string>
+    <string name="snackbar_backup_failed">백업 생성에 실패했습니다.</string>
+    <string name="snackbar_file_saved">파일이 저장되었습니다.</string>
+    <string name="snackbar_invalid_file">올바른 백업 파일이 아닙니다.</string>
+    <string name="snackbar_restore_completed">복원이 완료되었습니다. (%1$d개 가져옴)</string>
+    <string name="snackbar_restore_failed">복원에 실패했습니다.</string>
+    <string name="snackbar_signed_in">%1$s으로 로그인되었습니다.</string>
+    <string name="snackbar_sign_in_failed">Google 로그인에 실패했습니다.</string>
+    <string name="snackbar_cloud_upload_success">Google Drive에 백업되었습니다.</string>
+    <string name="snackbar_cloud_upload_failed">업로드에 실패했습니다.</string>
+    <string name="snackbar_cloud_download_success">백업을 다운로드했습니다.</string>
+    <string name="snackbar_cloud_download_failed">다운로드에 실패했습니다.</string>
+    <string name="snackbar_cloud_delete_success">백업이 삭제되었습니다.</string>
+    <string name="snackbar_cloud_delete_failed">삭제에 실패했습니다.</string>
 </resources>

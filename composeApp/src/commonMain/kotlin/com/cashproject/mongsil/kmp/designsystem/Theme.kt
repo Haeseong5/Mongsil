@@ -3,6 +3,7 @@ package com.cashproject.mongsil.kmp.designsystem
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -28,6 +29,12 @@ fun MongsilTheme(
 ) {
     val density = LocalDensity.current
 
+    val colorScheme = if (darkTheme) {
+        MongsilColorScheme.darkColorScheme
+    } else {
+        MongsilColorScheme.lightColorScheme
+    }
+
     CompositionLocalProvider(
         LocalDarkTheme provides darkTheme,
         LocalAppFontScale provides fontScale,
@@ -35,11 +42,8 @@ fun MongsilTheme(
             density = density.density,
             fontScale = 1f
         ),
-        LocalColorScheme provides if (darkTheme) {
-            MongsilColorScheme.darkColorScheme
-        } else {
-            MongsilColorScheme.lightColorScheme
-        },
+        LocalColorScheme provides colorScheme,
+        LocalContentColor provides colorScheme.labelStrong,
         LocalIndication provides ripple(),
         LocalTypography provides MongsilTypography.with(
             fontFamily = fontFamily,
