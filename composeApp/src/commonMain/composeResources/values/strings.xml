@@ -32,6 +32,7 @@
     <string name="day_of_week_friday">금요일</string>
     <string name="day_of_week_saturday">토요일</string>
     <string name="day_of_week_sunday">일요일</string>
+    <string name="today">이번 달</string>
 
     <!-- Backup / Restore Screen -->
     <string name="backup_restore_title">백업/복원</string>
