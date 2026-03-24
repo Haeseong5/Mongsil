@@ -446,11 +446,16 @@ private fun EmoticonButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val emoticonBackgroundColor = selectedEmoticon
+        ?.backgroundColor
+        ?.toComposeColorOrNull()
+        ?: MongsilTheme.colorScheme.card
+
     Box(
         modifier = modifier
             .size(60.dp)
             .clip(CircleShape)
-            .background(MongsilTheme.colorScheme.card)
+            .background(color = emoticonBackgroundColor)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
@@ -762,6 +767,16 @@ private fun DiaryWriteAlignEndPreview() {
             openImagePicker = {}
         )
     }
+}
+
+private fun String.toComposeColorOrNull(): Color? {
+    val normalized = trim().removePrefix("#")
+    val argbHex = when (normalized.length) {
+        6 -> "FF$normalized"
+        8 -> normalized
+        else -> return null
+    }
+    return argbHex.toLongOrNull(16)?.let { Color(it.toInt()) }
 }
 
 private fun TextFieldValue.isCursorInView(
