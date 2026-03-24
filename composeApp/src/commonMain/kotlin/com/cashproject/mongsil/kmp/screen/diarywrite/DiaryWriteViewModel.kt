@@ -101,6 +101,10 @@ class DiaryWriteViewModel(
             val loadedTextAlign = diary?.textAlign?.toTextAlign() ?: TextAlign.Start
             val loadedTextColor = diary?.textColor?.hexToColor() ?: Color.Black
             val loadedBackgroundColor = diary?.backgroundColor?.hexToColor() ?: Color.Transparent
+            val isTextColorCustomized = diary?.textColor
+                ?.uppercase()
+                ?.let { it != DEFAULT_TEXT_COLOR_HEX }
+                ?: false
 
             _uiState.update { state ->
                 state.copy(
@@ -118,6 +122,7 @@ class DiaryWriteViewModel(
                     savedTextAlign = loadedTextAlign,
                     textColor = loadedTextColor,
                     savedTextColor = loadedTextColor,
+                    isTextColorCustomized = isTextColorCustomized,
                     backgroundColor = loadedBackgroundColor,
                     savedBackgroundColor = loadedBackgroundColor,
                 )
@@ -236,7 +241,7 @@ class DiaryWriteViewModel(
     }
 
     private fun handleTextColorSelected(color: Color) {
-        _uiState.update { it.copy(textColor = color) }
+        _uiState.update { it.copy(textColor = color, isTextColorCustomized = true) }
         scheduleAutoSave()
     }
 
@@ -451,6 +456,7 @@ class DiaryWriteViewModel(
         const val SEPARATOR = "||"
         const val KEY_UNLOCKED_PREMIUMS = "unlocked_premium_emoticon_ids"
         const val AUTO_SAVE_DELAY_MS = 1500L
+        const val DEFAULT_TEXT_COLOR_HEX = "FF000000"
         const val EVENT_DIARY_CREATED = "diary_created"
         const val PARAM_HAS_PHOTO = "has_photo"
         const val PARAM_EMOTICON_ID = "emoticon_id"

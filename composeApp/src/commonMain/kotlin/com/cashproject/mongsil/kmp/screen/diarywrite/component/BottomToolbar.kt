@@ -79,8 +79,7 @@ fun BottomToolbar(
                 Icon(
                     painter = painterResource(Res.drawable.ic_imagesmode),
                     contentDescription = "image",
-                    tint = if (canAddPhoto) MongsilTheme.colorScheme.labelStrong
-                           else MongsilTheme.colorScheme.labelDisable
+                    tint = MongsilTheme.colorScheme.labelStrong
                 )
             }
 
@@ -93,7 +92,8 @@ fun BottomToolbar(
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_more_time),
-                    contentDescription = "current time"
+                    contentDescription = "current time",
+                    tint = MongsilTheme.colorScheme.labelStrong
                 )
             }
 
@@ -106,7 +106,8 @@ fun BottomToolbar(
             ) {
                 Icon(
                     painter = painterResource(textAlignIcon(textAlign)),
-                    contentDescription = stringResource(Res.string.text_align_toggle)
+                    contentDescription = stringResource(Res.string.text_align_toggle),
+                    tint = MongsilTheme.colorScheme.labelStrong
                 )
             }
 

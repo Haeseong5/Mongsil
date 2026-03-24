@@ -41,6 +41,7 @@ data class DiaryWriteUiState(
     val savedTextAlign: TextAlign = TextAlign.Start,
     val textColor: Color = Color.Black,
     val savedTextColor: Color = Color.Black,
+    val isTextColorCustomized: Boolean = false,
     val backgroundColor: Color = Color.Transparent,
     val savedBackgroundColor: Color = Color.Transparent,
     val showColorPalette: Boolean = false,
