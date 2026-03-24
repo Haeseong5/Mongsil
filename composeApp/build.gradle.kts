@@ -58,6 +58,11 @@ kotlin {
             // AdMob
             implementation(libs.google.ads)
 
+            // Google Drive Backup
+            implementation(libs.google.auth)
+            implementation(libs.google.api.client.android)
+            implementation(libs.google.api.drive)
+
             // Firebase (GitLive KMP)
             implementation(libs.gitlive.firebase.analytics)
             implementation(libs.gitlive.firebase.crashlytics)
@@ -163,6 +168,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/DEPENDENCIES"
         }
     }
 

@@ -32,11 +32,8 @@ import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_archive
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
-import mongsil.composeapp.generated.resources.ic_language
-import mongsil.composeapp.generated.resources.ic_lock
 import mongsil.composeapp.generated.resources.ic_menu
 import mongsil.composeapp.generated.resources.ic_notifications
-import mongsil.composeapp.generated.resources.ic_upload
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -123,7 +120,6 @@ fun SettingScreen(
 //                onClick = { viewModel.logMenuClick("screen_lock"); onNavigateToScreenLock() }
 //            )
 
-            // TODO 미개발 기능
             SettingItem(
                 icon = Res.drawable.ic_archive,
                 label = "백업/복원",

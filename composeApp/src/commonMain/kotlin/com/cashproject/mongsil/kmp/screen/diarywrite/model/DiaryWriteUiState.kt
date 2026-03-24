@@ -4,6 +4,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.cashproject.mongsil.kmp.model.Emoticon
 
+private const val MAX_PHOTO_COUNT = 5
+
 /**
  * 일기 작성 화면의 UI 상태를 나타냅니다.
  *
@@ -43,7 +45,11 @@ data class DiaryWriteUiState(
     val savedBackgroundColor: Color = Color.Transparent,
     val showColorPalette: Boolean = false,
     val showBackgroundColorPalette: Boolean = false,
+    val previewPhotoIndex: Int? = null,
 ) {
+    val canAddPhoto: Boolean
+        get() = photoUris.size < MAX_PHOTO_COUNT
+
     val hasContent: Boolean
         get() = content.isNotBlank() || photoUris.isNotEmpty()
 

@@ -150,6 +150,8 @@ class DiaryWriteViewModel(
             is DiaryWriteEvent.OnInsertCurrentTime -> handleInsertCurrentTime()
             is DiaryWriteEvent.OnBackgroundColorPickerToggle -> handleBackgroundColorPickerToggle()
             is DiaryWriteEvent.OnBackgroundColorSelected -> handleBackgroundColorSelected(event.color)
+            is DiaryWriteEvent.OnPhotoClick -> _uiState.update { it.copy(previewPhotoIndex = event.index) }
+            is DiaryWriteEvent.OnPhotoPreviewDismiss -> _uiState.update { it.copy(previewPhotoIndex = null) }
         }
     }
 
@@ -191,7 +193,11 @@ class DiaryWriteViewModel(
     private fun handlePhotosSelected(photoUris: List<String>) {
         if (photoUris.isEmpty()) return
         firebaseService.logEvent(EVENT_TOOLBAR_CLICKED, mapOf(PARAM_TOOLBAR_ACTION to ACTION_PHOTO))
-        _uiState.update { state -> state.copy(photoUris = state.photoUris + photoUris) }
+        _uiState.update { state ->
+            val remaining = MAX_PHOTO_COUNT - state.photoUris.size
+            if (remaining <= 0) return@update state
+            state.copy(photoUris = state.photoUris + photoUris.take(remaining))
+        }
         scheduleAutoSave()
     }
 
@@ -441,6 +447,7 @@ class DiaryWriteViewModel(
     }
 
     private companion object {
+        const val MAX_PHOTO_COUNT = 5
         const val SEPARATOR = "||"
         const val KEY_UNLOCKED_PREMIUMS = "unlocked_premium_emoticon_ids"
         const val AUTO_SAVE_DELAY_MS = 1500L
