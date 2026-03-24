@@ -1,4 +1,8 @@
 [versions]
+compileSdk = "36"
+sdkMinVersion = "26"
+sdkTargetVersion = "36"
+
 # SDK Versions
 componentsResources = "1.10.3"
 espressoCore = "3.7.0"
