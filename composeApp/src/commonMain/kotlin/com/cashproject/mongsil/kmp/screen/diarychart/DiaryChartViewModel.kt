@@ -6,7 +6,6 @@ import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
-import com.cashproject.mongsil.kmp.screen.diarychart.model.WordCloudItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,6 +20,7 @@ import kotlin.time.ExperimentalTime
 class DiaryChartViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
+    private val getWordCloudUseCase: GetWordCloudUseCase,
     initialYear: Int,
     initialMonth: Int,
 ) : ViewModel() {
@@ -43,7 +43,7 @@ class DiaryChartViewModel(
     init {
         loadMonthStatistics(initialYear, initialMonth)
         loadStreak()
-        loadWordCloud()
+        loadWordCloud(initialYear, initialMonth)
     }
 
     fun moveToPreviousMonth() {
@@ -70,6 +70,7 @@ class DiaryChartViewModel(
             )
         }
         loadMonthStatistics(year, month)
+        loadWordCloud(year, month)
     }
 
     private fun loadMonthStatistics(year: Int, month: Int) {
@@ -128,33 +129,9 @@ class DiaryChartViewModel(
         }
     }
 
-    private fun loadWordCloud() {
+    private fun loadWordCloud(year: Int, month: Int) {
         viewModelScope.launch {
-            val stopWords = setOf(
-                "이", "가", "은", "는", "을", "를", "의", "에", "도", "에서", "으로", "로", "과", "와",
-                "이나", "나", "이라", "라", "이고", "고", "하고", "에게", "한테", "보다", "만큼", "처럼",
-                "같이", "까지", "부터", "이랑", "랑", "하며", "며", "이며", "했", "한", "하는", "이다",
-                "그", "것", "수", "때", "더", "같은", "이런", "저런", "그런", "어떤", "오늘", "일",
-                "나는", "내가", "그리고", "그래서", "하지만", "그런데", "아", "그냥", "진짜", "너무",
-                "정말", "매우", "아주", "좀", "이제", "여기", "저기", "거기", "우리", "저는", "제가",
-                "나도", "있다", "없다", "하다", "되다", "되어", "됩니다", "않고", "않는", "않아",
-                "있어", "없어", "했어", "한다", "합니다", "이에", "에도", "에서도", "으로도"
-            )
-
-            val wordCounts = diaryRepository.getAllDiaries()
-                .flatMap { diary ->
-                    diary.content
-                        .split(Regex("[\\s\\p{Punct}.,!?…\\-·。、]+"))
-                        .filter { token -> token.length >= 2 && token !in stopWords }
-                }
-                .groupingBy { it }
-                .eachCount()
-
-            val items = wordCounts.entries
-                .sortedByDescending { it.value }
-                .take(60)
-                .map { (word, count) -> WordCloudItem(word = word, count = count) }
-
+            val items = getWordCloudUseCase(year, month)
             _uiState.update { it.copy(wordCloudItems = items) }
         }
     }
