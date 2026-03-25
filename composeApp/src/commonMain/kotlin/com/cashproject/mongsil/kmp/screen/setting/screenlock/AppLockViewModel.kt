@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting.screenlock
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.model.ScreenLockMethod
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ data class AppLockUiState(
 
 class AppLockViewModel(
     settingRepository: SettingRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val shouldLock = MutableStateFlow(false)
     private var hasInitialized = false

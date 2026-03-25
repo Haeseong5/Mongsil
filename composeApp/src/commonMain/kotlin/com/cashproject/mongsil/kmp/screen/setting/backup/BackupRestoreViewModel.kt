@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting.backup
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.backup.CloudBackupService
 import com.cashproject.mongsil.kmp.core.backup.CloudBackupState
 import com.cashproject.mongsil.kmp.core.backup.CloudWorkingType
@@ -19,7 +19,7 @@ class BackupRestoreViewModel(
     private val restoreBackupUseCase: RestoreBackupUseCase,
     private val validateBackupUseCase: ValidateBackupUseCase,
     private val cloudBackupService: CloudBackupService?,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(BackupRestoreUiState())
     val uiState = _uiState.asStateFlow()
@@ -41,7 +41,7 @@ class BackupRestoreViewModel(
     fun createBackup() {
         if (_uiState.value.status is BackupScreenStatus.Working) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _uiState.update {
                 it.copy(status = BackupScreenStatus.Working(WorkingType.CREATING_BACKUP))
             }
@@ -65,7 +65,7 @@ class BackupRestoreViewModel(
     fun getBackupBytes(): BackupData? = lastBackupData
 
     fun onBackupFileLoaded(bytes: ByteArray) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             validateBackupUseCase(bytes).onSuccess { manifest ->
                 _uiState.update {
                     it.copy(
@@ -91,7 +91,7 @@ class BackupRestoreViewModel(
         val policy = _uiState.value.selectedPolicy
         if (_uiState.value.status is BackupScreenStatus.Working) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _uiState.update {
                 it.copy(status = BackupScreenStatus.Working(WorkingType.RESTORING))
             }
@@ -131,7 +131,7 @@ class BackupRestoreViewModel(
 
     fun onFileSaved() {
         resetStatus()
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _snackbarEvent.emit(BackupSnackbarEvent.FileSaved)
         }
     }
@@ -140,7 +140,7 @@ class BackupRestoreViewModel(
 
     private fun checkCloudSignInStatus() {
         val service = cloudBackupService ?: return
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val signedIn = service.isSignedIn()
             if (signedIn) {
                 service.signIn().onSuccess { name ->
@@ -155,7 +155,7 @@ class BackupRestoreViewModel(
 
     fun onCloudSignInSuccess() {
         val service = cloudBackupService ?: return
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             service.signIn().onSuccess { name ->
                 _cloudState.update {
                     it.copy(isSignedIn = true, accountName = name)
@@ -170,7 +170,7 @@ class BackupRestoreViewModel(
 
     fun cloudSignOut() {
         val service = cloudBackupService ?: return
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             service.signOut()
             _cloudState.update {
                 CloudBackupState(isAvailable = true)
@@ -182,7 +182,7 @@ class BackupRestoreViewModel(
         val service = cloudBackupService ?: return
         if (_cloudState.value.isWorking) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _cloudState.update {
                 it.copy(isWorking = true, workingType = CloudWorkingType.CREATING_BACKUP)
             }
@@ -211,7 +211,7 @@ class BackupRestoreViewModel(
         val service = cloudBackupService ?: return
         if (_cloudState.value.isWorking) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _cloudState.update {
                 it.copy(isWorking = true, workingType = CloudWorkingType.DOWNLOADING)
             }
@@ -231,7 +231,7 @@ class BackupRestoreViewModel(
         val service = cloudBackupService ?: return
         if (_cloudState.value.isWorking) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _cloudState.update {
                 it.copy(isWorking = true, workingType = CloudWorkingType.DELETING)
             }
@@ -249,7 +249,7 @@ class BackupRestoreViewModel(
 
     private fun loadCloudBackups() {
         val service = cloudBackupService ?: return
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             service.listBackups().onSuccess { backups ->
                 _cloudState.update { it.copy(backups = backups) }
             }

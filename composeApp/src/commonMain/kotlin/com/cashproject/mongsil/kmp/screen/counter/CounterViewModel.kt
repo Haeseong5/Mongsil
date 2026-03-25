@@ -3,7 +3,7 @@ package com.cashproject.mongsil.kmp.screen.counter
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.CounterRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  */
 class CounterViewModel(
     private val repository: CounterRepository
-) : ViewModel() {
+) : BaseViewModel() {
     // ViewModel의 생명주기를 관리하는 CoroutineScope
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -37,7 +37,7 @@ class CounterViewModel(
      * 데이터베이스에서 카운터 값을 로드합니다.
      */
     private fun loadCounter() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             isLoading = true
             count = repository.getCounter()
             isLoading = false
@@ -66,7 +66,7 @@ class CounterViewModel(
      * 카운터를 0으로 초기화하고 데이터베이스에서 삭제합니다.
      */
     fun reset() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.resetCounter()
             count = 0
         }
@@ -76,7 +76,7 @@ class CounterViewModel(
      * 현재 카운터 값을 데이터베이스에 저장합니다.
      */
     private fun saveCounter() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             repository.saveCounter(count)
         }
     }

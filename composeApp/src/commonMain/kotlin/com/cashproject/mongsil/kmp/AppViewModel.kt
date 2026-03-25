@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.model.FontStyleOption
 import com.cashproject.mongsil.kmp.model.ThemeMode
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class AppViewModel(
     settingRepository: SettingRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     val uiState = combine(
         settingRepository.themeMode(),

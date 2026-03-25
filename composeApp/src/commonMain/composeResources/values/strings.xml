@@ -197,6 +197,7 @@
     <string name="theme_dark">다크 모드</string>
 
     <!-- Error Messages -->
+    <string name="error_temporary">일시적인 오류가 발생했습니다.</string>
     <string name="error_unsupported_backup_format">지원하지 않는 백업 형식입니다. 앱을 업데이트 해주세요.</string>
     <string name="error_backup_no_diaries">백업 파일에 일기 데이터가 없습니다.</string>
     <string name="error_invalid_date_format">잘못된 날짜 형식: %1$s</string>

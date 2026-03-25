@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.firebase.FirebaseService
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,7 +12,7 @@ class SettingViewModel(
     private val settingRepository: SettingRepository,
     private val diaryReminderScheduler: DiaryReminderScheduler,
     private val firebaseService: FirebaseService,
-) : ViewModel() {
+) : BaseViewModel() {
 
     val isDiaryReminderEnabled = settingRepository
         .isDiaryReminderEnabled()
@@ -23,7 +23,7 @@ class SettingViewModel(
         )
 
     fun updateDiaryReminder(enabled: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val appliedEnabled = diaryReminderScheduler.setEnabled(enabled)
             settingRepository.updateDiaryReminderEnabled(appliedEnabled)
         }

@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.calendar
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
@@ -23,7 +23,7 @@ import kotlin.time.ExperimentalTime
 class CalendarViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
     val uiState = _uiState.asStateFlow()
@@ -43,7 +43,7 @@ class CalendarViewModel(
     }
 
     private fun loadEmoticons() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             emoticonRepository.getEmoticons()
                 .onSuccess { emoticons ->
                     println("++## 이모티콘 로드 성공: ${emoticons}개")
@@ -85,7 +85,7 @@ class CalendarViewModel(
     fun updateYearMonth(year: Int, month: Int) {
         _uiState.update { it.copy(currentYear = year, currentMonth = month) }
         // 현재/이전/다음 월을 병렬 로드 후 state를 한 번에 업데이트 (리컴포지션 1회)
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val monthsToLoad = listOf(
                 YearMonth(year, month),
                 YearMonth(prevYear(year, month), prevMonth(year, month)),

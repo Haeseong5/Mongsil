@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
@@ -99,6 +100,8 @@ fun BackupRestoreScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cloudState by viewModel.cloudState.collectAsStateWithLifecycle()
     val snackbarController = rememberSnackbarController()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     LaunchedEffect(Unit) {
         viewModel.snackbarEvent.collect { event ->

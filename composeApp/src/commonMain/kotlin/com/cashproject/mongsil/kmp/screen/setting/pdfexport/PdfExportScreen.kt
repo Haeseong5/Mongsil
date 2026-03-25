@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.model.PdfExportUiState
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.pdf_create
@@ -39,6 +40,8 @@ fun PdfExportScreen(
     viewModel: PdfExportViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     PdfExportScreenContent(
         uiState = uiState,

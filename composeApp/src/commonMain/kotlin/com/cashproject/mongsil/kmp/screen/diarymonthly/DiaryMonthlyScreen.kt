@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.DiaryCard
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyItem
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyUiState
@@ -62,6 +63,8 @@ fun DiaryListScreen(
     onDiaryClick: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     DiaryListScreenContent(
         uiState = uiState,

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.model.ScreenLockMethod
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.screen_lock_app_password
@@ -54,6 +55,8 @@ fun ScreenLockScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var password by rememberSaveable { mutableStateOf("") }
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     Column(
         modifier = Modifier

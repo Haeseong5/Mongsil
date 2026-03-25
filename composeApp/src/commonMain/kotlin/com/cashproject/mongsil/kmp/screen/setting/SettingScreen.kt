@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.LocalDarkTheme
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.backup_restore_title
@@ -59,6 +60,9 @@ fun SettingScreen(
     viewModel: SettingViewModel = koinViewModel(),
 ) {
     val isDiaryAlarmEnabled by viewModel.isDiaryReminderEnabled.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
+
     val permissionRequester = rememberDiaryReminderPermissionRequester(
         onPermissionResult = { granted ->
             viewModel.updateDiaryReminder(granted)

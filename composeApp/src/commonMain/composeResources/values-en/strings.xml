@@ -197,6 +197,7 @@
     <string name="theme_dark">Dark Mode</string>
 
     <!-- Error Messages -->
+    <string name="error_temporary">A temporary error occurred.</string>
     <string name="error_unsupported_backup_format">Unsupported backup format. Please update the app.</string>
     <string name="error_backup_no_diaries">No diary data found in the backup file.</string>
     <string name="error_invalid_date_format">Invalid date format: %1$s</string>

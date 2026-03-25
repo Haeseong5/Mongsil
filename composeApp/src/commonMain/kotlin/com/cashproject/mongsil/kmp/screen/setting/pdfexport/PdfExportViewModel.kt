@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting.pdfexport
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.model.PdfExportUiState
@@ -24,7 +24,7 @@ class PdfExportViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
     private val pdfExportService: PdfExportService,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(PdfExportUiState())
     val uiState = _uiState.asStateFlow()
@@ -32,7 +32,7 @@ class PdfExportViewModel(
     fun exportPdf() {
         if (_uiState.value.isExporting) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val loadingMsg = getString(Res.string.pdf_progress_loading)
             val emoticonsMsg = getString(Res.string.pdf_progress_emoticons)
             val organizingMsg = getString(Res.string.pdf_progress_organizing)

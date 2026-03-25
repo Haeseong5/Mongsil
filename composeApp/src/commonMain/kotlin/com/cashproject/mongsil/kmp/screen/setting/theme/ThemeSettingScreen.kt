@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.model.ThemeMode
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.setting_theme
@@ -38,6 +39,8 @@ fun ThemeSettingScreen(
     viewModel: ThemeSettingViewModel = koinViewModel(),
 ) {
     val selectedMode by viewModel.selectedMode.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     ThemeSettingScreenContent(
         selectedMode = selectedMode,

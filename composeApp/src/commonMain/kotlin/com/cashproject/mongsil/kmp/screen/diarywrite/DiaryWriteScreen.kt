@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -110,6 +111,8 @@ fun DiaryWriteScreen(
     }
     var rewardAdEmoticonId by remember { mutableStateOf<Int?>(null) }
     var isAdLoading by remember { mutableStateOf(false) }
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     // SideEffect 처리
     LaunchedEffect(Unit) {

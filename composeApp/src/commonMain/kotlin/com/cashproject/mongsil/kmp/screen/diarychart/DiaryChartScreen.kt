@@ -41,6 +41,7 @@ import com.cashproject.mongsil.kmp.designsystem.RedOrange200
 import com.cashproject.mongsil.kmp.designsystem.SkyBlue200
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.MongsilTopBar
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
@@ -71,6 +72,8 @@ fun DiaryChartScreen(
     onClose: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     DiaryChartScreenContent(
         uiState = uiState,

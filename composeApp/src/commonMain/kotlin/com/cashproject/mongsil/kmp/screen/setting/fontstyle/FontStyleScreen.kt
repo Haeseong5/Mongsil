@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import com.cashproject.mongsil.kmp.model.FontStyleOption
 import com.cashproject.mongsil.kmp.screen.setting.fontstyle.component.FontOptionItem
@@ -60,6 +61,8 @@ fun FontStyleScreen(
 ) {
     val selectedFontStyle by viewModel.selectedFontStyle.collectAsStateWithLifecycle()
     val fontScale by viewModel.fontScale.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     Column(
         modifier = Modifier

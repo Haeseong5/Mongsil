@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.diarychart
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
@@ -23,7 +23,7 @@ class DiaryChartViewModel(
     private val getWordCloudUseCase: GetWordCloudUseCase,
     initialYear: Int,
     initialMonth: Int,
-) : ViewModel() {
+) : BaseViewModel() {
 
     @OptIn(ExperimentalTime::class)
     private val currentDateTime =
@@ -74,7 +74,7 @@ class DiaryChartViewModel(
     }
 
     private fun loadMonthStatistics(year: Int, month: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val emoticons = emoticonRepository
                 .getEmoticons()
                 .getOrElse { emptyList() }
@@ -104,7 +104,7 @@ class DiaryChartViewModel(
     }
 
     private fun loadStreak() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val today = currentDateTime.date
             val sortedDates = diaryRepository.getAllDiaries()
                 .map { LocalDate(it.year, it.month, it.day) }
@@ -130,7 +130,7 @@ class DiaryChartViewModel(
     }
 
     private fun loadWordCloud(year: Int, month: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val items = getWordCloudUseCase(year, month)
             _uiState.update { it.copy(wordCloudItems = items) }
         }

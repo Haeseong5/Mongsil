@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.diarymonthly
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.database.entity.DiaryEntity
@@ -24,7 +24,7 @@ class DiaryListViewModel(
     private val emoticonRepository: EmoticonRepository,
     initialYear: Int,
     initialMonth: Int,
-) : ViewModel() {
+) : BaseViewModel() {
 
     @OptIn(ExperimentalTime::class)
     private val currentDateTime =
@@ -106,7 +106,7 @@ class DiaryListViewModel(
     }
 
     private fun loadMonthDiaries(year: Int, month: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val emoticonMap = fetchEmoticonMap()
             val items = diaryRepository
                 .getDiariesByYearMonth(year, month)
@@ -118,7 +118,7 @@ class DiaryListViewModel(
     }
 
     private fun loadAllDiaries() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _uiState.update { it.copy(isLoadingAll = true, allDiaries = emptyList()) }
             val totalCount = diaryRepository.getAllDiariesCount()
             _uiState.update { it.copy(allDiariesTotalCount = totalCount) }
@@ -128,7 +128,7 @@ class DiaryListViewModel(
     }
 
     private fun loadAllDiariesPage(offset: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             loadAllDiariesPageInternal(offset)
         }
     }

@@ -3,8 +3,8 @@ package com.cashproject.mongsil.kmp.screen.diarywrite
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
@@ -43,7 +43,7 @@ class DiaryWriteViewModel(
     year: Int,
     month: Int,
     day: Int
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
         DiaryWriteUiState(
@@ -67,7 +67,7 @@ class DiaryWriteViewModel(
      * 이모티콘·일기·잠금해제 목록을 병렬로 로드하여 초기화 시간을 단축합니다.
      */
     private fun loadInitialData() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val emoticonsDeferred = async {
                 emoticonRepository.getEmoticons().getOrElse { emptyList() }
             }
@@ -281,7 +281,7 @@ class DiaryWriteViewModel(
 
     private fun handleBackClick() {
         autoSaveJob?.cancel()
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             if (_uiState.value.hasUnsavedChanges && _uiState.value.hasContent) {
                 performSave()
             }
@@ -291,7 +291,7 @@ class DiaryWriteViewModel(
 
     private fun handleBackPressed() {
         autoSaveJob?.cancel()
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             if (_uiState.value.hasUnsavedChanges && _uiState.value.hasContent) {
                 performSave()
             }
@@ -306,7 +306,7 @@ class DiaryWriteViewModel(
     private fun handleDeleteConfirm() {
         val state = _uiState.value
         autoSaveJob?.cancel()
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _uiState.update { it.copy(isLoading = true, showDeleteDialog = false) }
             diaryRepository.deleteDiary(state.year, state.month, state.day)
                 .fold(
@@ -325,14 +325,14 @@ class DiaryWriteViewModel(
     }
 
     private fun handlePremiumEmoticonClick(emoticon: com.cashproject.mongsil.kmp.model.Emoticon) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             _uiState.update { it.copy(showEmoticonBottomSheet = false) }
             _sideEffect.send(DiaryWriteSideEffect.ShowRewardedAd(emoticon.id))
         }
     }
 
     private fun handleAdRewardEarned(emoticonId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val newUnlocked = _uiState.value.unlockedPremiumIds + emoticonId
             localPreferences.setStringSet(
                 key = KEY_UNLOCKED_PREMIUMS,
@@ -351,7 +351,7 @@ class DiaryWriteViewModel(
     private fun scheduleAutoSave() {
         if (!_uiState.value.hasContent) return
         autoSaveJob?.cancel()
-        autoSaveJob = viewModelScope.launch {
+        autoSaveJob = viewModelScope.launch(exceptionHandler) {
             delay(AUTO_SAVE_DELAY_MS)
             performSave()
         }

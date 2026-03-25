@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting.theme
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.model.ThemeMode
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class ThemeSettingViewModel(
     private val settingRepository: SettingRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     val selectedMode = settingRepository
         .themeMode()
@@ -23,7 +23,7 @@ class ThemeSettingViewModel(
         )
 
     fun updateThemeMode(mode: ThemeMode) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             settingRepository.updateThemeMode(mode)
         }
     }

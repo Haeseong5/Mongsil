@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
@@ -66,6 +67,8 @@ fun CalendarScreen(
     onNavigateToMonthly: (year: Int, month: Int) -> Unit = { _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveErrorEffect(viewModel.errorEvent)
 
     CalendarScreenContent(
         modifier = modifier.padding(padding),

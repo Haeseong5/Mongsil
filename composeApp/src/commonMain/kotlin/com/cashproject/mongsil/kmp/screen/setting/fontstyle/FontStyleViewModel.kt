@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting.fontstyle
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.model.FontStyleOption
 import kotlinx.coroutines.flow.SharingStarted
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class FontStyleViewModel(
     private val settingRepository: SettingRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     val selectedFontStyle = settingRepository
         .fontStyleOption()
@@ -29,13 +29,13 @@ class FontStyleViewModel(
         )
 
     fun updateFontStyle(option: FontStyleOption) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             settingRepository.updateFontStyleOption(option)
         }
     }
 
     fun updateFontScale(scale: Float) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             settingRepository.updateFontScale(scale.coerceIn(MIN_FONT_SCALE, MAX_FONT_SCALE))
         }
     }

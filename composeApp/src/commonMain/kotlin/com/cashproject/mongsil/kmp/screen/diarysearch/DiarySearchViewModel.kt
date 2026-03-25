@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.diarysearch
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchItem
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class DiarySearchViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private var allItems: List<DiarySearchItem> = emptyList()
 
@@ -31,7 +31,7 @@ class DiarySearchViewModel(
     }
 
     private fun loadDiaryItems() {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val emoticonMap = emoticonRepository
                 .getEmoticons()
                 .getOrElse { emptyList() }

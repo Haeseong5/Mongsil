@@ -1,7 +1,7 @@
 package com.cashproject.mongsil.kmp.screen.setting.screenlock
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.model.ScreenLockMethod
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +23,7 @@ data class ScreenLockSettingsUiState(
 class ScreenLockSettingsViewModel(
     private val settingRepository: SettingRepository,
     private val nativeAuthenticator: NativeScreenLockAuthenticator,
-) : ViewModel() {
+) : BaseViewModel() {
 
     val uiState = combine(
         settingRepository.isScreenLockEnabled(),
@@ -45,7 +45,7 @@ class ScreenLockSettingsViewModel(
     fun updateNativeLockEnabled(enabled: Boolean) {
         if (!nativeAuthenticator.availability().isAvailable) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             settingRepository.updateScreenLockMethod(
                 if (enabled) ScreenLockMethod.SYSTEM else ScreenLockMethod.NONE
             )
@@ -57,7 +57,7 @@ class ScreenLockSettingsViewModel(
         val normalized = password.trim()
         if (normalized.length < MIN_PASSWORD_LENGTH) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             settingRepository.updateScreenLockPasswordHash(PasswordHasher.hash(normalized))
             settingRepository.updateScreenLockMethod(ScreenLockMethod.APP_PASSWORD)
             settingRepository.updateScreenLockEnabled(true)
@@ -65,7 +65,7 @@ class ScreenLockSettingsViewModel(
     }
 
     fun updateAppPasswordEnabled(enabled: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             val method = if (enabled) ScreenLockMethod.APP_PASSWORD else ScreenLockMethod.NONE
             settingRepository.updateScreenLockMethod(method)
             settingRepository.updateScreenLockEnabled(enabled)
