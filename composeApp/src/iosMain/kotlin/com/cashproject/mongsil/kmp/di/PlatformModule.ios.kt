@@ -10,12 +10,12 @@ import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
+import com.cashproject.mongsil.kmp.firebase.FirebaseService
+import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
 import com.cashproject.mongsil.kmp.screen.setting.DiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.IosDiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.IosPdfExportService
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.PdfExportService
-import com.cashproject.mongsil.kmp.firebase.FirebaseService
-import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.IOSNativeScreenLockAuthenticator
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.NativeScreenLockAuthenticator
 import org.koin.core.module.Module
@@ -37,7 +37,6 @@ actual fun platformModule(): Module = module {
             name = documentDirectory() + "/mongsil_v2.db",
         )
             .setDriver(BundledSQLiteDriver())
-            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
 

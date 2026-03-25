@@ -36,9 +36,7 @@ actual fun platformModule(): Module = module {
         Room.databaseBuilder<MongsilRoomDatabase>(
             context = get<Context>().applicationContext,
             name = "mongsil_v2.db",
-        )
-            .fallbackToDestructiveMigration(dropAllTables = true)
-            .build()
+        ).build()
     }
 
     // ── DataSource 구현체 선택 (한 줄 교체로 SQLDelight ↔ Room 전환) ──
