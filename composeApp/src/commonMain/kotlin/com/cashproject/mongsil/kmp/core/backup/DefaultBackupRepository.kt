@@ -9,6 +9,9 @@ import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.database.entity.DiaryEntity
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.error_invalid_date_format
+import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 
 class DefaultBackupRepository(
@@ -61,7 +64,7 @@ class DefaultBackupRepository(
         policy: BackupConflictPolicy,
     ): RestoreSingleResult {
         val parsed = parseDateString(diary.date) ?: return RestoreSingleResult.FAILED(
-            reason = "잘못된 날짜 형식: ${diary.date}"
+            reason = getString(Res.string.error_invalid_date_format, diary.date)
         )
         val existing = diaryRepository.getDiaryByDate(parsed.year, parsed.month, parsed.day)
 

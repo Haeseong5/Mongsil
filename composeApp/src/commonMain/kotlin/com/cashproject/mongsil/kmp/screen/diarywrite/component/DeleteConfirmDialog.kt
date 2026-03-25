@@ -25,6 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.delete_dialog_message
+import mongsil.composeapp.generated.resources.delete_dialog_title
+import mongsil.composeapp.generated.resources.dialog_cancel
+import mongsil.composeapp.generated.resources.dialog_delete
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 일기 삭제를 확인하는 다이얼로그
@@ -56,7 +62,7 @@ fun DeleteConfirmDialog(
                     .padding(24.dp)
             ) {
                 Text(
-                    text = "일기를 삭제할까요?",
+                    text = stringResource(Res.string.delete_dialog_title),
                     style = MongsilTheme.typography.headline1.copy(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
@@ -68,7 +74,7 @@ fun DeleteConfirmDialog(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = "삭제된 일기는 복구할 수 없습니다.",
+                    text = stringResource(Res.string.delete_dialog_message),
                     style = MongsilTheme.typography.body1Normal.copy(
                         fontSize = 14.sp,
                         lineHeight = 20.sp
@@ -92,7 +98,7 @@ fun DeleteConfirmDialog(
                         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
                     ) {
                         Text(
-                            text = "취소",
+                            text = stringResource(Res.string.dialog_cancel),
                             style = MongsilTheme.typography.body1Bold.copy(
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 14.sp
@@ -111,7 +117,7 @@ fun DeleteConfirmDialog(
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
-                            text = "삭제",
+                            text = stringResource(Res.string.dialog_delete),
                             style = MongsilTheme.typography.body1Bold.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp

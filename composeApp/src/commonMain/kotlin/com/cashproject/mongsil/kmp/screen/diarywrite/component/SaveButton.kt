@@ -1,7 +1,5 @@
 package com.cashproject.mongsil.kmp.screen.diarywrite.component
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.save_button
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 일기 저장 버튼
@@ -53,7 +54,7 @@ fun SaveButton(
             )
         } else {
             Text(
-                text = "저장하기",
+                text = stringResource(Res.string.save_button),
                 style = MongsilTheme.typography.body1Bold.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp

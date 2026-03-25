@@ -44,6 +44,25 @@ import androidx.compose.ui.unit.sp
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.screen.diarywrite.component.ShowRewardedAd
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.dialog_cancel
+import mongsil.composeapp.generated.resources.store_premium_features
+import mongsil.composeapp.generated.resources.store_premium_lifetime
+import mongsil.composeapp.generated.resources.store_premium_no_ads
+import mongsil.composeapp.generated.resources.store_premium_photos
+import mongsil.composeapp.generated.resources.store_premium_stickers
+import mongsil.composeapp.generated.resources.store_premium_title
+import mongsil.composeapp.generated.resources.store_purchase
+import mongsil.composeapp.generated.resources.store_purchase_complete
+import mongsil.composeapp.generated.resources.store_theme_ad_animal
+import mongsil.composeapp.generated.resources.store_theme_ad_winter
+import mongsil.composeapp.generated.resources.store_theme_animal
+import mongsil.composeapp.generated.resources.store_theme_available
+import mongsil.composeapp.generated.resources.store_theme_stickers
+import mongsil.composeapp.generated.resources.store_theme_winter
+import mongsil.composeapp.generated.resources.store_title
+import mongsil.composeapp.generated.resources.store_watch_ad
+import org.jetbrains.compose.resources.stringResource
 
 private const val PREMIUM_PRODUCT_ID = "premium_lifetime"
 private const val WINTER_THEME_PRODUCT_ID = "theme_winter"
@@ -62,9 +81,11 @@ fun MongsilStoreScreen(
     onBack: () -> Unit = {},
 ) {
     val snackbarController = rememberSnackbarController()
+    val purchaseCompleteText = stringResource(Res.string.store_purchase_complete)
+    val themeAvailableText = stringResource(Res.string.store_theme_available)
     val purchaseLauncher = rememberInAppPurchaseLauncher(
         onPurchaseSuccess = {
-            snackbarController.showSnackbar("결제가 완료되었습니다")
+            snackbarController.showSnackbar(purchaseCompleteText)
         },
         onPurchaseCancelled = {},
         onError = { message ->
@@ -72,24 +93,22 @@ fun MongsilStoreScreen(
         },
     )
 
-    val themeItems = remember {
-        listOf(
-            ThemeStickerItem(
-                id = WINTER_THEME_PRODUCT_ID,
-                title = "겨울",
-                emoji = "\u2603",
-                accentColor = Color(0xFFF7EAD2),
-                dialogMessage = "동영상 광고를 시청하면 12시간 동안\n테마(겨울) 스티커를 무료로 이용할 수 있어요.\n광고를 보시겠어요?",
-            ),
-            ThemeStickerItem(
-                id = ANIMAL_THEME_PRODUCT_ID,
-                title = "동물",
-                emoji = "\uD83D\uDC3E",
-                accentColor = Color(0xFFE4F2D4),
-                dialogMessage = "동영상 광고를 시청하면 12시간 동안\n테마(동물) 스티커를 무료로 이용할 수 있어요.\n광고를 보시겠어요?",
-            ),
-        )
-    }
+    val themeItems = listOf(
+        ThemeStickerItem(
+            id = WINTER_THEME_PRODUCT_ID,
+            title = stringResource(Res.string.store_theme_winter),
+            emoji = "\u2603",
+            accentColor = Color(0xFFF7EAD2),
+            dialogMessage = stringResource(Res.string.store_theme_ad_winter),
+        ),
+        ThemeStickerItem(
+            id = ANIMAL_THEME_PRODUCT_ID,
+            title = stringResource(Res.string.store_theme_animal),
+            emoji = "\uD83D\uDC3E",
+            accentColor = Color(0xFFE4F2D4),
+            dialogMessage = stringResource(Res.string.store_theme_ad_animal),
+        ),
+    )
 
     var dialogTheme by remember { mutableStateOf<ThemeStickerItem?>(null) }
     var showRewardedAd by remember { mutableStateOf(false) }
@@ -103,7 +122,7 @@ fun MongsilStoreScreen(
         CommonToolbar(
             color = Color(0xFFF7F7F7),
             onBack = onBack,
-            title = "꼬박 스토어",
+            title = stringResource(Res.string.store_title),
         )
 
         LazyVerticalGrid(
@@ -128,7 +147,7 @@ fun MongsilStoreScreen(
 
             item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "테마 스티커",
+                    text = stringResource(Res.string.store_theme_stickers),
                     color = Color(0xFF2A2A2A),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.W600,
@@ -168,7 +187,7 @@ fun MongsilStoreScreen(
                     },
                 ) {
                     Text(
-                        text = "광고 보기",
+                        text = stringResource(Res.string.store_watch_ad),
                         color = Color(0xFF2A2A2A),
                         fontSize = 16.sp,
                     )
@@ -177,7 +196,7 @@ fun MongsilStoreScreen(
             dismissButton = {
                 TextButton(onClick = { dialogTheme = null }) {
                     Text(
-                        text = "취소",
+                        text = stringResource(Res.string.dialog_cancel),
                         color = Color(0xFF7B7B7B),
                         fontSize = 16.sp,
                     )
@@ -190,7 +209,7 @@ fun MongsilStoreScreen(
         ShowRewardedAd(
             onRewarded = {
                 showRewardedAd = false
-                snackbarController.showSnackbar("테마 스티커 사용이 가능합니다")
+                snackbarController.showSnackbar(themeAvailableText)
             },
             onDismissed = {
                 showRewardedAd = false
@@ -215,21 +234,30 @@ private fun PremiumPassCard(
                 .padding(20.dp),
         ) {
             Text(
-                text = "프리미엄 이용권",
+                text = stringResource(Res.string.store_premium_title),
                 color = Color(0xFF2A2A2A),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.W600,
                 modifier = Modifier.padding(bottom = 28.dp),
             )
 
-            PremiumFeatureRow(emoji = "\u2600\uFE0F", title = "한 번 결제하면 평생 이용 가능해요")
+            PremiumFeatureRow(
+                emoji = "\u2600\uFE0F",
+                title = stringResource(Res.string.store_premium_lifetime)
+            )
             Spacer(modifier = Modifier.height(18.dp))
-            PremiumFeatureRow(emoji = "\u2602\uFE0F", title = "광고가 나오지 않아요")
+            PremiumFeatureRow(
+                emoji = "\u2602\uFE0F",
+                title = stringResource(Res.string.store_premium_no_ads)
+            )
             Spacer(modifier = Modifier.height(18.dp))
             PremiumFeatureRow(
                 emoji = "\u2615",
-                title = "프리미엄 기능 사용이 가능해요",
-                bullets = listOf("일상 스티커 사용 가능", "사진 5장까지 추가 가능"),
+                title = stringResource(Res.string.store_premium_features),
+                bullets = listOf(
+                    stringResource(Res.string.store_premium_stickers),
+                    stringResource(Res.string.store_premium_photos)
+                ),
             )
 
             Button(
@@ -378,7 +406,7 @@ private fun PurchaseButton(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "구매하기",
+            text = stringResource(Res.string.store_purchase),
             color = Color.White,
             fontSize = 17.sp,
             fontWeight = FontWeight.W600,

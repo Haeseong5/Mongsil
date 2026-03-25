@@ -15,7 +15,9 @@ import com.cashproject.mongsil.kmp.designsystem.component.HorizontalSpacer
 import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
+import mongsil.composeapp.generated.resources.year_month_format
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SimpleCalendarTitleV2(
@@ -29,7 +31,7 @@ fun SimpleCalendarTitleV2(
     ) {
         Text(
             modifier = Modifier,
-            text = "${year}년 ${month}월",
+            text = stringResource(Res.string.year_month_format, year, month),
             textAlign = TextAlign.Center,
             style = fixedScaleTextStyle(MongsilTheme.typography.title3),
             color = MongsilTheme.colorScheme.labelStrong

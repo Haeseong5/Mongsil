@@ -37,7 +37,11 @@ import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyUiState
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiarySortOrder
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryViewMode
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.cd_navigate_back
+import mongsil.composeapp.generated.resources.cd_next_month
+import mongsil.composeapp.generated.resources.cd_previous_month
 import mongsil.composeapp.generated.resources.diary_all_title
+import mongsil.composeapp.generated.resources.diary_empty
 import mongsil.composeapp.generated.resources.ic_arrow_left_contained
 import mongsil.composeapp.generated.resources.ic_arrow_right_contained
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
@@ -46,6 +50,7 @@ import mongsil.composeapp.generated.resources.sort_latest
 import mongsil.composeapp.generated.resources.sort_oldest
 import mongsil.composeapp.generated.resources.view_mode_all
 import mongsil.composeapp.generated.resources.view_mode_monthly
+import mongsil.composeapp.generated.resources.year_month_format
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -94,7 +99,7 @@ private fun DiaryListScreenContent(
                 .size(24.dp)
                 .clickable { onBack() },
             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-            contentDescription = "뒤로 가기",
+            contentDescription = stringResource(Res.string.cd_navigate_back),
             tint = MongsilTheme.colorScheme.labelStrong,
         )
 
@@ -180,12 +185,12 @@ private fun MonthlyTitle(
                 .size(24.dp)
                 .circularRippleClickable { onMovePrevMonth() },
             painter = painterResource(Res.drawable.ic_arrow_left_contained),
-            contentDescription = "이전 달",
+            contentDescription = stringResource(Res.string.cd_previous_month),
             tint = MongsilTheme.colorScheme.labelStrong,
         )
         Text(
             modifier = Modifier.padding(horizontal = 10.dp),
-            text = "${year}년 ${month}월",
+            text = stringResource(Res.string.year_month_format, year, month),
             style = MongsilTheme.typography.heading1,
             color = MongsilTheme.colorScheme.labelStrong,
         )
@@ -194,7 +199,7 @@ private fun MonthlyTitle(
                 .size(24.dp)
                 .circularRippleClickable(enabled = canMoveNextMonth) { onMoveNextMonth() },
             painter = painterResource(Res.drawable.ic_arrow_right_contained),
-            contentDescription = "다음 달",
+            contentDescription = stringResource(Res.string.cd_next_month),
             tint = if (canMoveNextMonth) MongsilTheme.colorScheme.labelStrong
             else MongsilTheme.colorScheme.labelDisable,
         )
@@ -309,7 +314,7 @@ private fun EmptyMessage() {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "작성된 일기가 없어요",
+            text = stringResource(Res.string.diary_empty),
             style = MongsilTheme.typography.heading2,
             color = Color(0xFFBFBFBF),
         )

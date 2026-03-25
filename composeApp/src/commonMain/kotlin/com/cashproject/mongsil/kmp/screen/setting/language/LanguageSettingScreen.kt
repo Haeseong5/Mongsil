@@ -9,6 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.setting_language
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LanguageSettingScreen(
@@ -21,7 +24,7 @@ fun LanguageSettingScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "언어 설정",
+            text = stringResource(Res.string.setting_language),
             fontSize = 20.sp,
             color = Color.Black
         )

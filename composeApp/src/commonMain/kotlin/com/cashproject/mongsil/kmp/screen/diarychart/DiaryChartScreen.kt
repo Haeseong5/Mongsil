@@ -47,6 +47,9 @@ import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartItem
 import com.cashproject.mongsil.kmp.screen.diarychart.model.DiaryChartUiState
 import com.cashproject.mongsil.kmp.screen.diarychart.model.WordCloudItem
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.cd_close
+import mongsil.composeapp.generated.resources.cd_next_month
+import mongsil.composeapp.generated.resources.cd_previous_month
 import mongsil.composeapp.generated.resources.chart_empty_emoticon
 import mongsil.composeapp.generated.resources.chart_section_emoticon_stats
 import mongsil.composeapp.generated.resources.chart_section_emoticon_top
@@ -57,6 +60,7 @@ import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.ic_arrow_left_contained
 import mongsil.composeapp.generated.resources.ic_arrow_right_contained
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
+import mongsil.composeapp.generated.resources.month_label_format
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -97,7 +101,7 @@ private fun DiaryChartScreenContent(
                         .size(24.dp)
                         .circularRippleClickable(onClick = onClose),
                     painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-                    contentDescription = "닫기",
+                    contentDescription = stringResource(Res.string.cd_close),
                     tint = MongsilTheme.colorScheme.labelStrong,
                 )
             }
@@ -227,7 +231,7 @@ private fun MonthHeader(
                 color = MongsilTheme.colorScheme.labelWeak
             )
             Text(
-                text = "${month}월",
+                text = stringResource(Res.string.month_label_format, month),
                 style = MongsilTheme.typography.heading1,
                 color = MongsilTheme.colorScheme.labelStrong
             )
@@ -261,7 +265,9 @@ private fun IconArrow(
         if (enabled || isBack) {
             Icon(
                 painter = painter,
-                contentDescription = if (isBack) "이전 달" else "다음 달",
+                contentDescription = if (isBack) stringResource(Res.string.cd_previous_month) else stringResource(
+                    Res.string.cd_next_month
+                ),
                 tint = MongsilTheme.colorScheme.labelStrong
             )
         }

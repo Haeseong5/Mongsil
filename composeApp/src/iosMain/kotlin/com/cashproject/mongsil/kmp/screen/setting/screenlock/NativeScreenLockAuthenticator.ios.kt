@@ -1,33 +1,43 @@
 package com.cashproject.mongsil.kmp.screen.setting.screenlock
 
-import kotlin.coroutines.resume
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import platform.LocalAuthentication.LAContext
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.screen_lock_auth_device_unavailable
+import mongsil.composeapp.generated.resources.screen_lock_native_available_desc_ios_faceid
+import mongsil.composeapp.generated.resources.screen_lock_native_available_desc_ios_generic
+import mongsil.composeapp.generated.resources.screen_lock_native_available_desc_ios_touchid
+import mongsil.composeapp.generated.resources.screen_lock_native_available_title
+import mongsil.composeapp.generated.resources.screen_lock_native_unavailable_desc_ios
+import mongsil.composeapp.generated.resources.screen_lock_native_unavailable_title
+import org.jetbrains.compose.resources.getString
 import platform.LocalAuthentication.LABiometryTypeFaceID
 import platform.LocalAuthentication.LABiometryTypeTouchID
+import platform.LocalAuthentication.LAContext
 import platform.LocalAuthentication.LAPolicyDeviceOwnerAuthentication
+import kotlin.coroutines.resume
 
 class IOSNativeScreenLockAuthenticator : NativeScreenLockAuthenticator {
 
     @OptIn(ExperimentalForeignApi::class)
-    override fun availability(): NativeScreenLockAvailability {
+    override fun availability(): NativeScreenLockAvailability = runBlocking {
         val context = LAContext()
-        return if (context.canEvaluatePolicy(LAPolicyDeviceOwnerAuthentication, null)) {
+        if (context.canEvaluatePolicy(LAPolicyDeviceOwnerAuthentication, null)) {
             NativeScreenLockAvailability(
                 isAvailable = true,
-                title = "기기 잠금 바로 사용",
+                title = getString(Res.string.screen_lock_native_available_title),
                 description = when (context.biometryType) {
-                    LABiometryTypeFaceID -> "iPhone에 저장된 Face ID 또는 기기 암호를 바로 사용할 수 있습니다."
-                    LABiometryTypeTouchID -> "iPhone에 저장된 Touch ID 또는 기기 암호를 바로 사용할 수 있습니다."
-                    else -> "iPhone에 저장된 기기 암호 또는 생체인증을 바로 사용할 수 있습니다."
+                    LABiometryTypeFaceID -> getString(Res.string.screen_lock_native_available_desc_ios_faceid)
+                    LABiometryTypeTouchID -> getString(Res.string.screen_lock_native_available_desc_ios_touchid)
+                    else -> getString(Res.string.screen_lock_native_available_desc_ios_generic)
                 },
             )
         } else {
             NativeScreenLockAvailability(
                 isAvailable = false,
-                title = "기기 잠금 설정 필요",
-                description = "iPhone 설정에서 Face ID, Touch ID 또는 기기 암호를 먼저 등록해야 합니다.",
+                title = getString(Res.string.screen_lock_native_unavailable_title),
+                description = getString(Res.string.screen_lock_native_unavailable_desc_ios),
             )
         }
     }
@@ -38,7 +48,7 @@ class IOSNativeScreenLockAuthenticator : NativeScreenLockAuthenticator {
             val context = LAContext()
             if (!context.canEvaluatePolicy(LAPolicyDeviceOwnerAuthentication, null)) {
                 continuation.resume(
-                    NativeScreenLockResult.Failure("기기 인증을 사용할 수 없습니다.")
+                    NativeScreenLockResult.Failure(runBlocking { getString(Res.string.screen_lock_auth_device_unavailable) })
                 )
                 return@suspendCancellableCoroutine
             }

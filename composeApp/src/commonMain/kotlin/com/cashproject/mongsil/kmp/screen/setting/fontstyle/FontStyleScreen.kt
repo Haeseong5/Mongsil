@@ -34,8 +34,21 @@ import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.cd_preview_emoticon
+import mongsil.composeapp.generated.resources.day_of_week_friday
+import mongsil.composeapp.generated.resources.day_of_week_monday
+import mongsil.composeapp.generated.resources.day_of_week_saturday
+import mongsil.composeapp.generated.resources.day_of_week_sunday
+import mongsil.composeapp.generated.resources.day_of_week_thursday
+import mongsil.composeapp.generated.resources.day_of_week_tuesday
+import mongsil.composeapp.generated.resources.day_of_week_wednesday
 import mongsil.composeapp.generated.resources.emoticon_04
+import mongsil.composeapp.generated.resources.font_gamja_flower
+import mongsil.composeapp.generated.resources.font_preview_text
+import mongsil.composeapp.generated.resources.font_system
+import mongsil.composeapp.generated.resources.setting_font_style
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.ExperimentalTime
 
@@ -56,7 +69,7 @@ fun FontStyleScreen(
     ) {
         CommonToolbar(
             onBack = onBack,
-            title = "글자 스타일"
+            title = stringResource(Res.string.setting_font_style)
         )
 
         Column(
@@ -97,7 +110,7 @@ private fun FontPreviewCard() {
             Image(
                 modifier = Modifier.size(84.dp),
                 painter = painterResource(Res.drawable.emoticon_04),
-                contentDescription = "미리보기 이모티콘"
+                contentDescription = stringResource(Res.string.cd_preview_emoticon)
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
@@ -110,7 +123,7 @@ private fun FontPreviewCard() {
                     .fillMaxWidth()
                     .height(140.dp)
                     .padding(top = 16.dp),
-                text = "몽실 일기 쓰는 습관\n폰트 사이즈를 변경할 수 있어요",
+                text = stringResource(Res.string.font_preview_text),
                 style = MongsilTheme.typography.heading2,
                 color = MongsilTheme.colorScheme.labelStrong,
                 textAlign = TextAlign.Start
@@ -124,6 +137,10 @@ private fun FontSelectorCard(
     selectedFontStyle: FontStyleOption,
     onSelect: (FontStyleOption) -> Unit,
 ) {
+    val fontOptions = listOf(
+        FontStyleOption.SYSTEM to stringResource(Res.string.font_system),
+        FontStyleOption.GAMJA_FLOWER to stringResource(Res.string.font_gamja_flower),
+    )
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MongsilTheme.colorScheme.card),
@@ -144,27 +161,22 @@ private fun FontSelectorCard(
 }
 
 @OptIn(ExperimentalTime::class)
+@Composable
 private fun getTodayText(): String {
     val today = kotlin.time.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val dayOfWeek = when (today.dayOfWeek) {
-        DayOfWeek.MONDAY -> "월요일"
-        DayOfWeek.TUESDAY -> "화요일"
-        DayOfWeek.WEDNESDAY -> "수요일"
-        DayOfWeek.THURSDAY -> "목요일"
-        DayOfWeek.FRIDAY -> "금요일"
-        DayOfWeek.SATURDAY -> "토요일"
-        DayOfWeek.SUNDAY -> "일요일"
+        DayOfWeek.MONDAY -> stringResource(Res.string.day_of_week_monday)
+        DayOfWeek.TUESDAY -> stringResource(Res.string.day_of_week_tuesday)
+        DayOfWeek.WEDNESDAY -> stringResource(Res.string.day_of_week_wednesday)
+        DayOfWeek.THURSDAY -> stringResource(Res.string.day_of_week_thursday)
+        DayOfWeek.FRIDAY -> stringResource(Res.string.day_of_week_friday)
+        DayOfWeek.SATURDAY -> stringResource(Res.string.day_of_week_saturday)
+        DayOfWeek.SUNDAY -> stringResource(Res.string.day_of_week_sunday)
     }
-
     val month = today.monthNumber.toString().padStart(2, '0')
     val day = today.dayOfMonth.toString().padStart(2, '0')
     return "${today.year}.${month}.${day} $dayOfWeek"
 }
-
-private val fontOptions: List<Pair<FontStyleOption, String>> = listOf(
-    FontStyleOption.SYSTEM to "시스템 폰트",
-    FontStyleOption.GAMJA_FLOWER to "감자꽃체",
-)
 
 @Preview
 @Composable

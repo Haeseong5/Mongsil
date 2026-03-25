@@ -20,11 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.dialog_cancel
+import mongsil.composeapp.generated.resources.dialog_confirm
+import mongsil.composeapp.generated.resources.exit_dialog_message
+import mongsil.composeapp.generated.resources.exit_dialog_title
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 작성 중인 내용을 버리고 나갈 것인지 확인하는 다이얼로그
@@ -56,7 +61,7 @@ fun ExitConfirmDialog(
                     .padding(24.dp)
             ) {
                 Text(
-                    text = "작성 중인 내용이 있습니다",
+                    text = stringResource(Res.string.exit_dialog_title),
                     style = MongsilTheme.typography.headline1.copy(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
@@ -68,7 +73,7 @@ fun ExitConfirmDialog(
                 Spacer(modifier = Modifier.height(12.dp))
                 
                 Text(
-                    text = "지금 화면을 벗어나면 작성 중인 모든 정보가 지워집니다.",
+                    text = stringResource(Res.string.exit_dialog_message),
                     style = MongsilTheme.typography.body1Normal.copy(
                         fontSize = 14.sp,
                         lineHeight = 20.sp
@@ -94,7 +99,7 @@ fun ExitConfirmDialog(
                         )
                     ) {
                         Text(
-                            text = "취소",
+                            text = stringResource(Res.string.dialog_cancel),
                             style = MongsilTheme.typography.body1Bold.copy(
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 14.sp
@@ -113,7 +118,7 @@ fun ExitConfirmDialog(
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
-                            text = "확인",
+                            text = stringResource(Res.string.dialog_confirm),
                             style = MongsilTheme.typography.body1Bold.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp

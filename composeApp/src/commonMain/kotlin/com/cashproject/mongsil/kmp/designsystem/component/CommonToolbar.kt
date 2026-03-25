@@ -1,7 +1,6 @@
 package com.cashproject.mongsil.kmp.designsystem.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -23,8 +22,10 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.cd_navigate_back
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -47,7 +48,7 @@ fun CommonToolbar(
                 .align(Alignment.CenterStart)
                 .circularRippleClickable { onBack() },
             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-            contentDescription = "뒤로 가기",
+            contentDescription = stringResource(Res.string.cd_navigate_back),
             tint = MongsilTheme.colorScheme.labelStrong
         )
         Text(
@@ -109,7 +110,7 @@ fun MongsilTopBarBackButton(onClick: () -> Unit) {
             .size(24.dp)
             .circularRippleClickable(onClick = onClick),
         painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-        contentDescription = "뒤로 가기",
+        contentDescription = stringResource(Res.string.cd_navigate_back),
         tint = MongsilTheme.colorScheme.labelStrong,
     )
 }

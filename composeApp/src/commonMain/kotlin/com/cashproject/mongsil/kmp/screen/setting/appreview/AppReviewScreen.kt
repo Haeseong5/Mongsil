@@ -9,6 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.setting_app_review
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppReviewScreen(
@@ -21,7 +24,7 @@ fun AppReviewScreen(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "앱 평가하기",
+            text = stringResource(Res.string.setting_app_review),
             fontSize = 20.sp,
             color = Color.Black
         )

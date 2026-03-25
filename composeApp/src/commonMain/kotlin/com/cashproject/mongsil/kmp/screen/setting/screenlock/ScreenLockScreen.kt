@@ -31,6 +31,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import com.cashproject.mongsil.kmp.model.ScreenLockMethod
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.screen_lock_app_password
+import mongsil.composeapp.generated.resources.screen_lock_app_password_desc
+import mongsil.composeapp.generated.resources.screen_lock_app_password_enable
+import mongsil.composeapp.generated.resources.screen_lock_app_password_enable_desc
+import mongsil.composeapp.generated.resources.screen_lock_change_password
+import mongsil.composeapp.generated.resources.screen_lock_device_lock
+import mongsil.composeapp.generated.resources.screen_lock_device_lock_desc
+import mongsil.composeapp.generated.resources.screen_lock_password_hint
+import mongsil.composeapp.generated.resources.screen_lock_password_replace
+import mongsil.composeapp.generated.resources.screen_lock_password_required
+import mongsil.composeapp.generated.resources.screen_lock_save_password
+import mongsil.composeapp.generated.resources.setting_screen_lock
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -48,7 +62,7 @@ fun ScreenLockScreen(
     ) {
         CommonToolbar(
             onBack = onBack,
-            title = "화면 잠금",
+            title = stringResource(Res.string.setting_screen_lock),
         )
 
         Column(
@@ -65,15 +79,15 @@ fun ScreenLockScreen(
 
             if (uiState.nativeAvailability.isAvailable) {
                 SwitchRow(
-                    title = "기기 잠금 사용",
-                    description = "기기에 저장된 생체인증, PIN, 패턴, 비밀번호로 앱을 잠급니다.",
+                    title = stringResource(Res.string.screen_lock_device_lock),
+                    description = stringResource(Res.string.screen_lock_device_lock_desc),
                     checked = uiState.isEnabled && uiState.method == ScreenLockMethod.SYSTEM,
                     onCheckedChange = viewModel::updateNativeLockEnabled,
                 )
             } else {
                 MethodOptionRow(
-                    title = "앱 비밀번호",
-                    description = "네이티브 잠금을 바로 쓸 수 없어서 앱 전용 비밀번호 잠금을 사용합니다.",
+                    title = stringResource(Res.string.screen_lock_app_password),
+                    description = stringResource(Res.string.screen_lock_app_password_desc),
                     selected = true,
                 )
 
@@ -82,17 +96,17 @@ fun ScreenLockScreen(
                     value = password,
                     onValueChange = { password = it },
                     singleLine = true,
-                    label = { Text("앱 비밀번호") },
-                    placeholder = { Text("4자리 이상 입력") },
+                    label = { Text(stringResource(Res.string.screen_lock_app_password)) },
+                    placeholder = { Text(stringResource(Res.string.screen_lock_password_hint)) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
 
                 Text(
                     text = if (uiState.hasPassword) {
-                        "새 비밀번호를 저장하면 기존 앱 비밀번호를 교체합니다."
+                        stringResource(Res.string.screen_lock_password_replace)
                     } else {
-                        "먼저 앱 비밀번호를 저장한 뒤 잠금을 켤 수 있습니다."
+                        stringResource(Res.string.screen_lock_password_required)
                     },
                     style = MongsilTheme.typography.caption1,
                     color = MongsilTheme.colorScheme.labelWeak,
@@ -106,12 +120,16 @@ fun ScreenLockScreen(
                         password = ""
                     },
                 ) {
-                    Text(if (uiState.hasPassword) "비밀번호 변경" else "비밀번호 저장")
+                    Text(
+                        if (uiState.hasPassword) stringResource(Res.string.screen_lock_change_password) else stringResource(
+                            Res.string.screen_lock_save_password
+                        )
+                    )
                 }
 
                 SwitchRow(
-                    title = "앱 비밀번호 잠금 사용",
-                    description = "저장된 앱 비밀번호로 잠금 화면을 표시합니다.",
+                    title = stringResource(Res.string.screen_lock_app_password_enable),
+                    description = stringResource(Res.string.screen_lock_app_password_enable_desc),
                     checked = uiState.isEnabled && uiState.method == ScreenLockMethod.APP_PASSWORD,
                     onCheckedChange = viewModel::updateAppPasswordEnabled,
                     enabled = uiState.hasPassword,

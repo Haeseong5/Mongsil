@@ -30,12 +30,19 @@ import com.cashproject.mongsil.kmp.designsystem.LocalDarkTheme
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.backup_restore_title
+import mongsil.composeapp.generated.resources.cd_navigate_back
 import mongsil.composeapp.generated.resources.ic_archive
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_menu
 import mongsil.composeapp.generated.resources.ic_notifications
+import mongsil.composeapp.generated.resources.setting_app_review
+import mongsil.composeapp.generated.resources.setting_diary_alarm
+import mongsil.composeapp.generated.resources.setting_font_style
+import mongsil.composeapp.generated.resources.setting_theme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -88,7 +95,7 @@ fun SettingScreen(
             // 섹션 2: 알림, 테마, 글자
             SettingToggleItem(
                 icon = Res.drawable.ic_notifications,
-                label = "일기 알림",
+                label = stringResource(Res.string.setting_diary_alarm),
                 checked = isDiaryAlarmEnabled,
                 onCheckedChange = { enabled ->
                     if (enabled) permissionRequester() else viewModel.updateDiaryReminder(false)
@@ -97,13 +104,13 @@ fun SettingScreen(
 
             SettingItem(
                 icon = Res.drawable.ic_menu,
-                label = "테마 설정",
+                label = stringResource(Res.string.setting_theme),
                 onClick = { viewModel.logMenuClick("theme"); onNavigateToThemeSetting() }
             )
 
             SettingItem(
                 icon = Res.drawable.ic_archive,
-                label = "글자 스타일",
+                label = stringResource(Res.string.setting_font_style),
                 onClick = { viewModel.logMenuClick("font_style"); onNavigateToFontStyle() }
             )
 
@@ -122,7 +129,7 @@ fun SettingScreen(
 
             SettingItem(
                 icon = Res.drawable.ic_archive,
-                label = "백업/복원",
+                label = stringResource(Res.string.backup_restore_title),
                 onClick = { viewModel.logMenuClick("backup_restore"); onNavigateToBackupRestore() }
             )
 
@@ -148,7 +155,7 @@ fun SettingScreen(
             // 섹션 4: 앱 평가
             SettingItem(
                 icon = Res.drawable.ic_menu,
-                label = "앱 평가하기",
+                label = stringResource(Res.string.setting_app_review),
                 onClick = { viewModel.logMenuClick("app_review"); onNavigateToAppReview() }
             )
         }
@@ -172,7 +179,7 @@ private fun SettingToolbar(
                 .size(20.dp)
                 .clickable { onBack() },
             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-            contentDescription = "뒤로 가기",
+            contentDescription = stringResource(Res.string.cd_navigate_back),
             tint = Color.Black
         )
     }

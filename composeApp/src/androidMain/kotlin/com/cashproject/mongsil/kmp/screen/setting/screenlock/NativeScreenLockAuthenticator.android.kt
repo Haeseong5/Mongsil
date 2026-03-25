@@ -3,8 +3,17 @@ package com.cashproject.mongsil.kmp.screen.setting.screenlock
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import kotlin.coroutines.resume
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.screen_lock_auth_unavailable
+import mongsil.composeapp.generated.resources.screen_lock_biometric_prompt_title
+import mongsil.composeapp.generated.resources.screen_lock_native_available_desc_android
+import mongsil.composeapp.generated.resources.screen_lock_native_available_title
+import mongsil.composeapp.generated.resources.screen_lock_native_unavailable_desc_android
+import mongsil.composeapp.generated.resources.screen_lock_native_unavailable_title
+import org.jetbrains.compose.resources.getString
+import kotlin.coroutines.resume
 
 private const val ANDROID_ALLOWED_AUTHENTICATORS =
     BiometricManager.Authenticators.BIOMETRIC_STRONG or
@@ -14,28 +23,28 @@ class AndroidNativeScreenLockAuthenticator(
     private val activityHolder: CurrentActivityHolder,
 ) : NativeScreenLockAuthenticator {
 
-    override fun availability(): NativeScreenLockAvailability {
+    override fun availability(): NativeScreenLockAvailability = runBlocking {
         val activity = activityHolder.get()
         val biometricManager = activity?.let(BiometricManager::from)
         val canAuthenticate = biometricManager?.canAuthenticate(ANDROID_ALLOWED_AUTHENTICATORS)
 
-        return when (canAuthenticate) {
+        when (canAuthenticate) {
             BiometricManager.BIOMETRIC_SUCCESS -> NativeScreenLockAvailability(
                 isAvailable = true,
-                title = "기기 잠금 바로 사용",
-                description = "Android에 저장된 생체인증 또는 기기 잠금(PIN, 패턴, 비밀번호)을 바로 사용할 수 있습니다.",
+                title = getString(Res.string.screen_lock_native_available_title),
+                description = getString(Res.string.screen_lock_native_available_desc_android),
             )
             else -> NativeScreenLockAvailability(
                 isAvailable = false,
-                title = "기기 잠금 설정 필요",
-                description = "기기 설정에서 생체인증 또는 화면 잠금을 등록하지 않아 앱 전용 비밀번호 방식이 필요합니다.",
+                title = getString(Res.string.screen_lock_native_unavailable_title),
+                description = getString(Res.string.screen_lock_native_unavailable_desc_android),
             )
         }
     }
 
     override suspend fun authenticate(reason: String): NativeScreenLockResult {
         val activity = activityHolder.get()
-            ?: return NativeScreenLockResult.Failure("인증 화면을 열 수 없습니다.")
+            ?: return NativeScreenLockResult.Failure(getString(Res.string.screen_lock_auth_unavailable))
 
         return suspendCancellableCoroutine { continuation ->
             val prompt = BiometricPrompt(
@@ -67,7 +76,7 @@ class AndroidNativeScreenLockAuthenticator(
             )
 
             val promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("화면 잠금")
+                .setTitle(runBlocking { getString(Res.string.screen_lock_biometric_prompt_title) })
                 .setSubtitle(reason)
                 .setAllowedAuthenticators(ANDROID_ALLOWED_AUTHENTICATORS)
                 .build()

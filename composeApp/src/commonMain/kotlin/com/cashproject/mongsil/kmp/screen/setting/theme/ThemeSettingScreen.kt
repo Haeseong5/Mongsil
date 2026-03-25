@@ -23,6 +23,12 @@ import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import com.cashproject.mongsil.kmp.model.ThemeMode
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.setting_theme
+import mongsil.composeapp.generated.resources.theme_dark
+import mongsil.composeapp.generated.resources.theme_light
+import mongsil.composeapp.generated.resources.theme_system
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -56,23 +62,23 @@ private fun ThemeSettingScreenContent(
     ) {
         CommonToolbar(
             onBack = onBack,
-            title = "테마 설정"
+            title = stringResource(Res.string.setting_theme)
         )
 
         ThemeModeItem(
-            label = "시스템 설정",
+            label = stringResource(Res.string.theme_system),
             selected = selectedMode == ThemeMode.SYSTEM,
             onClick = { onModeSelected(ThemeMode.SYSTEM) }
         )
 
         ThemeModeItem(
-            label = "라이트 모드",
+            label = stringResource(Res.string.theme_light),
             selected = selectedMode == ThemeMode.LIGHT,
             onClick = { onModeSelected(ThemeMode.LIGHT) }
         )
 
         ThemeModeItem(
-            label = "다크 모드",
+            label = stringResource(Res.string.theme_dark),
             selected = selectedMode == ThemeMode.DARK,
             onClick = { onModeSelected(ThemeMode.DARK) }
         )

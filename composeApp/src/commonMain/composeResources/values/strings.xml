@@ -95,4 +95,161 @@
     <string name="snackbar_cloud_download_failed">다운로드에 실패했습니다.</string>
     <string name="snackbar_cloud_delete_success">백업이 삭제되었습니다.</string>
     <string name="snackbar_cloud_delete_failed">삭제에 실패했습니다.</string>
+
+    <!-- Common -->
+    <string name="dialog_cancel">취소</string>
+    <string name="dialog_confirm">확인</string>
+    <string name="dialog_delete">삭제</string>
+    <string name="cd_navigate_back">뒤로 가기</string>
+    <string name="cd_close">닫기</string>
+    <string name="cd_previous_month">이전 달</string>
+    <string name="cd_next_month">다음 달</string>
+    <string name="cd_preview_emoticon">미리보기 이모티콘</string>
+
+    <!-- Setting Screen -->
+    <string name="setting_diary_alarm">일기 알림</string>
+    <string name="setting_theme">테마 설정</string>
+    <string name="setting_font_style">글자 스타일</string>
+    <string name="setting_screen_lock">화면 잠금</string>
+    <string name="setting_pdf_export">PDF 내보내기</string>
+    <string name="setting_language">언어 설정</string>
+    <string name="setting_app_review">앱 평가하기</string>
+
+    <!-- Delete Dialog -->
+    <string name="delete_dialog_title">일기를 삭제할까요?</string>
+    <string name="delete_dialog_message">삭제된 일기는 복구할 수 없습니다.</string>
+
+    <!-- Exit Dialog -->
+    <string name="exit_dialog_title">작성 중인 내용이 있습니다</string>
+    <string name="exit_dialog_message">지금 화면을 벗어나면 작성 중인 모든 정보가 지워집니다.</string>
+
+    <!-- Save -->
+    <string name="save_button">저장하기</string>
+
+    <!-- Screen Lock -->
+    <string name="screen_lock_device_lock">기기 잠금 사용</string>
+    <string name="screen_lock_device_lock_desc">기기에 저장된 생체인증, PIN, 패턴, 비밀번호로 앱을 잠급니다.</string>
+    <string name="screen_lock_app_password">앱 비밀번호</string>
+    <string name="screen_lock_app_password_desc">네이티브 잠금을 바로 쓸 수 없어서 앱 전용 비밀번호 잠금을 사용합니다.</string>
+    <string name="screen_lock_password_hint">4자리 이상 입력</string>
+    <string name="screen_lock_password_replace">새 비밀번호를 저장하면 기존 앱 비밀번호를 교체합니다.</string>
+    <string name="screen_lock_password_required">먼저 앱 비밀번호를 저장한 뒤 잠금을 켤 수 있습니다.</string>
+    <string name="screen_lock_change_password">비밀번호 변경</string>
+    <string name="screen_lock_save_password">비밀번호 저장</string>
+    <string name="screen_lock_app_password_enable">앱 비밀번호 잠금 사용</string>
+    <string name="screen_lock_app_password_enable_desc">저장된 앱 비밀번호로 잠금 화면을 표시합니다.</string>
+    <string name="screen_lock_native_available_title">기기 잠금 바로 사용</string>
+    <string name="screen_lock_native_unavailable_title">기기 잠금 설정 필요</string>
+    <string name="screen_lock_native_available_desc_android">Android에 저장된 생체인증 또는 기기 잠금(PIN, 패턴, 비밀번호)을 바로 사용할 수 있습니다.</string>
+    <string name="screen_lock_native_unavailable_desc_android">기기 설정에서 생체인증 또는 화면 잠금을 등록하지 않아 앱 전용 비밀번호 방식이 필요합니다.</string>
+    <string name="screen_lock_auth_unavailable">인증 화면을 열 수 없습니다.</string>
+    <string name="screen_lock_native_available_desc_ios_faceid">iPhone에 저장된 Face ID 또는 기기 암호를 바로 사용할 수 있습니다.</string>
+    <string name="screen_lock_native_available_desc_ios_touchid">iPhone에 저장된 Touch ID 또는 기기 암호를 바로 사용할 수 있습니다.</string>
+    <string name="screen_lock_native_available_desc_ios_generic">iPhone에 저장된 기기 암호 또는 생체인증을 바로 사용할 수 있습니다.</string>
+    <string name="screen_lock_native_unavailable_desc_ios">iPhone 설정에서 Face ID, Touch ID 또는 기기 암호를 먼저 등록해야 합니다.</string>
+    <string name="screen_lock_auth_device_unavailable">기기 인증을 사용할 수 없습니다.</string>
+    <string name="screen_lock_native_unavailable_title_desktop">기기 잠금 직접 연동 불가</string>
+    <string name="screen_lock_native_unavailable_desc_desktop">Desktop 버전은 운영체제 잠금을 직접 재사용하지 못해 앱 비밀번호 잠금 방식을 사용합니다.</string>
+    <string name="screen_lock_auth_desktop_unavailable">Desktop에서는 앱 비밀번호 잠금을 사용해 주세요.</string>
+    <string name="screen_lock_biometric_prompt_title">화면 잠금</string>
+
+    <!-- Search -->
+    <string name="search_hint_empty">검색어를 입력해 주세요</string>
+    <string name="search_no_results">검색 결과가 없어요</string>
+    <string name="search_placeholder">일기 검색</string>
+
+    <!-- Date formats -->
+    <string name="year_month_format">%1$d년 %2$d월</string>
+    <string name="month_label_format">%1$d월</string>
+
+    <!-- Diary -->
+    <string name="diary_empty">작성된 일기가 없어요</string>
+
+    <!-- Font Style -->
+    <string name="font_preview_text">몽실 일기 쓰는 습관\n폰트 사이즈를 변경할 수 있어요</string>
+    <string name="font_system">시스템 폰트</string>
+    <string name="font_gamja_flower">감자꽃체</string>
+
+    <!-- PDF Export -->
+    <string name="pdf_export_description">일기를 날짜, 이모티콘, 텍스트, 사진 순서의 PDF로 저장해요.</string>
+    <string name="pdf_create">PDF 생성</string>
+    <string name="pdf_progress_loading">일기를 불러오는 중</string>
+    <string name="pdf_progress_emoticons">이모티콘 정보를 준비하는 중</string>
+    <string name="pdf_progress_organizing">PDF 데이터를 정리하는 중</string>
+    <string name="pdf_progress_saving">PDF 파일을 저장하는 중</string>
+    <string name="pdf_progress_drawing">%1$d/%2$d 페이지 내용을 그리는 중</string>
+    <string name="pdf_progress_complete">PDF 생성 완료</string>
+    <string name="pdf_error_no_diaries">내보낼 일기가 없어요.</string>
+    <string name="pdf_error_default">PDF 생성에 실패했어요.</string>
+    <string name="pdf_emoticon_none">기록 없음</string>
+    <string name="pdf_label_date">날짜</string>
+    <string name="pdf_label_emoticon">이모티콘</string>
+    <string name="pdf_label_text">텍스트</string>
+    <string name="pdf_label_photo">사진</string>
+    <string name="pdf_no_photo">첨부된 사진이 없어요.</string>
+    <string name="pdf_error_create_file">다운로드 폴더에 PDF를 만들 수 없어요.</string>
+    <string name="pdf_error_write_file">다운로드 폴더에 PDF를 쓸 수 없어요.</string>
+    <string name="pdf_ios_not_supported">iOS PDF 내보내기는 아직 지원되지 않아요.</string>
+
+    <!-- Theme Setting -->
+    <string name="theme_system">시스템 설정</string>
+    <string name="theme_light">라이트 모드</string>
+    <string name="theme_dark">다크 모드</string>
+
+    <!-- Error Messages -->
+    <string name="error_unsupported_backup_format">지원하지 않는 백업 형식입니다. 앱을 업데이트 해주세요.</string>
+    <string name="error_backup_no_diaries">백업 파일에 일기 데이터가 없습니다.</string>
+    <string name="error_invalid_date_format">잘못된 날짜 형식: %1$s</string>
+
+    <!-- Store Screen -->
+    <string name="store_title">꼬박 스토어</string>
+    <string name="store_purchase_complete">결제가 완료되었습니다</string>
+    <string name="store_theme_stickers">테마 스티커</string>
+    <string name="store_theme_winter">겨울</string>
+    <string name="store_theme_animal">동물</string>
+    <string name="store_theme_ad_winter">동영상 광고를 시청하면 12시간 동안\n테마(겨울) 스티커를 무료로 이용할 수 있어요.\n광고를 보시겠어요?</string>
+    <string name="store_theme_ad_animal">동영상 광고를 시청하면 12시간 동안\n테마(동물) 스티커를 무료로 이용할 수 있어요.\n광고를 보시겠어요?</string>
+    <string name="store_watch_ad">광고 보기</string>
+    <string name="store_theme_available">테마 스티커 사용이 가능합니다</string>
+    <string name="store_premium_title">프리미엄 이용권</string>
+    <string name="store_premium_lifetime">한 번 결제하면 평생 이용 가능해요</string>
+    <string name="store_premium_no_ads">광고가 나오지 않아요</string>
+    <string name="store_premium_features">프리미엄 기능 사용이 가능해요</string>
+    <string name="store_premium_stickers">일상 스티커 사용 가능</string>
+    <string name="store_premium_photos">사진 5장까지 추가 가능</string>
+    <string name="store_purchase">구매하기</string>
+
+    <!-- Google Sign-In -->
+    <string name="sign_in_required">로그인이 필요합니다. 다시 시도해주세요.</string>
+    <string name="sign_in_network_error">네트워크 연결을 확인해주세요.</string>
+    <string name="sign_in_cancelled">로그인이 취소되었습니다.</string>
+    <string name="sign_in_in_progress">로그인 진행 중입니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="sign_in_developer_error">앱 설정 오류가 발생했습니다. (코드: %1$s)</string>
+    <string name="sign_in_failed">Google 로그인에 실패했습니다. (코드: %1$s)</string>
+    <string name="sign_in_google_required">Google 로그인이 필요합니다.</string>
+    <string name="sign_in_drive_required">Google Drive 로그인이 필요합니다.</string>
+
+    <!-- In-App Purchase -->
+    <string name="purchase_info_unavailable">결제 정보를 확인할 수 없습니다</string>
+    <string name="purchase_unavailable">결제를 진행할 수 없습니다</string>
+    <string name="purchase_screen_unavailable">결제 화면을 열 수 없습니다</string>
+    <string name="purchase_connection_failed">결제 연결에 실패했습니다</string>
+    <string name="purchase_connection_lost">결제 연결이 끊어졌습니다</string>
+    <string name="purchase_product_not_found">Play Console 상품 ID를 확인해주세요: %1$s</string>
+    <string name="purchase_product_load_failed">상품 정보를 불러오지 못했습니다</string>
+    <string name="purchase_flow_failed">결제창을 열 수 없습니다</string>
+    <string name="purchase_acknowledge_failed">결제 확인에 실패했습니다</string>
+
+    <!-- Day of Week (short) -->
+    <string name="day_of_week_short_sun">일</string>
+    <string name="day_of_week_short_mon">월</string>
+    <string name="day_of_week_short_tue">화</string>
+    <string name="day_of_week_short_wed">수</string>
+    <string name="day_of_week_short_thu">목</string>
+    <string name="day_of_week_short_fri">금</string>
+    <string name="day_of_week_short_sat">토</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name">일기 알림</string>
+    <string name="notification_channel_desc">매일 저녁 일기 작성을 알려주는 알림</string>
 </resources>

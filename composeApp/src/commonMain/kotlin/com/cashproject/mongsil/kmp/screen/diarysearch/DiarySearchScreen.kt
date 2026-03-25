@@ -40,6 +40,11 @@ import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchItem
 import com.cashproject.mongsil.kmp.screen.diarysearch.model.DiarySearchUiState
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.search_hint_empty
+import mongsil.composeapp.generated.resources.search_no_results
+import mongsil.composeapp.generated.resources.search_placeholder
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -83,11 +88,11 @@ private fun DiarySearchScreenContent(
 
         when {
             uiState.query.isBlank() -> {
-                SearchGuideMessage("검색어를 입력해 주세요")
+                SearchGuideMessage(stringResource(Res.string.search_hint_empty))
             }
 
             uiState.results.isEmpty() -> {
-                SearchGuideMessage("검색 결과가 없어요")
+                SearchGuideMessage(stringResource(Res.string.search_no_results))
             }
 
             else -> {
@@ -183,7 +188,7 @@ private fun SearchTextField(
             ) {
                 if (query.isEmpty()) {
                     Text(
-                        text = "일기 검색",
+                        text = stringResource(Res.string.search_placeholder),
                         style = MongsilTheme.typography.body1Normal,
                         color = MongsilTheme.colorScheme.labelWeak,
                     )

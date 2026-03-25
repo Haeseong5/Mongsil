@@ -5,6 +5,9 @@ import com.cashproject.mongsil.kmp.core.backup.BackupSerializer
 import com.cashproject.mongsil.kmp.core.backup.model.BackupConflictPolicy
 import com.cashproject.mongsil.kmp.core.backup.model.BackupManifest
 import com.cashproject.mongsil.kmp.core.backup.model.RestoreResult
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.error_unsupported_backup_format
+import org.jetbrains.compose.resources.getString
 
 class RestoreBackupUseCase(
     private val backupRepository: BackupRepository,
@@ -19,9 +22,10 @@ class RestoreBackupUseCase(
         backupRepository.restoreFromManifest(manifest, policy).getOrThrow()
     }
 
-    private fun validateManifest(manifest: BackupManifest) {
+    private suspend fun validateManifest(manifest: BackupManifest) {
+        val unsupportedMsg = getString(Res.string.error_unsupported_backup_format)
         require(manifest.formatVersion <= BackupManifest.CURRENT_FORMAT_VERSION) {
-            "지원하지 않는 백업 형식입니다. 앱을 업데이트 해주세요."
+            unsupportedMsg
         }
     }
 }

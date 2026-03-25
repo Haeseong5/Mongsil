@@ -95,4 +95,161 @@
     <string name="snackbar_cloud_download_failed">Download failed.</string>
     <string name="snackbar_cloud_delete_success">Backup deleted.</string>
     <string name="snackbar_cloud_delete_failed">Delete failed.</string>
+
+    <!-- Common -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">OK</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_close">Close</string>
+    <string name="cd_previous_month">Previous month</string>
+    <string name="cd_next_month">Next month</string>
+    <string name="cd_preview_emoticon">Preview emoticon</string>
+
+    <!-- Setting Screen -->
+    <string name="setting_diary_alarm">Diary Reminder</string>
+    <string name="setting_theme">Theme Settings</string>
+    <string name="setting_font_style">Font Style</string>
+    <string name="setting_screen_lock">Screen Lock</string>
+    <string name="setting_pdf_export">Export PDF</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_app_review">Rate App</string>
+
+    <!-- Delete Dialog -->
+    <string name="delete_dialog_title">Delete this diary entry?</string>
+    <string name="delete_dialog_message">Deleted entries cannot be recovered.</string>
+
+    <!-- Exit Dialog -->
+    <string name="exit_dialog_title">You have unsaved changes</string>
+    <string name="exit_dialog_message">If you leave now, all your unsaved content will be lost.</string>
+
+    <!-- Save -->
+    <string name="save_button">Save</string>
+
+    <!-- Screen Lock -->
+    <string name="screen_lock_device_lock">Use Device Lock</string>
+    <string name="screen_lock_device_lock_desc">Lock the app with biometrics, PIN, pattern, or password saved on your device.</string>
+    <string name="screen_lock_app_password">App Password</string>
+    <string name="screen_lock_app_password_desc">Device lock is not available, so an app-specific password is used instead.</string>
+    <string name="screen_lock_password_hint">Enter at least 4 characters</string>
+    <string name="screen_lock_password_replace">Saving a new password will replace the existing one.</string>
+    <string name="screen_lock_password_required">Save an app password first to enable the lock.</string>
+    <string name="screen_lock_change_password">Change Password</string>
+    <string name="screen_lock_save_password">Save Password</string>
+    <string name="screen_lock_app_password_enable">Enable App Password Lock</string>
+    <string name="screen_lock_app_password_enable_desc">Show lock screen with the saved app password.</string>
+    <string name="screen_lock_native_available_title">Device Lock Available</string>
+    <string name="screen_lock_native_unavailable_title">Device Lock Setup Required</string>
+    <string name="screen_lock_native_available_desc_android">You can use biometrics or device lock (PIN, pattern, password) saved on your Android device.</string>
+    <string name="screen_lock_native_unavailable_desc_android">Register biometrics or screen lock in device settings to use app-specific password lock.</string>
+    <string name="screen_lock_auth_unavailable">Cannot open authentication screen.</string>
+    <string name="screen_lock_native_available_desc_ios_faceid">You can use Face ID or device passcode saved on your iPhone.</string>
+    <string name="screen_lock_native_available_desc_ios_touchid">You can use Touch ID or device passcode saved on your iPhone.</string>
+    <string name="screen_lock_native_available_desc_ios_generic">You can use device passcode or biometrics saved on your iPhone.</string>
+    <string name="screen_lock_native_unavailable_desc_ios">Register Face ID, Touch ID, or a device passcode in iPhone Settings first.</string>
+    <string name="screen_lock_auth_device_unavailable">Device authentication is not available.</string>
+    <string name="screen_lock_native_unavailable_title_desktop">Device Lock Not Supported</string>
+    <string name="screen_lock_native_unavailable_desc_desktop">Desktop cannot reuse OS-level lock, so an app-specific password lock is used.</string>
+    <string name="screen_lock_auth_desktop_unavailable">Please use app password lock on Desktop.</string>
+    <string name="screen_lock_biometric_prompt_title">Screen Lock</string>
+
+    <!-- Search -->
+    <string name="search_hint_empty">Enter a search term</string>
+    <string name="search_no_results">No results found</string>
+    <string name="search_placeholder">Search diary</string>
+
+    <!-- Date formats -->
+    <string name="year_month_format">%2$d / %1$d</string>
+    <string name="month_label_format">%1$d</string>
+
+    <!-- Diary -->
+    <string name="diary_empty">No diary entries yet</string>
+
+    <!-- Font Style -->
+    <string name="font_preview_text">Mongsil diary writing habit\nYou can change the font size</string>
+    <string name="font_system">System Font</string>
+    <string name="font_gamja_flower">Gamja Flower</string>
+
+    <!-- PDF Export -->
+    <string name="pdf_export_description">Save your diary as a PDF with date, emoticon, text, and photo.</string>
+    <string name="pdf_create">Create PDF</string>
+    <string name="pdf_progress_loading">Loading diary entries</string>
+    <string name="pdf_progress_emoticons">Preparing emoticon data</string>
+    <string name="pdf_progress_organizing">Organizing PDF data</string>
+    <string name="pdf_progress_saving">Saving PDF file</string>
+    <string name="pdf_progress_drawing">Drawing page %1$d/%2$d</string>
+    <string name="pdf_progress_complete">PDF created</string>
+    <string name="pdf_error_no_diaries">No diary entries to export.</string>
+    <string name="pdf_error_default">Failed to create PDF.</string>
+    <string name="pdf_emoticon_none">No record</string>
+    <string name="pdf_label_date">Date</string>
+    <string name="pdf_label_emoticon">Emoticon</string>
+    <string name="pdf_label_text">Text</string>
+    <string name="pdf_label_photo">Photo</string>
+    <string name="pdf_no_photo">No photo attached.</string>
+    <string name="pdf_error_create_file">Cannot create PDF in Downloads folder.</string>
+    <string name="pdf_error_write_file">Cannot write PDF to Downloads folder.</string>
+    <string name="pdf_ios_not_supported">PDF export is not yet available on iOS.</string>
+
+    <!-- Theme Setting -->
+    <string name="theme_system">System Default</string>
+    <string name="theme_light">Light Mode</string>
+    <string name="theme_dark">Dark Mode</string>
+
+    <!-- Error Messages -->
+    <string name="error_unsupported_backup_format">Unsupported backup format. Please update the app.</string>
+    <string name="error_backup_no_diaries">No diary data found in the backup file.</string>
+    <string name="error_invalid_date_format">Invalid date format: %1$s</string>
+
+    <!-- Store Screen -->
+    <string name="store_title">Mongsil Store</string>
+    <string name="store_purchase_complete">Purchase completed</string>
+    <string name="store_theme_stickers">Theme Stickers</string>
+    <string name="store_theme_winter">Winter</string>
+    <string name="store_theme_animal">Animals</string>
+    <string name="store_theme_ad_winter">Watch a video ad to use Winter theme stickers\nfor free for 12 hours.\nWould you like to watch?</string>
+    <string name="store_theme_ad_animal">Watch a video ad to use Animal theme stickers\nfor free for 12 hours.\nWould you like to watch?</string>
+    <string name="store_watch_ad">Watch Ad</string>
+    <string name="store_theme_available">Theme stickers are now available</string>
+    <string name="store_premium_title">Premium Pass</string>
+    <string name="store_premium_lifetime">Pay once, use forever</string>
+    <string name="store_premium_no_ads">No more ads</string>
+    <string name="store_premium_features">Access premium features</string>
+    <string name="store_premium_stickers">Use daily stickers</string>
+    <string name="store_premium_photos">Add up to 5 photos</string>
+    <string name="store_purchase">Purchase</string>
+
+    <!-- Google Sign-In -->
+    <string name="sign_in_required">Sign-in required. Please try again.</string>
+    <string name="sign_in_network_error">Please check your network connection.</string>
+    <string name="sign_in_cancelled">Sign-in was cancelled.</string>
+    <string name="sign_in_in_progress">Sign-in in progress. Please try again later.</string>
+    <string name="sign_in_developer_error">App configuration error. (Code: %1$s)</string>
+    <string name="sign_in_failed">Google sign-in failed. (Code: %1$s)</string>
+    <string name="sign_in_google_required">Google sign-in is required.</string>
+    <string name="sign_in_drive_required">Google Drive sign-in is required.</string>
+
+    <!-- In-App Purchase -->
+    <string name="purchase_info_unavailable">Cannot verify purchase information</string>
+    <string name="purchase_unavailable">Cannot proceed with purchase</string>
+    <string name="purchase_screen_unavailable">Cannot open purchase screen</string>
+    <string name="purchase_connection_failed">Purchase connection failed</string>
+    <string name="purchase_connection_lost">Purchase connection lost</string>
+    <string name="purchase_product_not_found">Please check the Play Console product ID: %1$s</string>
+    <string name="purchase_product_load_failed">Failed to load product information</string>
+    <string name="purchase_flow_failed">Cannot open purchase dialog</string>
+    <string name="purchase_acknowledge_failed">Failed to confirm purchase</string>
+
+    <!-- Day of Week (short) -->
+    <string name="day_of_week_short_sun">Sun</string>
+    <string name="day_of_week_short_mon">Mon</string>
+    <string name="day_of_week_short_tue">Tue</string>
+    <string name="day_of_week_short_wed">Wed</string>
+    <string name="day_of_week_short_thu">Thu</string>
+    <string name="day_of_week_short_fri">Fri</string>
+    <string name="day_of_week_short_sat">Sat</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name">Diary Reminder</string>
+    <string name="notification_channel_desc">Daily evening reminder to write in your diary</string>
 </resources>

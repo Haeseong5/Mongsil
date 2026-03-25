@@ -65,18 +65,18 @@ class BackupRestoreViewModel(
     fun getBackupBytes(): BackupData? = lastBackupData
 
     fun onBackupFileLoaded(bytes: ByteArray) {
-        validateBackupUseCase(bytes).onSuccess { manifest ->
-            _uiState.update {
-                it.copy(
-                    previewManifest = manifest,
-                    pendingRestoreBytes = bytes,
-                    status = BackupScreenStatus.Idle,
-                    lastResult = null,
-                )
-            }
-        }.onFailure {
-            _uiState.update { it.copy(status = BackupScreenStatus.Error) }
-            viewModelScope.launch {
+        viewModelScope.launch {
+            validateBackupUseCase(bytes).onSuccess { manifest ->
+                _uiState.update {
+                    it.copy(
+                        previewManifest = manifest,
+                        pendingRestoreBytes = bytes,
+                        status = BackupScreenStatus.Idle,
+                        lastResult = null,
+                    )
+                }
+            }.onFailure {
+                _uiState.update { it.copy(status = BackupScreenStatus.Error) }
                 _snackbarEvent.emit(BackupSnackbarEvent.InvalidFile)
             }
         }

@@ -25,6 +25,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.CommonToolbar
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.model.PdfExportUiState
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.pdf_create
+import mongsil.composeapp.generated.resources.pdf_export_description
+import mongsil.composeapp.generated.resources.setting_pdf_export
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -58,7 +63,7 @@ private fun PdfExportScreenContent(
     ) {
         CommonToolbar(
             onBack = onBack,
-            title = "PDF 내보내기"
+            title = stringResource(Res.string.setting_pdf_export)
         )
 
         Column(
@@ -69,7 +74,7 @@ private fun PdfExportScreenContent(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "일기를 날짜, 이모티콘, 텍스트, 사진 순서의 PDF로 저장해요.",
+                text = stringResource(Res.string.pdf_export_description),
                 style = MongsilTheme.typography.body2Medium,
                 color = MongsilTheme.colorScheme.labelWeak,
                 textAlign = TextAlign.Center
@@ -81,7 +86,7 @@ private fun PdfExportScreenContent(
                 label = if (uiState.isExporting) {
                     "${(uiState.progress * 100).toInt()}%  ${uiState.progressMessage}"
                 } else {
-                    "PDF 생성"
+                    stringResource(Res.string.pdf_create)
                 },
                 onClick = onExportClick
             )
