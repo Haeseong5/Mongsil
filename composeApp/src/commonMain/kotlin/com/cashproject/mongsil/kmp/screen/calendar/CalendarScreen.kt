@@ -1,18 +1,25 @@
 package com.cashproject.mongsil.kmp.screen.calendar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,17 +30,14 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
 import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
-import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
-import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.emoticon_01
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarToolbar
 import com.cashproject.mongsil.kmp.screen.calendar.component.DayPickerDialog
 import com.cashproject.mongsil.kmp.screen.calendar.component.DaysOfWeekTitle
 import com.cashproject.mongsil.kmp.screen.calendar.component.NotificationBadge
-import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarTitleV2
+import com.cashproject.mongsil.kmp.screen.calendar.component.SimpleCalendarYearMonth
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
@@ -43,11 +47,16 @@ import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.OutDateStyle
 import com.kizitonwose.calendar.core.minusMonths
 import com.kizitonwose.calendar.core.plusMonths
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.number
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.emoticon_01
+import mongsil.composeapp.generated.resources.today
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
 import com.kizitonwose.calendar.core.CalendarDay as KCalendarDay
@@ -143,6 +152,13 @@ fun CalendarScreenContent(
     val visibleYearMonth by remember {
         derivedStateOf { calendarState.firstVisibleMonth.yearMonth }
     }
+    val coroutineScope = rememberCoroutineScope()
+    val isCurrentMonthVisible by remember(visibleYearMonth, today) {
+        derivedStateOf {
+            visibleYearMonth.year == today.year &&
+                    visibleYearMonth.month.number == today.month.number
+        }
+    }
 
     // 월 변경 감지 → ViewModel 업데이트 (일기 데이터 로드)
     LaunchedEffect(calendarState) {
@@ -184,16 +200,14 @@ fun CalendarScreenContent(
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                SimpleCalendarTitleV2(
+                SimpleCalendarYearMonth(
                     modifier = Modifier
-                        .padding(start = 20.dp, bottom = 12.dp)
-                        .circularRippleClickable(
-                            radius = 36.dp
-                        ) {
-                            uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
-                        },
+                        .padding(start = 20.dp, bottom = 12.dp),
                     year = visibleYearMonth.year,
                     month = visibleYearMonth.month.number,
+                    onClick = {
+                        uiEvent.invoke(CalendarUiEvent.ShowAndHideYearMonthPicker(true))
+                    }
                 )
                 VerticalSpacer(16.dp)
 
@@ -236,8 +250,51 @@ fun CalendarScreenContent(
                     }
                 )
             }
-            BannerAdView(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter))
+
+
+            Column(modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)) {
+                if (!isCurrentMonthVisible) {
+                    TodayNavigationButton(
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                            .padding(),
+                        onClick = {
+                            coroutineScope.launch {
+                                calendarState.animateScrollToMonth(currentMonth)
+                            }
+                        }
+                    )
+                }
+                Spacer(modifier = Modifier.size(24.dp))
+                BannerAdView()
+            }
+
+
         }
+    }
+}
+
+@Composable
+fun TodayNavigationButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    val shape = RoundedCornerShape(30.dp)
+    Card(
+        shape = shape,
+        colors = CardDefaults.cardColors().copy(containerColor = MongsilTheme.colorScheme.card),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp),
+        modifier = modifier
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+                .clickable {
+                    onClick.invoke()
+                }
+                .padding(horizontal = 8.dp, vertical = 6.dp),
+            text = stringResource(Res.string.today),
+            style = MongsilTheme.typography.label1,
+            color = MongsilTheme.colorScheme.labelStrong
+        )
     }
 }
 
@@ -271,7 +328,7 @@ private val previewEmoticons = listOf(
 private val previewUiStateWithRecords = CalendarUiState(
     today = LocalDate(2026, 3, 8),
     currentYear = 2026,
-    currentMonth = 3,
+    currentMonth = 2,
     calendarRecords = listOf(
         CalendarRecord(date = LocalDate(2026, 3, 1), emotionId = 1),
         CalendarRecord(date = LocalDate(2026, 3, 5), emotionId = 2),

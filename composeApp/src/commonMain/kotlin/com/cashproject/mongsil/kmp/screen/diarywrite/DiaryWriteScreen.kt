@@ -58,6 +58,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.cashproject.mongsil.kmp.designsystem.LocalDarkTheme
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
@@ -171,6 +172,16 @@ private fun DiaryWriteScreenContent(
         onEvent(DiaryWriteEvent.OnBackPressed)
     }
 
+    val isDarkTheme = LocalDarkTheme.current
+    val effectiveTextColor = remember(uiState.textColor, uiState.isTextColorCustomized, isDarkTheme) {
+        when {
+            uiState.isTextColorCustomized -> uiState.textColor
+            isDarkTheme && uiState.textColor == Color.Black -> Color.White
+            !isDarkTheme && uiState.textColor == Color.White -> Color.Black
+            else -> uiState.textColor
+        }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -186,7 +197,6 @@ private fun DiaryWriteScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                // 상단 툴바
                 IconToolbar(
                     modifier = Modifier.background(MongsilTheme.colorScheme.background),
                     leftContent = {
@@ -204,7 +214,7 @@ private fun DiaryWriteScreenContent(
                             Icon(
                                 painter = painterResource(Res.drawable.ic_trash),
                                 contentDescription = "삭제",
-                                tint = Color(0xFFE53935),
+                                tint = MongsilTheme.colorScheme.fillRed,
                                 modifier = Modifier
                                     .size(20.dp)
                                     .circularRippleClickable { onEvent(DiaryWriteEvent.OnDeleteClick) }
@@ -267,7 +277,7 @@ private fun DiaryWriteScreenContent(
                         onContentChange = { onEvent(DiaryWriteEvent.OnContentChange(it)) },
                         enabled = !uiState.isLoading,
                         textAlign = uiState.textAlign,
-                        textColor = uiState.textColor,
+                        textColor = effectiveTextColor,
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth(),
@@ -304,7 +314,7 @@ private fun DiaryWriteScreenContent(
                     isSaving = uiState.isSaving,
                     canAddPhoto = uiState.canAddPhoto,
                     textAlign = uiState.textAlign,
-                    textColor = uiState.textColor,
+                    textColor = effectiveTextColor,
                     backgroundColor = uiState.backgroundColor,
                     showColorPalette = uiState.showColorPalette,
                     showBackgroundColorPalette = uiState.showBackgroundColorPalette,
@@ -329,7 +339,7 @@ private fun DiaryWriteScreenContent(
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
-                    color = Color.LightGray.copy(alpha = 0.5f)
+                    color = MongsilTheme.colorScheme.labelDisable.copy(alpha = 0.5f)
                 )
             }
         }
@@ -397,7 +407,7 @@ private fun SelectedPhotos(
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
                     .clip(CircleShape)
-                    .background(Color(0x99000000))
+                    .background(MongsilTheme.colorScheme.card.copy(alpha = 0.75f))
                     .clickable { onRemove(pagerState.currentPage) }
                     .padding(horizontal = 10.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -405,7 +415,7 @@ private fun SelectedPhotos(
                 Text(
                     text = "삭제",
                     style = MongsilTheme.typography.caption1,
-                    color = Color.White
+                    color = MongsilTheme.colorScheme.labelStrong
                 )
             }
         }
@@ -439,11 +449,16 @@ private fun EmoticonButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val emoticonBackgroundColor = selectedEmoticon
+        ?.backgroundColor
+        ?.toComposeColorOrNull()
+        ?: MongsilTheme.colorScheme.card
+
     Box(
         modifier = modifier
             .size(60.dp)
             .clip(CircleShape)
-            .background(Color.White)
+            .background(color = emoticonBackgroundColor)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
@@ -477,7 +492,8 @@ private fun DateText(
     Text(
         text = dateText,
         style = MongsilTheme.typography.default,
-        modifier = modifier
+        modifier = modifier,
+        color = MongsilTheme.colorScheme.labelStrong
     )
 }
 
@@ -555,7 +571,8 @@ private fun DiaryTextField(
                     Text(
                         text = "오늘 하루를 기록해보세요",
                         modifier = Modifier.fillMaxWidth(),
-                        style = MongsilTheme.typography.default.copy(textAlign = textAlign),
+                        style = MongsilTheme.typography.default,
+                        textAlign = textAlign,
                         color = MongsilTheme.colorScheme.labelWeak
                     )
                 }
@@ -753,6 +770,16 @@ private fun DiaryWriteAlignEndPreview() {
             openImagePicker = {}
         )
     }
+}
+
+private fun String.toComposeColorOrNull(): Color? {
+    val normalized = trim().removePrefix("#")
+    val argbHex = when (normalized.length) {
+        6 -> "FF$normalized"
+        8 -> normalized
+        else -> return null
+    }
+    return argbHex.toLongOrNull(16)?.let { Color(it.toInt()) }
 }
 
 private fun TextFieldValue.isCursorInView(

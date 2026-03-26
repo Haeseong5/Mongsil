@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.HorizontalSpacer
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_forward_ios_24
@@ -20,10 +21,11 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SimpleCalendarTitleV2(
+fun SimpleCalendarYearMonth(
     modifier: Modifier = Modifier,
     year: Int,
     month: Int,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -39,7 +41,12 @@ fun SimpleCalendarTitleV2(
         HorizontalSpacer(8.dp)
         Icon(
             modifier = Modifier
-                .size(20.dp),
+                .size(20.dp)
+                .circularRippleClickable(
+                    radius = 18.dp
+                ) {
+                    onClick.invoke()
+                },
             painter = painterResource(Res.drawable.ic_baseline_arrow_forward_ios_24),
             contentDescription = "forward",
             tint = MongsilTheme.colorScheme.labelStrong
@@ -49,9 +56,9 @@ fun SimpleCalendarTitleV2(
 
 @Preview(showBackground = true)
 @Composable
-fun SimpleCalendarTitleV2Preview() {
+fun SimpleCalendarYearMonthPreview() {
     MongsilTheme {
-        SimpleCalendarTitleV2(
+        SimpleCalendarYearMonth(
             year = 2026,
             month = 2,
         )

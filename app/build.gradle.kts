@@ -13,12 +13,12 @@ plugins {
 }
 
 android {
-    compileSdk = sdkCompileVersion
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.cashproject.mongsil"
-        minSdk = sdkMinVersion
-        targetSdk = sdkTargetVersion
+        minSdk = libs.versions.sdkMinVersion.get().toInt()
+        targetSdk = libs.versions.sdkTargetVersion.get().toInt()
         versionCode = 23
         versionName = "1.2.1"
 

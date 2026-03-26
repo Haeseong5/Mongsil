@@ -32,6 +32,7 @@
     <string name="day_of_week_friday">Friday</string>
     <string name="day_of_week_saturday">Saturday</string>
     <string name="day_of_week_sunday">Sunday</string>
+    <string name="today">This Month</string>
 
     <!-- Backup / Restore Screen -->
     <string name="backup_restore_title">Backup / Restore</string>

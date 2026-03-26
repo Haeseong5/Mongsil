@@ -58,7 +58,7 @@ fun DeleteConfirmDialog(
         ) {
             Column(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MongsilTheme.colorScheme.alert)
                     .padding(24.dp)
             ) {
                 Text(
@@ -67,7 +67,7 @@ fun DeleteConfirmDialog(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
                     ),
-                    color = Color.Black,
+                    color = MongsilTheme.colorScheme.labelStrong,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -79,7 +79,7 @@ fun DeleteConfirmDialog(
                         fontSize = 14.sp,
                         lineHeight = 20.sp
                     ),
-                    color = Color.Gray,
+                    color = MongsilTheme.colorScheme.labelWeak,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -93,7 +93,7 @@ fun DeleteConfirmDialog(
                         onClick = onDismiss,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
-                            contentColor = Color.Gray
+                            contentColor = MongsilTheme.colorScheme.labelWeak
                         ),
                         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
                     ) {

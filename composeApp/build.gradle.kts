@@ -155,12 +155,12 @@ kotlin {
 
 android {
     namespace = "com.cashproject.mongsil.kmp"
-    compileSdk = sdkCompileVersion
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.cashproject.mongsil"
-        minSdk = sdkMinVersion
-        targetSdk = sdkTargetVersion
+        minSdk = libs.versions.sdkMinVersion.get().toInt()
+        targetSdk = libs.versions.sdkTargetVersion.get().toInt()
         versionCode = 24
         versionName = "2.0.0"
     }

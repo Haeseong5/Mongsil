@@ -12,11 +12,10 @@ plugins {
 
 android {
     namespace = "com.cashproject.mongsil.common"
-    compileSdk = sdkCompileVersion
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = sdkMinVersion
-
+        minSdk = libs.versions.sdkMinVersion.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
