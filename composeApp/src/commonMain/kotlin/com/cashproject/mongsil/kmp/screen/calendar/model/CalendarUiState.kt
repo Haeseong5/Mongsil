@@ -11,6 +11,7 @@ data class CalendarUiState(
     val emoticons: List<Emoticon> = emptyList(),
     val isShownYearMonthPicker: Boolean = false,
     val scrollTarget: ScrollTarget? = null,
+    val isEmoticonTranslucent: Boolean = false,
 )
 
 data class ScrollTarget(val year: Int, val month: Int)

@@ -43,6 +43,7 @@ fun BoxScope.CalendarDay(
     isRecord: Boolean,
     emoticonImage: ImageResource?,
     isFuture: Boolean,
+    isEmoticonTranslucent: Boolean = false,
     onClick: () -> Unit,
 ) {
     Box(
@@ -59,8 +60,8 @@ fun BoxScope.CalendarDay(
             ),
         contentAlignment = Alignment.Center
     ) {
-        // 날짜 텍스트 (기록이 없을 때만 표시)
-        if (!isRecord || emoticonImage == null) {
+        // 날짜 텍스트 (기록이 없거나 이모티콘 반투명 옵션이 켜진 경우 표시)
+        if (!isRecord || emoticonImage == null || isEmoticonTranslucent) {
             Text(
                 text = date.dayOfMonth.toString(),
                 fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
@@ -78,7 +79,9 @@ fun BoxScope.CalendarDay(
             EmoticonImage(
                 image = emoticonImage,
                 contentDescription = "감정 이모티콘",
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier
+                    .size(36.dp)
+                    .alpha(if (isEmoticonTranslucent) 0.45f else 1f),
             )
         }
     }

@@ -11,6 +11,7 @@ interface SettingRepository {
     fun fontStyleOption(): Flow<FontStyleOption>
     fun fontScale(): Flow<Float>
     fun isDiaryReminderEnabled(): Flow<Boolean>
+    fun isEmoticonTranslucentEnabled(): Flow<Boolean>
     fun isScreenLockEnabled(): Flow<Boolean>
     fun screenLockMethod(): Flow<ScreenLockMethod>
     fun screenLockPasswordHash(): Flow<String?>
@@ -24,6 +25,7 @@ suspend fun updateThemeMode(themeMode: ThemeMode)
     suspend fun updateFontStyleOption(option: FontStyleOption)
     suspend fun updateFontScale(scale: Float)
     suspend fun updateDiaryReminderEnabled(enabled: Boolean)
+    suspend fun updateEmoticonTranslucentEnabled(enabled: Boolean)
     suspend fun updateScreenLockEnabled(enabled: Boolean)
     suspend fun updateScreenLockMethod(method: ScreenLockMethod)
     suspend fun updateScreenLockPasswordHash(passwordHash: String?)

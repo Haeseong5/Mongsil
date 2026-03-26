@@ -15,6 +15,7 @@ class SettingRepositoryImpl(
     override fun fontStyleOption(): Flow<FontStyleOption> = preferenceDataSource.fontStyleOption
     override fun fontScale(): Flow<Float> = preferenceDataSource.fontScale
     override fun isDiaryReminderEnabled(): Flow<Boolean> = preferenceDataSource.isDiaryReminderEnabled
+    override fun isEmoticonTranslucentEnabled(): Flow<Boolean> = preferenceDataSource.isEmoticonTranslucentEnabled
     override fun isScreenLockEnabled(): Flow<Boolean> = preferenceDataSource.isScreenLockEnabled
     override fun screenLockMethod(): Flow<ScreenLockMethod> = preferenceDataSource.screenLockMethod
     override fun screenLockPasswordHash(): Flow<String?> = preferenceDataSource.screenLockPasswordHash
@@ -43,6 +44,10 @@ preferenceDataSource.updateIsDarkTheme(isDarkTheme)
 
     override suspend fun updateDiaryReminderEnabled(enabled: Boolean) {
         preferenceDataSource.updateDiaryReminderEnabled(enabled)
+    }
+
+    override suspend fun updateEmoticonTranslucentEnabled(enabled: Boolean) {
+        preferenceDataSource.updateEmoticonTranslucentEnabled(enabled)
     }
 
     override suspend fun updateScreenLockEnabled(enabled: Boolean) {

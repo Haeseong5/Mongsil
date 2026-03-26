@@ -6,6 +6,7 @@ import com.cashproject.mongsil.kmp.core.datastore.KEY_FONT_SCALE
 import com.cashproject.mongsil.kmp.core.datastore.KEY_FONT_STYLE_OPTION
 import com.cashproject.mongsil.kmp.core.datastore.KEY_IS_DARK_THEME
 import com.cashproject.mongsil.kmp.core.datastore.KEY_IS_DIARY_REMINDER_ENABLED
+import com.cashproject.mongsil.kmp.core.datastore.KEY_IS_EMOTICON_TRANSLUCENT
 import com.cashproject.mongsil.kmp.core.datastore.KEY_IS_SCREEN_LOCK_ENABLED
 import com.cashproject.mongsil.kmp.core.datastore.KEY_SCREEN_LOCK_METHOD
 import com.cashproject.mongsil.kmp.core.datastore.KEY_SCREEN_LOCK_PASSWORD_HASH
@@ -53,6 +54,10 @@ class DefaultSettingsPreferenceDataSource(
         .getBoolean(KEY_IS_DIARY_REMINDER_ENABLED)
         .map { it ?: false }
 
+    override val isEmoticonTranslucentEnabled: Flow<Boolean> = localPreferences
+        .getBoolean(KEY_IS_EMOTICON_TRANSLUCENT)
+        .map { it ?: false }
+
     override val isScreenLockEnabled: Flow<Boolean> = localPreferences
         .getBoolean(KEY_IS_SCREEN_LOCK_ENABLED)
         .map { it ?: false }
@@ -86,6 +91,10 @@ class DefaultSettingsPreferenceDataSource(
 
     override suspend fun updateDiaryReminderEnabled(enabled: Boolean) {
         localPreferences.setBoolean(KEY_IS_DIARY_REMINDER_ENABLED, enabled)
+    }
+
+    override suspend fun updateEmoticonTranslucentEnabled(enabled: Boolean) {
+        localPreferences.setBoolean(KEY_IS_EMOTICON_TRANSLUCENT, enabled)
     }
 
     override suspend fun updateScreenLockEnabled(enabled: Boolean) {

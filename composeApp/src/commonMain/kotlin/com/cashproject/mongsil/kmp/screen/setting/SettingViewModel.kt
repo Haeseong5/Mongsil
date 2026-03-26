@@ -22,10 +22,24 @@ class SettingViewModel(
             false
         )
 
+    val isEmoticonTranslucentEnabled = settingRepository
+        .isEmoticonTranslucentEnabled()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            false
+        )
+
     fun updateDiaryReminder(enabled: Boolean) {
         viewModelScope.launch(exceptionHandler) {
             val appliedEnabled = diaryReminderScheduler.setEnabled(enabled)
             settingRepository.updateDiaryReminderEnabled(appliedEnabled)
+        }
+    }
+
+    fun updateEmoticonTranslucent(enabled: Boolean) {
+        viewModelScope.launch(exceptionHandler) {
+            settingRepository.updateEmoticonTranslucentEnabled(enabled)
         }
     }
 

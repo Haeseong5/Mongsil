@@ -2,6 +2,7 @@ package com.cashproject.mongsil.kmp.di
 
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
+import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarViewModel
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartViewModel
 import com.cashproject.mongsil.kmp.screen.diarychart.GetWordCloudUseCase
@@ -20,7 +21,8 @@ internal val calendarModule = module {
     viewModel {
         CalendarViewModel(
             diaryRepository = get<DiaryRepository>(),
-            emoticonRepository = get<EmoticonRepository>()
+            emoticonRepository = get<EmoticonRepository>(),
+            settingRepository = get<SettingRepository>()
         )
     }
 

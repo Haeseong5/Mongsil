@@ -229,6 +229,7 @@ fun CalendarScreenContent(
                                     isRecord = record != null,
                                     emoticonImage = emoticonMap[record?.emotionId]?.image,
                                     isFuture = day.date > today,
+                                    isEmoticonTranslucent = uiState.isEmoticonTranslucent,
                                     onClick = { onDateClick(day.date) }
                                 )
                                 if (day.date == today) {

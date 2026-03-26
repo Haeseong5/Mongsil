@@ -109,6 +109,7 @@
 
     <!-- Setting Screen -->
     <string name="setting_diary_alarm">Diary Reminder</string>
+    <string name="setting_emoticon_translucent">Calendar Emoticon Translucent</string>
     <string name="setting_theme">Theme Settings</string>
     <string name="setting_font_style">Font Style</string>
     <string name="setting_screen_lock">Screen Lock</string>

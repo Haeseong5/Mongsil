@@ -16,6 +16,7 @@ interface SettingsPreferenceDataSource {
     fun getFontStyleOptionSync(): FontStyleOption
     fun getFontScaleSync(): Float
     val isDiaryReminderEnabled: Flow<Boolean>
+    val isEmoticonTranslucentEnabled: Flow<Boolean>
     val isScreenLockEnabled: Flow<Boolean>
     val screenLockMethod: Flow<ScreenLockMethod>
     val screenLockPasswordHash: Flow<String?>
@@ -25,6 +26,7 @@ interface SettingsPreferenceDataSource {
     suspend fun updateFontStyleOption(option: FontStyleOption)
     suspend fun updateFontScale(scale: Float)
     suspend fun updateDiaryReminderEnabled(enabled: Boolean)
+    suspend fun updateEmoticonTranslucentEnabled(enabled: Boolean)
     suspend fun updateScreenLockEnabled(enabled: Boolean)
     suspend fun updateScreenLockMethod(method: ScreenLockMethod)
     suspend fun updateScreenLockPasswordHash(passwordHash: String?)

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.BaseViewModel
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
+import com.cashproject.mongsil.kmp.core.data.SettingRepository
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarRecord
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiEvent
 import com.cashproject.mongsil.kmp.screen.calendar.model.CalendarUiState
@@ -12,6 +13,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -23,6 +26,7 @@ import kotlin.time.ExperimentalTime
 class CalendarViewModel(
     private val diaryRepository: DiaryRepository,
     private val emoticonRepository: EmoticonRepository,
+    private val settingRepository: SettingRepository,
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(CalendarUiState())
@@ -40,6 +44,15 @@ class CalendarViewModel(
         }
         loadDiariesForCurrentMonth()
         loadEmoticons()
+        observeEmoticonTranslucentSetting()
+    }
+
+    private fun observeEmoticonTranslucentSetting() {
+        settingRepository.isEmoticonTranslucentEnabled()
+            .onEach { enabled ->
+                _uiState.update { it.copy(isEmoticonTranslucent = enabled) }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadEmoticons() {

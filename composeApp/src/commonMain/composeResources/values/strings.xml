@@ -109,6 +109,7 @@
 
     <!-- Setting Screen -->
     <string name="setting_diary_alarm">일기 알림</string>
+    <string name="setting_emoticon_translucent">캘린더 이모티콘 반투명</string>
     <string name="setting_theme">테마 설정</string>
     <string name="setting_font_style">글자 스타일</string>
     <string name="setting_screen_lock">화면 잠금</string>
