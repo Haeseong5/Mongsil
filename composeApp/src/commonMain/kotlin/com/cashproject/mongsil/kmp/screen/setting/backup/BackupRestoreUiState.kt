@@ -17,7 +17,7 @@ data class BackupRestoreUiState(
         return status == other.status &&
                 selectedPolicy == other.selectedPolicy &&
                 previewManifest == other.previewManifest &&
-                pendingRestoreBytes.contentEquals(other.pendingRestoreBytes) &&
+                pendingRestoreBytes.nullableContentEquals(other.pendingRestoreBytes) &&
                 lastResult == other.lastResult
     }
 
@@ -43,10 +43,10 @@ enum class WorkingType {
     RESTORING,
 }
 
-private fun ByteArray?.contentEquals(other: ByteArray?): Boolean {
+private fun ByteArray?.nullableContentEquals(other: ByteArray?): Boolean {
     if (this == null && other == null) return true
     if (this == null || other == null) return false
-    return this.contentEquals(other)
+    return this.contentEquals(other)  // 이제 non-nullable ByteArray이므로 stdlib 호출
 }
 
 private fun ByteArray?.contentHashCode(): Int = this?.contentHashCode() ?: 0
