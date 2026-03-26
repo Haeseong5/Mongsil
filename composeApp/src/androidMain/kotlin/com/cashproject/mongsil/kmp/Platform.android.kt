@@ -8,3 +8,5 @@ actual fun getPlatformName(): String {
 }
 
 actual fun getAppPlatform(): AppPlatform = AppPlatform.ANDROID
+
+actual val isDebug: Boolean = BuildConfig.DEBUG

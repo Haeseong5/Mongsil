@@ -165,6 +165,10 @@ android {
         versionName = "2.0.0"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -188,9 +192,12 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {}
+        getByName("debug") {
+            buildConfigField("boolean", "IS_DEBUG", "true")
+        }
 
         getByName("release") {
+            buildConfigField("boolean", "IS_DEBUG", "false")
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
         }

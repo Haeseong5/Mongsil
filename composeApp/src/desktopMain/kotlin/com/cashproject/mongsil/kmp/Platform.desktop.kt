@@ -6,3 +6,5 @@ import androidx.compose.runtime.Composable
 actual fun getPlatformName(): String = "Running on Desktop 🖥️"
 
 actual fun getAppPlatform(): AppPlatform = AppPlatform.DESKTOP
+
+actual val isDebug: Boolean = System.getProperty("debug") == "true"

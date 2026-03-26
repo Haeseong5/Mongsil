@@ -88,14 +88,3 @@ internal fun mongsilAppDeclaration(
     modules(appModules)
     additionalDeclaration()
 }
-
-enum class AppPlatform {
-    ANDROID,
-    IOS,
-    DESKTOP
-}
-
-@Composable
-expect fun getPlatformName(): String
-
-expect fun getAppPlatform(): AppPlatform
