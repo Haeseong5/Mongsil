@@ -37,6 +37,7 @@ import mongsil.composeapp.generated.resources.ic_archive
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_menu
 import mongsil.composeapp.generated.resources.ic_notifications
+import mongsil.composeapp.generated.resources.ic_text
 import mongsil.composeapp.generated.resources.setting_app_review
 import mongsil.composeapp.generated.resources.setting_diary_alarm
 import mongsil.composeapp.generated.resources.setting_font_style
@@ -113,7 +114,7 @@ fun SettingScreen(
             )
 
             SettingItem(
-                icon = Res.drawable.ic_archive,
+                icon = Res.drawable.ic_text,
                 label = stringResource(Res.string.setting_font_style),
                 onClick = { viewModel.logMenuClick("font_style"); onNavigateToFontStyle() }
             )
