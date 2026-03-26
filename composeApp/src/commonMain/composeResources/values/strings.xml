@@ -78,6 +78,7 @@
     <string name="cloud_uploading">업로드 중…</string>
     <string name="cloud_downloading">다운로드 중…</string>
     <string name="cloud_deleting">삭제 중…</string>
+    <string name="cloud_loading_backups">백업 목록 불러오는 중…</string>
     <string name="cloud_ios_not_available">iCloud 백업은 준비 중입니다.</string>
     <string name="cloud_desktop_not_available">클라우드 백업은 데스크톱에서 지원하지 않습니다.</string>
 

@@ -26,4 +26,5 @@ enum class CloudWorkingType {
     UPLOADING,
     DOWNLOADING,
     DELETING,
+    LOADING_BACKUPS,
 }

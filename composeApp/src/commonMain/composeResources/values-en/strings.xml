@@ -78,6 +78,7 @@
     <string name="cloud_uploading">Uploading…</string>
     <string name="cloud_downloading">Downloading…</string>
     <string name="cloud_deleting">Deleting…</string>
+    <string name="cloud_loading_backups">Loading backups…</string>
     <string name="cloud_ios_not_available">iCloud backup is not yet available.</string>
     <string name="cloud_desktop_not_available">Cloud backup is not supported on desktop.</string>
 

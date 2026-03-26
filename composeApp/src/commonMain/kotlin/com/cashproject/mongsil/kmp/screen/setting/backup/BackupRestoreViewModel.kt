@@ -250,8 +250,15 @@ class BackupRestoreViewModel(
     private fun loadCloudBackups() {
         val service = cloudBackupService ?: return
         viewModelScope.launch(exceptionHandler) {
+            _cloudState.update {
+                it.copy(isWorking = true, workingType = CloudWorkingType.LOADING_BACKUPS)
+            }
             service.listBackups().onSuccess { backups ->
-                _cloudState.update { it.copy(backups = backups) }
+                _cloudState.update {
+                    it.copy(isWorking = false, workingType = null, backups = backups)
+                }
+            }.onFailure {
+                _cloudState.update { it.copy(isWorking = false, workingType = null) }
             }
         }
     }

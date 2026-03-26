@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.backup_creating
 import mongsil.composeapp.generated.resources.cloud_backup_to_drive
@@ -39,6 +41,7 @@ import mongsil.composeapp.generated.resources.cloud_saved_backups
 import mongsil.composeapp.generated.resources.cloud_sign_in_google
 import mongsil.composeapp.generated.resources.cloud_sign_out
 import mongsil.composeapp.generated.resources.cloud_signed_in_format
+import mongsil.composeapp.generated.resources.cloud_loading_backups
 import mongsil.composeapp.generated.resources.cloud_uploading
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -110,6 +113,7 @@ private fun WorkingIndicator(type: CloudWorkingType?) {
         CloudWorkingType.UPLOADING -> stringResource(Res.string.cloud_uploading)
         CloudWorkingType.DOWNLOADING -> stringResource(Res.string.cloud_downloading)
         CloudWorkingType.DELETING -> stringResource(Res.string.cloud_deleting)
+        CloudWorkingType.LOADING_BACKUPS -> stringResource(Res.string.cloud_loading_backups)
         null -> return
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -267,7 +271,7 @@ private fun BackupListItem(
             contentDescription = stringResource(Res.string.cloud_download),
             tint = MongsilTheme.colorScheme.labelStrong,
             modifier = Modifier
-                .clickable(enabled = enabled, onClick = onDownload)
+                .then(if (enabled) Modifier.circularRippleClickable { onDownload.invoke() } else Modifier)
                 .padding(8.dp),
         )
         Icon(
@@ -275,7 +279,7 @@ private fun BackupListItem(
             contentDescription = stringResource(Res.string.cloud_delete),
             tint = MongsilTheme.colorScheme.fillRed,
             modifier = Modifier
-                .clickable(enabled = enabled, onClick = onDelete)
+                .then(if (enabled) Modifier.circularRippleClickable { onDelete.invoke() } else Modifier)
                 .padding(8.dp),
         )
     }
