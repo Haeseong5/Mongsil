@@ -35,12 +35,12 @@ class CalendarViewModel(
     init {
         // 현재 년월로 초기화
         val now = kotlin.time.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        _uiState.update { 
+        _uiState.update {
             it.copy(
                 today = now.date,
-                currentYear = now.year, 
+                currentYear = now.year,
                 currentMonth = now.monthNumber
-            ) 
+            )
         }
         loadDiariesForCurrentMonth()
         loadEmoticons()
@@ -57,19 +57,12 @@ class CalendarViewModel(
 
     private fun loadEmoticons() {
         viewModelScope.launch(exceptionHandler) {
-            emoticonRepository.getEmoticons()
-                .onSuccess { emoticons ->
-                    println("++## 이모티콘 로드 성공: ${emoticons}개")
-                    _uiState.update {
-                        it.copy(
-                            emoticons = emoticons
-                        )
-                    }
-                    // TODO: UiState에 이모티콘 저장
-                }
-                .onFailure { error ->
-                    println("++## 이모티콘 로드 실패: ${error.message}")
-                }
+            val emoticons = emoticonRepository.getDefaultEmoticons()
+            _uiState.update {
+                it.copy(
+                    emoticons = emoticons
+                )
+            }
         }
     }
 

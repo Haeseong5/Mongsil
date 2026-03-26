@@ -33,8 +33,7 @@ class DiarySearchViewModel(
     private fun loadDiaryItems() {
         viewModelScope.launch(exceptionHandler) {
             val emoticonMap = emoticonRepository
-                .getEmoticons()
-                .getOrElse { emptyList() }
+                .getDefaultEmoticons()
                 .associateBy { it.id }
 
             allItems = diaryRepository.getAllDiaries().map { diary ->

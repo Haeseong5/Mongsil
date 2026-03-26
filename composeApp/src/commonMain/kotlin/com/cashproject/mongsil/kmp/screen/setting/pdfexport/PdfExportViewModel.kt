@@ -59,7 +59,7 @@ class PdfExportViewModel(
                 require(diaries.isNotEmpty()) { noDiariesMsg }
                 updateProgress(0.15f, emoticonsMsg)
 
-                val emoticons = emoticonRepository.getEmoticons().getOrDefault(emptyList())
+                val emoticons = emoticonRepository.getDefaultEmoticons()
                     .associateBy { it.id.toLong() }
 
                 updateProgress(0.25f, organizingMsg)
