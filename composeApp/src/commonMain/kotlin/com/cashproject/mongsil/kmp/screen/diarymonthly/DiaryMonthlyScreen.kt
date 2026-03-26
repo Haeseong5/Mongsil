@@ -14,13 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,14 +42,12 @@ import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyUiState
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiarySortOrder
 import com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryViewMode
 import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.cd_navigate_back
 import mongsil.composeapp.generated.resources.cd_next_month
 import mongsil.composeapp.generated.resources.cd_previous_month
 import mongsil.composeapp.generated.resources.diary_all_title
 import mongsil.composeapp.generated.resources.diary_empty
 import mongsil.composeapp.generated.resources.ic_arrow_left_contained
 import mongsil.composeapp.generated.resources.ic_arrow_right_contained
-import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.load_more
 import mongsil.composeapp.generated.resources.sort_latest
 import mongsil.composeapp.generated.resources.sort_oldest
@@ -92,6 +93,12 @@ private fun DiaryListScreenContent(
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(uiState.viewMode, uiState.sortOrder) {
+        listState.scrollToItem(0)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -119,6 +126,7 @@ private fun DiaryListScreenContent(
                 hasMorePages = uiState.hasMorePages,
                 onDiaryClick = onDiaryClick,
                 onLoadMore = onLoadMore,
+                listState = listState,
             )
         }
     }
@@ -252,12 +260,14 @@ private fun SortButton(
 
 @Composable
 private fun DiaryList(
-    diaries: List<com.cashproject.mongsil.kmp.screen.diarymonthly.model.DiaryMonthlyItem>,
+    diaries: List<DiaryMonthlyItem>,
     hasMorePages: Boolean,
     onDiaryClick: (year: Int, month: Int, day: Int) -> Unit,
     onLoadMore: () -> Unit,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
