@@ -24,12 +24,6 @@ sealed interface Route {
     @Serializable
     data object Calendar : Route
 
-    /**
-     * 카운터 화면
-     */
-    @Serializable
-    data object Counter : Route
-
     @Serializable
     data object Test : Route
 

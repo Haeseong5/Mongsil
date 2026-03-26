@@ -59,7 +59,6 @@ val appModules: List<Module> = listOf(
     networkModule,
     repositoryModule,
     calendarModule,
-    counterModule,
     diaryModule,
     datastoreSettingsModule,
     coreDataSettingModule,

@@ -21,7 +21,6 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.getAppPlatform
 import com.cashproject.mongsil.kmp.screen.calendar.CalendarScreen
-import com.cashproject.mongsil.kmp.screen.counter.CounterScreen
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartScreen
 import com.cashproject.mongsil.kmp.screen.diarychart.DiaryChartViewModel
 import com.cashproject.mongsil.kmp.screen.diarymonthly.DiaryListScreen
@@ -100,14 +99,6 @@ internal fun MainNavHost(
                 viewModel = viewModel,
                 onBack = {
                     navigator.popBackStackSafe()
-                }
-            )
-        }
-
-        composable<Route.Counter> {
-            CounterScreen(
-                onNavigateToCalendar = {
-                    navigator.navigateAndClearStack(Route.Calendar)
                 }
             )
         }
