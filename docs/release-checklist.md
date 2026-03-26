@@ -48,11 +48,11 @@
 
 ## HIGH — 출시 전 수정 권장
 
-### 6. CalendarScreen — `koinInject()` 대신 `koinViewModel()` 사용해야 함
+~~### 6. CalendarScreen — `koinInject()` 대신 `koinViewModel()` 사용해야 함~~
 
 - **파일**: `CalendarScreen.kt:62`
 - `koinInject()`는 ViewModelStore 스코프가 아니므로 화면 돌아갈 때 상태 유실 가능
-- **상태**: 미수정
+- **상태**: 수정 완료
 
 ### 7. DiaryWriteViewModel — 저장 실패 시 사용자에게 알림 없음
 

@@ -57,7 +57,7 @@ import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.today
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.ExperimentalTime
 import com.kizitonwose.calendar.core.CalendarDay as KCalendarDay
 
@@ -68,7 +68,7 @@ import com.kizitonwose.calendar.core.CalendarDay as KCalendarDay
 fun CalendarScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
-    viewModel: CalendarViewModel = koinInject(),
+    viewModel: CalendarViewModel = koinViewModel(),
     onNavigateToDiaryWrite: (year: Int, month: Int, day: Int) -> Unit = { _, _, _ -> },
     onNavigateToSetting: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},

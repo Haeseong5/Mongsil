@@ -47,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
-import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -63,6 +62,7 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
+import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
@@ -92,7 +92,7 @@ import mongsil.composeapp.generated.resources.ic_plus
 import mongsil.composeapp.generated.resources.ic_trash
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 일기 작성 화면
@@ -104,7 +104,7 @@ fun DiaryWriteScreen(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
     onBack: () -> Unit,
-    viewModel: DiaryWriteViewModel = koinInject()
+    viewModel: DiaryWriteViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val openImagePicker = rememberImagePickerLauncher { imagePaths ->
@@ -173,14 +173,15 @@ private fun DiaryWriteScreenContent(
     }
 
     val isDarkTheme = LocalDarkTheme.current
-    val effectiveTextColor = remember(uiState.textColor, uiState.isTextColorCustomized, isDarkTheme) {
-        when {
-            uiState.isTextColorCustomized -> uiState.textColor
-            isDarkTheme && uiState.textColor == Color.Black -> Color.White
-            !isDarkTheme && uiState.textColor == Color.White -> Color.Black
-            else -> uiState.textColor
+    val effectiveTextColor =
+        remember(uiState.textColor, uiState.isTextColorCustomized, isDarkTheme) {
+            when {
+                uiState.isTextColorCustomized -> uiState.textColor
+                isDarkTheme && uiState.textColor == Color.Black -> Color.White
+                !isDarkTheme && uiState.textColor == Color.White -> Color.Black
+                else -> uiState.textColor
+            }
         }
-    }
 
     Box(
         modifier = modifier
