@@ -69,6 +69,7 @@ keystore/
 .cxx/
 
 # Google Services (e.g. APIs or Firebase)
+composeApp/google-services.json
 google-services.json
 
 # Freeline
