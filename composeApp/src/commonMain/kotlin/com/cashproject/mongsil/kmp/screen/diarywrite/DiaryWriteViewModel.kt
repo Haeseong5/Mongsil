@@ -405,7 +405,9 @@ class DiaryWriteViewModel(
                 }
             },
             onFailure = {
-                _uiState.update { it.copy(isSaving = false) }
+                _uiState.update { a -> a.copy(isSaving = false) }
+                firebaseService.recordException(it)
+                _sideEffect.send(DiaryWriteSideEffect.SaveFailed)
             }
         )
     }

@@ -54,11 +54,12 @@
 - `koinInject()`는 ViewModelStore 스코프가 아니므로 화면 돌아갈 때 상태 유실 가능
 - **상태**: 수정 완료
 
-### 7. DiaryWriteViewModel — 저장 실패 시 사용자에게 알림 없음
+### 7. ~~DiaryWriteViewModel — 저장 실패 시 사용자에게 알림 없음~~ (완료)
 
 - **파일**: `DiaryWriteViewModel.kt:401-404`
-- `onFailure`에서 `isSaving = false`만 하고 에러 표시 없음
-- **상태**: 미수정
+- ~~`onFailure`에서 `isSaving = false`만 하고 에러 표시 없음~~
+- `SaveFailed` SideEffect 추가 → 스낵바로 저장 실패 알림 노출
+- **상태**: 완료
 
 ### 8. AbstractLocalPreferences — HashMap 스레드 안전하지 않음
 
@@ -67,12 +68,13 @@
 - **수정**: `ConcurrentHashMap` 또는 `Mutex` 사용
 - **상태**: 미수정
 
-### 9. R8/ProGuard 비활성화 — APK 크기 및 보안
+### ~~9. R8/ProGuard 비활성화 — APK 크기 및 보안~~ (완료)
 
-- **파일**: `composeApp/build.gradle.kts:195`
-- `isMinifyEnabled = false` → 코드 난독화 없음, APK 크기 비대
-- `proguard-rules.pro` 파일도 없음 (Koin, Ktor, Room, kotlinx.serialization 규칙 필요)
-- **상태**: 미수정
+- **파일**: `composeApp/build.gradle.kts`
+- ~~`isMinifyEnabled = false` → 코드 난독화 없음, APK 크기 비대~~
+- ~~`proguard-rules.pro` 파일도 없음 (Koin, Ktor, Room, kotlinx.serialization 규칙 필요)~~
+- `isMinifyEnabled = true`, `isShrinkResources = true` 적용, ProGuard 규칙 작성 완료
+- **상태**: 완료
 
 ### 10. 하드코딩 한국어 문자열 다수 — 다국어 대응 불가
 
@@ -135,7 +137,7 @@
 - [x] ViewModel launch 블록에 에러 처리 추가
 - [ ] AdMob ID를 실제 ID로 교체
 - [ ] 백업/복원에 photoUri 포함
-- [ ] `isMinifyEnabled = true` + ProGuard 규칙 작성
+- [x] `isMinifyEnabled = true` + ProGuard 규칙 작성
 - [ ] 하드코딩 문자열 리소스화
 - [ ] `println` 제거 또는 로거로 교체
 - [ ] 릴리즈 빌드로 실제 기기 테스트

@@ -10,4 +10,7 @@ sealed interface DiaryWriteSideEffect {
 
     /** 프리미엄 이모티콘 잠금 해제를 위한 영상 광고 요청 */
     data class ShowRewardedAd(val emoticonId: Int) : DiaryWriteSideEffect
+
+    /** 일기 저장 실패 알림 */
+    data object SaveFailed : DiaryWriteSideEffect
 }

@@ -63,6 +63,7 @@ import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonImage
 import com.cashproject.mongsil.kmp.designsystem.component.IconToolbar
 import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
+import com.cashproject.mongsil.kmp.designsystem.component.rememberSnackbarController
 import com.cashproject.mongsil.kmp.designsystem.extensions.circularRippleClickable
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
@@ -79,6 +80,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.snackbar_diary_save_failed
 import mongsil.composeapp.generated.resources.day_of_week_friday
 import mongsil.composeapp.generated.resources.day_of_week_monday
 import mongsil.composeapp.generated.resources.day_of_week_saturday
@@ -112,6 +114,8 @@ fun DiaryWriteScreen(
     }
     var rewardAdEmoticonId by remember { mutableStateOf<Int?>(null) }
     var isAdLoading by remember { mutableStateOf(false) }
+    val snackbarController = rememberSnackbarController()
+    val saveFailedMessage = stringResource(Res.string.snackbar_diary_save_failed)
 
     ObserveErrorEffect(viewModel.errorEvent)
 
@@ -124,6 +128,9 @@ fun DiaryWriteScreen(
                 is DiaryWriteSideEffect.ShowRewardedAd -> {
                     rewardAdEmoticonId = effect.emoticonId
                     isAdLoading = true
+                }
+                DiaryWriteSideEffect.SaveFailed -> {
+                    snackbarController.showSnackbar(saveFailedMessage)
                 }
             }
         }

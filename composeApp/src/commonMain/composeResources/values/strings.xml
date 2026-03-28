@@ -128,6 +128,7 @@
 
     <!-- Save -->
     <string name="save_button">저장하기</string>
+    <string name="snackbar_diary_save_failed">일기를 저장하는 데 실패했습니다.</string>
 
     <!-- Screen Lock -->
     <string name="screen_lock_device_lock">기기 잠금 사용</string>
