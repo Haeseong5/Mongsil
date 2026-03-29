@@ -4,7 +4,6 @@ import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.cashproject.mongsil.kmp.core.data.datasource.CounterLocalDataSource
 import com.cashproject.mongsil.kmp.core.data.datasource.DiaryLocalDataSource
-import com.cashproject.mongsil.kmp.core.data.datasource.impl.CounterLocalDataSourceRoom
 import com.cashproject.mongsil.kmp.core.data.datasource.impl.DiaryLocalDataSourceRoom
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl

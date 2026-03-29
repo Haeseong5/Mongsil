@@ -4,9 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.cashproject.mongsil.kmp.core.backup.CloudBackupService
 import com.cashproject.mongsil.kmp.core.backup.GoogleDriveBackupService
-import com.cashproject.mongsil.kmp.core.data.datasource.CounterLocalDataSource
 import com.cashproject.mongsil.kmp.core.data.datasource.DiaryLocalDataSource
-import com.cashproject.mongsil.kmp.core.data.datasource.impl.CounterLocalDataSourceRoom
 import com.cashproject.mongsil.kmp.core.data.datasource.impl.DiaryLocalDataSourceRoom
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
@@ -41,7 +39,6 @@ actual fun platformModule(): Module = module {
 
     // ── DataSource 구현체 선택 (한 줄 교체로 SQLDelight ↔ Room 전환) ──
     single<DiaryLocalDataSource> { DiaryLocalDataSourceRoom(get()) }
-    single<CounterLocalDataSource> { CounterLocalDataSourceRoom(get()) }
 
     // SQLDelight 사용 시 위 두 줄을 아래로 교체:
     // single<DiaryLocalDataSource> { DiaryLocalDataSourceSQLDelight(get()) }
