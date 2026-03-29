@@ -9,12 +9,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.cashproject.mongsil.kmp.BuildConfig
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-
-// 테스트 광고 단위 ID — 실제 배포 시 AdMob 콘솔에서 발급받은 ID로 교체
-private const val BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
 
 /**
  * 광고 자동 갱신 주기(~60초) 마다 새 광고 = 새 impression = 수익 발생
@@ -33,7 +31,7 @@ actual fun BannerAdView(modifier: Modifier) {
             val adSize =
                 AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidthDp)
             setAdSize(adSize)
-            adUnitId = BANNER_AD_UNIT_ID
+            adUnitId = BuildConfig.ADMOB_BANNER_AD_UNIT_ID
             loadAd(AdRequest.Builder().build())
         }
     }
