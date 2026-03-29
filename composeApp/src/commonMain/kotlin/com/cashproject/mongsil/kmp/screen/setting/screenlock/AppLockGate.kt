@@ -25,6 +25,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.model.ScreenLockMethod
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.app_lock_biometric_reason
+import mongsil.composeapp.generated.resources.app_lock_cancelled
+import mongsil.composeapp.generated.resources.app_lock_failed
+import mongsil.composeapp.generated.resources.app_lock_password_desc
+import mongsil.composeapp.generated.resources.app_lock_retry
+import mongsil.composeapp.generated.resources.app_lock_system_desc
+import mongsil.composeapp.generated.resources.app_lock_title
+import mongsil.composeapp.generated.resources.app_lock_wrong_password
+import mongsil.composeapp.generated.resources.screen_lock_app_password
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppLockGate(
@@ -38,18 +49,23 @@ fun AppLockGate(
     var message by rememberSaveable { mutableStateOf<String?>(null) }
     var authNonce by rememberSaveable { mutableIntStateOf(0) }
 
+    val biometricReason = stringResource(Res.string.app_lock_biometric_reason)
+    val failedMessage = stringResource(Res.string.app_lock_failed)
+    val cancelledMessage = stringResource(Res.string.app_lock_cancelled)
+    val wrongPasswordMessage = stringResource(Res.string.app_lock_wrong_password)
+
     if (state.method == ScreenLockMethod.SYSTEM) {
         LaunchedEffect(state.method, authNonce) {
-            when (val result = nativeAuthenticator.authenticate("몽실 잠금을 해제해 주세요.")) {
+            when (val result = nativeAuthenticator.authenticate(biometricReason)) {
                 NativeScreenLockResult.Success -> {
                     message = null
                     onUnlocked()
                 }
                 is NativeScreenLockResult.Failure -> {
-                    message = result.message ?: "잠금 해제에 실패했습니다. 다시 시도해 주세요."
+                    message = result.message ?: failedMessage
                 }
                 NativeScreenLockResult.Cancelled -> {
-                    message = "잠금 해제가 취소되었습니다."
+                    message = cancelledMessage
                 }
             }
         }
@@ -69,15 +85,15 @@ fun AppLockGate(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "잠금 해제",
+                text = stringResource(Res.string.app_lock_title),
                 style = MongsilTheme.typography.headline1,
                 color = MongsilTheme.colorScheme.labelStrong,
             )
 
             Text(
                 text = when (state.method) {
-                    ScreenLockMethod.SYSTEM -> "기기에 저장된 인증 방식으로 잠금을 해제해 주세요."
-                    ScreenLockMethod.APP_PASSWORD -> "앱 비밀번호를 입력해 잠금을 해제해 주세요."
+                    ScreenLockMethod.SYSTEM -> stringResource(Res.string.app_lock_system_desc)
+                    ScreenLockMethod.APP_PASSWORD -> stringResource(Res.string.app_lock_password_desc)
                     ScreenLockMethod.NONE -> ""
                 },
                 style = MongsilTheme.typography.default,
@@ -90,7 +106,7 @@ fun AppLockGate(
                     value = password,
                     onValueChange = { password = it },
                     singleLine = true,
-                    label = { Text("앱 비밀번호") },
+                    label = { Text(stringResource(Res.string.screen_lock_app_password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
@@ -105,18 +121,18 @@ fun AppLockGate(
                             password = ""
                             onUnlocked()
                         } else {
-                            message = "비밀번호가 올바르지 않습니다."
+                            message = wrongPasswordMessage
                         }
                     },
                 ) {
-                    Text("잠금 해제")
+                    Text(stringResource(Res.string.app_lock_title))
                 }
             } else if (state.method == ScreenLockMethod.SYSTEM) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { authNonce += 1 },
                 ) {
-                    Text("다시 시도")
+                    Text(stringResource(Res.string.app_lock_retry))
                 }
             }
 

@@ -274,4 +274,23 @@
     <string name="emoticon_title_sad">Sad</string>
     <string name="emoticon_title_surprised">Surprised</string>
     <string name="emoticon_title_lonely">Lonely</string>
+
+    <!-- App Lock Gate -->
+    <string name="app_lock_biometric_reason">Please unlock Mongsil.</string>
+    <string name="app_lock_failed">Unlock failed. Please try again.</string>
+    <string name="app_lock_cancelled">Unlock was cancelled.</string>
+    <string name="app_lock_title">Unlock</string>
+    <string name="app_lock_system_desc">Please unlock using authentication saved on your device.</string>
+    <string name="app_lock_password_desc">Please enter your app password to unlock.</string>
+    <string name="app_lock_wrong_password">Incorrect password.</string>
+    <string name="app_lock_retry">Retry</string>
+
+    <!-- Diary Write -->
+    <string name="cd_attached_image">Attached image</string>
+    <string name="cd_add_emoticon">Add emoticon</string>
+    <string name="diary_write_placeholder">Write about your day</string>
+    <string name="ad_loading">Loading ad</string>
+
+    <!-- Common -->
+    <string name="coming_soon">Coming soon</string>
 </resources>

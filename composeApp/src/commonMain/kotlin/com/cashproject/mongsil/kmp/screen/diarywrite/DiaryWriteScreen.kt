@@ -82,7 +82,10 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import mongsil.composeapp.generated.resources.Res
-import mongsil.composeapp.generated.resources.snackbar_diary_save_failed
+import mongsil.composeapp.generated.resources.ad_loading
+import mongsil.composeapp.generated.resources.cd_add_emoticon
+import mongsil.composeapp.generated.resources.cd_attached_image
+import mongsil.composeapp.generated.resources.cd_navigate_back
 import mongsil.composeapp.generated.resources.day_of_week_friday
 import mongsil.composeapp.generated.resources.day_of_week_monday
 import mongsil.composeapp.generated.resources.day_of_week_saturday
@@ -90,10 +93,13 @@ import mongsil.composeapp.generated.resources.day_of_week_sunday
 import mongsil.composeapp.generated.resources.day_of_week_thursday
 import mongsil.composeapp.generated.resources.day_of_week_tuesday
 import mongsil.composeapp.generated.resources.day_of_week_wednesday
+import mongsil.composeapp.generated.resources.dialog_delete
+import mongsil.composeapp.generated.resources.diary_write_placeholder
 import mongsil.composeapp.generated.resources.emoticon_01
 import mongsil.composeapp.generated.resources.ic_baseline_arrow_back_ios_new_24
 import mongsil.composeapp.generated.resources.ic_plus
 import mongsil.composeapp.generated.resources.ic_trash
+import mongsil.composeapp.generated.resources.snackbar_diary_save_failed
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -212,7 +218,7 @@ private fun DiaryWriteScreenContent(
                     leftContent = {
                         Icon(
                             painter = painterResource(Res.drawable.ic_baseline_arrow_back_ios_new_24),
-                            contentDescription = "뒤로 가기",
+                            contentDescription = stringResource(Res.string.cd_navigate_back),
                             tint = MongsilTheme.colorScheme.labelStrong,
                             modifier = Modifier
                                 .size(20.dp)
@@ -223,7 +229,7 @@ private fun DiaryWriteScreenContent(
                         if (uiState.isExistingDiary) {
                             Icon(
                                 painter = painterResource(Res.drawable.ic_trash),
-                                contentDescription = "삭제",
+                                contentDescription = stringResource(Res.string.dialog_delete),
                                 tint = MongsilTheme.colorScheme.fillRed,
                                 modifier = Modifier
                                     .size(20.dp)
@@ -403,7 +409,7 @@ private fun SelectedPhotos(
             ) { page ->
                 AsyncImage(
                     model = photoUris[page],
-                    contentDescription = "첨부 이미지",
+                    contentDescription = stringResource(Res.string.cd_attached_image),
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(14.dp))
@@ -423,7 +429,7 @@ private fun SelectedPhotos(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "삭제",
+                    text = stringResource(Res.string.dialog_delete),
                     style = MongsilTheme.typography.caption1,
                     color = MongsilTheme.colorScheme.labelStrong
                 )
@@ -481,7 +487,7 @@ private fun EmoticonButton(
         } else {
             Icon(
                 painter = painterResource(Res.drawable.ic_plus),
-                contentDescription = "back button",
+                contentDescription = stringResource(Res.string.cd_add_emoticon),
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -579,7 +585,7 @@ private fun DiaryTextField(
             ) {
                 if (content.isEmpty()) {
                     Text(
-                        text = "오늘 하루를 기록해보세요",
+                        text = stringResource(Res.string.diary_write_placeholder),
                         modifier = Modifier.fillMaxWidth(),
                         style = MongsilTheme.typography.default,
                         textAlign = textAlign,
@@ -634,7 +640,7 @@ private fun AdLoadingDialog() {
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "광고 로딩 중",
+                    text = stringResource(Res.string.ad_loading),
                     style = MongsilTheme.typography.caption1,
                     color = MongsilTheme.colorScheme.labelWeak,
                 )

@@ -38,6 +38,9 @@ import com.cashproject.mongsil.kmp.screen.setting.screenlock.ScreenLockScreen
 import com.cashproject.mongsil.kmp.screen.setting.store.MongsilStoreScreen
 import com.cashproject.mongsil.kmp.screen.setting.theme.ThemeSettingScreen
 import com.cashproject.mongsil.kmp.screen.test.TestScreen
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.coming_soon
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -55,6 +58,7 @@ internal fun MainNavHost(
     val uriHandler = LocalUriHandler.current
     val snackbarController = rememberSnackbarController()
     val platform = getAppPlatform()
+    val comingSoonMessage = stringResource(Res.string.coming_soon)
 
     NavHost(
         navController = navigator,
@@ -125,7 +129,7 @@ internal fun MainNavHost(
                     when (platform) {
                         AppPlatform.ANDROID -> uriHandler.openUri(ANDROID_PLAY_STORE_URL)
                         AppPlatform.IOS, AppPlatform.DESKTOP -> {
-                            snackbarController.showSnackbar("준비중입니다")
+                            snackbarController.showSnackbar(comingSoonMessage)
                         }
                     }
                 }

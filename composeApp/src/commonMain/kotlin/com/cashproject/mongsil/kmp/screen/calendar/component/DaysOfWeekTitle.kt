@@ -13,6 +13,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
+import mongsil.composeapp.generated.resources.Res
+import mongsil.composeapp.generated.resources.day_of_week_short_fri
+import mongsil.composeapp.generated.resources.day_of_week_short_mon
+import mongsil.composeapp.generated.resources.day_of_week_short_sat
+import mongsil.composeapp.generated.resources.day_of_week_short_sun
+import mongsil.composeapp.generated.resources.day_of_week_short_thu
+import mongsil.composeapp.generated.resources.day_of_week_short_tue
+import mongsil.composeapp.generated.resources.day_of_week_short_wed
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * 캘린더 요일 헤더
@@ -22,8 +31,15 @@ import com.cashproject.mongsil.kmp.designsystem.extensions.fixedScaleTextStyle
 fun DaysOfWeekTitle(
     modifier: Modifier = Modifier
 ) {
-    // TODO: 다국어 지원
-    val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
+    val daysOfWeek = listOf(
+        stringResource(Res.string.day_of_week_short_sun),
+        stringResource(Res.string.day_of_week_short_mon),
+        stringResource(Res.string.day_of_week_short_tue),
+        stringResource(Res.string.day_of_week_short_wed),
+        stringResource(Res.string.day_of_week_short_thu),
+        stringResource(Res.string.day_of_week_short_fri),
+        stringResource(Res.string.day_of_week_short_sat),
+    )
 
     Row(
         modifier = modifier
