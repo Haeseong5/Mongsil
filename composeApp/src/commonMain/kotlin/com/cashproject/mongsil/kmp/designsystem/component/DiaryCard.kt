@@ -49,7 +49,7 @@ fun DiaryCard(
                 EmoticonImage(
                     image = emoticonImage,
                     contentDescription = "감정 이모티콘",
-                    modifier = Modifier.size(100.dp)
+                    modifier = Modifier.size(60.dp)
                 )
             }
 
