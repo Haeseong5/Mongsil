@@ -2,6 +2,7 @@ package com.cashproject.mongsil.kmp.screen.setting.pdfexport
 
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.BaseViewModel
+import com.cashproject.mongsil.kmp.core.model.resolve
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.model.PdfExportUiState
@@ -68,7 +69,7 @@ class PdfExportViewModel(
                     PdfExportEntry(
                         dateLabel = formatDate(diary.year, diary.month, diary.day),
                         emoticonTitle = diary.emoticonId
-                            ?.let { emoticons[it]?.title }
+                            ?.let { emoticons[it]?.title?.resolve() }
                             ?: noRecordLabel,
                         emoticonImage = diary.emoticonId
                             ?.let { emoticons[it]?.image },

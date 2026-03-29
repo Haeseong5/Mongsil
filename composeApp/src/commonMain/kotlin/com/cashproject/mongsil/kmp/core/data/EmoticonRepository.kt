@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.core.data
 
+import com.cashproject.mongsil.kmp.core.model.TextSource
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.network.model.EmoticonResponse
@@ -19,6 +20,21 @@ import mongsil.composeapp.generated.resources.emoticon_12
 import mongsil.composeapp.generated.resources.emoticon_13
 import mongsil.composeapp.generated.resources.emoticon_14
 import mongsil.composeapp.generated.resources.emoticon_15
+import mongsil.composeapp.generated.resources.emoticon_title_angry
+import mongsil.composeapp.generated.resources.emoticon_title_anxious
+import mongsil.composeapp.generated.resources.emoticon_title_bored
+import mongsil.composeapp.generated.resources.emoticon_title_depressed
+import mongsil.composeapp.generated.resources.emoticon_title_disappointed
+import mongsil.composeapp.generated.resources.emoticon_title_disgusted
+import mongsil.composeapp.generated.resources.emoticon_title_embarrassed
+import mongsil.composeapp.generated.resources.emoticon_title_happy
+import mongsil.composeapp.generated.resources.emoticon_title_joy
+import mongsil.composeapp.generated.resources.emoticon_title_lonely
+import mongsil.composeapp.generated.resources.emoticon_title_normal
+import mongsil.composeapp.generated.resources.emoticon_title_sad
+import mongsil.composeapp.generated.resources.emoticon_title_satisfied
+import mongsil.composeapp.generated.resources.emoticon_title_surprised
+import mongsil.composeapp.generated.resources.emoticon_title_tired
 
 private const val COMPOSE_RESOURCES_BASE =
     "composeResources/mongsil.composeapp.generated.resources/drawable/"
@@ -28,105 +44,105 @@ class EmoticonRepository() {
     fun getEmoticons(): List<Emoticon> = listOf(
         Emoticon(
             id = 0,
-            title = "행복",
+            title = TextSource.Res(Res.string.emoticon_title_happy),
             image = localImage(1, Res.drawable.emoticon_01),
             textColor = "#dcc75a",
             backgroundColor = "#fff9da"
         ),
         Emoticon(
             id = 1,
-            title = "기쁨",
+            title = TextSource.Res(Res.string.emoticon_title_joy),
             image = localImage(2, Res.drawable.emoticon_02),
             textColor = "#db8fbd",
             backgroundColor = "#ffecf7"
         ),
         Emoticon(
             id = 2,
-            title = "만족",
+            title = TextSource.Res(Res.string.emoticon_title_satisfied),
             image = localImage(3, Res.drawable.emoticon_03),
             textColor = "#dc8d6c",
             backgroundColor = "#ffe4d9"
         ),
         Emoticon(
             id = 3,
-            title = "보통",
+            title = TextSource.Res(Res.string.emoticon_title_normal),
             image = localImage(4, Res.drawable.emoticon_04),
             textColor = "#d78787",
             backgroundColor = "#ffe8e8"
         ),
         Emoticon(
             id = 4,
-            title = "피곤",
+            title = TextSource.Res(Res.string.emoticon_title_tired),
             image = localImage(5, Res.drawable.emoticon_05),
             textColor = "#9197d2",
             backgroundColor = "#e5e8ff"
         ),
         Emoticon(
             id = 5,
-            title = "창피",
+            title = TextSource.Res(Res.string.emoticon_title_embarrassed),
             image = localImage(6, Res.drawable.emoticon_06),
             textColor = "#d9ad58",
             backgroundColor = "#ffecc9"
         ),
         Emoticon(
             id = 6,
-            title = "지루함",
+            title = TextSource.Res(Res.string.emoticon_title_bored),
             image = localImage(7, Res.drawable.emoticon_07),
             textColor = "#527e57",
             backgroundColor = "#cce5ce"
         ),
         Emoticon(
             id = 7,
-            title = "화남",
+            title = TextSource.Res(Res.string.emoticon_title_angry),
             image = localImage(8, Res.drawable.emoticon_08),
             textColor = "#cd5454",
             backgroundColor = "#ffdbdb"
         ),
         Emoticon(
             id = 8,
-            title = "불쾌",
+            title = TextSource.Res(Res.string.emoticon_title_disgusted),
             image = localImage(9, Res.drawable.emoticon_09),
             textColor = "#9e9896",
             backgroundColor = "#efebea"
         ),
         Emoticon(
             id = 9,
-            title = "실망",
+            title = TextSource.Res(Res.string.emoticon_title_disappointed),
             image = localImage(10, Res.drawable.emoticon_10),
             textColor = "#d3d5e3",
             backgroundColor = "#454d7a"
         ),
         Emoticon(
             id = 10,
-            title = "불안",
+            title = TextSource.Res(Res.string.emoticon_title_anxious),
             image = localImage(11, Res.drawable.emoticon_11),
             textColor = "#555454",
             backgroundColor = "#dddddd"
         ),
         Emoticon(
             id = 11,
-            title = "우울",
+            title = TextSource.Res(Res.string.emoticon_title_depressed),
             image = localImage(12, Res.drawable.emoticon_12),
             textColor = "#8f6b5b",
             backgroundColor = "#f0dad1"
         ),
         Emoticon(
             id = 12,
-            title = "슬픔",
+            title = TextSource.Res(Res.string.emoticon_title_sad),
             image = localImage(13, Res.drawable.emoticon_13),
             textColor = "#465761",
             backgroundColor = "#ccdbe0"
         ),
         Emoticon(
             id = 13,
-            title = "놀람",
+            title = TextSource.Res(Res.string.emoticon_title_surprised),
             image = localImage(14, Res.drawable.emoticon_14),
             textColor = "#889456",
             backgroundColor = "#ecf1da"
         ),
         Emoticon(
             id = 14,
-            title = "외로움",
+            title = TextSource.Res(Res.string.emoticon_title_lonely),
             image = localImage(15, Res.drawable.emoticon_15),
             textColor = "#7b9a9b",
             backgroundColor = "#ddebec"
@@ -172,7 +188,7 @@ private fun localImage(index: Int, resource: org.jetbrains.compose.resources.Dra
  */
 private fun EmoticonResponse.toEmoticon() = Emoticon(
     id = id,
-    title = title,
+    title = TextSource.Value(title),
     image = emoticonIdToImageResource(id),
     textColor = textColor,
     backgroundColor = backgroundColor,

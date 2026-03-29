@@ -1,5 +1,6 @@
 package com.cashproject.mongsil.kmp.screen.diarychart.model
 
+import com.cashproject.mongsil.kmp.core.model.TextSource
 import com.cashproject.mongsil.kmp.model.ImageResource
 
 data class DiaryChartUiState(
@@ -14,7 +15,7 @@ data class DiaryChartUiState(
 data class DiaryChartItem(
     val emoticonId: Int,
     val image: ImageResource,
-    val title: String,
+    val title: TextSource,
     val count: Int,
     val barColorHex: String,
 )

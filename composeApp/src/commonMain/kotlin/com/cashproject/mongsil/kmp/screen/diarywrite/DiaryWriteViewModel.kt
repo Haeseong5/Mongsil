@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewModelScope
 import com.cashproject.mongsil.kmp.core.BaseViewModel
+import com.cashproject.mongsil.kmp.core.model.resolve
 import com.cashproject.mongsil.kmp.core.data.DiaryRepository
 import com.cashproject.mongsil.kmp.core.data.EmoticonRepository
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
@@ -174,14 +175,16 @@ class DiaryWriteViewModel(
     }
 
     private fun handleEmoticonSelected(emoticon: com.cashproject.mongsil.kmp.model.Emoticon) {
-        firebaseService.logEvent(
-            name = EVENT_EMOTICON_SELECTED,
-            params = mapOf(
-                PARAM_EMOTICON_ID to emoticon.id.toString(),
-                PARAM_EMOTICON_TITLE to emoticon.title,
-                PARAM_EMOTICON_IS_PREMIUM to emoticon.isPremium.toString(),
+        viewModelScope.launch {
+            firebaseService.logEvent(
+                name = EVENT_EMOTICON_SELECTED,
+                params = mapOf(
+                    PARAM_EMOTICON_ID to emoticon.id.toString(),
+                    PARAM_EMOTICON_TITLE to emoticon.title.resolve(),
+                    PARAM_EMOTICON_IS_PREMIUM to emoticon.isPremium.toString(),
+                )
             )
-        )
+        }
         _uiState.update {
             it.copy(
                 selectedEmoticon = emoticon,

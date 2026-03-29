@@ -57,6 +57,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.cashproject.mongsil.kmp.core.model.TextSource
+import com.cashproject.mongsil.kmp.core.model.asString
 import com.cashproject.mongsil.kmp.designsystem.LocalDarkTheme
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.EmoticonBottomSheet
@@ -473,7 +475,7 @@ private fun EmoticonButton(
         if (selectedEmoticon != null) {
             EmoticonImage(
                 image = selectedEmoticon.image,
-                contentDescription = selectedEmoticon.title,
+                contentDescription = selectedEmoticon.title.asString(),
                 modifier = Modifier.size(40.dp)
             )
         } else {
@@ -711,7 +713,7 @@ private fun DiaryWriteScreenContentWithEmoticonPreview() {
                 content = "",
                 selectedEmoticon = Emoticon(
                     id = 1,
-                    title = "행복",
+                    title = TextSource.Value("행복"),
                     image = ImageResource.Local(Res.drawable.emoticon_01),
                     textColor = "#333333",
                     backgroundColor = "#FFE5E5"

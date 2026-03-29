@@ -257,4 +257,21 @@
     <!-- Notification -->
     <string name="notification_channel_name">Diary Reminder</string>
     <string name="notification_channel_desc">Daily evening reminder to write in your diary</string>
+
+    <!-- Emoticon Titles -->
+    <string name="emoticon_title_happy">Happy</string>
+    <string name="emoticon_title_joy">Joy</string>
+    <string name="emoticon_title_satisfied">Satisfied</string>
+    <string name="emoticon_title_normal">Normal</string>
+    <string name="emoticon_title_tired">Tired</string>
+    <string name="emoticon_title_embarrassed">Embarrassed</string>
+    <string name="emoticon_title_bored">Bored</string>
+    <string name="emoticon_title_angry">Angry</string>
+    <string name="emoticon_title_disgusted">Disgusted</string>
+    <string name="emoticon_title_disappointed">Disappointed</string>
+    <string name="emoticon_title_anxious">Anxious</string>
+    <string name="emoticon_title_depressed">Depressed</string>
+    <string name="emoticon_title_sad">Sad</string>
+    <string name="emoticon_title_surprised">Surprised</string>
+    <string name="emoticon_title_lonely">Lonely</string>
 </resources>

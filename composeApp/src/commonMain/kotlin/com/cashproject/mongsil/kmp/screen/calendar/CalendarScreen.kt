@@ -30,6 +30,7 @@ import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.designsystem.component.BannerAdView
 import com.cashproject.mongsil.kmp.designsystem.component.ObserveErrorEffect
 import com.cashproject.mongsil.kmp.designsystem.component.VerticalSpacer
+import com.cashproject.mongsil.kmp.core.model.TextSource
 import com.cashproject.mongsil.kmp.model.Emoticon
 import com.cashproject.mongsil.kmp.model.ImageResource
 import com.cashproject.mongsil.kmp.screen.calendar.component.CalendarDay
@@ -312,14 +313,14 @@ private val previewUiStateEmpty = CalendarUiState(
 private val previewEmoticons = listOf(
     Emoticon(
         id = 1,
-        title = "행복",
+        title = TextSource.Value("행복"),
         image = ImageResource.Local(Res.drawable.emoticon_01),
         textColor = "#000000",
         backgroundColor = "#FFFFFF"
     ),
     Emoticon(
         id = 2,
-        title = "슬픔",
+        title = TextSource.Value("슬픔"),
         image = ImageResource.Local(Res.drawable.emoticon_01),
         textColor = "#000000",
         backgroundColor = "#FFFFFF"

@@ -29,6 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cashproject.mongsil.kmp.core.model.TextSource
+import com.cashproject.mongsil.kmp.core.model.asString
 import com.cashproject.mongsil.kmp.designsystem.Blue200
 import com.cashproject.mongsil.kmp.designsystem.Gray300
 import com.cashproject.mongsil.kmp.designsystem.Green200
@@ -299,12 +301,12 @@ private fun TopEmoticonItem(item: DiaryChartItem) {
     ) {
         EmoticonImage(
             image = item.image,
-            contentDescription = item.title,
+            contentDescription = item.title.asString(),
             modifier = Modifier.size(70.dp),
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = item.title,
+            text = item.title.asString(),
             style = MongsilTheme.typography.caption1,
             color = MongsilTheme.colorScheme.labelRegular,
         )
@@ -349,11 +351,11 @@ private fun EmoticonCountRow(
         ) {
             EmoticonImage(
                 image = item.image,
-                contentDescription = item.title,
+                contentDescription = item.title.asString(),
                 modifier = Modifier.size(48.dp),
             )
             Text(
-                text = item.title,
+                text = item.title.asString(),
                 style = MongsilTheme.typography.caption2,
                 color = MongsilTheme.colorScheme.labelRegular,
                 maxLines = 1,
@@ -427,21 +429,21 @@ private fun DiaryChartScreenContentWithDataPreview() {
                     DiaryChartItem(
                         emoticonId = 1,
                         image = ImageResource.Local(Res.drawable.emoticon_01),
-                        title = "행복",
+                        title = TextSource.Value("행복"),
                         count = 10,
                         barColorHex = "#FFB347"
                     ),
                     DiaryChartItem(
                         emoticonId = 2,
                         image = ImageResource.Local(Res.drawable.emoticon_01),
-                        title = "슬픔",
+                        title = TextSource.Value("슬픔"),
                         count = 6,
                         barColorHex = "#87CEEB"
                     ),
                     DiaryChartItem(
                         emoticonId = 3,
                         image = ImageResource.Local(Res.drawable.emoticon_01),
-                        title = "평온",
+                        title = TextSource.Value("평온"),
                         count = 3,
                         barColorHex = "#90EE90"
                     ),

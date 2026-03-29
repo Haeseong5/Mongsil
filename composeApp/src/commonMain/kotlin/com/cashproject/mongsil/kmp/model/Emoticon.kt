@@ -1,5 +1,7 @@
 package com.cashproject.mongsil.kmp.model
 
+import com.cashproject.mongsil.kmp.core.model.TextSource
+
 /**
  * 감정 이모티콘 도메인 모델
  *
@@ -11,7 +13,7 @@ package com.cashproject.mongsil.kmp.model
  */
 data class Emoticon(
     val id: Int,
-    val title: String,
+    val title: TextSource,
     val image: ImageResource,
     val textColor: String,
     val backgroundColor: String,

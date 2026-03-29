@@ -85,7 +85,7 @@ class DiaryChartViewModel(
 
             val items = countMap
                 .mapNotNull { (emoticonId, count) ->
-                    val emoticon = emoticons[emoticonId] ?: return@mapNotNull null
+                    val emoticon = emoticons[emoticonId]
                     DiaryChartItem(
                         emoticonId = emoticonId,
                         image = emoticon.image,
