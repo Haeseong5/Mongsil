@@ -41,7 +41,15 @@ private const val COMPOSE_RESOURCES_BASE =
 
 class EmoticonRepository() {
 
-    fun getEmoticons(): List<Emoticon> = listOf(
+    fun getEmoticons(): List<Emoticon> {
+        return getInnerEmoticons().map {
+            it.copy(
+                isPremium = PREMIUM_EMOTICON_IDS.contains(it.id)
+            )
+        }
+    }
+
+    private fun getInnerEmoticons(): List<Emoticon> = listOf(
         Emoticon(
             id = 0,
             title = TextSource.Res(Res.string.emoticon_title_happy),
@@ -110,7 +118,7 @@ class EmoticonRepository() {
             title = TextSource.Res(Res.string.emoticon_title_disappointed),
             image = localImage(10, Res.drawable.emoticon_10),
             textColor = "#d3d5e3",
-            backgroundColor = "#454d7a"
+            backgroundColor = "#6b73a8"
         ),
         Emoticon(
             id = 10,
