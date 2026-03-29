@@ -75,7 +75,7 @@ class DiaryChartViewModel(
 
     private fun loadMonthStatistics(year: Int, month: Int) {
         viewModelScope.launch(exceptionHandler) {
-            val emoticons = emoticonRepository.getDefaultEmoticons()
+            val emoticons = emoticonRepository.getEmoticons()
 
             val countMap = diaryRepository
                 .getDiariesByYearMonth(year, month)

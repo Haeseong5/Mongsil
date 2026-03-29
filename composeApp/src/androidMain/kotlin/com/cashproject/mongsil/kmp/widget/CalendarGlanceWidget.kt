@@ -66,7 +66,7 @@ class CalendarGlanceWidget : GlanceAppWidget() {
                 val emoticonRepo = koin.get<EmoticonRepository>()
 
                 val diaries = diaryRepo.getDiariesByYearMonth(today.year, today.monthNumber)
-                val emoticons = emoticonRepo.getDefaultEmoticons()
+                val emoticons = emoticonRepo.getEmoticons()
                     .associateBy { it.id.toLong() }
 
                 val recorded = diaries.map { it.day }.toSet()

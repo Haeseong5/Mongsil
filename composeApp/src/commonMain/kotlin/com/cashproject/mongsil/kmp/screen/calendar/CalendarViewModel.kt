@@ -57,7 +57,7 @@ class CalendarViewModel(
 
     private fun loadEmoticons() {
         viewModelScope.launch(exceptionHandler) {
-            val emoticons = emoticonRepository.getDefaultEmoticons()
+            val emoticons = emoticonRepository.getEmoticons()
             _uiState.update {
                 it.copy(
                     emoticons = emoticons

@@ -23,35 +23,114 @@ import mongsil.composeapp.generated.resources.emoticon_15
 private const val COMPOSE_RESOURCES_BASE =
     "composeResources/mongsil.composeapp.generated.resources/drawable/"
 
-/**
- * 감정 이모티콘 데이터를 관리하는 Repository
- * 이미지는 로컬 DrawableResource를 사용하고, 메타데이터(title, color)는 서버에서 받아옵니다.
- */
 class EmoticonRepository() {
 
-    /**
-     * 모든 이모티콘 목록 조회
-     * API 호출이 실패하면 기본 데이터를 반환합니다.
-     */
-    fun getEmoticons(): Result<List<Emoticon>> {
-        return Result.success(getDefaultEmoticons())
-    }
-    fun getDefaultEmoticons(): List<Emoticon> = listOf(
-        Emoticon(id = 0,  title = "행복",  image = localImage(1,  Res.drawable.emoticon_01), textColor = "#dcc75a", backgroundColor = "#fff9da"),
-        Emoticon(id = 1,  title = "기쁨",  image = localImage(2,  Res.drawable.emoticon_02), textColor = "#db8fbd", backgroundColor = "#ffecf7"),
-        Emoticon(id = 2,  title = "만족",  image = localImage(3,  Res.drawable.emoticon_03), textColor = "#dc8d6c", backgroundColor = "#ffe4d9"),
-        Emoticon(id = 3,  title = "보통",  image = localImage(4,  Res.drawable.emoticon_04), textColor = "#d78787", backgroundColor = "#ffe8e8"),
-        Emoticon(id = 4,  title = "피곤",  image = localImage(5,  Res.drawable.emoticon_05), textColor = "#9197d2", backgroundColor = "#e5e8ff"),
-        Emoticon(id = 5,  title = "창피",  image = localImage(6,  Res.drawable.emoticon_06), textColor = "#d9ad58", backgroundColor = "#ffecc9"),
-        Emoticon(id = 6,  title = "지루함", image = localImage(7,  Res.drawable.emoticon_07), textColor = "#527e57", backgroundColor = "#cce5ce"),
-        Emoticon(id = 7,  title = "화남",  image = localImage(8,  Res.drawable.emoticon_08), textColor = "#cd5454", backgroundColor = "#ffdbdb"),
-        Emoticon(id = 8,  title = "불쾌",  image = localImage(9,  Res.drawable.emoticon_09), textColor = "#9e9896", backgroundColor = "#efebea"),
-        Emoticon(id = 9,  title = "실망",  image = localImage(10, Res.drawable.emoticon_10), textColor = "#d3d5e3", backgroundColor = "#454d7a"),
-        Emoticon(id = 10, title = "불안",  image = localImage(11, Res.drawable.emoticon_11), textColor = "#555454", backgroundColor = "#dddddd"),
-        Emoticon(id = 11, title = "우울",  image = localImage(12, Res.drawable.emoticon_12), textColor = "#8f6b5b", backgroundColor = "#f0dad1"),
-        Emoticon(id = 12, title = "슬픔",  image = localImage(13, Res.drawable.emoticon_13), textColor = "#465761", backgroundColor = "#ccdbe0"),
-        Emoticon(id = 13, title = "놀람",  image = localImage(14, Res.drawable.emoticon_14), textColor = "#889456", backgroundColor = "#ecf1da"),
-        Emoticon(id = 14, title = "외로움", image = localImage(15, Res.drawable.emoticon_15), textColor = "#7b9a9b", backgroundColor = "#ddebec"),
+    fun getEmoticons(): List<Emoticon> = listOf(
+        Emoticon(
+            id = 0,
+            title = "행복",
+            image = localImage(1, Res.drawable.emoticon_01),
+            textColor = "#dcc75a",
+            backgroundColor = "#fff9da"
+        ),
+        Emoticon(
+            id = 1,
+            title = "기쁨",
+            image = localImage(2, Res.drawable.emoticon_02),
+            textColor = "#db8fbd",
+            backgroundColor = "#ffecf7"
+        ),
+        Emoticon(
+            id = 2,
+            title = "만족",
+            image = localImage(3, Res.drawable.emoticon_03),
+            textColor = "#dc8d6c",
+            backgroundColor = "#ffe4d9"
+        ),
+        Emoticon(
+            id = 3,
+            title = "보통",
+            image = localImage(4, Res.drawable.emoticon_04),
+            textColor = "#d78787",
+            backgroundColor = "#ffe8e8"
+        ),
+        Emoticon(
+            id = 4,
+            title = "피곤",
+            image = localImage(5, Res.drawable.emoticon_05),
+            textColor = "#9197d2",
+            backgroundColor = "#e5e8ff"
+        ),
+        Emoticon(
+            id = 5,
+            title = "창피",
+            image = localImage(6, Res.drawable.emoticon_06),
+            textColor = "#d9ad58",
+            backgroundColor = "#ffecc9"
+        ),
+        Emoticon(
+            id = 6,
+            title = "지루함",
+            image = localImage(7, Res.drawable.emoticon_07),
+            textColor = "#527e57",
+            backgroundColor = "#cce5ce"
+        ),
+        Emoticon(
+            id = 7,
+            title = "화남",
+            image = localImage(8, Res.drawable.emoticon_08),
+            textColor = "#cd5454",
+            backgroundColor = "#ffdbdb"
+        ),
+        Emoticon(
+            id = 8,
+            title = "불쾌",
+            image = localImage(9, Res.drawable.emoticon_09),
+            textColor = "#9e9896",
+            backgroundColor = "#efebea"
+        ),
+        Emoticon(
+            id = 9,
+            title = "실망",
+            image = localImage(10, Res.drawable.emoticon_10),
+            textColor = "#d3d5e3",
+            backgroundColor = "#454d7a"
+        ),
+        Emoticon(
+            id = 10,
+            title = "불안",
+            image = localImage(11, Res.drawable.emoticon_11),
+            textColor = "#555454",
+            backgroundColor = "#dddddd"
+        ),
+        Emoticon(
+            id = 11,
+            title = "우울",
+            image = localImage(12, Res.drawable.emoticon_12),
+            textColor = "#8f6b5b",
+            backgroundColor = "#f0dad1"
+        ),
+        Emoticon(
+            id = 12,
+            title = "슬픔",
+            image = localImage(13, Res.drawable.emoticon_13),
+            textColor = "#465761",
+            backgroundColor = "#ccdbe0"
+        ),
+        Emoticon(
+            id = 13,
+            title = "놀람",
+            image = localImage(14, Res.drawable.emoticon_14),
+            textColor = "#889456",
+            backgroundColor = "#ecf1da"
+        ),
+        Emoticon(
+            id = 14,
+            title = "외로움",
+            image = localImage(15, Res.drawable.emoticon_15),
+            textColor = "#7b9a9b",
+            backgroundColor = "#ddebec"
+        ),
     )
 }
 
@@ -59,16 +138,16 @@ class EmoticonRepository() {
 val PREMIUM_EMOTICON_IDS: Set<Int> = setOf(9, 12, 14)
 
 private fun emoticonIdToImageResource(id: Int): ImageResource = when (id) {
-    0  -> localImage(1,  Res.drawable.emoticon_01)
-    1  -> localImage(2,  Res.drawable.emoticon_02)
-    2  -> localImage(3,  Res.drawable.emoticon_03)
-    3  -> localImage(4,  Res.drawable.emoticon_04)
-    4  -> localImage(5,  Res.drawable.emoticon_05)
-    5  -> localImage(6,  Res.drawable.emoticon_06)
-    6  -> localImage(7,  Res.drawable.emoticon_07)
-    7  -> localImage(8,  Res.drawable.emoticon_08)
-    8  -> localImage(9,  Res.drawable.emoticon_09)
-    9  -> localImage(10, Res.drawable.emoticon_10)
+    0 -> localImage(1, Res.drawable.emoticon_01)
+    1 -> localImage(2, Res.drawable.emoticon_02)
+    2 -> localImage(3, Res.drawable.emoticon_03)
+    3 -> localImage(4, Res.drawable.emoticon_04)
+    4 -> localImage(5, Res.drawable.emoticon_05)
+    5 -> localImage(6, Res.drawable.emoticon_06)
+    6 -> localImage(7, Res.drawable.emoticon_07)
+    7 -> localImage(8, Res.drawable.emoticon_08)
+    8 -> localImage(9, Res.drawable.emoticon_09)
+    9 -> localImage(10, Res.drawable.emoticon_10)
     10 -> localImage(11, Res.drawable.emoticon_11)
     11 -> localImage(12, Res.drawable.emoticon_12)
     12 -> localImage(13, Res.drawable.emoticon_13)

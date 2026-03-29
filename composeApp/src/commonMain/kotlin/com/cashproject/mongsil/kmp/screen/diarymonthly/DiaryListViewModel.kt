@@ -159,7 +159,7 @@ class DiaryListViewModel(
     }
 
     private fun fetchEmoticonMap(): Map<Int, Emoticon> =
-        emoticonRepository.getDefaultEmoticons()
+        emoticonRepository.getEmoticons()
             .associateBy { it.id }
 
     private fun mapToItem(diary: DiaryEntity, emoticonMap: Map<Int, Emoticon>): DiaryMonthlyItem =

@@ -69,7 +69,7 @@ class DiaryWriteViewModel(
     private fun loadInitialData() {
         viewModelScope.launch(exceptionHandler) {
             val emoticonsDeferred = async {
-                emoticonRepository.getDefaultEmoticons()
+                emoticonRepository.getEmoticons()
             }
             val diaryDeferred = async {
                 diaryRepository.getDiaryByDate(
