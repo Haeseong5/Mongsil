@@ -4,15 +4,13 @@ import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import com.cashproject.mongsil.kmp.BuildConfig
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-
-// 테스트 광고 단위 ID — 실제 배포 시 AdMob 콘솔에서 발급받은 ID로 교체
-private const val REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
 
 @Composable
 actual fun ShowRewardedAd(
@@ -29,7 +27,7 @@ actual fun ShowRewardedAd(
 
         RewardedAd.load(
             context,
-            REWARDED_AD_UNIT_ID,
+            BuildConfig.ADMOB_REWARDED_AD_UNIT_ID,
             AdRequest.Builder().build(),
             object : RewardedAdLoadCallback() {
                 override fun onAdLoaded(ad: RewardedAd) {

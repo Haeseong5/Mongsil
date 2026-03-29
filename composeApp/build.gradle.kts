@@ -196,6 +196,7 @@ android {
             buildConfigField("boolean", "IS_DEBUG", "true")
             buildConfigField("String", "ADMOB_APP_ID", "\"ca-app-pub-3940256099942544~3347511713\"")
             buildConfigField("String", "ADMOB_BANNER_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "ADMOB_REWARDED_AD_UNIT_ID", "\"ca-app-pub-3940256099942544/5224354917\"")
             manifestPlaceholders["ADMOB_APP_ID"] = "ca-app-pub-3940256099942544~3347511713"
         }
 
@@ -203,6 +204,7 @@ android {
             buildConfigField("boolean", "IS_DEBUG", "false")
             buildConfigField("String", "ADMOB_APP_ID", "\"ca-app-pub-1939032811151400~6706129481\"")
             buildConfigField("String", "ADMOB_BANNER_AD_UNIT_ID", "\"ca-app-pub-1939032811151400/5081188516\"")
+            buildConfigField("String", "ADMOB_REWARDED_AD_UNIT_ID", "\"ca-app-pub-1939032811151400/2343344537\"")
             manifestPlaceholders["ADMOB_APP_ID"] = "ca-app-pub-1939032811151400~6706129481"
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
