@@ -10,6 +10,8 @@ import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
+import com.cashproject.mongsil.kmp.firebase.AndroidAppUpdateChecker
+import com.cashproject.mongsil.kmp.firebase.AppUpdateChecker
 import com.cashproject.mongsil.kmp.firebase.FirebaseService
 import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
 import com.cashproject.mongsil.kmp.migration.AndroidLegacyDataMigrator
@@ -56,6 +58,7 @@ actual fun platformModule(): Module = module {
     single { CurrentActivityHolder() }
     single<NativeScreenLockAuthenticator> { AndroidNativeScreenLockAuthenticator(get()) }
     single<FirebaseService> { FirebaseServiceImpl() }
+    single<AppUpdateChecker> { AndroidAppUpdateChecker() }
     single<CloudBackupService> { GoogleDriveBackupService(get()) }
     single<LegacyDataMigrator> { AndroidLegacyDataMigrator(get(), get(), get()) }
 }

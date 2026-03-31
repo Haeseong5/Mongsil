@@ -8,6 +8,12 @@ data class AppUiState(
     val fontStyleOption: FontStyleOption = FontStyleOption.GAMJA_FLOWER,
     val fontScale: Float = 1f,
     val migrationState: MigrationState = MigrationState.CHECKING,
+    val updateInfo: UpdateInfo? = null,
+)
+
+data class UpdateInfo(
+    val currentVersion: String,
+    val latestVersion: String,
 )
 
 enum class MigrationState {

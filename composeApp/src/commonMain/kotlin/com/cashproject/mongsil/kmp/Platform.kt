@@ -14,3 +14,5 @@ expect fun getPlatformName(): String
 expect fun getAppPlatform(): AppPlatform
 
 expect val isDebug: Boolean
+
+expect fun openAppStore()

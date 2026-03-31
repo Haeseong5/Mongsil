@@ -66,6 +66,7 @@ kotlin {
             // Firebase (GitLive KMP)
             implementation(libs.gitlive.firebase.analytics)
             implementation(libs.gitlive.firebase.crashlytics)
+            implementation(libs.gitlive.firebase.config)
 
             // Glance AppWidget
             implementation(libs.androidx.glance.appwidget)
@@ -217,6 +218,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -277,4 +279,5 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

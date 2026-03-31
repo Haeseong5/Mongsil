@@ -47,7 +47,7 @@ internal val repositoryModule = module {
  * App-level ViewModel 모듈
  */
 internal val appViewModelModule = module {
-    viewModel { AppViewModel(get(), get()) }
+    viewModel { AppViewModel(get(), get(), get()) }
 }
 
 /**

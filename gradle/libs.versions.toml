@@ -211,6 +211,7 @@ firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analy
 # GitLive Firebase KMP
 gitlive-firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics", version.ref = "gitliveFirebase" }
 gitlive-firebase-crashlytics = { group = "dev.gitlive", name = "firebase-crashlytics", version.ref = "gitliveFirebase" }
+gitlive-firebase-config = { group = "dev.gitlive", name = "firebase-config", version.ref = "gitliveFirebase" }
 
 # Third-party
 compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", version = "2.6.0" }

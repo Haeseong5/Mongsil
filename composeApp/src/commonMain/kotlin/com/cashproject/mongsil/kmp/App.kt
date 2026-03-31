@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
+import com.cashproject.mongsil.kmp.designsystem.component.AppUpdateDialog
 import com.cashproject.mongsil.kmp.di.appModules
 import com.cashproject.mongsil.kmp.migration.MigrationLoadingScreen
 import com.cashproject.mongsil.kmp.model.FontStyleOption
@@ -78,6 +79,17 @@ fun App(
                     nativeAuthenticator = nativeAuthenticator,
                     onUnlocked = appLockViewModel::unlock,
                 )
+                appUiState.updateInfo?.let { updateInfo ->
+                    AppUpdateDialog(
+                        currentVersion = updateInfo.currentVersion,
+                        latestVersion = updateInfo.latestVersion,
+                        onUpdate = {
+                            appViewModel.dismissUpdateDialog()
+                            openAppStore()
+                        },
+                        onDismiss = appViewModel::dismissUpdateDialog,
+                    )
+                }
             }
         }
     }

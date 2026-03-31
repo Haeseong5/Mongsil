@@ -9,8 +9,10 @@ import com.cashproject.mongsil.kmp.core.datastore.LocalPreferences
 import com.cashproject.mongsil.kmp.core.datastore.LocalPreferencesImpl
 import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
+import com.cashproject.mongsil.kmp.firebase.AppUpdateChecker
 import com.cashproject.mongsil.kmp.firebase.FirebaseService
 import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
+import com.cashproject.mongsil.kmp.firebase.NoOpAppUpdateChecker
 import com.cashproject.mongsil.kmp.migration.LegacyDataMigrator
 import com.cashproject.mongsil.kmp.migration.NoOpLegacyDataMigrator
 import com.cashproject.mongsil.kmp.screen.setting.DesktopDiaryReminderScheduler
@@ -56,5 +58,6 @@ actual fun platformModule(): Module = module {
     single<PdfExportService> { DesktopPdfExportService() }
     single<NativeScreenLockAuthenticator> { DesktopNativeScreenLockAuthenticator() }
     single<FirebaseService> { FirebaseServiceImpl() }
+    single<AppUpdateChecker> { NoOpAppUpdateChecker() }
     single<LegacyDataMigrator> { NoOpLegacyDataMigrator() }
 }

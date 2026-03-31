@@ -295,6 +295,11 @@
     <string name="migration_loading_title">Migrating your data</string>
     <string name="migration_loading_desc">Moving your diary data to the new version.\nPlease wait a moment.</string>
 
+    <!-- App Update -->
+    <string name="app_update_dialog_title">App Update</string>
+    <string name="app_update_dialog_message">Current version: %1$s\nLatest version: %2$s\n\nWould you like to update the app?</string>
+    <string name="app_update_button">Update</string>
+
     <!-- Common -->
     <string name="coming_soon">Coming soon</string>
 </resources>
