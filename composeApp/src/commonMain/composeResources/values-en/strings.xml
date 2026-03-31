@@ -291,6 +291,10 @@
     <string name="diary_write_placeholder">Write about your day</string>
     <string name="ad_loading">Loading ad</string>
 
+    <!-- Migration -->
+    <string name="migration_loading_title">Migrating your data</string>
+    <string name="migration_loading_desc">Moving your diary data to the new version.\nPlease wait a moment.</string>
+
     <!-- Common -->
     <string name="coming_soon">Coming soon</string>
 </resources>

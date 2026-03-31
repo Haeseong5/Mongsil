@@ -12,6 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.cashproject.mongsil.kmp.designsystem.MongsilTheme
 import com.cashproject.mongsil.kmp.di.appModules
+import com.cashproject.mongsil.kmp.migration.MigrationLoadingScreen
 import com.cashproject.mongsil.kmp.model.FontStyleOption
 import com.cashproject.mongsil.kmp.model.ThemeMode
 import com.cashproject.mongsil.kmp.screen.main.MainScreen
@@ -66,12 +67,19 @@ fun App(
         fontFamily = resolveFontFamily(appUiState.fontStyleOption),
         fontScale = appUiState.fontScale
     ) {
-        MainScreen()
-        AppLockGate(
-            state = appLockUiState,
-            nativeAuthenticator = nativeAuthenticator,
-            onUnlocked = appLockViewModel::unlock,
-        )
+        when (appUiState.migrationState) {
+            MigrationState.CHECKING, MigrationState.MIGRATING -> {
+                MigrationLoadingScreen()
+            }
+            MigrationState.DONE -> {
+                MainScreen()
+                AppLockGate(
+                    state = appLockUiState,
+                    nativeAuthenticator = nativeAuthenticator,
+                    onUnlocked = appLockViewModel::unlock,
+                )
+            }
+        }
     }
 }
 

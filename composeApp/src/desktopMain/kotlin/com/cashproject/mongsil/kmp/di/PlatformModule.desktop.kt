@@ -11,6 +11,8 @@ import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
 import com.cashproject.mongsil.kmp.firebase.FirebaseService
 import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
+import com.cashproject.mongsil.kmp.migration.LegacyDataMigrator
+import com.cashproject.mongsil.kmp.migration.NoOpLegacyDataMigrator
 import com.cashproject.mongsil.kmp.screen.setting.DesktopDiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.DiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.DesktopPdfExportService
@@ -40,7 +42,6 @@ actual fun platformModule(): Module = module {
 
     // ── DataSource 구현체 선택 (한 줄 교체로 SQLDelight ↔ Room 전환) ──
     single<DiaryLocalDataSource> { DiaryLocalDataSourceRoom(get()) }
-    single<CounterLocalDataSource> { CounterLocalDataSourceRoom(get()) }
 
     // SQLDelight 사용 시 위 두 줄을 아래로 교체:
     // single<DiaryLocalDataSource> { DiaryLocalDataSourceSQLDelight(get()) }
@@ -55,4 +56,5 @@ actual fun platformModule(): Module = module {
     single<PdfExportService> { DesktopPdfExportService() }
     single<NativeScreenLockAuthenticator> { DesktopNativeScreenLockAuthenticator() }
     single<FirebaseService> { FirebaseServiceImpl() }
+    single<LegacyDataMigrator> { NoOpLegacyDataMigrator() }
 }

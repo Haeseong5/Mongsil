@@ -36,13 +36,13 @@
 - `BaseViewModel` + `CoroutineExceptionHandler` + `ObserveErrorEffect` 적용
 - **상태**: 완료 (커밋 `3da3c24`)
 
-### 5. AdMob 테스트 ID 하드코딩 — 수익 0원
+### 5. ~~AdMob 테스트 ID 하드코딩 — 수익 0원~~ (완료)
 
-- `BannerAdView.android.kt:17` — `ca-app-pub-3940256099942544/6300978111` (테스트 ID)
-- `ShowRewardedAd.android.kt:15` — `ca-app-pub-3940256099942544/5224354917` (테스트 ID)
-- `AndroidManifest.xml:24` — 테스트 앱 ID
-- **수정**: 실제 AdMob 콘솔 ID로 교체 필요
-- **상태**: 미수정
+- ~~`BannerAdView.android.kt:17` — `ca-app-pub-3940256099942544/6300978111` (테스트 ID)~~
+- ~~`ShowRewardedAd.android.kt:15` — `ca-app-pub-3940256099942544/5224354917` (테스트 ID)~~
+- ~~`AndroidManifest.xml:24` — 테스트 앱 ID~~
+- debug/release `buildConfigField` + `manifestPlaceholders`로 분리 적용
+- **상태**: 완료 (커밋 `20233ad`, `6db3044`)
 
 ---
 
@@ -106,8 +106,8 @@
 
 | #  | 이슈                                                  | 파일                           | 상태  |
 |----|-----------------------------------------------------|------------------------------|-----|
-| 14 | DiarySearchViewModel — 전체 일기를 메모리에 로드 (OOM 위험)      | `DiarySearchViewModel.kt:20` | 미수정 |
-| 15 | DiaryChartViewModel.loadStreak() — 전체 일기 로드         | `DiaryChartViewModel.kt:109` | 미수정 |
+| 14 | ~~DiarySearchViewModel — 전체 일기를 메모리에 로드 (OOM 위험)~~      | `DiarySearchViewModel.kt:20` | 수정 중 (DB-side 검색으로 전환, 미커밋) |
+| 15 | ~~DiaryChartViewModel.loadStreak() — 전체 일기 로드~~         | `DiaryChartViewModel.kt:109` | 수정 중 (getAllDiaryDates로 경량화, 미커밋) |
 | 16 | CounterViewModel — 빠른 탭 시 저장 순서 꼬임 (race condition) | `CounterViewModel.kt:50-63`  | 미수정 |
 | 17 | PasswordHasher — FNV-1a 비암호학적 해시 사용                 | `PasswordHasher.kt:4-9`      | 미수정 |
 | 18 | AndroidPdfExportService — Bitmap `recycle()` 안 함    | `AndroidPdfExportService.kt` | 미수정 |
@@ -135,7 +135,7 @@
 - [x] `fallbackToDestructiveMigration` 제거
 - [x] `google-services.json` gitignore 처리
 - [x] ViewModel launch 블록에 에러 처리 추가
-- [ ] AdMob ID를 실제 ID로 교체
+- [x] AdMob ID를 실제 ID로 교체 (debug/release BuildConfig 분리)
 - [ ] 백업/복원에 photoUri 포함
 - [x] `isMinifyEnabled = true` + ProGuard 규칙 작성
 - [ ] 하드코딩 문자열 리소스화

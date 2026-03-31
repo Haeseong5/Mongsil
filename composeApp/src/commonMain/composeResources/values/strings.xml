@@ -291,6 +291,10 @@
     <string name="diary_write_placeholder">오늘 하루를 기록해보세요</string>
     <string name="ad_loading">광고 로딩 중</string>
 
+    <!-- Migration -->
+    <string name="migration_loading_title">데이터를 이관하고 있어요</string>
+    <string name="migration_loading_desc">기존 일기 데이터를 새 버전으로 옮기는 중입니다.\n잠시만 기다려 주세요.</string>
+
     <!-- Common -->
     <string name="coming_soon">준비중입니다</string>
 </resources>

@@ -12,6 +12,8 @@ import com.cashproject.mongsil.kmp.database.DatabaseDriverFactory
 import com.cashproject.mongsil.kmp.database.MongsilRoomDatabase
 import com.cashproject.mongsil.kmp.firebase.FirebaseService
 import com.cashproject.mongsil.kmp.firebase.FirebaseServiceImpl
+import com.cashproject.mongsil.kmp.migration.AndroidLegacyDataMigrator
+import com.cashproject.mongsil.kmp.migration.LegacyDataMigrator
 import com.cashproject.mongsil.kmp.screen.setting.AndroidDiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.DiaryReminderScheduler
 import com.cashproject.mongsil.kmp.screen.setting.pdfexport.AndroidPdfExportService
@@ -55,4 +57,5 @@ actual fun platformModule(): Module = module {
     single<NativeScreenLockAuthenticator> { AndroidNativeScreenLockAuthenticator(get()) }
     single<FirebaseService> { FirebaseServiceImpl() }
     single<CloudBackupService> { GoogleDriveBackupService(get()) }
+    single<LegacyDataMigrator> { AndroidLegacyDataMigrator(get(), get(), get()) }
 }
