@@ -24,6 +24,7 @@ docs/
 | 파일                                                                    | 제목           | 상태  | 날짜         |
 |-----------------------------------------------------------------------|--------------|-----|------------|
 | [calendar-swipe-performance.md](issues/calendar-swipe-performance.md) | 캘린더 스와이프 버벅임 | 미수정 | 2026-03-08 |
+| [db-backup-version-compatibility.md](issues/db-backup-version-compatibility.md) | DB 백업 파일 버전 호환성 | 참고 | 2026-03-31 |
 
 ### Features
 
