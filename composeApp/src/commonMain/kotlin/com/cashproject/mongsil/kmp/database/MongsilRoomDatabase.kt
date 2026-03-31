@@ -13,7 +13,7 @@ import com.cashproject.mongsil.kmp.database.entity.EmoticonEntity
 
 @Database(
     entities = [DiaryEntity::class, EmoticonEntity::class, CounterEntity::class],
-    version = 7,
+    version = 1,
     exportSchema = true,
 )
 @ConstructedBy(MongsilRoomDatabaseConstructor::class)
