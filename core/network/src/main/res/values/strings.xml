@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="emoticon_title_happy">행복</string>
+    <string name="emoticon_title_joy">기쁨</string>
+    <string name="emoticon_title_satisfied">만족</string>
+    <string name="emoticon_title_normal">보통</string>
+    <string name="emoticon_title_tired">피곤</string>
+    <string name="emoticon_title_embarrassed">창피</string>
+    <string name="emoticon_title_bored">지루함</string>
+    <string name="emoticon_title_angry">화남</string>
+    <string name="emoticon_title_disgusted">불쾌</string>
+    <string name="emoticon_title_disappointed">실망</string>
+    <string name="emoticon_title_anxious">불안</string>
+    <string name="emoticon_title_depressed">우울</string>
+    <string name="emoticon_title_sad">슬픔</string>
+    <string name="emoticon_title_surprised">놀람</string>
+    <string name="emoticon_title_lonely">외로움</string>
+</resources>

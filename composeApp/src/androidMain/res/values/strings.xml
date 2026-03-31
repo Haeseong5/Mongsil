@@ -3,4 +3,12 @@
     <string name="app_name">몽실</string>
     <string name="widget_calendar_description">이번 달 달력과 일기 기록을 홈 화면에서 확인하세요</string>
     <string name="notification_message">오늘 하루 어땠나요?</string>
+
+    <!-- Google Sign-In -->
+    <string name="sign_in_error_required">로그인이 필요합니다. 다시 시도해주세요.</string>
+    <string name="sign_in_error_network">네트워크 연결을 확인해주세요.</string>
+    <string name="sign_in_error_canceled">로그인이 취소되었습니다.</string>
+    <string name="sign_in_error_in_progress">로그인 진행 중입니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="sign_in_error_developer">앱 설정 오류가 발생했습니다. (코드: %s)</string>
+    <string name="sign_in_error_unknown">Google 로그인에 실패했습니다. (코드: %s)</string>
 </resources>
