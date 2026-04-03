@@ -4,11 +4,14 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.compose.compiler) apply false
-    
+
     // Android plugins
+    alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
 }
 
 buildscript {
@@ -20,27 +23,10 @@ buildscript {
     }
 
     dependencies {
-        classpath(libs.android.gradlePlugin)
-        classpath(libs.google.services)
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.androidx.navigation.safe.args.gradle.plugin)
         classpath(libs.hilt.android.gradle.plugin)
-        classpath(libs.firebase.crashlytics.gradle)
         classpath(libs.ksp.gradlePlugin)
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven {
-            setUrl("https://jitpack.io")
-        }
-        maven {
-            setUrl("https://maven.google.com")
-        }
     }
 }
 

@@ -6,9 +6,9 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.sqldelight)
-    id("com.android.application")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 kotlin {
     androidTarget()
@@ -146,7 +146,7 @@ kotlin {
             implementation(libs.coil.network.ktor)
 
             // Calendar
-            implementation("com.kizitonwose.calendar:compose-multiplatform:2.10.0")
+            implementation(libs.compose.calendar.multiplatform)
 
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.core.okio)
@@ -210,6 +210,9 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -279,5 +282,5 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

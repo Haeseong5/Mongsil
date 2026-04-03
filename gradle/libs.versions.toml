@@ -67,6 +67,8 @@ googleApiDrive = "v3-rev20250220-2.0.0"
 firebaseBom = "34.5.0"
 googleServicesVersion = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.6"
+calendarMultiplatform = "2.10.0"
+desugarJdkLibs = "2.1.4"
 gitliveFirebase = "2.1.0"
 
 # RxJava
@@ -215,7 +217,9 @@ gitlive-firebase-config = { group = "dev.gitlive", name = "firebase-config", ver
 
 # Third-party
 compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", version = "2.6.0" }
+compose-calendar-multiplatform = { group = "com.kizitonwose.calendar", name = "compose-multiplatform", version.ref = "calendarMultiplatform" }
 compose-fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version = "1.0.4" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
@@ -245,11 +249,15 @@ ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "ui" }
 ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 #kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServicesVersion" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle" }
 
 # KMP Plugins
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
