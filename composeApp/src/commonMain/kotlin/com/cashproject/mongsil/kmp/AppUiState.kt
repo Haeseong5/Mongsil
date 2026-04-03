@@ -7,7 +7,7 @@ data class AppUiState(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val fontStyleOption: FontStyleOption = FontStyleOption.GAMJA_FLOWER,
     val fontScale: Float = 1f,
-    val migrationState: MigrationState = MigrationState.CHECKING,
+    val migrationState: MigrationState = MigrationState.IDLE,
     val updateInfo: UpdateInfo? = null,
 )
 
@@ -17,7 +17,7 @@ data class UpdateInfo(
 )
 
 enum class MigrationState {
-    CHECKING,
+    IDLE,
     MIGRATING,
     DONE,
 }

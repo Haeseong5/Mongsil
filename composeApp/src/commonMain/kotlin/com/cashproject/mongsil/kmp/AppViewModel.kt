@@ -17,7 +17,7 @@ class AppViewModel(
     private val appUpdateChecker: AppUpdateChecker,
 ) : BaseViewModel() {
 
-    private val _migrationState = MutableStateFlow(MigrationState.CHECKING)
+    private val _migrationState = MutableStateFlow(needsMigration())
     private val _updateInfo = MutableStateFlow<UpdateInfo?>(null)
 
     val uiState = combine(
@@ -49,14 +49,17 @@ class AppViewModel(
         checkAppUpdate()
     }
 
+    private fun needsMigration(): MigrationState {
+        return if (!legacyDataMigrator.needsMigration()) {
+            MigrationState.DONE
+        } else {
+            MigrationState.MIGRATING
+        }
+    }
+
     private fun checkAndMigrate() {
         viewModelScope.launch(exceptionHandler) {
-            if (!legacyDataMigrator.needsMigration()) {
-                _migrationState.value = MigrationState.DONE
-                return@launch
-            }
-
-            _migrationState.value = MigrationState.MIGRATING
+            if (!legacyDataMigrator.needsMigration()) return@launch
             legacyDataMigrator.migrate()
             _migrationState.value = MigrationState.DONE
         }

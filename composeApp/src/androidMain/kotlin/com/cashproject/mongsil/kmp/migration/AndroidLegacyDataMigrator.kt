@@ -15,9 +15,7 @@ class AndroidLegacyDataMigrator(
     private val firebaseService: FirebaseService,
 ) : LegacyDataMigrator {
 
-    override suspend fun needsMigration(): Boolean = withContext(Dispatchers.IO) {
-        context.getDatabasePath(LEGACY_DB_NAME).exists()
-    }
+    override fun needsMigration(): Boolean = context.getDatabasePath(LEGACY_DB_NAME).exists()
 
     override suspend fun migrate(): LegacyMigrationResult = withContext(Dispatchers.IO) {
         val dbFile = context.getDatabasePath(LEGACY_DB_NAME)

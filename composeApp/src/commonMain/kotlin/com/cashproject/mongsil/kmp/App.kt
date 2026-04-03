@@ -1,10 +1,20 @@
 package com.cashproject.mongsil.kmp
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -22,7 +32,9 @@ import com.cashproject.mongsil.kmp.screen.setting.screenlock.AppLockViewModel
 import com.cashproject.mongsil.kmp.screen.setting.screenlock.NativeScreenLockAuthenticator
 import mongsil.composeapp.generated.resources.Res
 import mongsil.composeapp.generated.resources.gamja_flower_regular
+import mongsil.composeapp.generated.resources.ic_app_logo
 import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.KoinApplication
@@ -69,9 +81,23 @@ fun App(
         fontScale = appUiState.fontScale
     ) {
         when (appUiState.migrationState) {
-            MigrationState.CHECKING, MigrationState.MIGRATING -> {
+            MigrationState.IDLE -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(Res.drawable.ic_app_logo),
+                        contentDescription = null,
+                        modifier = Modifier.clip(CircleShape).size(160.dp),
+                    )
+                }
+            }
+
+            MigrationState.MIGRATING -> {
                 MigrationLoadingScreen()
             }
+
             MigrationState.DONE -> {
                 MainScreen()
                 AppLockGate(
