@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
+import io.github.aakira.napier.Napier
 
 @Composable
 fun rememberGoogleSignInLauncher(
@@ -28,6 +29,11 @@ fun rememberGoogleSignInLauncher(
         } catch (e: ApiException) {
             val message = getSignInErrorMessage(context, e.statusCode)
             onError(message)
+            Napier.e(
+                tag = "Google Auth",
+                throwable = e,
+                message = "Google Login Error"
+            )
         }
     }
 
