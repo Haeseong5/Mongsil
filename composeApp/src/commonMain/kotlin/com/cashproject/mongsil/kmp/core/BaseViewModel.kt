@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
+@Deprecated("Base 대신 각자 처리")
 abstract class BaseViewModel : ViewModel() {
 
     private val _errorEvent = MutableSharedFlow<Unit>()

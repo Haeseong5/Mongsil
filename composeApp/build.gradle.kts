@@ -163,7 +163,7 @@ android {
         applicationId = "com.cashproject.mongsil"
         minSdk = libs.versions.sdkMinVersion.get().toInt()
         targetSdk = libs.versions.sdkTargetVersion.get().toInt()
-        versionCode = 24
+        versionCode = 25
         versionName = "2.0.0"
     }
 
