@@ -69,6 +69,7 @@ googleServicesVersion = "4.4.4"
 firebaseCrashlyticsGradle = "3.0.6"
 calendarMultiplatform = "2.10.0"
 desugarJdkLibs = "2.1.4"
+napier = "2.7.1"
 gitliveFirebase = "2.1.0"
 
 # RxJava
@@ -219,6 +220,7 @@ gitlive-firebase-config = { group = "dev.gitlive", name = "firebase-config", ver
 compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", version = "2.6.0" }
 compose-calendar-multiplatform = { group = "com.kizitonwose.calendar", name = "compose-multiplatform", version.ref = "calendarMultiplatform" }
 compose-fading-edges = { group = "com.github.GIGAMOLE", name = "ComposeFadingEdges", version = "1.0.4" }
+napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }

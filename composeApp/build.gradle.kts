@@ -102,6 +102,7 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(libs.napier)
             implementation(libs.runtime)
             implementation(libs.foundation)
             implementation(libs.material3)

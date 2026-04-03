@@ -2,6 +2,8 @@ package com.cashproject.mongsil.kmp
 
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -13,6 +15,7 @@ class MongsilApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        Napier.base(DebugAntilog())
         MobileAds.initialize(this)
 
         startKoin(
