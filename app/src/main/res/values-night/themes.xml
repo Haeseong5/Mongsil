@@ -11,13 +11,8 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/background_color</item>
 
-        <!--        https://developer.android.com/develop/ui/views/layout/edge-to-edge?hl=ko-->
-        <item name="android:navigationBarColor">@color/dark_gray</item>
-        <!-- Optional: set to transparent if your app is drawing behind the status bar. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Optional: set for a light status bar with dark content. -->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
 
         <!--        &lt;!&ndash; window theme&ndash;&gt;-->
         <item name="android:windowBackground">@color/background_color</item>

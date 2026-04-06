@@ -1,6 +1,7 @@
 package com.cashproject.mongsil.ui
 
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.cashproject.mongsil.BuildConfig
@@ -34,7 +35,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val remoteConfigManager by lazy { RemoteConfigManager.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT
+            ),
+            navigationBarStyle = SystemBarStyle.auto(
+                android.graphics.Color.WHITE,
+                0xFF444444.toInt()
+            )
+        )
         super.onCreate(savedInstanceState)
         binding.root.setPadding(0, 0, 0, getNavigationBarHeight())
         MobileAds.initialize(this)
