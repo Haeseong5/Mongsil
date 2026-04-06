@@ -3,6 +3,7 @@ package com.cashproject.mongsil.kmp.screen.setting.language
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +21,8 @@ fun LanguageSettingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F5F5)),
+            .background(Color(0xFFF5F5F5))
+            .systemBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
         Text(

@@ -15,14 +15,14 @@ class MainActivity : FragmentActivity() {
     private val currentActivityHolder: CurrentActivityHolder by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        currentActivityHolder.set(this)
         enableEdgeToEdge(
             navigationBarStyle = SystemBarStyle.auto(
                 lightScrim = Color.TRANSPARENT,
                 darkScrim = Color.TRANSPARENT,
             ),
         )
+        super.onCreate(savedInstanceState)
+        currentActivityHolder.set(this)
 
         setContent {
             val view = LocalView.current
